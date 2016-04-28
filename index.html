@@ -6,9 +6,43 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="Nichtlustig : ">
 
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Nichtlustig</title>
+    <title>Nicht Lustig!</title>
+	<!-- javascript für Menu Eintraege -->
+    <script> 
+    function SwitchPage(page){
+		$("#content").load("views/"+page+".html"); 
+    };
+	</script>
+	<!-- css ergaenzungen für selbsthinzugefuegtes -->
+	<style>
+		#menu {
+			width:420px;
+			position:absolute;
+			margin-right:20px;
+		}
+		.menuButton {
+			background-color:white;
+			border-radius:28px;
+			border:1px solid black;
+			cursor:pointer;
+			color:black;
+			padding:5px 10px;
+			text-decoration:none;
+			width:18%;
+			text-shadow:0px 1px 0px rgb(144, 144, 144);
+			margin-bottom:10px;
+		}
+		.menuButton:hover {
+			background-color:GrayText;
+		}
+		.menuButton:active {
+			position:relative;
+			top:1px;
+		}
+	</style>
   </head>
 
   <body>
@@ -18,9 +52,23 @@
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/teamamused/nichtlustig">View on GitHub</a>
 
-          <h1 id="project_title">Nichtlustig</h1>
+          <h1 id="project_title">Nicht Lustig</h1>
           <h2 id="project_tagline"></h2>
 
+			<!-- Menu -->
+            <section id="menu">
+				<input type="button" class="menuButton" value="Start" name="start"
+				onclick="SwitchPage('start')">
+				<input type="button" class="menuButton" value="Phase 1" name="phase1" 
+				onclick="SwitchPage('phase1')">
+				<input type="button" class="menuButton" value="Phase 2" name="phase2" 
+				onclick="SwitchPage('phase2')">
+				<input type="button" class="menuButton" value="Anleitung" name="manual" 
+				onclick="SwitchPage('manual')">
+				<input type="button" class="menuButton" value="Javadoc" name="doc" 
+				onclick="window.location='docs/';">
+            </section>
+			<!-- Downloads -->
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/teamamused/nichtlustig/zipball/master">Download this project as a .zip file</a>
               <a class="tar_download_link" href="https://github.com/teamamused/nichtlustig/tarball/master">Download this project as a tar.gz file</a>
@@ -30,17 +78,13 @@
 
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a id="nicht-lustig-it-projekt-2016" class="anchor" href="#nicht-lustig-it-projekt-2016" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nicht Lustig IT Projekt 2016</h3>
-
-<p>Im Rahmen des Moduls „IT-Projekt“ bei Bradley Richards und Lukas Frey wurde das Spiel "Nicht Lustig" des Kosmos Verlages als Computerspiel umgesetzt.  Auf dieser Page möchten wir die verschiedenen Meilensteine der Entwicklung aufzeigen. Die Dokumentationen sollen den Auftraggebern des IT-Projekts veranschaulichen, wie sich die Gruppe auf die Implementation vorbereitet hat.</p>
-
-<h3>
-<a id="team" class="anchor" href="#team" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Team</h3>
-
-<p>Das Team amused besteht aus 4 hoch motivierten FHNW Studierenden deren Name hier nicht erwähnt werden muss.</p>
-      </section>
+	<section id="main_content" class="inner">
+		<div id="content">
+		<script>
+		SwitchPage('start')
+		</script>
+		</div>
+	</section>
     </div>
 
     <!-- FOOTER  -->
