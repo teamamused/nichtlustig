@@ -46,7 +46,7 @@
   </target>
   
   <!-- Compiles the java code from all projects -->
-  <target name="all" depends="common, client, server" />
+  <target name="all" depends="clean, makedir, common, client, server" />
   
   <!-- Creates Javadoc -->
   <target name="docs" depends="all">
