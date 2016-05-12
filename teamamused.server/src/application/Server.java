@@ -14,7 +14,7 @@ public class Server extends Application {
 			BorderPane root = new BorderPane();
 			Scene scene = new Scene(root,400,400);
 			Label l =new Label();
-			l.setText("Dies ist der Server!");
+			l.setText("Dies ist der Server! Juppie!");
 			root.setCenter(l);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
