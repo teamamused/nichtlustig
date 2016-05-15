@@ -34,7 +34,7 @@ public interface ITargetCard extends IGameCard {
 
 	/**
 	 * Setzt das Flag isCoveredByDead welches sagt ob die KArte von einem Tod abgedeckt ist.
-	 * @param Karte von Tod abgedeckt ja / nein
+	 * @param isCovered Karte von Tod abgedeckt ja / nein
 	 */
 	void setIsCoveredByDead(boolean isCovered);
 	

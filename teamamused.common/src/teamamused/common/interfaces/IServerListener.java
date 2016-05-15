@@ -25,30 +25,31 @@ public interface IServerListener {
 	
 	/**
 	 * Verknüpft den Spieler (Objekt welches am Spiel teil nimmt) mit dem Serverlistener (Client welcher sich auf den Server verbindet)
-	 * @param player
+	 * @param player Spieler Objekt des Clients
 	 */
 	void setPlayer(IPlayer player);
 
 	/**
-	 * Der Client wurde aktiviert -> ist am Spiel
+	 * Der Client wurde aktiviert (ist am Spiel) oder deaktiviert (ist Passiv)
+	 * @param isActive aktivert oder deaktivert 
 	 */
 	void activeChanged(boolean isActive);
 	
 	/**
 	 * Das Spielbrett wurde verändert und muss neu angezeigt werden
-	 * @param board
+	 * @param board Neues Spielbrett
 	 */
 	void updateGameBoard(GameBoard board);
 	
 	/**
 	 * Eine Chatnachricht wurde versandt
-	 * @param message
+	 * @param message Chatnachricht
 	 */
 	void addChatMessage(ChatMessage message);
 	
 	/**
 	 * Der Spieler muss zwischen mehreren Karten auswählen
-	 * @param allowedCards
+	 * @param allowedCards Zur auswahl stehende Karten
 	 */
 	void chooseCards(ArrayList<ITargetCard> allowedCards);
 	

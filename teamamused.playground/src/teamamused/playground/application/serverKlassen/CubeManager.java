@@ -14,9 +14,16 @@ public class CubeManager {
 	private int diceCounter = 0;
 	private int allowedDicings = 3;
 	
+	/**
+	 * Privater Konstruktor
+	 */
 	private CubeManager() {
 		
 	}
+	/**
+	 * Getter zur Instanz des CubeManagers
+	 * @return CubeManager Instanz
+	 */
 	public static CubeManager getInstance() {
 		if (instance == null) {
 			instance = new CubeManager();
@@ -41,7 +48,7 @@ public class CubeManager {
 	}
 	/**
 	 * Variablen für nächstes Würfeln initialisieren
-	 * @param additionalDicings
+	 * @param additionalDicings Zusätzliche Würfelversuche (0 oder +/-1)
 	 */
 	public void initForNextRound(int additionalDicings) {
 		this.diceCounter = 0;

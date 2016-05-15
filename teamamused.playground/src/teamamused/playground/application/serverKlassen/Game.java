@@ -40,7 +40,7 @@ public class Game {
 	
 	/**
 	 * Gibt die Nummer des aktiven Spielers zurück
-	 * @return
+	 * @return Aktiver Spieler Nummer
 	 */
 	public int getActivePlayer() {
 		return activePlayer;
@@ -56,8 +56,9 @@ public class Game {
 	
 	/**
 	 * Fügt dem Spiel einen Player hinzu und gibt desen Nummer zurück
-	 * @param player
-	 * @return
+	 * @param client Klient 
+	 * @param player Spieler
+	 * @return Nummer des Spielers im Game
 	 */
 	public int addPlayer(IServerListener client, IPlayer player) {
 		int playerNumber = players.size() + 1;
@@ -69,7 +70,7 @@ public class Game {
 	
 	/**
 	 * Aktiviert einen Spieler
-	 * @param playerNumber
+	 * @param playerNumber Spieler Nummer 
 	 */
 	public void activatePlayer(int playerNumber) {
 		ServiceLocator.getInstance().getLogger().info("Game: aktiviere Spieler Nummer " + playerNumber);

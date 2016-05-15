@@ -16,26 +16,37 @@ import teamamused.common.interfaces.IServerListener;
 public class ClientManager {
 	private static ClientManager instance;
 
+	// Instanzvariable mit den clients
 	private ArrayList<IServerListener> clients = new ArrayList<IServerListener>();
-	
-	public ArrayList<IServerListener> getClients() {
-		return clients;
-	}
 
+	/**
+	 * Private Konstruktor
+	 */
 	private ClientManager() {
 	}
 	
+	/**
+	 * Getter zur Instanz des ClientManagers
+	 * @return Instanz des ClientManagers
+	 */
 	public static ClientManager getInstance() {
 		if (instance == null) {
 			instance = new ClientManager();
 		}
 		return instance;
 	}
+	/**
+	 * Getter aller verbundenen Clients
+	 * @return Auflistung mit allen Clients
+	 */
+	public ArrayList<IServerListener> getClients() {
+		return clients;
+	}
 	
 	/**
 	 * Gibt den aktiven Spieler zurück 
 	 * (muss noch programmiert werden, im Demo immer der erste)
-	 * @return
+	 * @return aktuell aktiver Client
 	 */
 	public IServerListener getCurrentClient() {
 		return clients.get(0);
@@ -52,8 +63,8 @@ public class ClientManager {
 	
 	/**
 	 * Weisst dem Client den Spieler zu
-	 * @param client
-	 * @param player
+	 * @param client Klient
+	 * @param player Spieler
 	 * @return
 	 * 	erfolgreich Ja / Nein
 	 */
@@ -79,7 +90,7 @@ public class ClientManager {
 	
 	/**
 	 * aktualisiert den aktiven Client 
-	 * -> der der Momentan am Spiel ist.
+	 * (der der Momentan am Spiel ist)
 	 */
 	public void updateCurrentClient() {
 		ServiceLocator.getInstance().getLogger().info("ClientManager: aktualisiere aktueller Client");

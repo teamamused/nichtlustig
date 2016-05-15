@@ -22,33 +22,35 @@ public interface IClientListener {
 	/**
 	 * Das Spielbrett wurde verändert
 	 * 
-	 * @param newGameBoard
+	 * @param newGameBoard Neues Spielbrett
 	 */
 	public default void onGameBoardChanged(GameBoard newGameBoard) {}
 	
 	/**
 	 * Die Mitspieler auflistung hat sich verändert
 	 * 
-	 * @param players
+	 * @param players Alle aktuell registrierten Spieler
 	 */
 	public default void onPlayersChanged(IPlayer[] players) {}
 	
 	/**
-	 * Der Spieler ist am Zug
+	 * Der Spieler ist am Zug oder nicht mehr am Zug
+	 * 
+	 * @param isActive Spieler aktiv Ja / Nein
 	 */
 	public default void onPlayerIsActivedChanged(boolean isActive) {}
 	
 	/**
 	 * Der Spieler muss eine Karte auswählen
 	 *  
-	 * @param allowedCards
+	 * @param allowedCards Zur auswahl stehende Karten
 	 */
 	public default void onPlayerHasToCooseCards(ArrayList<ITargetCard> allowedCards) {}
 	
 	/**
-	 * Der Spieler muss eine Karte auswählen
+	 * Der Spieler hat eine Chatnachricht empfangen
 	 *  
-	 * @param cards
+	 * @param message Chatnachricht
 	 */
 	public default void onChatMessageRecieved(ChatMessage message) {}
 }

@@ -22,7 +22,7 @@ public class ResourceLoader {
      * @param imageName
      *            Name des Bildes (samt endung)
      * @return Image Objekt des Bildes
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException Exception falls Datei nicht gefunden
      */
     public static Image getImage(String imageName) throws FileNotFoundException {
 	File f = new File(ServiceLocator.getInstance().getSettings().getSetting(Setting.ImagePath)+ "/" + imageName);

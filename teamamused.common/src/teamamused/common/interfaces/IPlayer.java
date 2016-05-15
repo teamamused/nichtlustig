@@ -1,20 +1,17 @@
 package teamamused.common.interfaces;
 
-
-/**
- * 
+/** 
  * Interface für einen Spieler Ein Spieler ist ein Kartenhalter und hat noch
  * zusätzliche Eigenschaften
  * 
  * @author Daniel
- *
  */
 public interface IPlayer extends ICardHolder {
 
 	/**
 	 * Gibt die Nummer des Spielers zurück
 	 * 
-	 * @return
+	 * @return Nummer des Spielers
 	 */
 	int getPlayerNumber();
 	
@@ -28,7 +25,7 @@ public interface IPlayer extends ICardHolder {
 	/**
 	 * Gibt den Namen des Spielers zurück
 	 * 
-	 * @return
+	 * @return Name des Spielers
 	 */
 	String getPlayerName();
 }

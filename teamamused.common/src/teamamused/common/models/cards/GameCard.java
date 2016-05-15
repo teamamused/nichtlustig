@@ -66,7 +66,7 @@ public enum GameCard {
 	
 	/**
 	 * gibt die Kartennummer zurück
-	 * @return
+	 * @return Karten Nummer
 	 */
 	public int getCardNumber() {
 		return this.cardNumber;
@@ -74,7 +74,7 @@ public enum GameCard {
 	
 	/**
 	 * Gibt den Namen des Vordergrund Bildes zurück
-	 * @return
+	 * @return Vordergrund Bild Name
 	 */
 	public String getForgroundImageName() {
 		return this.foregroundImageName;
@@ -82,7 +82,7 @@ public enum GameCard {
 	
 	/**
 	 * Gibt den Namen des Hintergrundbildes zurück
-	 * @return
+	 * @return Hintergrund Bildname
 	 */
 	public String getBackgroundImageName() {
 		return this.backgroundImageName;
@@ -90,6 +90,7 @@ public enum GameCard {
 	
 	/**
 	 * Gibt den Namen der Karte zurück
+	 * @return Kartenbezeichnung
 	 */
 	public String toString() {
 		return this.cardName;

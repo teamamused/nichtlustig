@@ -37,7 +37,7 @@ public class Server {
 	
 	/**
 	 * Client connected sich auf Server
-	 * @param client
+	 * @param client Client Anwendung
 	 */
 	public void connectClient(IServerListener client) {
 		ServiceLocator.getInstance().getLogger().info("Server verbinde Client " + client.toString());
@@ -46,8 +46,9 @@ public class Server {
 
 	/**
 	 * Spieler tritt dem Spiel bei
-	 * @param client
-	 * @param player
+	 * @param client Klient
+	 * @param player Spieler
+	 * @return Spieler Nummer
 	 */
 	public int addPlayer(IServerListener client, IPlayer player) {
 		ServiceLocator.getInstance().getLogger().info("Server füge Spieler zu Spiel hinzu " + player.toString());
@@ -64,7 +65,7 @@ public class Server {
 
 	/**
 	 * Würfeln
-	 * @return
+	 * @return anzahl verbleibende versuche
 	 */
 	public int rollDices() {
 		return Boardmanager.getInstance().rollDices();
@@ -72,7 +73,7 @@ public class Server {
 
 	/**
 	 * Karten zuteilen
-	 * @param targetCards
+	 * @param targetCards gewählte Karten
 	 */
 	public void allocateCards(ITargetCard[] targetCards) {
 		Boardmanager.getInstance().allocateTargetCards(ClientManager.getInstance().getCurrentClient().getPlayer(), targetCards);

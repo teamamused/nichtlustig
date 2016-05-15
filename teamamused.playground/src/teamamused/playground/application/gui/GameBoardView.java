@@ -16,6 +16,7 @@ import teamamused.common.interfaces.ITargetCard;
 
 public class GameBoardView extends AbstractView<GameBoardModel> {
 
+
 	private final double BUTTON_WIDTH = 125;
 	TilePane todKartenPane;
 	TilePane spielKartenPane;
@@ -25,11 +26,16 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	Button btnDice;
 	Button btnStartGame;
 	Button btnChooseCards;
-
+	
+	/**
+	 * Konstruktor
+	 * @param stage Stage in welcher die Scene angezeigt wird
+	 * @param model Model für die Datenhaltung
+	 */
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
 	}
-
+	
 	@Override
 	protected Scene createGUI() {
 		BorderPane root = new BorderPane();
@@ -67,6 +73,9 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		return scene;
 	}
 	
+	/**
+	 * Alle Karten zeichnen
+	 */
 	protected void drawCards() {
 		// Tod Karten laden	
 		this.todKartenPane.getChildren().clear();
@@ -84,8 +93,8 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 * Nur zum Test, bei uns im Spiel anders.
 	 * Zeigt die übergebenen Karten dort an wo sonst die Würfel angezeigt werden
 	 * 
-	 * @param text
-	 * @param cards
+	 * @param text Angezeigter Text vor den Karten
+	 * @param cards Die Karten selber
 	 */
 	protected void drawCards(String text, ITargetCard[] cards) {
 		// Würfel löschen
@@ -106,7 +115,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	/**
 	 * Würfel zeichnen
-	 * @param remainingDraws
+	 * @param remainingDraws Wieviel mal noch gewürfelt werden darf
 	 */
 	protected void drawCubes(int remainingDraws) {
 		int diceSize = 50;
@@ -124,8 +133,10 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	/**
 	 * Fügt die Karten einer TilePane hinzu
 	 * 
-	 * @param p
-	 * @param cards
+	 * @param p Panel in welches die Karten gezeichnet werden sollen
+	 * @param cards Die Karten selber
+	 * @param anzReihen in wieviele Reihen/Spalten 
+	 * @param anzZeilen in wieviel Zeilen
 	 */
 	private void addCardsToPane(TilePane p, IGameCard[] cards, int anzReihen, int anzZeilen) {
 		// abstand zwischen den Buttons

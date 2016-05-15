@@ -15,7 +15,11 @@ import teamamused.common.models.GameBoard;
 import teamamused.playground.application.Client;
 
 public class GameBoardController extends AbstractController<GameBoardModel, GameBoardView> implements IClientListener {
-	
+	/**
+	 * Konstruktor des GameboardControllers
+	 * @param model Instanz des GameBoardModel
+	 * @param view Instanz der GameBoardView
+	 */
 	public GameBoardController(GameBoardModel model, GameBoardView view) {
 		super(model, view);
 		// Dem Client Mitteilen dass man über aktualisierungen informiert werden will
@@ -54,9 +58,9 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	}
 
 	/**
-	 * Der Spieler muss eine Karte auswählen
+	 * Der Spieler muss zwischen den möglichen Zielkarten auswählen
 	 * 
-	 * @param cards
+	 * @param allowedCards Karten welche zur auswahl stehen
 	 */
 	@Override
 	public void onPlayerHasToCooseCards(ArrayList<ITargetCard> allowedCards) {
@@ -65,6 +69,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		this.view.drawCards("Bitte wählen Sie \ndie gewünschten Zielkarten aus:", model.cardsToChoose);
 	}
 
+	/**
+	 * Der Status des Spielers wurde gewechselt
+	 * @param isActive Spieler aktiv Ja/Nein
+	 */
 	@Override
 	public void onPlayerIsActivedChanged(boolean isActive) {
 		this.model.isPlayerActive = isActive;
@@ -78,6 +86,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		}
 	}
 	
+	/**
+	 * Daten für das Spielbrett aktualisieren
+	 * @param newGameBoard Neues Spielbrett
+	 */
 	@Override
 	public void onGameBoardChanged(GameBoard newGameBoard) {
 		model.spielbrett = newGameBoard;

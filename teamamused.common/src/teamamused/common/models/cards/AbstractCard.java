@@ -50,7 +50,7 @@ public abstract class AbstractCard implements IGameCard{
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.IGameCard#getVorgroundImage()
+	 * @see teamamused.common.interfaces.IGameCard#getForegroundImage()
 	 */
 	@Override
 	public Image getForegroundImage() {

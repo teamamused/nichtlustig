@@ -28,7 +28,7 @@ public class Player implements IPlayer {
 	
 	/**
 	 * Instanziert einen neuen Spieler
-	 * @param username
+	 * @param username Benutzername
 	 */
 	public Player(String username) {
 		this.username = username;
@@ -73,7 +73,7 @@ public class Player implements IPlayer {
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.ICardHolder#removeSpecialCard()
+	 * @see teamamused.common.interfaces.ICardHolder#removeSpecialCard(GameCard specialCard)
 	 */
 	public ISpecialCard removeSpecialCard(GameCard specialCard) {
 		return this.htSpecialCards.remove(specialCard);
@@ -81,7 +81,7 @@ public class Player implements IPlayer {
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.ICardHolder#addSpecialCard()
+	 * @see teamamused.common.interfaces.ICardHolder#addSpecialCard(ISpecialCard specialCard)
 	 */
 	public void addSpecialCard(ISpecialCard specialCard) {
 		this.htSpecialCards.put(specialCard.getGameCard(), specialCard);
@@ -89,7 +89,7 @@ public class Player implements IPlayer {
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.ICardHolder#removeTargetCard()
+	 * @see teamamused.common.interfaces.ICardHolder#removeTargetCard(GameCard targetCard)
 	 */
 	public ITargetCard removeTargetCard(GameCard targetCard) {
 		return this.htTargetCards.remove(targetCard);
@@ -97,7 +97,7 @@ public class Player implements IPlayer {
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.ICardHolder#addTargetCard()
+	 * @see teamamused.common.interfaces.ICardHolder#addTargetCard(ITargetCard targetCard)
 	 */
 	public void addTargetCard(ITargetCard targetCard) {
 		this.htTargetCards.put(targetCard.getGameCard(), targetCard);
@@ -105,7 +105,7 @@ public class Player implements IPlayer {
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.ICardHolder#removeDeadCard()
+	 * @see teamamused.common.interfaces.ICardHolder#removeDeadCard(GameCard deadCard)
 	 */
 	public IDeadCard removeDeadCard(GameCard deadCard) {
 		return this.htDeadCards.remove(deadCard);
@@ -113,7 +113,7 @@ public class Player implements IPlayer {
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.ICardHolder#addDeadCard()
+	 * @see teamamused.common.interfaces.ICardHolder#addDeadCard(IDeadCard deadCard, ITargetCard targetCard)
 	 */
 	public void addDeadCard(IDeadCard deadCard, ITargetCard targetCard) {
 		this.htDeadCards.put(deadCard.getGameCard(),deadCard);
@@ -142,7 +142,7 @@ public class Player implements IPlayer {
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.IPlayer#setPlayerNumber()
+	 * @see teamamused.common.interfaces.IPlayer#setPlayerNumber(int number)
 	 */
 	@Override
 	public void setPlayerNumber(int number) {

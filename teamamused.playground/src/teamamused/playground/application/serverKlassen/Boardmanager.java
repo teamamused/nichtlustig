@@ -60,7 +60,7 @@ public class Boardmanager {
 
 	/**
 	 * Getter Methode für das Spielbrett
-	 * @return
+	 * @return Spielbrett
 	 */
 	public GameBoard getGameBoard() {
 		return this.board;
@@ -68,7 +68,7 @@ public class Boardmanager {
 	
 	/**
 	 * Zwischen welchen Zielkarten darf der Spieler auswählen
-	 * @return
+	 * @return zur auswahlstehende Karten
 	 */
 	public ArrayList<ITargetCard> checkAllowedCards() {
 		// gewürfelte Punkte und Würfelwerte ermitteln
@@ -106,8 +106,8 @@ public class Boardmanager {
 	
 	/**
 	 * Beispiel mehrere Zielkarten einem neuen Spieler zuweisen
-	 * @param newHolder
-	 * @param cards
+	 * @param newHolder Neuer Kartenhalter (Spieler der die Karten bekommt)
+	 * @param cards Karten welche der Spieler bekommt
 	 */
 	public void allocateTargetCards(ICardHolder newHolder, ITargetCard[] cards) {
 		 for (ITargetCard card : cards) {
@@ -137,8 +137,8 @@ public class Boardmanager {
 
 	/**
 	 * Beispiel eine Zielkarte einem neuen Spieler zuweisen
-	 * @param newHolder
-	 * @param card
+	 * @param newHolder Neuer Kartenhalter (Spieler der die Karten bekommt)
+	 * @param card Karte welche der Spieler bekommt
 	 */
 	private void allocateTargetCard(ICardHolder newHolder, ITargetCard card) {
 		// Dem neuen Kartenhalter zuteilen

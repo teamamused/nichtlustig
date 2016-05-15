@@ -37,7 +37,7 @@ public interface ICube {
 	
 	/**
 	 * Setzt die Eigenschaft fixiert auf dem aktuellen Würfel.
-	 * @param isFixed
+	 * @param isFixed Würfel fixiert Ja / Nein
 	 */
 	void setIsFixed(boolean isFixed);
 	

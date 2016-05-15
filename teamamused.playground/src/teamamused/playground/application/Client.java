@@ -34,7 +34,7 @@ public class Client implements IServerListener {
 	
 	/**
 	 * Getter für Objektinstanz des Clients
-	 * @return
+	 * @return Insanz des Clients
 	 */
 	public static Client getInstance() {
 		if (instance == null) {
@@ -45,7 +45,7 @@ public class Client implements IServerListener {
 	
 	/**
 	 * Getter fürs Spielbrett
-	 * @return
+	 * @return Spielbrett
 	 */
 	public GameBoard getSpielbrett() {
 		return this.board;
@@ -53,6 +53,7 @@ public class Client implements IServerListener {
 	
 	/**
 	 * getter für Player
+	 * @return aktuelles Spieler Objekt
 	 */
 	@Override
 	public IPlayer getPlayer() {
@@ -61,6 +62,7 @@ public class Client implements IServerListener {
 	
 	/**
 	 * Setter für Player
+	 * @param player Spieler Objekt
 	 */
 	@Override
 	public void setPlayer(IPlayer player) {
@@ -71,7 +73,7 @@ public class Client implements IServerListener {
 	 * Um einen GUI Controller zu registrieren
 	 * damit dieser danach die Benachrichtigungen erhält
 	 * muss diese Methode aufgerufen werden
-	 * @param gui
+	 * @param gui Controller klasse
 	 */
 	public void registerGui(IClientListener gui) {
 		ServiceLocator.getInstance().getLogger().info("Client registriert Gui " + gui.getClass().toString());
@@ -81,7 +83,7 @@ public class Client implements IServerListener {
 	/**
 	 * GUI Controller deregistrieren,
 	 * damit dieser keine Benachrichtigungen mehr erhält
-	 * @param gui
+	 * @param gui Controller klasse
 	 */
 	public void deregisterGui(IClientListener gui) {
 		this.guis.remove(gui);
@@ -89,6 +91,7 @@ public class Client implements IServerListener {
 	
 	/**
 	 * Wird vom Server aufgerufen wenn sich das Spielbrett verändert hat 
+	 * @param board aktualisiertes Spielbrett
 	 */
 	@Override
 	public void updateGameBoard(GameBoard board) {
@@ -98,10 +101,10 @@ public class Client implements IServerListener {
 			gui.onGameBoardChanged(board);
 		}
 	}
-
 	
 	/**
 	 * Wird vom Server aufgerufen wenn eine Chatnachricht verschickt wurde 
+	 * @param message Chat Benachrichtigung
 	 */
 	@Override
 	public void addChatMessage(ChatMessage message) {
@@ -112,6 +115,7 @@ public class Client implements IServerListener {
 	
 	/**
 	 * Wird vom Server aufgerufen wenn mehrere Zielkarten zur Auswahl stehen.
+	 * @param allowedCards Karten die zur Auswahl stehen
 	 */
 	@Override
 	public void chooseCards(ArrayList<ITargetCard> allowedCards) {
@@ -123,6 +127,7 @@ public class Client implements IServerListener {
 
 	/**
 	 * wird aufgerufen wenn der Spieler aktiviert oder deaktiviert wird
+	 * @param isActive aktiviert ja Nein
 	 */
 	@Override
 	public void activeChanged(boolean isActive) {
@@ -133,8 +138,7 @@ public class Client implements IServerListener {
 	
 	/**
 	 * Einem Spiel beitreten
-	 * @param player
-	 * @return
+	 * @param player Spieler
 	 */
 	public void joinGame(Player player) {
 		ServiceLocator.getInstance().getLogger().info("Client Spieler " + player.getPlayerName() + " tritt Spiel bei");
@@ -152,7 +156,7 @@ public class Client implements IServerListener {
 	
 	/**
 	 * Würfeln
-	 * @return
+	 * @return anzahl verbleibende Versuche
 	 */
 	public int rollDices() {
 		ServiceLocator.getInstance().getLogger().info("Client Spieler " + this.currPlayer.getPlayerName() + " würfelt");
@@ -161,7 +165,7 @@ public class Client implements IServerListener {
 
 	/**
 	 * Zielkarten ausgewählt dem Server mitteilen
-	 * @param targetCards
+	 * @param targetCards Zielkarten zur auswahl
 	 */
 	public void chooseCards(ITargetCard[] targetCards) {
 		ServiceLocator.getInstance().getLogger().info("Client Spieler " + this.currPlayer.getPlayerName() + " bestätigt gewählte Zielkarten");

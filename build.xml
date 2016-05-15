@@ -6,6 +6,7 @@
   <property name="common.dir" location="teamamused.common\src" />
   <property name="client.dir" location="teamamused.client" />
   <property name="server.dir" location="teamamused.server" />
+  <property name="playground.dir" location="teamamused.playground" />
   <property name="lib.dir" location="lib" />
   <property name="build.dir" location="bin" />
   <property name="docs.dir" location="docs" />
@@ -45,8 +46,13 @@
     <javac includeantruntime="false"  srcdir="${server.dir}" destdir="${build.dir}"/>
   </target>
   
+  <!-- Compiles the java code from project playground -->
+  <target name="playground">
+    <javac includeantruntime="false"  srcdir="${playground.dir}" destdir="${build.dir}"/>
+  </target>
+  
   <!-- Compiles the java code from all projects -->
-  <target name="all" depends="clean, makedir, common, client, server" />
+  <target name="all" depends="clean, makedir, common, client, server, playground" />
   
   <!-- Creates Javadoc -->
   <target name="docs" depends="all">
