@@ -1,7 +1,11 @@
 teamamused.client.application
 teamamused.common
+teamamused.common.gui
 teamamused.common.interfaces
 teamamused.common.models
 teamamused.common.models.cards
 teamamused.common.models.cubes
+teamamused.playground.application
+teamamused.playground.application.gui
+teamamused.playground.application.serverKlassen
 teamamused.server.application
