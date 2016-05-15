@@ -1,4 +1,11 @@
 language: java
 jdk:
   - oraclejdk8
+   
+# aktualisiert die java Version da die Travis jdk standardmaessig zu alt ist umd JavaFX Alert und InputBox zu kennen
+addons:
+  apt:
+    packages:
+       - oracle-java8-installer
+
 script: ant all
