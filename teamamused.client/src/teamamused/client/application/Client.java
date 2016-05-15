@@ -1,4 +1,4 @@
-package teamamusesed.client.application;
+package teamamused.client.application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
