@@ -1,7 +1,10 @@
 package teamamused.common.models.cards;
 
+import java.util.logging.Level;
+
 import javafx.scene.image.Image;
 import teamamused.common.ResourceLoader;
+import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ISpecialCard;
 
 /**
@@ -34,7 +37,7 @@ class SpecialCard extends AbstractCard implements ISpecialCard {
 		try {
 			this.cubeSymbol = ResourceLoader.getImage(cubeSymbolImageName);
 		} catch (Exception ex) {
-			
+		    ServiceLocator.getInstance().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
 		}
 		this.additionalDicing = additionalDicing;
 		this.additionalPoints = additionalPoints;

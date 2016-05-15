@@ -25,6 +25,18 @@ public interface ITargetCard extends IGameCard {
 	 * @param isValuated Karte gewertet ja / nein
 	 */
 	void setIsValuated(boolean isValuated);
+
+	/**
+	 * Liegt auf dieser Karte ein Tod.
+	 * @return Karte von Tod abgedeckt ja / nein
+	 */
+	boolean getIsCoveredByDead();
+
+	/**
+	 * Setzt das Flag isCoveredByDead welches sagt ob die KArte von einem Tod abgedeckt ist.
+	 * @param Karte von Tod abgedeckt ja / nein
+	 */
+	void setIsCoveredByDead(boolean isCovered);
 	
 	/**
 	 * Wieviele Punkte müssen erWürfelt werden um diese Karte zu erhalten.

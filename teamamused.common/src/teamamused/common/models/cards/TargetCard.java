@@ -14,6 +14,7 @@ class TargetCard extends AbstractCard implements ITargetCard {
     private int cardValue;
     private int requiredPoints;
     private boolean isValuated;
+    private boolean isCoveredByDead;
     CubeValue[] requiredCubeValues;
 
     /**
@@ -85,5 +86,25 @@ class TargetCard extends AbstractCard implements ITargetCard {
     public CubeValue[] getRequiredCubeValues() {
 	return this.requiredCubeValues;
     }
+
+    /**
+     * Implementierung von:
+     * 
+     * @see teamamused.common.interfaces.ITargetCard#getIsCoveredByDead()
+     */
+	@Override
+	public boolean getIsCoveredByDead() {
+		return this.isCoveredByDead;
+	}
+
+    /**
+     * Implementierung von:
+     * 
+     * @see teamamused.common.interfaces.ITargetCard#setIsCoveredByDead()
+     */
+	@Override
+	public void setIsCoveredByDead(boolean isCovered) {
+		this.isCoveredByDead = isCovered;
+	}
 
 }

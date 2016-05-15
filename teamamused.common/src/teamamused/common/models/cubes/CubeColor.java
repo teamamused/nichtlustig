@@ -10,34 +10,32 @@ import javafx.scene.paint.Color;
  *
  */
 public enum CubeColor {
-    Red(Color.RED, Color.BLACK), 
-    White(Color.WHITE, Color.BLACK), 
-    Black(Color.BLACK, Color.WHITE), 
-    Pink(Color.MAGENTA,Color.BLACK);
+	Red(Color.RED, Color.BLACK), White(Color.WHITE, Color.BLACK), Black(Color.BLACK, Color.WHITE), Pink(Color.MAGENTA,
+			Color.BLACK);
 
-    private Color backColor;
-    private Color foreColor;
+	private Color backColor;
+	private Color foreColor;
 
-    CubeColor(Color backColor, Color foreColor) {
-	this.backColor = backColor;
-	this.foreColor = foreColor;
-    }
+	CubeColor(Color backColor, Color foreColor) {
+		this.backColor = backColor;
+		this.foreColor = foreColor;
+	}
 
-    /**
-     * Gibt die Hintergrundfarbe des Würfels zurück
-     * 
-     * @return Color des Hintergrundes
-     */
-    public Color getBackgroundColor() {
-	return this.backColor;
-    }
+	/**
+	 * Gibt die Hintergrundfarbe des Würfels zurück
+	 * 
+	 * @return Color des Hintergrundes
+	 */
+	public Color getBackgroundColor() {
+		return this.backColor;
+	}
 
-    /**
-     * Gibt die Vordergrundfarbe des Würfels zurück
-     * 
-     * @return Color des Vordergrundes
-     */
-    public Color getForegroundColor() {
-	return this.foreColor;
-    }
+	/**
+	 * Gibt die Vordergrundfarbe des Würfels zurück
+	 * 
+	 * @return Color des Vordergrundes
+	 */
+	public Color getForegroundColor() {
+		return this.foreColor;
+	}
 }
