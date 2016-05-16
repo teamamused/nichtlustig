@@ -17,7 +17,7 @@ import teamamused.common.interfaces.ITargetCard;
 public class GameBoardView extends AbstractView<GameBoardModel> {
 
 
-	private final double BUTTON_WIDTH = 125;
+	private final double BUTTON_WIDTH = 110;
 	TilePane todKartenPane;
 	TilePane spielKartenPane;
 	TilePane spezialKartenPane;
@@ -39,7 +39,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	@Override
 	protected Scene createGUI() {
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, 1240, 900);
+		Scene scene = new Scene(root, 1120, 810);
 		// Oberer Teil
 		HBox topBox = new HBox();
 		// Titel label
