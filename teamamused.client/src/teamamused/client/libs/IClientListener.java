@@ -1,7 +1,9 @@
-package teamamused.common.interfaces;
+package teamamused.client.libs;
 
 import java.util.ArrayList;
 
+import teamamused.common.interfaces.IPlayer;
+import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.ChatMessage;
 import teamamused.common.models.GameBoard;
 

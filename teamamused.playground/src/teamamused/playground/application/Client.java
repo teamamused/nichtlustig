@@ -2,8 +2,8 @@ package teamamused.playground.application;
 
 import java.util.ArrayList;
 
+import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
-import teamamused.common.interfaces.IClientListener;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.IServerListener;
 import teamamused.common.interfaces.ITargetCard;
