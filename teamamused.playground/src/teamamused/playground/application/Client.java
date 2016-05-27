@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
+import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.IServerListener;
 import teamamused.common.interfaces.ITargetCard;
-import teamamused.common.models.ChatMessage;
 import teamamused.common.models.GameBoard;
 import teamamused.common.models.Player;
 
@@ -107,7 +107,7 @@ public class Client implements IServerListener {
 	 * @param message Chat Benachrichtigung
 	 */
 	@Override
-	public void addChatMessage(ChatMessage message) {
+	public void addChatMessage(TransportableChatMessage message) {
 		for (IClientListener gui : this.guis) {
 			gui.onChatMessageRecieved(message);
 		}

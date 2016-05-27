@@ -2,9 +2,9 @@ package teamamused.client.libs;
 
 import java.util.ArrayList;
 
+import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
-import teamamused.common.models.ChatMessage;
 import teamamused.common.models.GameBoard;
 
 /**
@@ -54,5 +54,5 @@ public interface IClientListener {
 	 *  
 	 * @param message Chatnachricht
 	 */
-	public default void onChatMessageRecieved(ChatMessage message) {}
+	public default void onChatMessageRecieved(TransportableChatMessage message) {}
 }

@@ -1,5 +1,6 @@
 package teamamused.common.models;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Hashtable;
 
@@ -22,8 +23,10 @@ import teamamused.common.models.cubes.CubeFactory;
  * @author Daniel Hirsbrunner
  *
  */
-public class GameBoard implements ICardHolder {
+public class GameBoard implements ICardHolder, Serializable {
 
+	/** Versionsnummer des Transport Objektes */
+	private static final long serialVersionUID = 1;
 	Hashtable<GameCard, ISpecialCard> htSpecialCards;
 	Hashtable<GameCard, ITargetCard> htTargetCards;
 	Hashtable<GameCard, IDeadCard> htDeadCards;

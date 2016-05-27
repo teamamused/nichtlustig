@@ -1,5 +1,6 @@
 package teamamused.common.models.cards;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 
 import teamamused.common.ResourceLoader;
@@ -13,21 +14,14 @@ import javafx.scene.image.Image;
  * @author Daniel Hirsbrunner
  *
  */
-public abstract class AbstractCard implements IGameCard{
+public abstract class AbstractCard implements IGameCard, Serializable {
 
-	private Image foregroundImage;
-	private Image backgroundImage;
+	/** Versionsnummer des Transport Objektes */
+	private static final long serialVersionUID = 1;
 	private GameCard card;
 	
 	public AbstractCard(GameCard card) {
 		this.card = card;
-		try {
-			this.foregroundImage = ResourceLoader.getImage(card.getForgroundImageName());
-			this.backgroundImage = ResourceLoader.getImage(card.getBackgroundImageName());
-		} catch (Exception e) {
-			ServiceLocator.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
-		}
-		
 	}
 
 	/**
@@ -45,7 +39,12 @@ public abstract class AbstractCard implements IGameCard{
 	 */
 	@Override
 	public Image getBackgroundImage() {
-		return this.backgroundImage;
+		try {
+			return ResourceLoader.getImage(card.getBackgroundImageName());
+		} catch (Exception e) {
+			ServiceLocator.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
+		}
+		return null;
 	}
 
 	/**
@@ -54,7 +53,12 @@ public abstract class AbstractCard implements IGameCard{
 	 */
 	@Override
 	public Image getForegroundImage() {
-		return this.foregroundImage;
+		try {
+			return ResourceLoader.getImage(card.getForgroundImageName());
+		} catch (Exception e) {
+			ServiceLocator.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
+		}
+		return null;
 	}
 	/**
 	 * Gibt den Namen der aktuellen Karte zurück

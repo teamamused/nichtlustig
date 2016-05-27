@@ -1,5 +1,7 @@
 package teamamused.common.models.cubes;
 
+import java.io.Serializable;
+
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.ISpecialCard;
 
@@ -9,8 +11,11 @@ import teamamused.common.interfaces.ISpecialCard;
  * @author Daniel Hirsbrunner
  *
  */
-class Cube implements ICube {
+class Cube implements ICube, Serializable {
 
+	/** Versionsnummer des Transport Objektes */
+	private static final long serialVersionUID = 1;
+	
     private int faceValue;
     private boolean isFixed = false;
     private CubeValue[] cubeValues;

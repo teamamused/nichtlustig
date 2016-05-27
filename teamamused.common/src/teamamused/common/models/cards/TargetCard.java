@@ -11,6 +11,9 @@ import teamamused.common.models.cubes.CubeValue;
  */
 class TargetCard extends AbstractCard implements ITargetCard {
 
+	/** Versionsnummer des Transport Objektes */
+	private static final long serialVersionUID = 1;
+	
     private int cardValue;
     private int requiredPoints;
     private boolean isValuated;

@@ -8,6 +8,9 @@ import teamamused.common.interfaces.IDeadCard;
  */
 class DeadCard extends AbstractCard implements IDeadCard {
 
+	/** Versionsnummer des Transport Objektes */
+	private static final long serialVersionUID = 1;
+	
 	private int cardValue;
 	/**
 	 * Konstruktur zur Initialisierung der Todeskarten

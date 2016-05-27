@@ -2,7 +2,7 @@ package teamamused.common.interfaces;
 
 import java.util.ArrayList;
 
-import teamamused.common.models.ChatMessage;
+import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.models.GameBoard;
 
 /**
@@ -45,7 +45,7 @@ public interface IServerListener {
 	 * Eine Chatnachricht wurde versandt
 	 * @param message Chatnachricht
 	 */
-	void addChatMessage(ChatMessage message);
+	void addChatMessage(TransportableChatMessage message);
 	
 	/**
 	 * Der Spieler muss zwischen mehreren Karten auswählen

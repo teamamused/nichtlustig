@@ -1,5 +1,6 @@
 package teamamused.common.models.cubes;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 
 import javafx.scene.canvas.Canvas;
@@ -21,8 +22,10 @@ import teamamused.common.interfaces.ISpecialCard;
  * @author Daniel Hirsbrunner
  *
  */
-public class CubeValue {
+public class CubeValue implements Serializable {
 
+	/** Versionsnummer des Transport Objektes */
+	private static final long serialVersionUID = 1;
 	/**
 	 * Konstruktor zur direkten initialisierung
 	 * 

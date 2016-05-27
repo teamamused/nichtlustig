@@ -14,8 +14,11 @@ import teamamused.common.interfaces.ISpecialCard;
  *
  */
 class SpecialCard extends AbstractCard implements ISpecialCard {
+
+	/** Versionsnummer des Transport Objektes */
+	private static final long serialVersionUID = 1;
 	
-	private Image cubeSymbol;
+	private String cubeSymbolName;
 	private int additionalDicing;
 	private int additionalPoints;
 	private boolean hasToSkip;
@@ -34,11 +37,7 @@ class SpecialCard extends AbstractCard implements ISpecialCard {
 	 */
 	public SpecialCard(GameCard card, String cubeSymbolImageName, int additionalDicing, int additionalPoints, boolean hasToSkip, boolean isBewaredOfDead, boolean isForcedOfDead) {
 		super(card);
-		try {
-			this.cubeSymbol = ResourceLoader.getImage(cubeSymbolImageName);
-		} catch (Exception ex) {
-		    ServiceLocator.getInstance().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
-		}
+		this.cubeSymbolName = cubeSymbolImageName;
 		this.additionalDicing = additionalDicing;
 		this.additionalPoints = additionalPoints;
 		this.hasToSkip = hasToSkip;
@@ -52,7 +51,12 @@ class SpecialCard extends AbstractCard implements ISpecialCard {
 	 */
 	@Override
 	public Image getCubeSymbol() {
-		return this.cubeSymbol;
+		try {
+			return ResourceLoader.getImage(this.cubeSymbolName);
+		} catch (Exception ex) {
+		    ServiceLocator.getInstance().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
+		}
+		return null;
 	}
 
 	/**
