@@ -92,6 +92,9 @@ public class Player implements IPlayer {
 	 * @see teamamused.common.interfaces.ICardHolder#removeTargetCard(GameCard targetCard)
 	 */
 	public ITargetCard removeTargetCard(GameCard targetCard) {
+		if (this.htTargetCards.get(targetCard).getIsValuated()){
+			throw new UnsupportedOperationException("Die Zielkarte wurde bereits gewertet und kann dem Spieler nicht mehr entwendet werden.");
+		}
 		return this.htTargetCards.remove(targetCard);
 	}
 
