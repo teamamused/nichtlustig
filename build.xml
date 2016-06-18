@@ -3,6 +3,7 @@
   <!-- Sets variables which can later be used. -->
   <!-- The value of a property is accessed via ${} -->
   <property name="src.dir" location="." />
+  <property name="common.lib" location="teamamused.common\lib" />
   <property name="common.dir" location="teamamused.common\src" />
   <property name="client.dir" location="teamamused.client" />
   <property name="server.dir" location="teamamused.server" />
@@ -13,10 +14,9 @@
 
   <!-- Create a classpath container which can be later used in the ant task -->
   <path id="build.classpath">
-    <!-- Brauch ich spaeter wenn mit externen liberies gearbeitet wird. 
-    <fileset dir="${lib.dir}">
+    <fileset dir="${common.lib}">
       <include name="**/*.jar" />
-    </fileset> -->
+    </fileset> 
   </path>
 
   <!-- Deletes the existing build directory-->
@@ -33,7 +33,9 @@
 
   <!-- Compiles the java code from project common -->
   <target name="common">
-    <javac includeantruntime="false"  srcdir="${common.dir}" destdir="${build.dir}"/>
+    <javac includeantruntime="false"  srcdir="${common.dir}" destdir="${build.dir}">
+		<classpath refid="build.classpath"/>
+	</javac>
   </target>
 
   <!-- Compiles the java code from project client -->
@@ -69,4 +71,19 @@
     <description>Main target</description>
   </target>
 
+  <!-- Run Unit Test  -->
+  <target name="test" depends="build">
+    <junit printsummary="on" haltonfailure="yes">
+        <classpath>
+          <path refid="build.classpath"/>
+          <pathelement location="${build.dir}"/>
+		</classpath>
+        <formatter type="brief" usefile="false" />
+        <batchtest>
+            <fileset dir="${common.dir}" includes="**/*TestSuite.java" />
+        </batchtest>
+    </junit>
+  </target>
+   
+  
 </project> 
