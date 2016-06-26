@@ -36,11 +36,11 @@ public interface ICardHolder {
 	/**
 	 * Enftern eine Spezialkarte vom Spieler
 	 * 
-	 * @param specialCard
+	 * @param card
 	 *            Karte zum entfernen
 	 * @return die entfernte Karte / null falls sie nicht vorhanden war
 	 */
-	ISpecialCard removeSpecialCard(GameCard specialCard);
+	ISpecialCard removeSpecialCard(ISpecialCard card);
 
 	/**
 	 * Ordnet eine Spezialkarte dem Spieler zu
@@ -57,7 +57,7 @@ public interface ICardHolder {
 	 *            Karte zum zuordnen
 	 * @return die entfernte Karte / null falls sie nicht vorhanden war
 	 */
-	ITargetCard removeTargetCard(GameCard targetCard);
+	ITargetCard removeTargetCard(ITargetCard targetCard);
 
 	/**
 	 * Ordnet dem Spieler eine Zielkarte zu
@@ -76,7 +76,7 @@ public interface ICardHolder {
 	 *            Karte zum entfernen
 	 * @return die entfernte Karte / null falls sie nicht vorhanden war
 	 */
-	IDeadCard removeDeadCard(GameCard deadCard);
+	IDeadCard removeDeadCard(IDeadCard deadCard);
 
 	/**
 	 * Ordnet dem eine Todeskarte zu
