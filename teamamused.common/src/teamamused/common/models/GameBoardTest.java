@@ -52,7 +52,7 @@ public class GameBoardTest {
 		// Check 2: sind es 6 Stück
 		assertTrue(sps.length == 6); 
 		// Check 3: kann eine Karte entfernt werden, dann sollten es nur noch 5 Stück sein
-		ISpecialCard removedOne = board.removeSpecialCard(sps[0].getGameCard());
+		ISpecialCard removedOne = board.removeSpecialCard(sps[0]);
 		assertTrue(board.getSpecialCards().length == 5); 
 		// Check 4: Die Karte wird wieder hinzugefügt und dan sollten wieder 6 Karten auf dem Tisch liegen
 		board.addSpecialCard(removedOne);
@@ -77,7 +77,7 @@ public class GameBoardTest {
 		// Check 2: sind es 6 Stück
 		assertTrue(dcs.length == 6); 
 		// Check 3: kann eine Karte entfernt werden, dann sollten es nur noch 5 Stück sein
-		IDeadCard removedOne = board.removeDeadCard(dcs[0].getGameCard());
+		IDeadCard removedOne = board.removeDeadCard(dcs[0]);
 		assertTrue(board.getDeadCards().length == 5); 
 		// Check 4: Die Karte wird wieder hinzugefügt
 		// -> muss Exception geben, Todeskarten dürfen nicht mehr hinzugefügt werden!
@@ -101,7 +101,7 @@ public class GameBoardTest {
 		// Check 2: sind es 25 Stück
 		assertTrue(tcs.length == 25); 
 		// Check 3: kann eine Karte entfernt werden, dann sollten es nur noch 24 Stück sein
-		ITargetCard removedOne = board.removeTargetCard(tcs[0].getGameCard());
+		ITargetCard removedOne = board.removeTargetCard(tcs[0]);
 		assertTrue(board.getTargetCards().length == 24); 
 		// Check 4: Die Karte wird wieder hinzugefügt
 		// -> muss Exception geben, Zielkarten dürfen nicht mehr hinzugefügt werden!

@@ -146,6 +146,6 @@ public class Boardmanager {
 		// Schauen wer die Karte zuvor hatte
 		ICardHolder oldHolder = this.targetCards.get(card);
 		// dem der die Karte zuvor hatte die Karte entfernen.
-		oldHolder.removeTargetCard(card.getGameCard());
+		oldHolder.removeTargetCard(card);
 	}
 }

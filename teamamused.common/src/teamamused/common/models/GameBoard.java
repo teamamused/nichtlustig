@@ -79,8 +79,8 @@ public class GameBoard implements ICardHolder, Serializable {
 	 *            Karte zum entfernen
 	 * @return die entfernte Karte / null falls sie nicht vorhanden war
 	 */
-	public ISpecialCard removeSpecialCard(GameCard specialCard) {
-		return this.htSpecialCards.remove(specialCard);
+	public ISpecialCard removeSpecialCard(ISpecialCard specialCard) {
+		return this.htSpecialCards.remove(specialCard.getGameCard());
 	}
 
 	/**
@@ -112,8 +112,8 @@ public class GameBoard implements ICardHolder, Serializable {
 	 *            Karte zum entfernen
 	 * @return die entfernte Karte / null falls sie nicht vorhanden war
 	 */
-	public IDeadCard removeDeadCard(GameCard deadCard) {
-		return this.htDeadCards.remove(deadCard);
+	public IDeadCard removeDeadCard(IDeadCard deadCard) {
+		return this.htDeadCards.remove(deadCard.getGameCard());
 	}
 
 	/**
@@ -135,8 +135,8 @@ public class GameBoard implements ICardHolder, Serializable {
 	 *            Karte zum entfernen
 	 * @return die entfernte Karte / null falls sie nicht vorhanden war
 	 */
-	public ITargetCard removeTargetCard(GameCard targetCard) {
-		return this.htTargetCards.remove(targetCard);
+	public ITargetCard removeTargetCard(ITargetCard targetCard) {
+		return this.htTargetCards.remove(targetCard.getGameCard());
 	}
 
 	/**

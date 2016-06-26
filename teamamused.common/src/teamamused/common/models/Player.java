@@ -75,8 +75,8 @@ public class Player implements IPlayer {
 	 * Implementierung von: 
 	 * @see teamamused.common.interfaces.ICardHolder#removeSpecialCard(GameCard specialCard)
 	 */
-	public ISpecialCard removeSpecialCard(GameCard specialCard) {
-		return this.htSpecialCards.remove(specialCard);
+	public ISpecialCard removeSpecialCard(ISpecialCard specialCard) {
+		return this.htSpecialCards.remove(specialCard.getGameCard());
 	}
 
 	/**
@@ -91,11 +91,11 @@ public class Player implements IPlayer {
 	 * Implementierung von: 
 	 * @see teamamused.common.interfaces.ICardHolder#removeTargetCard(GameCard targetCard)
 	 */
-	public ITargetCard removeTargetCard(GameCard targetCard) {
-		if (this.htTargetCards.get(targetCard).getIsValuated()){
+	public ITargetCard removeTargetCard(ITargetCard targetCard) {
+		if (this.htTargetCards.get(targetCard.getGameCard()).getIsValuated()){
 			throw new UnsupportedOperationException("Die Zielkarte wurde bereits gewertet und kann dem Spieler nicht mehr entwendet werden.");
 		}
-		return this.htTargetCards.remove(targetCard);
+		return this.htTargetCards.remove(targetCard.getGameCard());
 	}
 
 	/**
@@ -110,8 +110,8 @@ public class Player implements IPlayer {
 	 * Implementierung von: 
 	 * @see teamamused.common.interfaces.ICardHolder#removeDeadCard(GameCard deadCard)
 	 */
-	public IDeadCard removeDeadCard(GameCard deadCard) {
-		return this.htDeadCards.remove(deadCard);
+	public IDeadCard removeDeadCard(IDeadCard deadCard) {
+		return this.htDeadCards.remove(deadCard.getGameCard());
 	}
 
 	/**

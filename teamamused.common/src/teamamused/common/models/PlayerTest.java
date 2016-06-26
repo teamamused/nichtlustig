@@ -50,7 +50,7 @@ public class PlayerTest {
 		player.addSpecialCard(allSpecialCards.get(GameCard.SK_RoboterNF700));
 		assertTrue(player.getSpecialCards().length == 1);
 		// Check 4: müssen entfernt werden können
-		player.removeSpecialCard(GameCard.SK_RoboterNF700);
+		player.removeSpecialCard(allSpecialCards.get(GameCard.SK_RoboterNF700));
 		assertTrue(player.getSpecialCards().length == 0);
 	}
 
@@ -69,7 +69,7 @@ public class PlayerTest {
 		player.addDeadCard(allDeadCards.get(GameCard.Tod_Eins), null);
 		assertTrue(player.getDeadCards().length == 1);
 		// Check 4: müssen entfernt werden können
-		player.removeDeadCard(GameCard.Tod_Eins);
+		player.removeDeadCard(allDeadCards.get(GameCard.Tod_Eins));
 		assertTrue(player.getDeadCards().length == 0);
 	}
 
@@ -88,14 +88,14 @@ public class PlayerTest {
 		player.addTargetCard(allTargetCards.get(GameCard.ZK_Dinosaurier3));
 		assertTrue(player.getTargetCards().length == 1);
 		// Check 4: dürfen entfernt werden wenn noch nicht gwertet
-		player.removeTargetCard(GameCard.ZK_Dinosaurier3);
+		player.removeTargetCard(allTargetCards.get(GameCard.ZK_Dinosaurier3));
 		assertTrue(player.getTargetCards().length == 0); 
 		// Check 5: dürfen nicht mehr entfernt werden können wenn sie gewertet wurden
 		allTargetCards.get(GameCard.ZK_Dinosaurier3).setIsValuated(true);
 		player.addTargetCard(allTargetCards.get(GameCard.ZK_Dinosaurier3));
 		assertTrue(player.getTargetCards().length == 1); 
 		try {
-			player.removeTargetCard(GameCard.ZK_Dinosaurier3);
+			player.removeTargetCard(allTargetCards.get(GameCard.ZK_Dinosaurier3));
 			fail("Zielkarten dürfen dem Spieler nicht mehr entfernt werden");
 		} catch (Exception ex) {
 			assertTrue(player.getTargetCards().length == 1); 
