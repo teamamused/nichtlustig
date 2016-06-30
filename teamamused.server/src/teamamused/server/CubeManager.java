@@ -19,6 +19,7 @@ public class CubeManager{
 	private static CubeManager instance;
 	private int diceCounter = 0;
 	private int allowedDicings = 3;
+	private int counterFixedCubes = 0;
 	
 	public CubeManager(){
 		
@@ -50,18 +51,23 @@ public class CubeManager{
 	public void resetCounters(){
 		diceCounter = 0;
 		allowedDicings = 3;
+		counterFixedCubes = 0;
 		ICube[] currentCubes = BoardManager.getInstance().getGameBoard().getCubes();
 		for(ICube cube : currentCubes){
 			cube.setIsFixed(false);
 		}
 	}
 	
+	/**
+	 * Methode, um die Würfel auf dem Spielbrett zu würfeln.
+	 * @return 
+	 */
 	public int rollDices(){
 		ServiceLocator.getInstance().getLogger().info("CubeManager: rolle Würfel");
 		this.diceCounter++;
 		for (ICube cube: BoardManager.getInstance().getGameBoard().getCubes()) {
 		    if (!cube.getIsFixed()) {
-			cube.dice();
+		    	cube.dice();
 		    }
 		}
 		return this.allowedDicings - this.diceCounter;
@@ -83,7 +89,17 @@ public class CubeManager{
 	public void saveFixedDices(List <ICube> cubesToFix){
 		for(ICube cube : cubesToFix){
 			cube.setIsFixed(true);
+			counterFixedCubes++;
 		}
+	}
+	
+	/**
+	 * Die Methode prüft wieviele Würfel fixiert sind und gibt die entsprechende
+	 * Anzahl zurück.
+	 * @return gibt die Anzahl fixierter Würfel zurück
+	 */
+	public int getCountOfFixedDices(){
+		return counterFixedCubes;
 	}
 	
 }
