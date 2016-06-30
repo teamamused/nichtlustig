@@ -12,7 +12,7 @@ public interface ITargetCard extends IGameCard {
 	 * Welche Augenzahl hat diese Zielkarte (wichtig für Wertung)
 	 * @return Augenzahl (int zwischen 0 und 5)
 	 */
-	int getCardCalue();
+	int getCardValue();
 
 	/**
 	 * Wurde diese Karte bereits gewertet.

@@ -46,7 +46,7 @@ class TargetCard extends AbstractCard implements ITargetCard {
      * @see teamamused.common.interfaces.ITargetCard#getCardCalue()
      */
     @Override
-    public int getCardCalue() {
+    public int getCardValue() {
 	return this.cardValue;
     }
 
