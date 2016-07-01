@@ -21,13 +21,14 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ServerView extends AbstractView{
+public class ServerView{
 	private ServerModel model;
 	private Stage stage;
 	private Button restartButton;
 	private Label label1, label2, label3, label4, label5, label6;
 	private TextField txtField;
 	private Image logo;
+	private ScrollPane scroll;
 	
 	protected ServerView(Stage stage, ServerModel model){
 		this.stage = stage;
@@ -48,7 +49,9 @@ public class ServerView extends AbstractView{
 		label5 = new Label("IP: ");
 		label6 = new Label("Protokoll:");
 		restartButton = new Button("Server neustarten");
-		
+		txtField = new TextField();
+		scroll = new ScrollPane();
+		scroll.setContent(txtField);
 		
 		HBox hBoxTop = new HBox();
 		hBoxTop.getChildren().addAll(label1, label2);
@@ -81,6 +84,8 @@ public class ServerView extends AbstractView{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }
 
 //public class ServerView extends AbstractView<ServerModel> {

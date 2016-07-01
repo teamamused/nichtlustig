@@ -1,0 +1,8 @@
+//http://docs.oracle.com/javafx/2/css_tutorial/jfxpub-css_tutorial.htm
+
+.root{
+	-fx-font-size: 16pt;
+	-fx-font-family: "Arial";
+	-fx-base: white;
+	-fx-background: rgb(179, 10, 35);
+}
