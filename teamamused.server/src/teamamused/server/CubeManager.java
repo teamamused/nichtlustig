@@ -55,6 +55,7 @@ public class CubeManager{
 		ICube[] currentCubes = BoardManager.getInstance().getGameBoard().getCubes();
 		for(ICube cube : currentCubes){
 			cube.setIsFixed(false);
+			cube.resetCubeValues();
 		}
 	}
 	
