@@ -1,8 +1,5 @@
 package teamamused.common.interfaces;
 
-import teamamused.common.models.cards.GameCard;
-
-
 /**
  * Interface für alle Klasse welche Karten besitzen können.
  * Insbesondere Spieler und GameBoard

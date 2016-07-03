@@ -26,6 +26,7 @@ public class TransportObject implements Serializable{
 		Hallo,
 		ChatMessage,
 		RemoteProcedureCall,
+		Answer,
 		State,
 		Goodbye
 	}

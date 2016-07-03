@@ -14,4 +14,17 @@ public interface IDeadCard extends IGameCard {
 	 */
 	int getCardCalue();
 
+
+	/**
+	 * Wurde diese Karte auf eine Zielkarte gelegt.
+	 * @return Karte auf Zielkarte ja / nein
+	 */
+	boolean getIsOnTargetCard();
+
+
+	/**
+	 * Setzt das Flag ob diese Karte auf eine Zielkarte gelegt wurde.
+	 * @param isOnTargetCard Karte auf Zielkarte ja / nein
+	 */
+	void setIsOnTargetCard(boolean isOnTargetCard);
 }

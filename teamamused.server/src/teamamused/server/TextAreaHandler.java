@@ -3,8 +3,10 @@ package teamamused.server;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import teamamused.common.ServiceLocator;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
@@ -19,8 +21,23 @@ import javafx.scene.control.TextArea;
  */
 public class TextAreaHandler extends Handler {
 
+	private static TextAreaHandler textAreaHandler;
     private TextArea textArea = new TextArea();
 
+    public static TextAreaHandler getInstance() {
+    	if (textAreaHandler == null) {
+            // Logger intialisieren
+            textAreaHandler = new TextAreaHandler();
+            textAreaHandler.setLevel(Level.INFO);
+            ServiceLocator.getInstance().getLogger().addHandler(textAreaHandler);
+    	}
+    	return textAreaHandler;
+    }
+    
+    private TextAreaHandler() {
+    	super();
+    }
+    
     @Override
     public void publish(LogRecord record) {
         Platform.runLater(new Runnable() {

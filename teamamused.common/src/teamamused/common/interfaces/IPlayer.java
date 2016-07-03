@@ -28,4 +28,12 @@ public interface IPlayer extends ICardHolder {
 	 * @return Name des Spielers
 	 */
 	String getPlayerName();
+	
+	/**
+	 * Gibt die Zielkarte zurück welche beim Spieler unter der übergebenen Todeskarte liegt
+	 * 
+	 * @param deadCard Todeskarte
+	 * @return Zielkarte oder NULL falls die Todeskarte auf keiner Zielkarte liegt
+	 */
+	ITargetCard getTargetCardUnderDeadCard(IDeadCard deadCard);
 }

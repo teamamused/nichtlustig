@@ -83,6 +83,16 @@ public class Client {
 	}
 
 	/**
+	 * getter für Player
+	 * 
+	 * @return aktuelles Spieler Objekt
+	 */
+	public void setPlayer(IPlayer player) {
+		this.currPlayer = (Player) player;
+	}
+
+
+	/**
 	 * Um einen GUI Controller zu registrieren damit dieser danach die
 	 * Benachrichtigungen erhält muss diese Methode aufgerufen werden
 	 * 

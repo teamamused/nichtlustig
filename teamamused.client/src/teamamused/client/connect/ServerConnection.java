@@ -7,10 +7,12 @@ import java.util.logging.Logger;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportObject;
+import teamamused.common.dtos.TransportableAnswer;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableState;
 import teamamused.common.dtos.TransportObject.TransportType;
+import teamamused.common.interfaces.IPlayer;
 
 /**
  * 
@@ -77,6 +79,8 @@ public class ServerConnection extends Thread {
 			Client.getInstance().addChatMessage((TransportableChatMessage)dtoIn);
 			dtoOut = new TransportableState(true, "Nachricht erhalten");
 			break;
+		case Answer:
+			this.processAnswer((TransportableAnswer) dtoIn);
 		default:
 			dtoOut = new TransportableState(false, "unbekanntes Transport Objekt");
 			break;
@@ -101,4 +105,18 @@ public class ServerConnection extends Thread {
 		return new TransportableState(false, "Remote Procedure is undefined");
 	}
 
+
+	private void processAnswer(TransportableAnswer answer) {
+		switch (answer.getOriginalCall().getProcedure()) {
+			case StartGame:
+				break;
+			case CreatePlayer:
+				if (answer.isOK()) {
+					Client.getInstance().setPlayer((IPlayer)answer.getReturnValue());
+				}
+				break;
+			default:
+				break;
+		}
+	}
 }

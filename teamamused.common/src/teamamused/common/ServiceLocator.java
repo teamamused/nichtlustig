@@ -5,6 +5,9 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import teamamused.common.db.XmlDataBaseContext;
+import teamamused.common.interfaces.*;
+
 /**
  * 
  * ServiceLocator für die zentrale Verwaltung der Referenzen
@@ -17,6 +20,7 @@ public class ServiceLocator {
 	private Logger logger;
 	public static final String APPLICATION_NAME = "Nicht Lustig";
 	private Settings settings;
+	private IDataBaseContext dbContext;
 
 	/**
 	 * Getter der Instanz vom ServiceLocater
@@ -56,6 +60,30 @@ public class ServiceLocator {
 	 */
 	public void setLogger(Logger logger) {
 		this.logger = logger;
+	}
+
+	/**
+	 * Gibt den aktuell gesetzten Datenbankkontext zurück, falls keiner gesetzt wurde wird
+	 * ein standard DB Context erstellt.
+	 * 
+	 * @return DatenbankKontext
+	 */
+	public IDataBaseContext getDBContext() {
+		if (this.dbContext == null) {
+			this.dbContext = new XmlDataBaseContext();
+			this.dbContext.loadContext();
+		}
+		return this.dbContext;
+	}
+
+	/**
+	 * Setzt einen neuen Datenbank Kontext
+	 * 
+	 * @param context
+	 *            Datenbank Kontext welcher gesetzt wird
+	 */
+	public void setDBContext(IDataBaseContext context) {
+		this.dbContext = context;
 	}
 
 	/**

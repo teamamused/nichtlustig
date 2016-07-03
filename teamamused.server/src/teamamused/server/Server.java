@@ -72,4 +72,8 @@ public class Server {
 	public TransportableState getTopRanking(TransportableProcedureCall rpc) {
 		return new TransportableState(false, "Funktion noch nicht implementiert");
 	}
+
+	public TransportableState validatePlayerLogin(TransportableProcedureCall rpc) {
+		return new TransportableState(false, "Funktion noch nicht implementiert");
+	}
 }
