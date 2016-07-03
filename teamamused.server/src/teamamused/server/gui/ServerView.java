@@ -1,8 +1,5 @@
 package teamamused.server.gui;
 
-import java.util.logging.Level;
-
-import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
 import teamamused.server.TextAreaHandler;
 import teamamused.server.connect.ClientAwaiter;
@@ -19,23 +16,22 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 public class ServerView extends AbstractView<ServerModel> {
-	TextAreaHandler textAreaHandler;
+	//TextAreaHandler textAreaHandler;
     protected TextArea txtLog;
     
-    public ServerView(Stage stage, ServerModel model) {//, TextArea txtLog) {
+    public ServerView(Stage stage, ServerModel model) {
     	super (stage, model);
         stage.setTitle("Team amused Server");
     }
-    
+
+	@Override
+    protected void initView() {
+		TextAreaHandler handler = TextAreaHandler.getInstance(); 
+    	this.txtLog = handler.getTextArea();		
+	}
 
 	@Override
 	protected Scene createGUI() {
-        
-        // Logger intialisieren (wiso kann ich das nicht in die Mainklasse verschieben?)
-        this.textAreaHandler = new TextAreaHandler();
-        textAreaHandler.setLevel(Level.INFO);
-        ServiceLocator.getInstance().getLogger().addHandler(textAreaHandler);
-        this.txtLog = textAreaHandler.getTextArea();
         
 		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root,400,400);
