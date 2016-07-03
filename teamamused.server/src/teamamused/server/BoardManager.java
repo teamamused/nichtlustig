@@ -100,6 +100,7 @@ public class BoardManager {
 	 */
 	public void valuatePlayerCards(int pinkCube){
 		this.pinkCubeValue = pinkCube;
+		playerTargetCardsToValuate = notValuatedCardsFromPlayers;
 		
 		for(ITargetCard card : playerTargetCardsToValuate){
 			if(card.getCardValue() != pinkCube){
