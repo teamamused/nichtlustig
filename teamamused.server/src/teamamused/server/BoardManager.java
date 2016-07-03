@@ -79,7 +79,7 @@ public class BoardManager {
 	/**
 	 * Gibt eine Liste mit noch nicht gewerteten Karten der Spieler zurück.
 	 */
-	public List<ITargetCard> getNotValuedCardsFromPlayer(){
+	public List<ITargetCard> getNotValuatedCardsFromPlayer(){
 		notValuatedCardsFromPlayers = null;
 		
 		for(IPlayer player: game.getPlayers()){

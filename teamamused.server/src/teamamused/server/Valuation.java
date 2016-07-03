@@ -19,7 +19,7 @@ public class Valuation {
 	 */
 	public void valuate(BoardManager board){
 		valuationValue = CubeManager.getInstance().getCurrentPinkCubeValue().FaceValue;
-		board.getNotValuedCardsFromPlayer();
+		board.getNotValuatedCardsFromPlayer();
 		board.valuatePlayerCards(valuationValue);
 		board.valuePlayerCards();
 	}
