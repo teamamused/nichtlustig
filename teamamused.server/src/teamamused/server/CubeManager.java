@@ -4,6 +4,8 @@ import java.util.List;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ICube;
+import teamamused.common.models.GameBoard;
+import teamamused.common.models.cubes.CubeColor;
 import teamamused.common.models.cubes.CubeValue;
 
 /**
@@ -20,9 +22,11 @@ public class CubeManager{
 	private int diceCounter = 0;
 	private int allowedDicings = 3;
 	private int counterFixedCubes = 0;
+	private GameBoard board = BoardManager.getInstance().getGameBoard();
+	ICube cubes[] = board.getCubes();
+	ICube pinkCube;
 	
 	public CubeManager(){
-		
 	}
 	
 	/**
@@ -103,4 +107,12 @@ public class CubeManager{
 		return counterFixedCubes;
 	}
 	
+	public CubeValue getCurrentPinkCubeValue(){
+		for(ICube cube : cubes){
+			if(cube.getCubeColor() == CubeColor.Pink){
+				pinkCube = cube;
+			}
+		}
+		return pinkCube.getCurrentValue();
+	}
 }
