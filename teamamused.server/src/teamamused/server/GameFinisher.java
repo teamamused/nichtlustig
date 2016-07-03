@@ -1,8 +1,15 @@
 package teamamused.server;
 
+import java.time.LocalDateTime;
 import java.util.Hashtable;
 import java.util.List;
 
+import teamamused.common.ServiceLocator;
+import teamamused.common.db.GameInfo;
+import teamamused.common.db.GameInfoRepository;
+import teamamused.common.db.Ranking;
+import teamamused.common.db.RankingRepository;
+import teamamused.common.interfaces.IDataBaseContext;
 import teamamused.common.interfaces.IDeadCard;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ISpecialCard;
@@ -167,9 +174,49 @@ public class GameFinisher {
 	
 	public void showRankingToPlayer(){
 		//Maja: klären: Wird das in GUI gemacht? Muss ich was tun?
+		
+		// Dem Ranking muss du auch die gameId mitgeben, damit abgespeichrt werden kann in welchem Spiel diese Platzierungen waren
+		int gameId = 1; //etwa so: Game.getInstance().getGameId();
+		// Den hashtable und die gameId dem RankingRepository übergeben, dies macht dir das Ranking Array und fügt die Objekte dem DB Context hinzu
+		Ranking[] inGameRanking = RankingRepository.getInGameRanking(gameId, this.ranking);
+		// Clients sagen das das Game fertig ist und als Parameter die Platzierungen Übergeben
+		ClientNotificator.notifyGameFinished(inGameRanking);
 	}
 	
 	public void closeGame(){
 		//Maja: klären: Wie soll ich das Spiel genau abschliessen?
+
+		// Einführung in die Datenspeicherung für Maja, Ausschnit aus der Package-info vom teammamused.common.db:
+		// Es gibt 3 Hautpentitäten zum verwalten:
+		//	  - PlayerInfo
+		//	  - GameInfo
+		//	  - Ranking
+		// Zu jeder Entität wird ein Repository zur Verfügung gestelt. In diesem sind die zentralen Funktionen welche sich auf diese Entitäten beziehen.
+		//
+		// Du kannst in der Datei teamamused.common.teamamused.config den Pfad zur DB Datei festlegen.
+		
+		
+		// Du solltest in der Klasse Game noch diese 3 Attribute ergänzen: GameId, Startzeit, Endzeit
+		// Um das Spiel speichern zu können machst du dies in etwa so:
+		int gameId = GameInfoRepository.getNextGameId(); // GameId sollte von Game kommen, aber dort kannst du so eine neue zuweisen. 
+		LocalDateTime spielStart = LocalDateTime.now(); // auch vom game, merken wenn das Spiel begann
+		LocalDateTime spielEnde = LocalDateTime.now(); // Das ist wohl jetzt
+		// 1. Datenbank Context aus dem ServiceLocator holen
+		IDataBaseContext db = ServiceLocator.getInstance().getDBContext();
+		// 2. GameInfo Objekt erstellen:
+		GameInfo gi = new GameInfo(gameId, spielStart, spielEnde);
+		// Spieler zum GameInfo Objekt hinzufügen
+		for (IPlayer player : Game.getInstance().getPlayers()) {
+			gi.Players.add(player.getPlayerName());
+		}
+		// 4. in der Datenbank eine GameInfo hinzufügen:
+		db.addGame(gi);
+		
+		// 5. Ranking speichern und den Spielern anzeigen
+		this.showRankingToPlayer();
+		
+		// 6. Alle Änderungen an der Datenbank sind bis jetzt nur im Memory
+		//    Um die Daten effektiv zu speichern machst du
+		db.saveContext();
 	}
 }
