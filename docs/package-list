@@ -1,5 +1,9 @@
-teamamused.client.application
+teamamused.client
+teamamused.client.connect
+teamamused.client.libs
 teamamused.common
+teamamused.common.db
+teamamused.common.dtos
 teamamused.common.gui
 teamamused.common.interfaces
 teamamused.common.models
@@ -8,4 +12,7 @@ teamamused.common.models.cubes
 teamamused.playground.application
 teamamused.playground.application.gui
 teamamused.playground.application.serverKlassen
-teamamused.server.application
+teamamused.playground.chat
+teamamused.server
+teamamused.server.connect
+teamamused.server.gui
