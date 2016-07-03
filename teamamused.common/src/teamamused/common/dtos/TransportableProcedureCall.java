@@ -49,7 +49,7 @@ public class TransportableProcedureCall extends TransportObject {
 		ChangeActivePlayer,
 		/**
 		 * Bietet dem Spieler eine auswahl an möglichen Optionen welche Karten er wählen kann
-		 * Parameter: Hashtable<Integer, List<ITargetCards>> -> Key ist die Nummer der Option, Value die enthaltenen Karten der Option
+		 * Parameter: Hashtable &lt; Integer, List &lt; ITargetCards &gt; &gt; - Key ist die Nummer der Option, Value die enthaltenen Karten der Option
 		*/
 		ChooseCards,
 		/**

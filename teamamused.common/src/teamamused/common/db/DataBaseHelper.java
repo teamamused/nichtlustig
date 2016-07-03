@@ -16,6 +16,9 @@ public class DataBaseHelper {
 
 	/**
 	 * Anlegen von Testdaten für Unit Tests und zum pröbeln
+	 * @param players Spieler Testdaten anlegen
+	 * @param gameInfos Game Testdaten anlegen
+	 * @param rankings Rangierungs Testdaten anlegen
 	 */
 	public static void createDemoData(boolean players, boolean gameInfos, boolean rankings) {
 		IDataBaseContext db = ServiceLocator.getInstance().getDBContext();

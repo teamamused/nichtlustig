@@ -30,7 +30,7 @@ public class Ranking {
 	/**
 	 * Initialisierung eines neuen Ranking Objektes mit den übergebenen parametern
 	 * @param gameId Eindeutige Spielkennungs
-	 * @param playerId Eindeutige Spielerkennung
+	 * @param username Eindeutige Spielerkennung
 	 * @param points Erreichte Punkte
 	 * @param gameRank Rang in dem Spiel
 	 * @param totalRank Rang über alle Spiele Spiel

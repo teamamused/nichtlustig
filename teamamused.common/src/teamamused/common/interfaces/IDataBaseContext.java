@@ -17,19 +17,19 @@ public interface IDataBaseContext {
 	
 	/**
 	 * Gibt eine Liste sämtlicher Platzierungen zurück 
-	 * @return
+	 * @return  Liste mit allen Rankings
 	 */
 	public List<Ranking> getRankings();
 
 	/**
 	 * Gibt eine Liste sämtlicher Spieler Informationen zurück 
-	 * @return
+	 * @return Liste mit allen PlayerInfos
 	 */
 	public List<PlayerInfo> getPlayerInfos();
 
 	/**
 	 * Gibt eine Liste sämtlicher Spielinferomationen zurück 
-	 * @return
+	 * @return Liste mit allen GameInfos
 	 */
 	public List<GameInfo> getGameInfos();
 	
@@ -56,13 +56,13 @@ public interface IDataBaseContext {
 
 	/**
 	 * Lädt die Daten aus der Quelle in den Speichern
-	 * @return
+	 * @return erfolgreich
 	 */
 	boolean loadContext();
 	
 	/**
 	 * speichert die Daten aus dem Speicher in die Quelle zurück
-	 * @return
+	 * @return erfolgreich
 	 */
 	boolean saveContext();
 }

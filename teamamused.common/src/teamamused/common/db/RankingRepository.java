@@ -23,7 +23,8 @@ public class RankingRepository {
 	 * @param playerPoints
 	 * 				HashTable mit den Spielern als Key und den erreichten Punkten als Value
 	 * @return
-	 */
+	 * 		Array mit dem Ranking des Spieles
+	 */		
 	public static Ranking[] getInGameRanking(int gameId, Hashtable<IPlayer, Integer> playerPoints) {
 		IDataBaseContext db = ServiceLocator.getInstance().getDBContext();
 		Ranking[] ranks = new Ranking[playerPoints.size()];

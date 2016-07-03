@@ -65,7 +65,7 @@ public class CubeManager{
 	
 	/**
 	 * Methode, um die Würfel auf dem Spielbrett zu würfeln.
-	 * @return 
+	 * @return Anzahl verbleibende Versuche
 	 */
 	public int rollDices(){
 		ServiceLocator.getInstance().getLogger().info("CubeManager: rolle Würfel");

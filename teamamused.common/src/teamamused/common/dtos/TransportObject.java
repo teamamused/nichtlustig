@@ -68,7 +68,7 @@ public class TransportObject implements Serializable{
     /**
      * Objekt serialisieren und über das Socket versenden
      * 
-     * @param s The socket to use when sending the message
+     * @param out OutputStream des Sockets
      */
     public void send(ObjectOutputStream out) {
     	// Set the message id before sending (if not already done)
@@ -90,9 +90,8 @@ public class TransportObject implements Serializable{
     /**
      * Factory method to construct a message-object from data received via socket
      * 
-     * @param socket Socket mit der Serververbindung
+     * @param in Input Stream des Sockets
      * @return erhaltenes DTO Objekt
-     * @throws Exception
      */
     public static TransportObject receive(ObjectInputStream in) {
     	TransportObject dto = null;
@@ -120,7 +119,7 @@ public class TransportObject implements Serializable{
 
 	/**
 	 * Zeitpunkt an welchem die Nachricht geschickt wurde
-	 * @return
+	 * @return ZeitStempel als Long
 	 */
 	public long getTimestamp() {
 		return timestamp;

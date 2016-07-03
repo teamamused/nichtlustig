@@ -37,8 +37,7 @@ public class ClientNotificator {
 	 * Benachrichtigung an den aktiven Client Dein Spielzug hat mehrere Optionen
 	 * zur Kartenauswahl. Wähle die gewünschte Option aus.
 	 * 
-	 * @param message
-	 *            Spielzug des Server
+	 * @param options Auswahlmöglichkeiten für den Spieler
 	 */
 	public static void notifyCardsToChoose(Hashtable<Integer, List<ITargetCard>> options) {
 		TransportableProcedureCall chooseCards = new TransportableProcedureCall(
@@ -60,11 +59,11 @@ public class ClientNotificator {
 	}
 
 	/**
-	 * Benachrichtigung alle Clients: Der Spiler hat gewechselt, jetzt ist der
+	 * Benachrichtigung alle Clients: Der Spieler hat gewechselt, jetzt ist der
 	 * übergebene Spieler an der Reihe
 	 * 
-	 * @param board
-	 *            Neues Spielbrett
+	 * @param activePlayer
+	 *            Spieler der neu an die Reihe kommt
 	 */
 	public static void notifyPlayerChanged(IPlayer activePlayer) {
 		TransportableProcedureCall gameFinished = new TransportableProcedureCall(

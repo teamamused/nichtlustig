@@ -48,8 +48,7 @@ public interface ICube {
 	ISpecialCard getSpecialCard();
 	
 	/**
-	 * Gibt die Cube-Werte zurück, welche auf 1 zurückgesetzt werden
-	 * @return CubeValue 1 für alle Würfel
+	 * Setzt die Cube-Werte zurück auf CubeValue 1 für alle Würfel.
 	 */
 	void resetCubeValues();
 }

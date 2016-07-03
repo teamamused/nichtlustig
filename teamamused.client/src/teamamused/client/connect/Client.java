@@ -57,7 +57,7 @@ public class Client {
 	 *            Benutzername
 	 * @param portNumber
 	 *            Server Port
-	 * @return
+	 * @return erfolgreich
 	 */
 	public boolean ConnectToServer(String serverName, String username, int portNumber) {
 		this.connector = new ServerConnector(serverName, username, portNumber);
@@ -83,9 +83,8 @@ public class Client {
 	}
 
 	/**
-	 * getter für Player
-	 * 
-	 * @return aktuelles Spieler Objekt
+	 * setter für Player
+	 * @param player Spiler welcher gesetzt werden soll
 	 */
 	public void setPlayer(IPlayer player) {
 		this.currPlayer = (Player) player;
