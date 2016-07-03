@@ -23,8 +23,8 @@ public class CubeManager{
 	private int allowedDicings = 3;
 	private int counterFixedCubes = 0;
 	private GameBoard board = BoardManager.getInstance().getGameBoard();
-	ICube cubes[] = board.getCubes();
-	ICube pinkCube;
+	private ICube cubes[] = board.getCubes();
+	private ICube pinkCube;
 	
 	public CubeManager(){
 	}
@@ -114,5 +114,9 @@ public class CubeManager{
 			}
 		}
 		return pinkCube.getCurrentValue();
+	}
+	
+	public ICube[] getCubes(){
+		return cubes;
 	}
 }
