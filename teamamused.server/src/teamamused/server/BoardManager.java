@@ -191,7 +191,7 @@ public class BoardManager {
 	 */
 	public void valuate(){
 		Valuation valuateFunction = new Valuation();
-		valuateFunction.valuate(instance);
+		valuateFunction.valuate(instance, pinkCube);
 	}
 
 }

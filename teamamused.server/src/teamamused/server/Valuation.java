@@ -17,8 +17,8 @@ public class Valuation {
 	 * Wertet die Karten der Spieler aus und wertet sie anschliessend gemäss dem
 	 * Wert des pinken Würfels.
 	 */
-	public void valuate(BoardManager board){
-		valuationValue = 1; //Wert von pinkem Würfel noch zu programmieren
+	public void valuate(BoardManager board, int pinkCubeValue){
+		valuationValue = pinkCubeValue;
 		board.getNotValuedCardsFromPlayer();
 		board.valuatePlayerCards(valuationValue);
 		board.valuePlayerCards();
