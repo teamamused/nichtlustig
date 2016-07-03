@@ -36,7 +36,7 @@ public class BoardManager {
 	private List<ITargetCard> cardsToPropose;
 	private List<ITargetCard> notValuatedCardsFromPlayers;
 	private List<ITargetCard> playerTargetCardsToValuate;
-	private int pinkCube;
+	private int pinkCubeValue;
 	
 	//Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett oder bei Spieler
 	private Hashtable<IDeadCard, ICardHolder> deadCards = new Hashtable<IDeadCard, ICardHolder>();
@@ -79,7 +79,7 @@ public class BoardManager {
 	/**
 	 * Gibt eine Liste mit noch nicht gewerteten Karten der Spieler zurück.
 	 */
-	public List<ITargetCard> getNotValuedCardsFromPlayer(){
+	public List<ITargetCard> getNotValuatedCardsFromPlayer(){
 		notValuatedCardsFromPlayers = null;
 		
 		for(IPlayer player: game.getPlayers()){
@@ -99,7 +99,8 @@ public class BoardManager {
 	 * @param pinkCube Wert von pinkem Würfel zur Wertung
 	 */
 	public void valuatePlayerCards(int pinkCube){
-		this.pinkCube = pinkCube;
+		this.pinkCubeValue = pinkCube;
+		playerTargetCardsToValuate = notValuatedCardsFromPlayers;
 		
 		for(ITargetCard card : playerTargetCardsToValuate){
 			if(card.getCardValue() != pinkCube){

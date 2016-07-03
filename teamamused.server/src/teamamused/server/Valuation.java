@@ -18,8 +18,8 @@ public class Valuation {
 	 * Wert des pinken Würfels.
 	 */
 	public void valuate(BoardManager board){
-		valuationValue = 1; //Wert von pinkem Würfel noch zu programmieren
-		board.getNotValuedCardsFromPlayer();
+		valuationValue = CubeManager.getInstance().getCurrentPinkCubeValue().FaceValue;
+		board.getNotValuatedCardsFromPlayer();
 		board.valuatePlayerCards(valuationValue);
 		board.valuePlayerCards();
 	}
