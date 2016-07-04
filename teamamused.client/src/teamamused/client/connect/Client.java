@@ -1,9 +1,12 @@
 package teamamused.client.connect;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
+import teamamused.common.db.Ranking;
 import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
@@ -34,6 +37,7 @@ public class Client {
 	 * Privater Konstruktor da Singelton
 	 */
 	private Client() {
+		super();
 	}
 
 	/**
@@ -142,30 +146,20 @@ public class Client {
 	}
 
 	/**
-	 * Wird vom Gui aufgerufen um eine Chatnachricht zu versenden
-	 * 
-	 * @param message
-	 *            Chat Benachrichtigung
-	 */
-	public void sendChatMessage(TransportableChatMessage message) {
-		message.send(this.connector.getOutputStream());
-	}
-
-	/**
 	 * Wird vom Server aufgerufen wenn mehrere Zielkarten zur Auswahl stehen.
 	 * 
 	 * @param allowedCards
 	 *            Karten die zur Auswahl stehen
 	 */
-	public void chooseCards(ArrayList<ITargetCard> allowedCards) {
+	public void chooseCards(Hashtable<Integer, List<ITargetCard>> options) {
 		ServiceLocator.getInstance().getLogger().info("Client: leite chooseCards an Gui's weiter");
 		for (IClientListener gui : this.guis) {
-			gui.onPlayerHasToCooseCards(allowedCards);
+			gui.onPlayerHasToCooseCards(options);
 		}
 	}
 
 	/**
-	 * wird aufgerufen wenn der Spieler aktiviert oder deaktiviert wird
+	 * Wird vom Server aufgerufen wenn der Spieler aktiviert oder deaktiviert wird
 	 * 
 	 * @param isActive
 	 *            aktiviert ja Nein
@@ -177,7 +171,42 @@ public class Client {
 	}
 
 	/**
-	 * Einem Spiel beitreten
+	 * Wird vom Server aufgerufen wenn das Spiel beendet wurde
+	 * 
+	 * @param rankings
+	 *            Platzierungen des Spieles
+	 */
+	public void gameFinished(Ranking[] rankings) {
+		for (IClientListener gui : this.guis) {
+			gui.onGameFinished(rankings);
+		}
+	}
+
+	/**
+	 * Wird vom Server aufgerufen wenn er den Client über einen Spielzug informieren möchte
+	 * 
+	 * @param rankings
+	 *            Platzierungen des Spieles
+	 */
+	public void GameMoveDone(String gameMove) {
+		for (IClientListener gui : this.guis) {
+			gui.onNewGameMove(gameMove);
+		}
+	}
+
+
+	/**
+	 * Cliente möchte eine Chatnachricht versenden
+	 * 
+	 * @param message
+	 *            Chat Benachrichtigung
+	 */
+	public void sendChatMessage(TransportableChatMessage message) {
+		message.send(this.connector.getOutputStream());
+	}
+
+	/**
+	 * Cliente möchte einem Spiel beitreten
 	 * 
 	 * @param player
 	 *            Spieler
@@ -190,7 +219,7 @@ public class Client {
 	}
 
 	/**
-	 * Spiel starten
+	 * Cliente möchte ein Spiel starten
 	 */
 	public void startGame() {
 		// ServiceLocator.getInstance().getLogger().info("Client Spieler " +
@@ -200,7 +229,7 @@ public class Client {
 	}
 
 	/**
-	 * Würfeln
+	 * Cliente möchte würfeln
 	 * 
 	 * @return anzahl verbleibende Versuche
 	 */
@@ -212,19 +241,19 @@ public class Client {
 	}
 
 	/**
-	 * Zielkarten ausgewählt dem Server mitteilen
+	 * Cliente möchte die ausgewählten Zielkarten dem Server mitteilen
 	 * 
 	 * @param targetCards
 	 *            Zielkarten zur auswahl
 	 */
-	public void chooseCards(ITargetCard[] targetCards) {
+	public void cardsChoosen(ITargetCard[] targetCards) {
 		ServiceLocator.getInstance().getLogger()
 				.info("Client Spieler " + this.currPlayer.getPlayerName() + " bestätigt gewählte Zielkarten");
 		// Server.getInstance().allocateCards(targetCards);
 	}
 
 	/**
-	 * Der Client meldet sich höfflichst vom Server ab.
+	 * Cliente möchte sich höfflichst vom Server abmelden.
 	 */
 	public void sayGoodbye() {
 		if (this.connector != null) {

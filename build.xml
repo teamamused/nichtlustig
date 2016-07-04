@@ -63,6 +63,7 @@
        <fileset dir="${src.dir}">
            <include name="**/*.java" />
        </fileset>
+		<classpath refid="build.classpath"/>
     </javadoc>
   </target>
 
