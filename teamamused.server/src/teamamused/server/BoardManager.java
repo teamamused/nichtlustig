@@ -31,6 +31,7 @@ public class BoardManager {
 	private GameBoard board = new GameBoard();
 	private Game game = Game.getInstance();
 	private ICardHolder currentOwner;
+	private List<ICardHolder> currentOwners;
 	private ICardHolder newOwner;
 	private List<ITargetCard> targetCardsToDeploy;
 	private List<ISpecialCard> specialCardsToDeploy;
@@ -204,38 +205,60 @@ public class BoardManager {
 	 * @param currentOwner aktueller Besitzer der Spielkarte (Spieler oder Board)
 	 * @param newOwner Spieler oder Board, wo die Karten erhält
 	 */
-	public void deployCards(ICardHolder currentOwner, ICardHolder newOwner){
-		this.currentOwner = currentOwner;
-		this.newOwner = newOwner;
+	public void deployCards(){
 		
-		//Verteilen der Spezialkarten
-		for(ISpecialCard card : specialCardsToDeploy) {
-			this.currentOwner.removeSpecialCard(card);
-			this.currentOwner.addSpecialCard(card);
-			this.specialCards.remove(card, currentOwner);
-			this.specialCards.put(card, newOwner);			
+		this.newOwner = Game.getInstance().getActivePlayer();
+		this.currentOwners.add(board);
+		
+		for(IPlayer player : Game.getInstance().getPlayers()){
+			this.currentOwners.add(player);
 		}
 		
-		//Verteilen der Todeskarten
-		for(IDeadCard card : deadCardsToDeploy) {
-			this.currentOwner.removeDeadCard(card);
-			this.currentOwner.addDeadCard(card, null); // noch zu ändern -> richtige Target-Karte angeben
-			this.deadCards.remove(card, currentOwner);
-			this.deadCards.put(card, newOwner);
-		}
 		
-		//Verteilen der Zielkarten
-		for(ITargetCard card : targetCardsToDeploy) {
-			this.currentOwner.removeTargetCard(card);
-			this.currentOwner.addTargetCard(card);
-			this.targetCards.remove(card, currentOwner);
-			this.targetCards.put(card, newOwner);
+		for(ICardHolder ownerNow : currentOwners){
+			this.currentOwner = ownerNow;
+			
+			//Verteilen der Spezialkarten
+			for(ISpecialCard card : specialCardsToDeploy) {
+				if(specialCards.get(card) == currentOwner){
+					this.currentOwner.removeSpecialCard(card);
+					this.newOwner.addSpecialCard(card);
+					this.specialCards.remove(card, currentOwner);
+					this.specialCards.put(card, newOwner);	
+				}		
+			}
+			
+			//Verteilen der Todeskarten
+			for(IDeadCard card : deadCardsToDeploy) {
+				if(deadCards.get(card) == currentOwner && newOwner != board){
+					this.currentOwner.removeDeadCard(card);
+					this.newOwner.addDeadCard(card, null); // noch zu ändern -> richtige Target-Karte angeben
+					this.deadCards.remove(card, currentOwner);
+					this.deadCards.put(card, newOwner);
+				}
+				
+			}
+			
+			//Verteilen der Zielkarten
+			for(ITargetCard card : targetCardsToDeploy) {
+				if(targetCards.get(card) == currentOwner){
+					this.currentOwner.removeTargetCard(card);
+					this.newOwner.addTargetCard(card);
+					this.targetCards.remove(card, currentOwner);
+					this.targetCards.put(card, newOwner);
+				}
+				
+			}
+			
 		}
 		
 		specialCardsToDeploy = null;
 		deadCardsToDeploy = null;
 		targetCardsToDeploy = null;
 		cardsToPropose = null;
+		currentOwner = null;
+		currentOwners = null;
+		newOwner = null;
 	}
 	
 	/**
