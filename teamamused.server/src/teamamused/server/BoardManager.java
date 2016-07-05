@@ -11,6 +11,8 @@ import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.GameBoard;
+import teamamused.common.models.cubes.CubeColor;
+import teamamused.common.models.cubes.CubeValue;
 
 /**
  * 
@@ -33,7 +35,7 @@ public class BoardManager {
 	private List<ITargetCard> targetCardsToDeploy;
 	private List<ISpecialCard> specialCardsToDeploy;
 	private List<IDeadCard> deadCardsToDeploy;
-	private List<ITargetCard> cardsToPropose;
+	private Hashtable<Integer, ITargetCard> cardsToPropose;
 	private List<ITargetCard> notValuatedCardsFromPlayers;
 	private List<ITargetCard> playerTargetCardsToValuate;
 	private int pinkCubeValue;
@@ -85,7 +87,9 @@ public class BoardManager {
 		for(IPlayer player: game.getPlayers()){
 			for(ITargetCard targetCard : player.getTargetCards()){
 				if(!targetCard.getIsValuated()){
-					notValuatedCardsFromPlayers.add(targetCard);
+					if(!targetCard.getIsCoveredByDead()){
+						notValuatedCardsFromPlayers.add(targetCard);
+					}
 				}
 			}
 		}
@@ -105,6 +109,8 @@ public class BoardManager {
 		for(ITargetCard card : playerTargetCardsToValuate){
 			if(card.getCardValue() != pinkCube){
 				playerTargetCardsToValuate.remove(card);
+			}else{
+				notValuatedCardsFromPlayers.remove(card);
 			}
 		}
 	}
@@ -115,25 +121,69 @@ public class BoardManager {
 	public void valuePlayerCards(){
 		for(ITargetCard card : playerTargetCardsToValuate){
 			card.setIsValuated(true);
+			ClientNotificator.notifyGameMove("Karte " + card.toString() + " von Spieler " + targetCards.get(card) + " wurde gewertet.");
 		}
 		playerTargetCardsToValuate = null;
+		ClientNotificator.notifyUpdateGameBoard(board);
 	}
 	
 	/**
 	 * Wertet den Würfel-Wurf des Spielers aus, sobald dieser seinen Spielzug
 	 * abgeschlossen hat.
-	 * @param dicedCubes Gewürfelte Würfel des Spielers
 	 */
-	public void valuatePlayerDice(List<ICube> dicedCubes){
+	public void valuatePlayerDice(){
+		ICube cubes[] = CubeManager.getInstance().getCubes();
+		int sumOfCubes = 0;
+		CubeValue[] cardValues;
+		int matchPoints = 0;
+		List <ICube> cubesToCompare = null;
+		
+		for(ICube cube : cubes){
+			cubesToCompare.add(cube);
+		}
+		
+		for(ITargetCard targetCard : notValuatedCardsFromPlayers){
+			//Prüft die Summe der Würfel, und vergleicht diese mit der Dino-Karte
+			if(targetCard.getGameCard().name() == "ZK_Dino_"){
+				for(ICube cube : cubes){
+					if(cube.getCubeColor() != CubeColor.Pink){
+						sumOfCubes += cube.getCurrentValue().FaceValue;
+					}
+				}
+				if(targetCard.getRequiredPoints() < sumOfCubes){
+					cardsToPropose.put(cardsToPropose.size()+1, targetCard);
+				}
+			//Wenn Professoren-Karte spezielle andere Kalkulation
+			}else if(targetCard.getGameCard().name() == "ZK_Professor_"){
+				cardValues = targetCard.getRequiredCubeValues();
+				for(CubeValue cardValue : cardValues){
+					for(ICube cube : cubesToCompare){
+						if(cube.getCubeColor() != CubeColor.Pink){
+							if(cardValue == cube.getCurrentValue()){
+								matchPoints += 1;
+								cubesToCompare.remove(cube);
+							}
+						}
+					}
+				}
+				if(matchPoints > 2){
+					cardsToPropose.put(cardsToPropose.size()+1, targetCard);
+				}
+			//Wenn nicht Dino-Karte oder Professoren-Karte
+			}else{
+				
+			}
+		}
+		
 		//noch zu programmieren
 	}
 	
 	/**
-	 * Hat der Spieler mehrere Karten zur Auwahl, wird ihm mit dieser Methode
+	 * Hat der Spieler mehrere Karten zur Auswahl, wird ihm mit dieser Methode
 	 * eine Auswahl an Karten gegeben, welche er nehmen kann.
 	 * @param targetCardsToChoose Zielkarten, welche dem Spieler zur Auswahl präsentiert werden
 	 */
-	public List<ITargetCard> proposeCards(List<ITargetCard> targetCardsToChoose){
+	public Hashtable<Integer, ITargetCard> proposeCards(List<ITargetCard> targetCardsToChoose){
 		return cardsToPropose;
 	}
 	
@@ -185,6 +235,7 @@ public class BoardManager {
 		specialCardsToDeploy = null;
 		deadCardsToDeploy = null;
 		targetCardsToDeploy = null;
+		cardsToPropose = null;
 	}
 	
 	/**
