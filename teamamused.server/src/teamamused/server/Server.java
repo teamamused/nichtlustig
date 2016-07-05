@@ -19,7 +19,7 @@ public class Server {
 	private static Server instance;
 	
 	private Server() {
-		
+		super();
 	}
 	
 	public static Server getInstance() {

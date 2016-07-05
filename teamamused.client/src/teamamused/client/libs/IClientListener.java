@@ -1,7 +1,9 @@
 package teamamused.client.libs;
 
-import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
+import teamamused.common.db.Ranking;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
@@ -43,11 +45,12 @@ public interface IClientListener {
 	public default void onPlayerIsActivedChanged(boolean isActive) {}
 	
 	/**
-	 * Der Spieler muss eine Karte auswählen
+	 * Der Spieler muss die geünschte Ziel Karte(n) auswählen
+	 * Als Value des Optionen Hashtable ist die Options Nr und als Value jeweils die Liste für die möglichen Karten
 	 *  
-	 * @param allowedCards Zur auswahl stehende Karten
+	 * @param options Zur auswahl stehende Karten
 	 */
-	public default void onPlayerHasToCooseCards(ArrayList<ITargetCard> allowedCards) {}
+	public default void onPlayerHasToCooseCards(Hashtable<Integer, List<ITargetCard>> options) {}
 	
 	/**
 	 * Der Spieler hat eine Chatnachricht empfangen
@@ -55,4 +58,19 @@ public interface IClientListener {
 	 * @param message Chatnachricht
 	 */
 	public default void onChatMessageRecieved(TransportableChatMessage message) {}
+	
+	/**
+	 * Der Server hat einen Spielzug vorgenommen, dieser wird dem Client als String Nachricht übergeben
+	 *  
+	 * @param newGameMove Spielzug vom Server
+	 */
+	public default void onNewGameMove(String newGameMove) {}
+	
+	/**
+	 * Der Server hat das Spiel für beendet erklärt.
+	 * Dem Spieler muss angezeigt werden das das Spiel vorbei ist und das Ranking eingeblendet werden
+	 *  
+	 * @param rankings Platzierungen der Spielrunde
+	 */
+	public default void onGameFinished(Ranking[] rankings) {}
 }

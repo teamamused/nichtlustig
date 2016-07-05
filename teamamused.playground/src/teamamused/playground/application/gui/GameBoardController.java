@@ -1,7 +1,8 @@
 package teamamused.playground.application.gui;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -63,7 +64,8 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 * @param allowedCards Karten welche zur auswahl stehen
 	 */
 	@Override
-	public void onPlayerHasToCooseCards(ArrayList<ITargetCard> allowedCards) {
+	public void onPlayerHasToCooseCards(Hashtable<Integer, List<ITargetCard>> options) {
+		List<ITargetCard> allowedCards = options.values().stream().findFirst().get();
 		model.cardsToChoose = Arrays.copyOf(allowedCards.toArray(), allowedCards.size(), ITargetCard[].class);
 		ServiceLocator.getInstance().getLogger().info("GameboardController: zeige auszuwählende Karten an");
 		this.view.drawCards("Bitte wählen Sie \ndie gewünschten Zielkarten aus:", model.cardsToChoose);
