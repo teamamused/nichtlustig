@@ -113,26 +113,26 @@ public class GameFinisher {
 				}
 				//Lemming-Karte
 				else if(!targetCard.getIsCoveredByDead()){
-					if(targetCard.getGameCard().name() == "ZK_Lemming_"){
+					if(targetCard.getGameCard().name().matches("ZK_Lemming"+"[1-5]")){
 						valuatedLemmingCards++;
 					}
 					//Yeti-Karte
-					else if(targetCard.getGameCard().name() == "ZK_Yeti_"){
+					else if(targetCard.getGameCard().name().matches("ZK_Yeti"+"[1-5]")){
 						valuatedYetiCards++;
 					}
 					//Riebmann-Karte
-					else if(targetCard.getGameCard().name() == "ZK_Riebmann_"){
+					else if(targetCard.getGameCard().name().matches("ZK_Riebmann"+"[1-5]")){
 						valuatedRiebmannCards++;
 					}
 					//Dino-Karte
-					else if(targetCard.getGameCard().name() == "ZK_Dino_"){
+					else if(targetCard.getGameCard().name().matches("ZK_Dinosaurier"+"[1-5]")){
 						dinoCardValue += targetCard.getCardValue();
 					}
 					/*Prüft ob ein Spieler eine Professoren-Karte hat{
 					* und erzeugt automatisch eine zufällige Punktzahl von 0-5
 					* für die Karte, welche der Spieler erhält
 					*/	
-					else if(targetCard.getGameCard().name() == "ZK_Professoren_"){
+					else if(targetCard.getGameCard().name().matches("ZK_Professoren"+"[1-5]")){
 						playerPrePoints = (int) Math.random() * 6;
 					}
 				}
