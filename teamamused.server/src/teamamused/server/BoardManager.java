@@ -224,7 +224,8 @@ public class BoardManager {
 					this.currentOwner.removeSpecialCard(card);
 					this.newOwner.addSpecialCard(card);
 					this.specialCards.remove(card, currentOwner);
-					this.specialCards.put(card, newOwner);	
+					this.specialCards.put(card, newOwner);
+					ClientNotificator.notifyGameMove("Spezialkarte " + card + " wurde von Spieler " + currentOwner + " zu Spieler " + newOwner + " verschoben.");
 				}		
 			}
 			
@@ -232,9 +233,31 @@ public class BoardManager {
 			for(IDeadCard card : deadCardsToDeploy) {
 				if(deadCards.get(card) == currentOwner && newOwner != board){
 					this.currentOwner.removeDeadCard(card);
-					this.newOwner.addDeadCard(card, null); // noch zu ändern -> richtige Target-Karte angeben
+					
+					ITargetCard[] targetCardsOfNewOwner = newOwner.getTargetCards();
+					
+					//Prüft, ob die Todeskarte auf eine andere Karte umgedreht gelegt werden muss
+					for(ITargetCard targetCard : targetCardsOfNewOwner){
+						if(targetCard.getIsValuated() &&
+								(targetCard.getGameCard().name().matches("ZK_Lemming"+"[1-5]") ||
+								targetCard.getGameCard().name().matches("ZK_Yeti"+"[1-5]") ||
+								targetCard.getGameCard().name().matches("ZK_Riebmann"+"[1-5]") ||
+								targetCard.getGameCard().name().matches("ZK_Lemming"+"[1-5]") ||
+								targetCard.getGameCard().name().matches("ZK_Professoren"+"[1-5]"))){
+							//Todeskarte wird umgedreht auf gewertete Karte gelegt
+							this.newOwner.addDeadCard(card, targetCard);
+							targetCard.setIsCoveredByDead(true);
+						}else{
+							//Todeskarte wird normal neben Zielkarten hingelegt
+							this.newOwner.addDeadCard(card, null);
+							targetCard.setIsValuated(false);
+						}
+					}
+										
 					this.deadCards.remove(card, currentOwner);
 					this.deadCards.put(card, newOwner);
+					
+					ClientNotificator.notifyGameMove("Todeskarte "  + card + " wurde von Spieler " + currentOwner + " zu Spieler " + newOwner + " verschoben.");
 				}
 				
 			}
@@ -246,10 +269,12 @@ public class BoardManager {
 					this.newOwner.addTargetCard(card);
 					this.targetCards.remove(card, currentOwner);
 					this.targetCards.put(card, newOwner);
+					ClientNotificator.notifyGameMove("Zielkarte "  + card + " wurde von Spieler " + currentOwner + " zu Spieler " + newOwner + " verschoben.");
 				}
 				
 			}
 			
+			ClientNotificator.notifyUpdateGameBoard(board);
 		}
 		
 		specialCardsToDeploy = null;
