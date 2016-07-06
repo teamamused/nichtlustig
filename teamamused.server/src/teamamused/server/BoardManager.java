@@ -1,6 +1,5 @@
 package teamamused.server;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class BoardManager {
 	private List<ITargetCard> targetCardsToDeploy;
 	private List<ISpecialCard> specialCardsToDeploy;
 	private List<IDeadCard> deadCardsToDeploy;
-	private Hashtable<Integer, ITargetCard> cardsToPropose;
+	private Hashtable<Integer, List<ITargetCard>> cardsToPropose;
 	private List<ITargetCard> notValuatedCardsFromPlayers;
 	private List<ITargetCard> playerTargetCardsToValuate;
 	private int pinkCubeValue;
@@ -132,51 +131,97 @@ public class BoardManager {
 	 * Wertet den Würfel-Wurf des Spielers aus, sobald dieser seinen Spielzug
 	 * abgeschlossen hat.
 	 */
+	@SuppressWarnings("null")
 	public void valuatePlayerDice(){
 		ICube cubes[] = CubeManager.getInstance().getCubes();
 		int sumOfCubes = 0;
 		CubeValue[] cardValues;
 		int matchPoints = 0;
 		List <ICube> cubesToCompare = null;
+		List <ITargetCard> cardsToProposeTemp = null;
+		List <ITargetCard> cardsToProposeTemp2 = null;
+		List <ICube> cubesToCompareTemp = null;
 		
 		for(ICube cube : cubes){
 			cubesToCompare.add(cube);
 		}
-		
+
 		for(ITargetCard targetCard : notValuatedCardsFromPlayers){
 			//Prüft die Summe der Würfel, und vergleicht diese mit der Dino-Karte
-			if(targetCard.getGameCard().name() == "ZK_Dino_"){
+			if(targetCard.getGameCard().name().matches("ZK_Dino"+"[1-5]")){
 				for(ICube cube : cubes){
 					if(cube.getCubeColor() != CubeColor.Pink){
 						sumOfCubes += cube.getCurrentValue().FaceValue;
 					}
 				}
-				if(targetCard.getRequiredPoints() < sumOfCubes){
-					cardsToPropose.put(cardsToPropose.size()+1, targetCard);
+				if(targetCard.getRequiredPoints() <= sumOfCubes){
+					cardsToProposeTemp.add(targetCard);
 				}
 			//Wenn Professoren-Karte spezielle andere Kalkulation
-			}else if(targetCard.getGameCard().name() == "ZK_Professor_"){
+			}else if(targetCard.getGameCard().name().matches("ZK_Professor"+"[1-5]")){
 				cardValues = targetCard.getRequiredCubeValues();
 				for(CubeValue cardValue : cardValues){
 					for(ICube cube : cubesToCompare){
 						if(cube.getCubeColor() != CubeColor.Pink){
 							if(cardValue == cube.getCurrentValue()){
 								matchPoints += 1;
-								cubesToCompare.remove(cube);
 							}
 						}
 					}
 				}
 				if(matchPoints > 2){
-					cardsToPropose.put(cardsToPropose.size()+1, targetCard);
+					cardsToProposeTemp.add(targetCard);
 				}
+				matchPoints = 0;
 			//Wenn nicht Dino-Karte oder Professoren-Karte
 			}else{
-				
+				cardValues = targetCard.getRequiredCubeValues();
+				for(CubeValue cardValue : cardValues){
+					for(ICube cube : cubesToCompare){
+						if(cube.getCubeColor() != CubeColor.Pink){
+							if(cardValue == cube.getCurrentValue()){
+								matchPoints += 1;
+							}
+						}
+					}
+				}
+				if(matchPoints > 1){
+					cardsToProposeTemp.add(targetCard);
+				}
+				matchPoints = 0;
 			}
 		}
 		
-		//noch zu programmieren
+		while(!cardsToProposeTemp.isEmpty()){
+			cubesToCompareTemp = cubesToCompare;
+			
+			for(ITargetCard card : cardsToProposeTemp){
+				CubeValue cubeValuesTemp[] = card.getRequiredCubeValues();
+				
+				/*Wenn kein Dino-Karte, da diese sicher dem Spieler ohne weitere
+				 * Karten zur Auswahl steht. Andere Zielkarten können allenfalls
+				 * miteinander ausgewählt werden.
+				 */
+				if(!card.getGameCard().name().matches("ZK_Dino"+"[1-5]")){
+					for(CubeValue cubeValue : cubeValuesTemp){
+						for(ICube cube : cubesToCompareTemp){
+							if(cube.getCurrentValue() == cubeValue){
+								cubesToCompareTemp.remove(cube);
+							}
+						}
+						
+					}
+				}		
+				
+				cardsToProposeTemp.remove(card);
+				cardsToProposeTemp2.add(card);
+			}
+			cardsToPropose.put(cardsToPropose.size()+1, cardsToProposeTemp2);	
+			
+			cardsToProposeTemp2 = null;
+		}
+		
+		
 	}
 	
 	/**
@@ -184,7 +229,7 @@ public class BoardManager {
 	 * eine Auswahl an Karten gegeben, welche er nehmen kann.
 	 * @param targetCardsToChoose Zielkarten, welche dem Spieler zur Auswahl präsentiert werden
 	 */
-	public Hashtable<Integer, ITargetCard> proposeCards(List<ITargetCard> targetCardsToChoose){
+	public Hashtable<Integer, List<ITargetCard>> proposeCards(List<ITargetCard> targetCardsToChoose){
 		return cardsToPropose;
 	}
 	
@@ -192,7 +237,7 @@ public class BoardManager {
 	 * Hat der Spieler mehrere Karten zur Auswahl, wird über das GUI mit dieser
 	 * Methode aufgerufen, für welche Zielkarten sich der Spieler entschieden
 	 * hat. Die entsprechenden Karten werden ihm anschliessend zugewiesen.
-	 * @param Zielkarten, welche der Spieler nehmen möchte
+	 * @param targetCardsToTake Zielkarten, welche der Spieler nehmen möchte
 	 */
 	public void takeProposedCards(List<ITargetCard> targetCardsToTake){
 		for(ITargetCard card : targetCardsToTake){
@@ -202,8 +247,6 @@ public class BoardManager {
 	
 	/**
 	 * Verteilt die Karten (Ziel- ,Sonder-, und/oder Todeskarten) an den Spieler
-	 * @param currentOwner aktueller Besitzer der Spielkarte (Spieler oder Board)
-	 * @param newOwner Spieler oder Board, wo die Karten erhält
 	 */
 	public void deployCards(){
 		
@@ -259,7 +302,6 @@ public class BoardManager {
 					
 					ClientNotificator.notifyGameMove("Todeskarte "  + card + " wurde von Spieler " + currentOwner + " zu Spieler " + newOwner + " verschoben.");
 				}
-				
 			}
 			
 			//Verteilen der Zielkarten
@@ -271,7 +313,6 @@ public class BoardManager {
 					this.targetCards.put(card, newOwner);
 					ClientNotificator.notifyGameMove("Zielkarte "  + card + " wurde von Spieler " + currentOwner + " zu Spieler " + newOwner + " verschoben.");
 				}
-				
 			}
 			
 			ClientNotificator.notifyUpdateGameBoard(board);
