@@ -40,6 +40,7 @@ public class GameFinisher {
 	private int notValuatedCards = 0;
 	private int singleDeadCards = 0;
 	private int playerPoints = 0;
+	private int gameID;
 	
 	
 	public GameFinisher(){
@@ -149,6 +150,9 @@ public class GameFinisher {
 		
 	}
 	
+	/**
+	 * Setzt die Zähler vom GameFinisher zurück.
+	 */
 	public void resetCounters(){
 		deadCards.clear();
 		specialCards.clear();
@@ -163,26 +167,34 @@ public class GameFinisher {
 		playerPoints = 0;
 	}
 	
+	/**
+	 * Ranking setzen.
+	 */
 	public void setRanking(){
-		//Maja: klären: Wie und wo genau Ranking nachführen?
+		gameID = Game.getInstance().getGameID();
+		Ranking[] inGameRanking = RankingRepository.getInGameRanking(gameID, this.ranking);
+		showRankingToPlayer(inGameRanking);
 	}
 	
-	//Ranking auslesen
+	/**
+	 * Liest das Ranking aus.
+	 * @return Ranking Hashtabelle <IPlayer, Integer>
+	 */
 	public Hashtable<IPlayer, Integer> getRanking(){
 		return ranking;
 	}
 	
-	public void showRankingToPlayer(){
-		//Maja: klären: Wird das in GUI gemacht? Muss ich was tun?
-		
-		// Dem Ranking muss du auch die gameId mitgeben, damit abgespeichrt werden kann in welchem Spiel diese Platzierungen waren
-		int gameId = 1; //etwa so: Game.getInstance().getGameId();
-		// Den hashtable und die gameId dem RankingRepository übergeben, dies macht dir das Ranking Array und fügt die Objekte dem DB Context hinzu
-		Ranking[] inGameRanking = RankingRepository.getInGameRanking(gameId, this.ranking);
-		// Clients sagen das das Game fertig ist und als Parameter die Platzierungen Übergeben
+	/**
+	 * Zeigt den Spielern das Ranking an.
+	 * @param inGameRanking RankingRepository übergeben
+	 */
+	public void showRankingToPlayer(Ranking[] inGameRanking){
 		ClientNotificator.notifyGameFinished(inGameRanking);
 	}
 	
+	/**
+	 * Schliesst das Spiel komplett ab.
+	 */
 	public void closeGame(){
 		//Maja: klären: Wie soll ich das Spiel genau abschliessen?
 
@@ -213,7 +225,7 @@ public class GameFinisher {
 		db.addGame(gi);
 		
 		// 5. Ranking speichern und den Spielern anzeigen
-		this.showRankingToPlayer();
+		this.setRanking();
 		
 		// 6. Alle Änderungen an der Datenbank sind bis jetzt nur im Memory
 		//    Um die Daten effektiv zu speichern machst du
