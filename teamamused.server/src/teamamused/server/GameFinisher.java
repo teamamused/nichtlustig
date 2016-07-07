@@ -63,15 +63,15 @@ public class GameFinisher {
 	 * @param playerPrePoints Vorpunkte von Professoren-Karte
 	 */
 	public void calcPoints(IPlayer player, int playerPrePoints){
-		playerPoints += playerPrePoints;
+		playerPoints += playerPrePoints; //für Riebmann-Karten
 		playerPoints += valuatedLemmingCards * 4;
 		
 		if(valuatedYetiCards > 0){
 			if(valuatedYetiCards > 1){
 				playerPoints += valuatedYetiCards * 3;
 			}else{
-				
-			}playerPoints += 1;
+				playerPoints += 1;
+			}
 		}
 		
 		playerPoints += valuatedRiebmannCards * 2;
@@ -96,10 +96,10 @@ public class GameFinisher {
 		//Liest die Karten der einzelnen Spieler aus
 		for(IPlayer player : players){
 			for(IDeadCard deadCard : player.getDeadCards()){
-				deadCards.add(deadCard);
-				singleDeadCards++;
-				/*maja: klären:
-				 * Wie stelle ich sicher, dass diese auf keiner Zielkarte liegt?*/
+				if(!deadCard.getIsOnTargetCard()){
+					deadCards.add(deadCard);
+					singleDeadCards++;
+				}						
 			}
 			for(ISpecialCard specialCard : player.getSpecialCards()){
 				specialCards.add(specialCard);
