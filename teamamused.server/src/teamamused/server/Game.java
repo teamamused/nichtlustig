@@ -113,4 +113,12 @@ public class Game implements Serializable{
 	public IPlayer getActivePlayer(){
 		return activePlayer;
 	}
+	
+	/**
+	 * Gibt die Game-ID des Spiels zurück.
+	 * @return Game-ID als Integer
+	 */
+	public Integer getGameID(){
+		return Game.getInstance().hashCode();
+	}
 }
