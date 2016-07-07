@@ -16,6 +16,7 @@ public class Valuation {
 	/**
 	 * Wertet die Karten der Spieler aus und wertet sie anschliessend gemäss dem
 	 * Wert des pinken Würfels.
+	 * @param board Board von BoardManager übergeben
 	 */
 	public void valuate(BoardManager board){
 		valuationValue = CubeManager.getInstance().getCurrentPinkCubeValue().FaceValue;
