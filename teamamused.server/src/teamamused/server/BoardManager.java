@@ -38,7 +38,6 @@ public class BoardManager {
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose;
 	private List<ITargetCard> notValuatedCardsFromPlayers;
 	private List<ITargetCard> playerTargetCardsToValuate;
-	private int pinkCubeValue;
 	
 	//Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett oder bei Spieler
 	private Hashtable<IDeadCard, ICardHolder> deadCards = new Hashtable<IDeadCard, ICardHolder>();
@@ -80,6 +79,7 @@ public class BoardManager {
 	
 	/**
 	 * Gibt eine Liste mit noch nicht gewerteten Karten der Spieler zurück.
+	 * @return nicht gewertete Spieler-Karten
 	 */
 	public List<ITargetCard> getNotValuatedCardsFromPlayer(){
 		notValuatedCardsFromPlayers = null;
@@ -103,7 +103,6 @@ public class BoardManager {
 	 * @param pinkCube Wert von pinkem Würfel zur Wertung
 	 */
 	public void valuatePlayerCards(int pinkCube){
-		this.pinkCubeValue = pinkCube;
 		playerTargetCardsToValuate = notValuatedCardsFromPlayers;
 		
 		for(ITargetCard card : playerTargetCardsToValuate){
@@ -228,6 +227,7 @@ public class BoardManager {
 	 * Hat der Spieler mehrere Karten zur Auswahl, wird ihm mit dieser Methode
 	 * eine Auswahl an Karten gegeben, welche er nehmen kann.
 	 * @param targetCardsToChoose Zielkarten, welche dem Spieler zur Auswahl präsentiert werden
+	 * @return Karten, welche dem Spieler zur Auswahl vorgeschlagt werden
 	 */
 	public Hashtable<Integer, List<ITargetCard>> proposeCards(List<ITargetCard> targetCardsToChoose){
 		return cardsToPropose;
