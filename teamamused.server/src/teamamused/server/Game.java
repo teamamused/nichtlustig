@@ -17,6 +17,7 @@ import teamamused.common.interfaces.IPlayer;
  */
 
 public class Game implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private static Game instance;
 	private Game game = new Game();
 	
@@ -37,7 +38,7 @@ public class Game implements Serializable{
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spiel");
 		
 		//Spielstatus auf "gestartet" setzen
-		this.gameStatus = 1;
+		gameStatus = 1;
 	}
 	
 	/**
