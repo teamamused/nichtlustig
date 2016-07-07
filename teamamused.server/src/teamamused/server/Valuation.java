@@ -19,7 +19,7 @@ public class Valuation {
 	 * @param board Board von BoardManager übergeben
 	 */
 	public void valuate(BoardManager board){
-		valuationValue = CubeManager.getInstance().getCurrentPinkCubeValue().FaceValue;
+		valuationValue = CubeManager.getInstance().getCurrentPinkCube().FaceValue;
 		board.getNotValuatedCardsFromPlayer();
 		board.valuatePlayerCards(valuationValue);
 		board.valuePlayerCards();
