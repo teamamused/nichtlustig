@@ -1,5 +1,8 @@
 package teamamused.server.gui;
 
+import java.io.FileNotFoundException;
+import java.util.logging.Logger;
+
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -13,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
 import teamamused.server.connect.ClientAwaiter;
 
@@ -25,7 +29,7 @@ public class ServerView extends AbstractView<ServerModel> {
 	protected Image logo;
 	protected ScrollPane scrollTxt;
 	protected ChoiceBox<String> language;
-
+	
 	public ServerView(Stage stage, ServerModel model){
 		super(stage, model);
 	}
@@ -48,8 +52,7 @@ public class ServerView extends AbstractView<ServerModel> {
 		
 		Scene scene = new Scene (root);
 		
-		//Instanziierung der Controlls
-		logo = new Image("Logo_1.png", 400, 400, true, true);
+		logo = new Image("Logo_1.png", 400, 400, true, true);;
 		labelServer = new Label("Dein Server läuft!");
 		labelLogo = new Label("", new ImageView(logo));
 		labelConnect = new Label("Spieler können sich verbinden über:");
