@@ -31,7 +31,7 @@ public class Main extends Application {
 		
 		// Server Starten
 		ClientAwaiter.getInstance().start();
-        ServiceLocator.getInstance().getLogger().info("Gehe zu gui");
+        ServiceLocator.getInstance().getLogger().info("Gehe zu GUI");
 		
         // Gui initialisieren
         ServerModel model = new ServerModel();
