@@ -1,8 +1,11 @@
 package teamamused.server.connect;
 
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import teamamused.common.ServiceLocator;
 
@@ -15,11 +18,26 @@ import teamamused.common.ServiceLocator;
  *
  */
 public class ClientAwaiter extends Thread {
+	
+	private static final Logger LOG = ServiceLocator.getInstance().getLogger();
 
 	/**
 	 * Standard Portnumber für unser Programm
 	 */
 	public final static int PORT_NUMBER = 9636;
+	
+	/**
+	 * IP Adresse des aktuellen Hosts global zur Verfügung stellen.
+	 */
+	public static String IP_ADDRESS;
+	static {
+		try {
+			IP_ADDRESS = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			IP_ADDRESS = "nicht verfügbar";
+			e.printStackTrace();
+		}
+	}
 
 	private static int currClientId;
 	private static ClientAwaiter instance;
@@ -42,7 +60,7 @@ public class ClientAwaiter extends Thread {
 			// wurde warten wir auf Clients
 			while (this.isWaitingForClients) {
 				Socket clientSocket = serverSocket.accept();
-				ServiceLocator.getInstance().getLogger().info("Neuer Client verbunden");
+				LOG.info("Neuer Client verbunden");
 				ClientConnection client = new ClientConnection(clientSocket, currClientId++);
 				ClientManager.getInstance().addClient(client);
 				client.start();

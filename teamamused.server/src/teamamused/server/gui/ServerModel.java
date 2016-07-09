@@ -1,5 +1,7 @@
 package teamamused.server.gui;
 
-public class ServerModel {
+import teamamused.common.gui.AbstractModel;
+
+public class ServerModel extends AbstractModel {
  
 }

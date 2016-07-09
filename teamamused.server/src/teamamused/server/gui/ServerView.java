@@ -1,70 +1,34 @@
 package teamamused.server.gui;
 
-import java.util.logging.Level;
-import teamamused.common.ServiceLocator;
-import teamamused.common.gui.AbstractView;
-import teamamused.server.TextAreaHandler;
-import teamamused.server.connect.ClientAwaiter;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import teamamused.common.gui.AbstractView;
+import teamamused.server.connect.ClientAwaiter;
 
-public class ServerView{
-	private ServerModel model;
-	private Stage stage;
-	private Button restartButton;
-	private Label label1, label2, label3, label4, label5, label6;
-	private TextField txtField;
-	private Image logo;
-	private ScrollPane scroll;
+public class ServerView extends AbstractView<ServerModel> {
 	
-	protected ServerView(Stage stage, ServerModel model){
-		this.stage = stage;
-		this.model = model;
-		
-		stage.setTitle("Team Amused: Server");
-		
-		BorderPane root = new BorderPane();
-		Scene scene = new Scene (root);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		stage.setScene(scene);
-		
-		logo = new Image(getClass().getResourceAsStream("logo1"));
-		label1 = new Label("Dein Server läuft!");
-		label2 = new Label("", new ImageView(logo));
-		label3 = new Label("Spieler können sich verbinden via:");
-		label4 = new Label("Port: " + ClientAwaiter.PORT_NUMBER);
-		label5 = new Label("IP: ");
-		label6 = new Label("Protokoll:");
-		restartButton = new Button("Server neustarten");
-		txtField = new TextField();
-		scroll = new ScrollPane();
-		scroll.setContent(txtField);
-		
-		HBox hBoxTop = new HBox();
-		hBoxTop.getChildren().addAll(label1, label2);
-		root.setTop(hBoxTop);
-		
-		VBox vBoxBottom = new VBox();
-		vBoxBottom.getChildren().addAll(label6, txtField);
-		root.setLeft(vBoxBottom);
-		
-		VBox vBoxCenter = new VBox();
-		vBoxCenter.getChildren().addAll(label3, label4, label5);
-		root.setCenter(vBoxCenter);
-				
+	protected GridPane root;
+	protected Button restartButton;
+	protected Label labelServer, labelLogo, labelConnect, labelPort, labelIP, labelProtocol, labelTeam;
+	protected TextArea loggingTxtArea;
+	protected Image logo;
+	protected ScrollPane scrollTxt;
+	protected ChoiceBox<String> language;
+
+	//Die Parameterwerte werden dem Superkonstruktor übergeben
+	public ServerView(Stage stage, ServerModel model){
+		super(stage, model);
 	}
 	
 	public void start(){
@@ -78,77 +42,68 @@ public class ServerView{
 	public Stage getStage(){
 		return stage;
 	}
+	
+	@Override
+	protected void initView() {
+		// TODO: Für was ist diese Methode?
+	}
 
 	@Override
 	protected Scene createGUI() {
-		// TODO Auto-generated method stub
-		return null;
+		stage.setTitle("Team Amused: Server");
+		
+		//Pane definieren
+		root = new GridPane();
+		root.setPadding(new Insets(20, 20, 20, 20));
+		root.setHgap(10);
+		root.setVgap(10);
+		root.setGridLinesVisible(false);
+		
+		Scene scene = new Scene (root);
+		
+		logo = new Image("Logo_1.png", 400, 400, true, true);
+		labelServer = new Label("Dein Server läuft!");
+		labelLogo = new Label("", new ImageView(logo));
+		labelConnect = new Label("Spieler können sich verbinden über:");
+		labelPort = new Label("\u2022" + "  Port " + ClientAwaiter.PORT_NUMBER);
+		labelIP = new Label("\u2022" + "  IP " + ClientAwaiter.IP_ADDRESS);
+		labelProtocol = new Label("Protokoll:");
+		labelTeam = new Label("\u0184" + " Team Amused, IT-Projekt 2016");
+		restartButton = new Button("Server neustarten");
+		scrollTxt = new ScrollPane();
+		language = new ChoiceBox<String>();
+		language.getItems().add("Deutsch");
+		language.getItems().add("Englisch");
+		//Setzt den ersten Wert der Auswahlliste als Default
+		language.getSelectionModel().selectFirst();
+
+		root.add(restartButton, 0, 0);
+		root.add(labelServer, 0, 1);
+		root.add(labelLogo, 2, 0);
+		root.add(labelConnect, 0, 2);
+		root.add(labelPort, 1, 2);
+		root.add(labelIP, 1, 3);
+		root.add(labelProtocol, 0, 5);
+		root.add(language, 2, 6);
+		root.add(labelTeam, 0, 6);
+		
+		GridPane.setHalignment(restartButton, HPos.LEFT);
+		GridPane.setValignment(restartButton, VPos.CENTER);
+		GridPane.setHalignment(labelLogo, HPos.RIGHT);
+		GridPane.setValignment(labelLogo, VPos.TOP);
+		GridPane.setHalignment(language, HPos.RIGHT);
+		GridPane.setValignment(language, VPos.BOTTOM);
+		
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		labelServer.setId("labelServer");
+		
+		return scene;
 	}
 
+	public void setLoggingTxtArea(TextArea loggingTxtArea) {
+		this.loggingTxtArea = loggingTxtArea;
+		scrollTxt.setContent(loggingTxtArea);
+		root.add(loggingTxtArea, 0, 5, 3, 1);
+	}
 
 }
-
-//public class ServerView extends AbstractView<ServerModel> {
-//	TextAreaHandler textAreaHandler;
-//    protected TextArea txtLog;
-//    
-//    public ServerView(Stage stage, ServerModel model) {//, TextArea txtLog) {
-//    	super (stage, model);
-//        stage.setTitle("Team amused Server");
-//    }
-//    
-//
-//	@Override
-//	protected Scene createGUI() {
-//        
-//        // Logger intialisieren (wieso kann ich das nicht in die Mainklasse verschieben?)
-//        this.textAreaHandler = new TextAreaHandler();
-//        textAreaHandler.setLevel(Level.INFO);
-//        ServiceLocator.getInstance().getLogger().addHandler(textAreaHandler);
-//        this.txtLog = textAreaHandler.getTextArea();
-//        
-//		BorderPane root = new BorderPane();
-//		Scene scene = new Scene(root,400,400);
-//
-//
-//        HBox topBox = new HBox();
-//        topBox.setId("TopBox");
-//        Region spacer = new Region();
-//        HBox.setHgrow(spacer, Priority.ALWAYS);
-//		Label l =new Label("Dein Server läuft!");
-//	    Label lblPort = new Label(" Läuft auf Port");
-//	    TextField txtPort = new TextField(ClientAwaiter.PORT_NUMBER + "");
-//        topBox.getChildren().addAll(l, lblPort, spacer, txtPort);
-//        root.setTop(topBox);
-//		
-//        ScrollPane scrollPane = new ScrollPane();
-//        scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-//        scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-//        scrollPane.setFitToHeight(true);
-//        scrollPane.setFitToWidth(true);
-//        root.setCenter(scrollPane);
-//        scrollPane.setContent(this.txtLog);
-//        this.txtLog.setWrapText(true);
-//
-//		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-//		return scene;
-//	}
-//
-//    public void start() {
-//        stage.show();
-//    }
-//    
-//    /**
-//     * Stopping the view - just make it invisible
-//     */
-//    public void stop() {
-//        stage.hide();
-//    }
-//    
-//    /**
-//     * Getter for the stage, so that the controller can access window events
-//     */
-//    public Stage getStage() {
-//        return stage;
-//    }
-//}

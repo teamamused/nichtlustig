@@ -1,5 +1,7 @@
 package teamamused.server;
 
+import java.util.logging.Level;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -18,14 +20,14 @@ import teamamused.server.gui.ServerView;
  *
  */
 public class Main extends Application {
-	//TextAreaHandler textAreaHandler; 
+	
+	private TextAreaHandler textAreaHandler = new TextAreaHandler(); 
 	
 	@Override
 	public void start(Stage primaryStage) {
         // Logger intialisieren
-        /*this.textAreaHandler = new TextAreaHandler();
         textAreaHandler.setLevel(Level.INFO);
-        ServiceLocator.getInstance().getLogger().addHandler(textAreaHandler);*/
+        ServiceLocator.getInstance().getLogger().addHandler(textAreaHandler);
 		
 		// Server Starten
 		ClientAwaiter.getInstance().start();
@@ -33,7 +35,8 @@ public class Main extends Application {
 		
         // Gui initialisieren
         ServerModel model = new ServerModel();
-        ServerView view = new ServerView(primaryStage, model); //, this.textAreaHandler.getTextArea());
+        ServerView view = new ServerView(primaryStage, model);
+        view.setLoggingTxtArea(textAreaHandler.getTextArea());
         new ServerController(model, view);
         
         //defaultLogger.info("Starte View");

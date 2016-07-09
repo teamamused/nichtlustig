@@ -1,8 +1,19 @@
-//http://docs.oracle.com/javafx/2/css_tutorial/jfxpub-css_tutorial.htm
-
 .root{
 	-fx-font-size: 16pt;
-	-fx-font-family: "Arial";
+	-fx-font-family: "Tempus Sans ITC";
 	-fx-base: white;
-	-fx-background: rgb(179, 10, 35);
+	-fx-background: rgb(187, 14, 35);
+}
+.button:hover{
+	-fx-background: lightgrey;
+}
+.choicebox:hoover{
+	-fx-background: lightgrey;
+}
+.textarea:hoover{
+	-fx-background: lightgrey;
+}
+#labelServer{
+	-fx-font-weight: bold;
+	-fx-font-size: 20pt;
 }
