@@ -26,21 +26,8 @@ public class ServerView extends AbstractView<ServerModel> {
 	protected ScrollPane scrollTxt;
 	protected ChoiceBox<String> language;
 
-	//Die Parameterwerte werden dem Superkonstruktor übergeben
 	public ServerView(Stage stage, ServerModel model){
 		super(stage, model);
-	}
-	
-	public void start(){
-		stage.show();
-	}
-	
-	public void stop(){
-		stage.hide();
-	}
-	
-	public Stage getStage(){
-		return stage;
 	}
 	
 	@Override
@@ -52,7 +39,7 @@ public class ServerView extends AbstractView<ServerModel> {
 	protected Scene createGUI() {
 		stage.setTitle("Team Amused: Server");
 		
-		//Pane definieren
+		//Definition der Pane
 		root = new GridPane();
 		root.setPadding(new Insets(20, 20, 20, 20));
 		root.setHgap(10);
@@ -61,6 +48,7 @@ public class ServerView extends AbstractView<ServerModel> {
 		
 		Scene scene = new Scene (root);
 		
+		//Instanziierung der Controlls
 		logo = new Image("Logo_1.png", 400, 400, true, true);
 		labelServer = new Label("Dein Server läuft!");
 		labelLogo = new Label("", new ImageView(logo));
@@ -68,7 +56,7 @@ public class ServerView extends AbstractView<ServerModel> {
 		labelPort = new Label("\u2022" + "  Port " + ClientAwaiter.PORT_NUMBER);
 		labelIP = new Label("\u2022" + "  IP " + ClientAwaiter.IP_ADDRESS);
 		labelProtocol = new Label("Protokoll:");
-		labelTeam = new Label("\u0184" + " Team Amused, IT-Projekt 2016");
+		labelTeam = new Label("Team Amused: IT-Projekt an der FHNW, 2016");
 		restartButton = new Button("Server neustarten");
 		scrollTxt = new ScrollPane();
 		language = new ChoiceBox<String>();
@@ -77,6 +65,7 @@ public class ServerView extends AbstractView<ServerModel> {
 		//Setzt den ersten Wert der Auswahlliste als Default
 		language.getSelectionModel().selectFirst();
 
+		//Hinzufügen der Controlls der Pane
 		root.add(restartButton, 0, 0);
 		root.add(labelServer, 0, 1);
 		root.add(labelLogo, 2, 0);
@@ -87,6 +76,7 @@ public class ServerView extends AbstractView<ServerModel> {
 		root.add(language, 2, 6);
 		root.add(labelTeam, 0, 6);
 		
+		//Ausrichtung der Controlls in der Pane
 		GridPane.setHalignment(restartButton, HPos.LEFT);
 		GridPane.setValignment(restartButton, VPos.CENTER);
 		GridPane.setHalignment(labelLogo, HPos.RIGHT);
@@ -94,16 +84,24 @@ public class ServerView extends AbstractView<ServerModel> {
 		GridPane.setHalignment(language, HPos.RIGHT);
 		GridPane.setValignment(language, VPos.BOTTOM);
 		
+		//Zuweisung des Stylesheets
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		labelServer.setId("labelServer");
+		labelTeam.setId("labelTeam");
 		
 		return scene;
 	}
 
+	/**
+	 * Setzt das TextArea-Controll für die Log-Ausgabe
+	 * 
+	 * @param loggingTxtArea TextArea für die Log-Ausgabe
+	 */
 	public void setLoggingTxtArea(TextArea loggingTxtArea) {
 		this.loggingTxtArea = loggingTxtArea;
 		scrollTxt.setContent(loggingTxtArea);
 		root.add(loggingTxtArea, 0, 5, 3, 1);
+		loggingTxtArea.setEditable(false);
 	}
 
 }
