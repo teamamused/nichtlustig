@@ -1,41 +1,64 @@
 package teamamused.client;
-	
-import teamamused.client.connect.Client;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 
+import teamamused.client.gui.LogInController;
+import teamamused.client.gui.LogInModel;
+import teamamused.client.gui.LogInView;
+import teamamused.client.gui.WelcomeController;
+import teamamused.client.gui.WelcomeModel;
+import teamamused.client.gui.WelcomeView;
+import teamamused.client.gui.splashscreen.Splash_Controller;
+import teamamused.client.gui.splashscreen.Splash_Model;
+import teamamused.client.gui.splashscreen.Splash_View;
+import javafx.application.Application;
+
+import javafx.stage.Stage;
 
 public class Main extends Application {
+
+	private Splash_View splashView;
+	private LogInView logInView;
+	private WelcomeView welcomeView;
+	private static Main instance = null;
+
 	@Override
 	public void start(Stage primaryStage) {
-		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			Label l =new Label();
-			l.setText("Dies ist der Client!");
-			Button b = new Button("Start");
-			b.setOnAction(new EventHandler<ActionEvent>() {
-				
-				@Override
-				public void handle(ActionEvent event) {
-					Client.getInstance().startGame();
-					
-				}
-			});
-			root.setCenter(l);
-			root.setBottom(b);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		Main.instance = this;
+		// Create and display the splash screen and model
+		Splash_Model splashModel = new Splash_Model();
+		splashView = new Splash_View(primaryStage, splashModel);
+		new Splash_Controller(this, splashModel, splashView);
+		splashView.start();
+
+		// Display the splash screen and begin the initialization
+		splashModel.initialize();
+	}
+
+	public void startLogIn() {
+
+		Stage logInStage = new Stage();
+
+		LogInModel model = new LogInModel();
+		logInView = new LogInView(logInStage, model);
+		new LogInController(model, logInView);
+		splashView.stop();
+		splashView = null;
+		logInView.start();
+	}
+
+	public void startWelcome() {
+
+		Stage welcomeStage = new Stage();
+
+		WelcomeModel model = new WelcomeModel();
+		welcomeView = new WelcomeView(welcomeStage, model);
+		new WelcomeController(model, welcomeView);
+		logInView.stop();
+		logInView = null;
+		welcomeView.start();
+	}
+
+	public static Main getInstance() {
+		return instance;
 	}
 	
 	public static void main(String[] args) {

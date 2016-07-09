@@ -1,13 +1,22 @@
 package teamamused.client.gui;
 
-public class LogInController {
+import javafx.event.ActionEvent;
+import teamamused.client.Main;
+import teamamused.common.gui.AbstractController;
+
+public class LogInController extends AbstractController<LogInModel, LogInView> {
 	
-	final private LogInModel model;
-	final private LogInView view;
-	
-	protected LogInController(LogInModel model, LogInView view) {
-		this.model = model;
-		this.view = view;
+	public LogInController(LogInModel model, LogInView view) {
+		super(model, view);
+		
+		view.btnLogin.setOnAction((ActionEvent e) -> {
+			Main.getInstance().startWelcome();
+		});
+		
+		view.linkReg.setOnAction((ActionEvent e) -> {
+			System.out.println("This link is clicked");
+		});
+
 	}
 
 }

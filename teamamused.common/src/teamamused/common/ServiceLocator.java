@@ -103,7 +103,7 @@ public class ServiceLocator {
 	 * 
 	 * @param settings Einstellungsobjet Referenz
 	 */
-	public void setSetting(Settings settings) {
+	public void setSettings(Settings settings) {
 		this.settings = settings;
 	}
 
