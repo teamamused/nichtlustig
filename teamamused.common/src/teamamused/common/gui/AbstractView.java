@@ -10,7 +10,7 @@ import javafx.stage.Stage;
  * 
  * @author Brad Richards
  */
-public abstract class AbstractView<M> {
+public abstract class AbstractView<M extends AbstractModel> {
     protected Stage stage;
     protected Scene scene;
     protected M model;

@@ -7,7 +7,7 @@ package teamamused.common.gui;
  * 
  * @author Brad Richards
  */
-public abstract class AbstractController<M, V> {
+public abstract class AbstractController<M extends AbstractModel, V extends AbstractView<M>> {
     protected M model;
     protected V view;
     

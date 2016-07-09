@@ -4,27 +4,22 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import com.sun.javafx.logging.Logger;
-
-import teamamused.common.ServiceLocator;
-
 //Gemäss Unterlagen aus dem Modul Software Engineering 2 von Bradley Richards
 public class Translator {
-	private static Translator translator = null;
+	private static Translator instance = null;
 	private Locale locale;
 	private ResourceBundle resourceBundle;
-	private Logger logger = new Logger();
 	
 	//Konstruktor
 	private Translator(){
 	}
 	
-	//Factory-Pattern, damit nur eine Translator-Instanz existiert
-	public static Translator getTranslator(){
-		if (translator == null){
-			return translator = new Translator();
+	// Singleton-Pattern, damit nur eine Translator-Instanz existiert
+	public static Translator getInstance(){
+		if (instance == null){
+			return instance = new Translator();
 		} else {
-			return translator;
+			return instance;
 		}
 	}
 	
