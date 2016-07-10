@@ -7,6 +7,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Logger;
 
+import teamamused.client.libs.Client;
+import teamamused.client.libs.GuiNotificator;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
 import teamamused.common.dtos.TransportObject;
@@ -32,6 +34,7 @@ public class ServerConnection extends Thread {
 	ObjectInputStream in;
 	ObjectOutputStream out;
 	private Logger log = ServiceLocator.getInstance().getLogger();
+	private GuiNotificator notifyGui;
 	private boolean holdConnection = true;
 
 	/**
@@ -45,6 +48,7 @@ public class ServerConnection extends Thread {
 		this.socket = socket;
 		this.in = in;
 		this.out = out;
+		this.notifyGui = Client.getInstance().getGuiNotificator();
 	}
 
 	/**
@@ -99,11 +103,16 @@ public class ServerConnection extends Thread {
 			dtoOut = this.executeRemoteCall((TransportableProcedureCall) dtoIn);
 			break;
 		case ChatMessage:
-			Client.getInstance().addChatMessage((TransportableChatMessage)dtoIn);
+			this.notifyGui.addChatMessage((TransportableChatMessage)dtoIn);
 			dtoOut = new TransportableState(true, "Nachricht erhalten");
 			break;
 		case Answer:
 			this.processAnswer((TransportableAnswer) dtoIn);
+
+		case Goodbye:
+			this.notifyGui.serverClosedConnection();
+			this.closeConnection();
+			break;
 		default:
 			dtoOut = new TransportableState(false, "unbekanntes Transport Objekt");
 			break;
@@ -119,7 +128,7 @@ public class ServerConnection extends Thread {
 		case ShowGameMove:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof String) {
-					Client.getInstance().GameMoveDone((String)params[0]);
+					this.notifyGui.gameMoveDone((String)params[0]);
 					return new TransportableState(true, "Client updated");
 				}
 			}
@@ -127,7 +136,7 @@ public class ServerConnection extends Thread {
 		case ChangeActivePlayer:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof IPlayer) {
-					Client.getInstance().activeChanged(((IPlayer)params[0]).getPlayerName() == Client.getInstance().getPlayer().getPlayerName());
+					this.notifyGui.activeChanged(((IPlayer)params[0]).getPlayerName() == Client.getInstance().getPlayer().getPlayerName());
 					return new TransportableState(true, "Client updated");
 				}
 			}
@@ -136,7 +145,7 @@ public class ServerConnection extends Thread {
 		case UpdateGameBoard:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof GameBoard) {
-					Client.getInstance().updateGameBoard((GameBoard)params[0]);
+					this.notifyGui.updateGameBoard((GameBoard)params[0]);
 					return new TransportableState(true, "Client updated");
 				}
 			}
@@ -146,7 +155,7 @@ public class ServerConnection extends Thread {
 			// Karten kommen als Hashtable of int und List of ITargetCard
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof Hashtable<?, ?>) {
-					Client.getInstance().chooseCards((Hashtable<Integer, List<ITargetCard>>)params[0]);
+					this.notifyGui.chooseCards((Hashtable<Integer, List<ITargetCard>>)params[0]);
 					return new TransportableState(true, "Client updated");
 				}
 			}
@@ -155,7 +164,7 @@ public class ServerConnection extends Thread {
 		case FinishGame:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof Ranking[]) {
-					Client.getInstance().gameFinished((Ranking[])params[0]);
+					Client.getInstance().getGuiNotificator().gameFinished((Ranking[])params[0]);
 					return new TransportableState(true, "Client updated");
 				}
 			}
@@ -171,9 +180,28 @@ public class ServerConnection extends Thread {
 		switch (answer.getOriginalCall().getProcedure()) {
 			case StartGame:
 				break;
-			case CreatePlayer:
+			case RegisterPlayer:
 				if (answer.isOK()) {
 					Client.getInstance().setPlayer((IPlayer)answer.getReturnValue());
+					this.notifyGui.registerSuccessful((IPlayer)answer.getReturnValue());
+				} else {
+					this.notifyGui.registerFailed((String)answer.getReturnValue());
+				}
+				break;
+			case LoginPlayer:
+				if (answer.isOK()) {
+					Client.getInstance().setPlayer((IPlayer)answer.getReturnValue());
+					this.notifyGui.loginSuccessful((IPlayer)answer.getReturnValue());
+				} else {
+					this.notifyGui.loginFailed((String)answer.getReturnValue());
+				}
+				break;
+			case JoinGame:
+				if (answer.isOK()) {
+					Client.getInstance().setPlayer((IPlayer)answer.getReturnValue());
+					this.notifyGui.joinGameSuccessful((IPlayer)answer.getReturnValue());
+				} else {
+					this.notifyGui.joinGameFailed((String)answer.getReturnValue());
 				}
 				break;
 			default:

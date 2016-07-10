@@ -2,7 +2,7 @@ package teamamused.playground.chat;
 
 import java.text.DateFormat;
 
-import teamamused.client.connect.Client;
+import teamamused.client.libs.Client;
 import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportableChatMessage;

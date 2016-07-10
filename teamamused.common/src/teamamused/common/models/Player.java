@@ -1,5 +1,6 @@
 package teamamused.common.models;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Hashtable;
 
@@ -15,16 +16,18 @@ import teamamused.common.models.cards.GameCard;
  * @author Daniel
  *
  */
-public class Player implements IPlayer {
+public class Player implements IPlayer, Serializable {
 
-
-	Hashtable<GameCard, ISpecialCard> htSpecialCards = new Hashtable<GameCard, ISpecialCard>();
-	Hashtable<GameCard, ITargetCard> htTargetCards = new Hashtable<GameCard, ITargetCard>();
-	Hashtable<GameCard, IDeadCard> htDeadCards = new Hashtable<GameCard, IDeadCard>();
-	Hashtable<IDeadCard, ITargetCard> htDeadOnTargetCards = new Hashtable<IDeadCard, ITargetCard>();
+	/** Versionsnummer für die Serialisierung */
+	private static final long serialVersionUID = 1;
 	
-	String username;
-	int playerNumber = 0;
+	private transient Hashtable<GameCard, ISpecialCard> htSpecialCards = new Hashtable<GameCard, ISpecialCard>();
+	private transient Hashtable<GameCard, ITargetCard> htTargetCards = new Hashtable<GameCard, ITargetCard>();
+	private transient Hashtable<GameCard, IDeadCard> htDeadCards = new Hashtable<GameCard, IDeadCard>();
+	private transient Hashtable<IDeadCard, ITargetCard> htDeadOnTargetCards = new Hashtable<IDeadCard, ITargetCard>();
+	
+	private String username;
+	private int playerNumber = 0;
 	
 	/**
 	 * Instanziert einen neuen Spieler

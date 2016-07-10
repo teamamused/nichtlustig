@@ -90,9 +90,7 @@ public class GameFinisher {
 	 */
 	public void finishGame(){
 		//Liest die Spieler aus
-		for(IPlayer player: Game.getInstance().getPlayers()){
-			players.add(player);
-		}
+		this.players = BoardManager.getInstance().getGameBoard().getPlayers();
 		
 		//Liest die Karten der einzelnen Spieler aus
 		for(IPlayer player : players){
@@ -114,26 +112,26 @@ public class GameFinisher {
 				}
 				//Lemming-Karte
 				else if(!targetCard.getIsCoveredByDead()){
-					if(targetCard.getGameCard().name().matches("ZK_Lemming"+"[1-5]")){
+					if(targetCard.getGameCard().isLemming()){
 						valuatedLemmingCards++;
 					}
 					//Yeti-Karte
-					else if(targetCard.getGameCard().name().matches("ZK_Yeti"+"[1-5]")){
+					else if(targetCard.getGameCard().isYeti()){
 						valuatedYetiCards++;
 					}
 					//Riebmann-Karte
-					else if(targetCard.getGameCard().name().matches("ZK_Riebmann"+"[1-5]")){
+					else if(targetCard.getGameCard().isRiebmann()){
 						valuatedRiebmannCards++;
 					}
 					//Dino-Karte
-					else if(targetCard.getGameCard().name().matches("ZK_Dinosaurier"+"[1-5]")){
+					else if(targetCard.getGameCard().isDino()){
 						dinoCardValue += targetCard.getCardValue();
 					}
 					/*Prüft ob ein Spieler eine Professoren-Karte hat{
 					* und erzeugt automatisch eine zufällige Punktzahl von 0-5
 					* für die Karte, welche der Spieler erhält
 					*/	
-					else if(targetCard.getGameCard().name().matches("ZK_Professoren"+"[1-5]")){
+					else if(targetCard.getGameCard().isProffessoren()){
 						playerPrePoints = (int) Math.random() * 6;
 					}
 				}
@@ -218,7 +216,7 @@ public class GameFinisher {
 		// 2. GameInfo Objekt erstellen:
 		GameInfo gi = new GameInfo(gameId, spielStart, spielEnde);
 		// Spieler zum GameInfo Objekt hinzufügen
-		for (IPlayer player : Game.getInstance().getPlayers()) {
+		for (IPlayer player : this.players) {
 			gi.Players.add(player.getPlayerName());
 		}
 		// 4. in der Datenbank eine GameInfo hinzufügen:

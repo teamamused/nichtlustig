@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Logger;
 
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 
 /**
@@ -39,7 +40,7 @@ public class ServerConnector {
 		try {
 			this.socket = new Socket(this.server, this.portNumber);
 		} catch(Exception ex) {
-			this.log.severe(ex.toString());
+		     LogHelper.LogException(ex);
 			return false;
 		}
 		this.log.info("Verbindung zum Server aufgebaut. " + this.socket.getInetAddress() + ":" + this.socket.getPort());
@@ -55,7 +56,7 @@ public class ServerConnector {
 			
 			in = new ObjectInputStream(socket.getInputStream());
 		} catch(Exception ex) {
-			this.log.severe(ex.toString());
+		     LogHelper.LogException(ex);
 			return false;
 		}
 		// Server Connection Thread starten

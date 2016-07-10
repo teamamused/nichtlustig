@@ -2,10 +2,10 @@ package teamamused.client;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
-import teamamused.client.connect.Client;
 import teamamused.client.gui.GameBoardController;
 import teamamused.client.gui.GameBoardModel;
 import teamamused.client.gui.GameBoardView;
+import teamamused.client.libs.Client;
 import teamamused.common.ServiceLocator;
 
 

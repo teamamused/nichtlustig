@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import teamamused.common.interfaces.*;
+import teamamused.common.models.cards.GameCard;
 import teamamused.common.models.cubes.CubeColor;
 
 /**
@@ -111,6 +112,15 @@ public class GameBoardTest {
 		} catch(Exception ex) {
 			assertTrue(board.getTargetCards().length == 24); 
 			System.out.println("GameBoardTest: addTargetCard erwartete Exception: " + ex.toString());
+		}
+		// Check 5: Ist die Riebmann karte wirklich eine Riebmann Karte?
+		for (ITargetCard card : tcs) {
+			if (card.getGameCard().isRiebmann()) {
+				assertTrue(card.getGameCard() == GameCard.ZK_Riebmann1 || card.getGameCard() == GameCard.ZK_Riebmann2 || card.getGameCard() == GameCard.ZK_Riebmann3 || card.getGameCard() == GameCard.ZK_Riebmann4 || card.getGameCard() == GameCard.ZK_Riebmann5);
+				
+			} else if (card.getGameCard().isYeti()) {
+				assertTrue(card.getGameCard() == GameCard.ZK_Yeti1 || card.getGameCard() == GameCard.ZK_Yeti2 || card.getGameCard() == GameCard.ZK_Yeti3 || card.getGameCard() == GameCard.ZK_Yeti4 || card.getGameCard() == GameCard.ZK_Yeti5);
+			}
 		}
 	}
 
