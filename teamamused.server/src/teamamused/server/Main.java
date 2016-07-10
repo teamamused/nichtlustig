@@ -28,7 +28,6 @@ public class Main extends Application {
         // Gui initialisieren
         ServerModel model = new ServerModel();
         ServerView view = new ServerView(primaryStage, model);
-        view.setLoggingTxtArea(TextAreaHandler.getInstance().getTextArea());
         new ServerController(model, view);
         
         // gui anzeigen

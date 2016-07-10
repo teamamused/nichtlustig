@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import teamamused.common.gui.AbstractView;
+import teamamused.server.TextAreaHandler;
 import teamamused.server.connect.ClientAwaiter;
 
 public class ServerView extends AbstractView<ServerModel> {
@@ -21,10 +22,10 @@ public class ServerView extends AbstractView<ServerModel> {
 	protected GridPane root;
 	protected Button restartButton;
 	protected Label labelServer, labelLogo, labelConnect, labelPort, labelIP, labelProtocol, labelTeam;
-	protected TextArea loggingTxtArea;
 	protected Image logo;
 	protected ScrollPane scrollTxt;
 	protected ChoiceBox<String> language;
+	protected TextArea loggingTxtArea;
 	
 	public ServerView(Stage stage, ServerModel model){
 		super(stage, model);
@@ -63,6 +64,10 @@ public class ServerView extends AbstractView<ServerModel> {
 		language.getItems().add("Englisch");
 		//Setzt den ersten Wert der Auswahlliste als Default
 		language.getSelectionModel().selectFirst();
+		// holt das TextArea aus dem TextAreaHandler
+		this.loggingTxtArea = TextAreaHandler.getInstance().getTextArea();
+		scrollTxt.setContent(loggingTxtArea);
+		loggingTxtArea.setEditable(false);
 
 		//Hinzufügen der Controlls der Pane
 		root.add(restartButton, 0, 0);
@@ -74,6 +79,7 @@ public class ServerView extends AbstractView<ServerModel> {
 		root.add(labelProtocol, 0, 5);
 		root.add(language, 2, 6);
 		root.add(labelTeam, 0, 6);
+		root.add(loggingTxtArea, 0, 5, 3, 1);
 		
 		//Ausrichtung der Controlls in der Pane
 		GridPane.setHalignment(restartButton, HPos.LEFT);
@@ -89,18 +95,6 @@ public class ServerView extends AbstractView<ServerModel> {
 		labelTeam.setId("labelTeam");
 		
 		return scene;
-	}
-
-	/**
-	 * Setzt das TextArea-Controll für die Log-Ausgabe
-	 * 
-	 * @param loggingTxtArea TextArea für die Log-Ausgabe
-	 */
-	public void setLoggingTxtArea(TextArea loggingTxtArea) {
-		this.loggingTxtArea = loggingTxtArea;
-		scrollTxt.setContent(loggingTxtArea);
-		root.add(loggingTxtArea, 0, 5, 3, 1);
-		loggingTxtArea.setEditable(false);
 	}
 
 }
