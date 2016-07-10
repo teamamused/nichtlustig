@@ -21,7 +21,7 @@ public class Player implements IPlayer {
 	Hashtable<GameCard, ISpecialCard> htSpecialCards = new Hashtable<GameCard, ISpecialCard>();
 	Hashtable<GameCard, ITargetCard> htTargetCards = new Hashtable<GameCard, ITargetCard>();
 	Hashtable<GameCard, IDeadCard> htDeadCards = new Hashtable<GameCard, IDeadCard>();
-	Hashtable<ITargetCard, IDeadCard> htDeadOnTargetCards = new Hashtable<ITargetCard, IDeadCard>();
+	Hashtable<IDeadCard, ITargetCard> htDeadOnTargetCards = new Hashtable<IDeadCard, ITargetCard>();
 	
 	String username;
 	int playerNumber = 0;
@@ -73,7 +73,7 @@ public class Player implements IPlayer {
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.ICardHolder#removeSpecialCard(GameCard specialCard)
+	 * @see teamamused.common.interfaces.ICardHolder#removeSpecialCard(ISpecialCard specialCard)
 	 */
 	public ISpecialCard removeSpecialCard(ISpecialCard specialCard) {
 		return this.htSpecialCards.remove(specialCard.getGameCard());
@@ -89,7 +89,7 @@ public class Player implements IPlayer {
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.ICardHolder#removeTargetCard(GameCard targetCard)
+	 * @see teamamused.common.interfaces.ICardHolder#removeTargetCard(ITargetCard targetCard)
 	 */
 	public ITargetCard removeTargetCard(ITargetCard targetCard) {
 		if (this.htTargetCards.get(targetCard.getGameCard()).getIsValuated()){
@@ -108,7 +108,7 @@ public class Player implements IPlayer {
 
 	/**
 	 * Implementierung von: 
-	 * @see teamamused.common.interfaces.ICardHolder#removeDeadCard(GameCard deadCard)
+	 * @see teamamused.common.interfaces.ICardHolder#removeDeadCard(IDeadCard deadCard)
 	 */
 	public IDeadCard removeDeadCard(IDeadCard deadCard) {
 		return this.htDeadCards.remove(deadCard.getGameCard());
@@ -120,9 +120,18 @@ public class Player implements IPlayer {
 	 */
 	public void addDeadCard(IDeadCard deadCard, ITargetCard targetCard) {
 		this.htDeadCards.put(deadCard.getGameCard(),deadCard);
-		if (targetCard != null) {
-			this.htDeadOnTargetCards.put(targetCard, deadCard);
+		if (deadCard != null && targetCard != null) {
+			this.htDeadOnTargetCards.put(deadCard, targetCard);
 		}
+	}
+
+	/**
+	 * Implementierung von: 
+	 * @see teamamused.common.interfaces.IPlayer#getTargetCardUnderDeadCard(IDeadCard deadCard)
+	 */
+	@Override
+	public ITargetCard getTargetCardUnderDeadCard(IDeadCard deadCard) {
+		return this.htDeadOnTargetCards.get(deadCard);
 	}
 
 	/**

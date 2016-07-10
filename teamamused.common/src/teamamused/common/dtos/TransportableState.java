@@ -13,8 +13,8 @@ public class TransportableState extends TransportObject {
 	 */
 	private static final long serialVersionUID = 1;
 	
-	boolean isOK;
-	String message;
+	private boolean isOK;
+	private String message;
 	
 	public TransportableState(boolean isOK, String message) {
 		super(TransportType.State);

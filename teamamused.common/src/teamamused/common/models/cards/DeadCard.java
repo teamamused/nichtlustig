@@ -12,6 +12,7 @@ class DeadCard extends AbstractCard implements IDeadCard {
 	private static final long serialVersionUID = 1;
 	
 	private int cardValue;
+	private boolean isOnTargetCard;
 	/**
 	 * Konstruktur zur Initialisierung der Todeskarten
 	 * @param card GameKarte
@@ -29,6 +30,24 @@ class DeadCard extends AbstractCard implements IDeadCard {
 	@Override
 	public int getCardCalue() {
 		return this.cardValue;
+	}
+
+	/**
+	 * Implementierung von 
+	 * @see teamamused.common.interfaces.IDeadCard#getIsOnTargetCard()
+	 */
+	@Override
+	public boolean getIsOnTargetCard() {
+		return this.isOnTargetCard;
+	}
+
+	/**
+	 * Implementierung von 
+	 * @see teamamused.common.interfaces.IDeadCard#setIsOnTargetCard(boolean isOnTargetCard)
+	*/
+	@Override
+	public void setIsOnTargetCard(boolean isOnTargetCard) {
+		this.isOnTargetCard = isOnTargetCard;
 	}
 
 }

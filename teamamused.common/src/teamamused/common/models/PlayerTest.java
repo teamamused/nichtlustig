@@ -27,7 +27,7 @@ public class PlayerTest {
 	private static Player player;
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception J Unit handelt dies
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

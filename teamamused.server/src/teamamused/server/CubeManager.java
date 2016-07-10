@@ -4,6 +4,8 @@ import java.util.List;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ICube;
+import teamamused.common.models.GameBoard;
+import teamamused.common.models.cubes.CubeColor;
 import teamamused.common.models.cubes.CubeValue;
 
 /**
@@ -20,9 +22,11 @@ public class CubeManager{
 	private int diceCounter = 0;
 	private int allowedDicings = 3;
 	private int counterFixedCubes = 0;
+	private GameBoard board = BoardManager.getInstance().getGameBoard();
+	private ICube cubes[] = board.getCubes();
+	private ICube pinkCube;
 	
 	public CubeManager(){
-		
 	}
 	
 	/**
@@ -55,12 +59,13 @@ public class CubeManager{
 		ICube[] currentCubes = BoardManager.getInstance().getGameBoard().getCubes();
 		for(ICube cube : currentCubes){
 			cube.setIsFixed(false);
+			cube.resetCubeValues();
 		}
 	}
 	
 	/**
 	 * Methode, um die Würfel auf dem Spielbrett zu würfeln.
-	 * @return 
+	 * @return Anzahl verbleibende Versuche
 	 */
 	public int rollDices(){
 		ServiceLocator.getInstance().getLogger().info("CubeManager: rolle Würfel");
@@ -102,4 +107,24 @@ public class CubeManager{
 		return counterFixedCubes;
 	}
 	
+	/**
+	 * Liest den pinken Würfel aus und gibt diesen zurück.
+	 * @return pinker Würfel
+	 */
+	public CubeValue getCurrentPinkCube(){
+		for(ICube cube : cubes){
+			if(cube.getCubeColor() == CubeColor.Pink){
+				pinkCube = cube;
+			}
+		}
+		return pinkCube.getCurrentValue();
+	}
+	
+	/**
+	 * Gibt einen Array von allen aktuellen Würfeln zurück.
+	 * @return alle Würfel als Array
+	 */
+	public ICube[] getCubes(){
+		return cubes;
+	}
 }

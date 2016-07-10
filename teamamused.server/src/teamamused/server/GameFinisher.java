@@ -1,8 +1,15 @@
 package teamamused.server;
 
+import java.time.LocalDateTime;
 import java.util.Hashtable;
 import java.util.List;
 
+import teamamused.common.ServiceLocator;
+import teamamused.common.db.GameInfo;
+import teamamused.common.db.GameInfoRepository;
+import teamamused.common.db.Ranking;
+import teamamused.common.db.RankingRepository;
+import teamamused.common.interfaces.IDataBaseContext;
 import teamamused.common.interfaces.IDeadCard;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ISpecialCard;
@@ -33,6 +40,7 @@ public class GameFinisher {
 	private int notValuatedCards = 0;
 	private int singleDeadCards = 0;
 	private int playerPoints = 0;
+	private int gameID;
 	
 	
 	public GameFinisher(){
@@ -56,15 +64,15 @@ public class GameFinisher {
 	 * @param playerPrePoints Vorpunkte von Professoren-Karte
 	 */
 	public void calcPoints(IPlayer player, int playerPrePoints){
-		playerPoints += playerPrePoints;
+		playerPoints += playerPrePoints; //für Riebmann-Karten
 		playerPoints += valuatedLemmingCards * 4;
 		
 		if(valuatedYetiCards > 0){
 			if(valuatedYetiCards > 1){
 				playerPoints += valuatedYetiCards * 3;
 			}else{
-				
-			}playerPoints += 1;
+				playerPoints += 1;
+			}
 		}
 		
 		playerPoints += valuatedRiebmannCards * 2;
@@ -89,10 +97,10 @@ public class GameFinisher {
 		//Liest die Karten der einzelnen Spieler aus
 		for(IPlayer player : players){
 			for(IDeadCard deadCard : player.getDeadCards()){
-				deadCards.add(deadCard);
-				singleDeadCards++;
-				/*maja: klären:
-				 * Wie stelle ich sicher, dass diese auf keiner Zielkarte liegt?*/
+				if(!deadCard.getIsOnTargetCard()){
+					deadCards.add(deadCard);
+					singleDeadCards++;
+				}						
 			}
 			for(ISpecialCard specialCard : player.getSpecialCards()){
 				specialCards.add(specialCard);
@@ -106,26 +114,26 @@ public class GameFinisher {
 				}
 				//Lemming-Karte
 				else if(!targetCard.getIsCoveredByDead()){
-					if(targetCard.getGameCard().name() == "ZK_Lemming_"){
+					if(targetCard.getGameCard().name().matches("ZK_Lemming"+"[1-5]")){
 						valuatedLemmingCards++;
 					}
 					//Yeti-Karte
-					else if(targetCard.getGameCard().name() == "ZK_Yeti_"){
+					else if(targetCard.getGameCard().name().matches("ZK_Yeti"+"[1-5]")){
 						valuatedYetiCards++;
 					}
 					//Riebmann-Karte
-					else if(targetCard.getGameCard().name() == "ZK_Riebmann_"){
+					else if(targetCard.getGameCard().name().matches("ZK_Riebmann"+"[1-5]")){
 						valuatedRiebmannCards++;
 					}
 					//Dino-Karte
-					else if(targetCard.getGameCard().name() == "ZK_Dino_"){
+					else if(targetCard.getGameCard().name().matches("ZK_Dinosaurier"+"[1-5]")){
 						dinoCardValue += targetCard.getCardValue();
 					}
 					/*Prüft ob ein Spieler eine Professoren-Karte hat{
 					* und erzeugt automatisch eine zufällige Punktzahl von 0-5
 					* für die Karte, welche der Spieler erhält
 					*/	
-					else if(targetCard.getGameCard().name() == "ZK_Professoren_"){
+					else if(targetCard.getGameCard().name().matches("ZK_Professoren"+"[1-5]")){
 						playerPrePoints = (int) Math.random() * 6;
 					}
 				}
@@ -142,6 +150,9 @@ public class GameFinisher {
 		
 	}
 	
+	/**
+	 * Setzt die Zähler vom GameFinisher zurück.
+	 */
 	public void resetCounters(){
 		deadCards.clear();
 		specialCards.clear();
@@ -156,20 +167,68 @@ public class GameFinisher {
 		playerPoints = 0;
 	}
 	
+	/**
+	 * Ranking setzen.
+	 */
 	public void setRanking(){
-		//Maja: klären: Wie und wo genau Ranking nachführen?
+		gameID = Game.getInstance().getGameID();
+		Ranking[] inGameRanking = RankingRepository.getInGameRanking(gameID, this.ranking);
+		showRankingToPlayer(inGameRanking);
 	}
 	
-	//Ranking auslesen
+	/**
+	 * Liest das Ranking aus.
+	 * @return Ranking Hashtabelle <IPlayer, Integer>
+	 */
 	public Hashtable<IPlayer, Integer> getRanking(){
 		return ranking;
 	}
 	
-	public void showRankingToPlayer(){
-		//Maja: klären: Wird das in GUI gemacht? Muss ich was tun?
+	/**
+	 * Zeigt den Spielern das Ranking an.
+	 * @param inGameRanking RankingRepository übergeben
+	 */
+	public void showRankingToPlayer(Ranking[] inGameRanking){
+		ClientNotificator.notifyGameFinished(inGameRanking);
 	}
 	
+	/**
+	 * Schliesst das Spiel komplett ab.
+	 */
 	public void closeGame(){
 		//Maja: klären: Wie soll ich das Spiel genau abschliessen?
+
+		// Einführung in die Datenspeicherung für Maja, Ausschnit aus der Package-info vom teammamused.common.db:
+		// Es gibt 3 Hautpentitäten zum verwalten:
+		//	  - PlayerInfo
+		//	  - GameInfo
+		//	  - Ranking
+		// Zu jeder Entität wird ein Repository zur Verfügung gestelt. In diesem sind die zentralen Funktionen welche sich auf diese Entitäten beziehen.
+		//
+		// Du kannst in der Datei teamamused.common.teamamused.config den Pfad zur DB Datei festlegen.
+		
+		
+		// Du solltest in der Klasse Game noch diese 3 Attribute ergänzen: GameId, Startzeit, Endzeit
+		// Um das Spiel speichern zu können machst du dies in etwa so:
+		int gameId = GameInfoRepository.getNextGameId(); // GameId sollte von Game kommen, aber dort kannst du so eine neue zuweisen. 
+		LocalDateTime spielStart = LocalDateTime.now(); // auch vom game, merken wenn das Spiel begann
+		LocalDateTime spielEnde = LocalDateTime.now(); // Das ist wohl jetzt
+		// 1. Datenbank Context aus dem ServiceLocator holen
+		IDataBaseContext db = ServiceLocator.getInstance().getDBContext();
+		// 2. GameInfo Objekt erstellen:
+		GameInfo gi = new GameInfo(gameId, spielStart, spielEnde);
+		// Spieler zum GameInfo Objekt hinzufügen
+		for (IPlayer player : Game.getInstance().getPlayers()) {
+			gi.Players.add(player.getPlayerName());
+		}
+		// 4. in der Datenbank eine GameInfo hinzufügen:
+		db.addGame(gi);
+		
+		// 5. Ranking speichern und den Spielern anzeigen
+		this.setRanking();
+		
+		// 6. Alle Änderungen an der Datenbank sind bis jetzt nur im Memory
+		//    Um die Daten effektiv zu speichern machst du
+		db.saveContext();
 	}
 }

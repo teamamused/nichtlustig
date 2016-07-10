@@ -1,6 +1,8 @@
 package teamamused.playground.application;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
@@ -118,10 +120,10 @@ public class Client implements IServerListener {
 	 * @param allowedCards Karten die zur Auswahl stehen
 	 */
 	@Override
-	public void chooseCards(ArrayList<ITargetCard> allowedCards) {
+	public void chooseCards(Hashtable<Integer, List<ITargetCard>> options) {
 		ServiceLocator.getInstance().getLogger().info("Client: leite chooseCards an guis weiter");
 		for (IClientListener gui : this.guis) {
-			gui.onPlayerHasToCooseCards(allowedCards);
+			gui.onPlayerHasToCooseCards(options);
 		}
 	}
 

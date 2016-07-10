@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import teamamused.common.db.DataBaseContextTest;
 import teamamused.common.models.GameBoardTest;
 import teamamused.common.models.PlayerTest;
 
@@ -16,7 +17,8 @@ import teamamused.common.models.PlayerTest;
 @RunWith(Suite.class)
 @SuiteClasses({
 	GameBoardTest.class,
-	PlayerTest.class
+	PlayerTest.class,
+	DataBaseContextTest.class
 })
 public class CommonTestSuite {
 

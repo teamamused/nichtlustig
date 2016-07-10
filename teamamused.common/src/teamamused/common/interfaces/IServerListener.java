@@ -1,6 +1,7 @@
 package teamamused.common.interfaces;
 
-import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.models.GameBoard;
@@ -51,6 +52,6 @@ public interface IServerListener {
 	 * Der Spieler muss zwischen mehreren Karten auswählen
 	 * @param allowedCards Zur auswahl stehende Karten
 	 */
-	void chooseCards(ArrayList<ITargetCard> allowedCards);
+	void chooseCards(Hashtable<Integer, List<ITargetCard>> options);
 	
 }

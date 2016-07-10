@@ -2,6 +2,7 @@ package teamamused.playground.application.serverKlassen;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ICardHolder;
@@ -29,7 +30,7 @@ public class Boardmanager {
 	private Hashtable<IDeadCard, ICardHolder> deadCards = new Hashtable<IDeadCard, ICardHolder>();
 	private Hashtable<ITargetCard, ICardHolder> targetCards = new Hashtable<ITargetCard, ICardHolder>();
 	// Karten welche gemäss Würfel erlaubt sind
-	private ArrayList<ITargetCard> allowedCards;
+	private Hashtable<Integer, List<ITargetCard>> allowedCards;
 	
 	/**
 	 * Privater Konstruktor da Sinelton Pattern
@@ -129,7 +130,8 @@ public class Boardmanager {
 			// Valuation.getInstance().doValuation();
 			
 			// Danach prüfen was wir für Karten haben können
-			allowedCards = Boardmanager.getInstance().checkAllowedCards();
+			allowedCards = new Hashtable<Integer, List<ITargetCard>>();
+			allowedCards.put(1, Boardmanager.getInstance().checkAllowedCards());
 			ClientManager.getInstance().getCurrentClient().chooseCards(this.allowedCards);
 		}
 		return remainingDices;

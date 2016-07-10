@@ -99,4 +99,8 @@ class Cube implements ICube, Serializable {
     public ISpecialCard getSpecialCard() {
 	return this.cubeValues[0].SpecialCard;
     }
+    
+    public void resetCubeValues(){
+    	faceValue = 1;
+    }
 }

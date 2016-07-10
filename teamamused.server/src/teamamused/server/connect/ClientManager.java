@@ -71,6 +71,7 @@ public class ClientManager {
 	
 	/**
 	 * aktualisiert die Spiel Daten auf allen Clients
+	 * @param dto TransferObjekt welches den Clients gesendet werden soll
 	 */
 	public void updateClients(TransportObject dto) {
 		ServiceLocator.getInstance().getLogger().info("ClientManager: aktualisiere alle Clients");
@@ -82,6 +83,7 @@ public class ClientManager {
 	/**
 	 * aktualisiert den aktiven Client 
 	 * (der der Momentan am Spiel ist)
+	 * @param dto TransferObjekt welches dem Client gesendet werden soll
 	 */
 	public void updateCurrentClient(TransportObject dto) {
 		ServiceLocator.getInstance().getLogger().info("ClientManager: aktualisiere aktueller Client");

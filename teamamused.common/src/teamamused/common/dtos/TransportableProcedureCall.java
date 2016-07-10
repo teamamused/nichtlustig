@@ -32,9 +32,30 @@ public class TransportableProcedureCall extends TransportObject {
 		GetTopRanking,
 		
 		// Prozeduren welche vom Server aufgerufen werden
+		/**
+		 * Zeigt dem Client an das der Server etwas geändert hat. 
+		 * Parameter: String mit der Nachricht
+		*/
+		ShowGameMove,
+		/**
+		 * Forciert den Client das Spielbrett neu anzuzeigen. 
+		 * Parameter: Gameboard
+		*/
 		UpdateGameBoard,
+		/**
+		 * Aktiviert den nächsten Spieler. 
+		 * Parameter: IPlayer neuer aktiver Spieler
+		*/
 		ChangeActivePlayer,
+		/**
+		 * Bietet dem Spieler eine auswahl an möglichen Optionen welche Karten er wählen kann
+		 * Parameter: Hashtable &lt; Integer, List &lt; ITargetCards &gt; &gt; - Key ist die Nummer der Option, Value die enthaltenen Karten der Option
+		*/
 		ChooseCards,
+		/**
+		 * Spiel ist beendet, schickt den Clients die Platzierungen
+		 * Parameter: Ranking[] mit den Platzierungen
+		*/
 		FinishGame
 	}
 	

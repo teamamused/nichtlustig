@@ -1,8 +1,5 @@
 package teamamused.server.gui;
 
-import java.io.FileNotFoundException;
-import java.util.logging.Logger;
-
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -16,7 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
 import teamamused.server.connect.ClientAwaiter;
 

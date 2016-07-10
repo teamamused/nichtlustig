@@ -19,7 +19,7 @@ public class Server {
 	private static Server instance;
 	
 	private Server() {
-		
+		super();
 	}
 	
 	public static Server getInstance() {
@@ -70,6 +70,10 @@ public class Server {
 	}
 
 	public TransportableState getTopRanking(TransportableProcedureCall rpc) {
+		return new TransportableState(false, "Funktion noch nicht implementiert");
+	}
+
+	public TransportableState validatePlayerLogin(TransportableProcedureCall rpc) {
 		return new TransportableState(false, "Funktion noch nicht implementiert");
 	}
 }

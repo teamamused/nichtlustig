@@ -46,4 +46,9 @@ public interface ICube {
 	 * @return Spezialkarte des Würfels bei FaceValue 0
 	 */
 	ISpecialCard getSpecialCard();
+	
+	/**
+	 * Setzt die Cube-Werte zurück auf CubeValue 1 für alle Würfel.
+	 */
+	void resetCubeValues();
 }
