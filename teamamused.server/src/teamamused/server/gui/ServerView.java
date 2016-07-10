@@ -17,6 +17,13 @@ import teamamused.common.gui.AbstractView;
 import teamamused.server.TextAreaHandler;
 import teamamused.server.connect.ClientAwaiter;
 
+/**
+ * Die Klasse ServerView stellt nach dem MVC-Pattern die grafische Oberfläche
+ * für den Server dar.
+ * 
+ * @author Michelle
+ *
+ */
 public class ServerView extends AbstractView<ServerModel> {
 	
 	protected GridPane root;
