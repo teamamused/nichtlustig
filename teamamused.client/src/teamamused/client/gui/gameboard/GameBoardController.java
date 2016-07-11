@@ -1,4 +1,4 @@
-package teamamused.client.gui;
+package teamamused.client.gui.gameboard;
 
 import teamamused.common.gui.AbstractController;
 
