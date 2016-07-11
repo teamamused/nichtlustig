@@ -3,7 +3,6 @@ package teamamused.client.gui;
 import java.io.FileNotFoundException;
 
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
