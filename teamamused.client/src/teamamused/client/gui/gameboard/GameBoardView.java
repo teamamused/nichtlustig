@@ -1,27 +1,40 @@
-package teamamused.client.gui;
+package teamamused.client.gui.gameboard;
 
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
-
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
 
+/**
+ * Diese Klasse stellt die grafische Oberfläche für das Spielfeld dar.
+ * 
+ * @author Michelle
+ *
+ */
 public class GameBoardView extends AbstractView<GameBoardModel> {
 
-	protected GridPane root;
-	protected GridPane cardPane;
-	protected Image imgRiebmann1, imgRiebmann2, imgRiebmann3, imgRiebmann4, imgRiebmann5, imgYeti1, imgYeti2, imgYeti3,
-			imgYeti4, imgYeti5, imgLemming1, imgLemming2, imgLemming3, imgLemming4, imgLemming5, imgProf1, imgProf2,
-			imgProf3, imgProf4, imgProf5, imgDino1, imgDino2, imgDino3, imgDino4, imgDino5, imgPudel, imgTod1, imgTod2,
-			imgTod3, imgTod4, imgTod5, imgEnte, imgUfo, imgClown, imgRoboter, imgZeitmaschine, imgKillervirus;
-
+	protected GridPane root, cardPane, dicePane;
+	protected VBox navigation;
+	protected ImageView logo;
+	protected Button btnGameBoard, btnPlayer1, btnPlayer2;
+	protected TextArea txtChatScreen;
+	protected TextField txtChatInput;
+	protected ScrollPane scrollTxt;
+	
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
 	}
@@ -38,19 +51,47 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		root.setVgap(10);
 		root.setGridLinesVisible(false);
 
-		// Scene scene = new Scene(root);
-
-		// Definition der Sub-Pane für die Spielkarten
+		Scene scene = new Scene(root);
+		
+		// Instanziierung und Zuweisung der Controlls zur Haupt-Pane
+		// TODO
+		
+		//TODO: txtChatScreen ausrichten -> botton
+		// Definition der Pane für die linke Navigationsspalte
+		navigation = new VBox();
+		navigation.setPadding(new Insets(20, 20, 20, 20));
+		try {
+			logo = new ImageView(ResourceLoader.getImage("Logo_1.png"));
+		} catch (FileNotFoundException e) {
+			ServiceLocator.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
+		}
+		logo.setFitWidth(200);
+		logo.setPreserveRatio(true);
+		btnGameBoard = new Button("Spielfeld");
+		btnGameBoard.setMaxSize(200, 40);
+		//TODO: Anzahl Buttons für Spieler dynamisch gestalten - je nach Anzahl Mitspieler
+		btnPlayer1 = new Button("Spieler 1");
+		btnPlayer1.setMaxSize(200, 40);
+		btnPlayer2 = new Button("Spieler 2");
+		btnPlayer2.setMaxSize(200, 40);
+		txtChatScreen = new TextArea();
+		txtChatScreen.setPrefSize(200, 150);
+		txtChatInput = new TextField();
+		txtChatInput.setPrefWidth(200);
+		scrollTxt = new ScrollPane();
+		scrollTxt.setContent(txtChatScreen);
+		navigation.getChildren().addAll(logo, btnGameBoard, btnPlayer1, btnPlayer2, txtChatScreen, txtChatInput);
+		
+		root.add(navigation, 0, 0, 1, 10);
+		
+		// Definition der Pane für die Spielkarten
 		cardPane = new GridPane();
 		cardPane.setPadding(new Insets(20, 20, 20, 20));
 		cardPane.setHgap(10);
 		cardPane.setVgap(10);
 		cardPane.setGridLinesVisible(false);
-
-		// TODO: wieder löschen - root muss Scene übergeben werden
-		Scene scene = new Scene(cardPane);
-
-		// Instanziierung und Zuweisung der Images zur Sub-Pane
+		
+		// Instanziierung und Zuweisung der Images zur Spielkarten-Pane
 		cardPane.add(getImageView("Riebmann1Vorne.png"), 2, 0);
 		cardPane.add(getImageView("Riebmann2Vorne.png"), 3, 0);
 		cardPane.add(getImageView("Riebmann3Vorne.png"), 4, 0);
@@ -88,18 +129,20 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		cardPane.add(getImageView("Ufo.png"), 1, 1);
 		cardPane.add(getImageView("Roboter.png"), 1, 2);
 		cardPane.add(getImageView("Killervirus.png"), 1, 3 );
-
-		// Instanziierung der Controlls
-
-		// Hinzufügen der Controlls der Pane
-		// root.add(restartButton, 0, 0);
+		
+		root.add(cardPane, 1, 0);
+		
+		// Definition der Pane für den Würfel-Bereich
+		dicePane = new GridPane();
+		dicePane.initializePane();
+		
 
 		// Ausrichtung der Controlls in der Pane
 		// GridPane.setHalignment(restartButton, HPos.LEFT);
 		// GridPane.setValignment(restartButton, VPos.CENTER);
 
 		// Zuweisung des Stylesheets
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 
 		return scene;
 	}
@@ -122,8 +165,15 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			ServiceLocator.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
 		}
 		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(200);
+		imageView.setFitHeight(100);
 		imageView.setPreserveRatio(true);
 		return imageView;
 	}
+	
+//	private void initializePane(){
+//		pane.setPadding(new Insets(20, 20, 20, 20));
+//		pane.setHgap(10);
+//		pane.setVgap(10);
+//		pane.setGridLinesVisible(false);
+//	}
 }

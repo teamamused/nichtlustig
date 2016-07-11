@@ -3,9 +3,9 @@ package teamamused.client;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import teamamused.client.connect.Client;
-import teamamused.client.gui.GameBoardController;
-import teamamused.client.gui.GameBoardModel;
-import teamamused.client.gui.GameBoardView;
+import teamamused.client.gui.gameboard.GameBoardController;
+import teamamused.client.gui.gameboard.GameBoardModel;
+import teamamused.client.gui.gameboard.GameBoardView;
 import teamamused.common.ServiceLocator;
 
 
@@ -40,7 +40,7 @@ public class Main extends Application {
 
 	public void start(Stage primaryStage) {
 
-		//TODO: Sandra -> Start-Button muss Client.getInstance().startGame() aufrufen
+		//TODO: Michelle -> Start-Button des WaitingRoom muss Client.getInstance().startGame() aufrufen
 		
 		// Spiel starten
 //		Client.getInstance().startGame();
