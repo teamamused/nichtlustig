@@ -7,25 +7,27 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.logging.Logger;
 
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 
 /**
  * 
- * Diese Klasse erstellt das Server Socket, welches auf Verbindungen der Clients wartet.
- * Sobald sich ein Client Verbindet wird ein neuer ClientListener Thread für diesen gestartet.
+ * Diese Klasse erstellt das Server Socket, welches auf Verbindungen der Clients
+ * wartet. Sobald sich ein Client Verbindet wird ein neuer ClientListener Thread
+ * für diesen gestartet.
  * 
  * @author Daniel
  *
  */
 public class ClientAwaiter extends Thread {
-	
-	private static final Logger LOG = ServiceLocator.getInstance().getLogger();
+
+	private static final Logger log = ServiceLocator.getInstance().getLogger();
 
 	/**
 	 * Standard Portnumber für unser Programm
 	 */
 	public final static int PORT_NUMBER = 9636;
-	
+
 	/**
 	 * IP Adresse des aktuellen Hosts global zur Verfügung stellen.
 	 */
@@ -45,9 +47,9 @@ public class ClientAwaiter extends Thread {
 
 	private ClientAwaiter() {
 	}
-	
+
 	public static ClientAwaiter getInstance() {
-		if (instance == null){
+		if (instance == null) {
 			instance = new ClientAwaiter();
 		}
 		return instance;
@@ -60,27 +62,33 @@ public class ClientAwaiter extends Thread {
 			// wurde warten wir auf Clients
 			while (this.isWaitingForClients) {
 				Socket clientSocket = serverSocket.accept();
-				LOG.info("Neuer Client verbunden");
-				ClientConnection client = new ClientConnection(clientSocket, currClientId++);
-				ClientManager.getInstance().addClient(client);
-				client.start();
+				if (this.isWaitingForClients) {
+					log.info("Neuer Client verbunden");
+					ClientConnection client = new ClientConnection(clientSocket, currClientId++);
+					ClientManager.getInstance().addClient(client);
+					client.start();
+				}
 			}
 			// Server Socket schliessen und alle Clients schliessen
 			try {
+				ClientManager.getInstance().closeClients();
 				serverSocket.close();
-				for (ClientConnection cl : ClientManager.getInstance().getClients()) {
-					cl.close();
-				}
 			} catch (Exception e) {
-				ServiceLocator.getInstance().getLogger().severe(e.toString());
+				LogHelper.LogException(e);
 			}
 		} catch (Exception e) {
-			ServiceLocator.getInstance().getLogger().severe(e.toString());
+			LogHelper.LogException(e);
 		}
 	}
 
 	public void close() {
 		this.isWaitingForClients = false;
+		// Eine Verbindung auf mich selber aufmachen, damit serverSocket.accept() 
+		// ausgelöst wird und die schleife im run() weiterläuft
+		try {
+			new Socket("localhost", PORT_NUMBER);
+		} catch (Exception e) {
+		}
 	}
 
 	synchronized void removeClient(int clientId) {

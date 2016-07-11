@@ -13,19 +13,6 @@ public class TransportableAnswer extends TransportObject {
 	 * Versionsnummer des Transport Objektes
 	 */
 	private static final long serialVersionUID = 1;
-
-	/**
-	 * Die verschiedenen Remote Prozeduren welche zur Verfügung stehen
-	 * 
-	 * @author Daniel
-	 *
-	 */
-	public enum AnswerType {
-		// Antworten welche vom Server zum Client gehen
-		PlayerCreated,
-		PlayerAddedToGame,
-		Ranking
-	}
 	
 	private TransportableProcedureCall originalCall;
 	private boolean isOK;

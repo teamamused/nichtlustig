@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportObject;
+import teamamused.server.Game;
 
 /**
  * 
@@ -48,6 +49,14 @@ public class ClientManager {
 	 * @return aktuell aktiver Client
 	 */
 	public ClientConnection getCurrentClient() {
+		if (Game.getInstance().getActivePlayer() != null) {
+			String currPlayerName = Game.getInstance().getActivePlayer().getPlayerName();
+			for (ClientConnection cc : this.clients) {
+				if (cc.getPlayer().getPlayerName() == currPlayerName) {
+					return cc;
+				}
+			}
+		}
 		return clients.get(0);
 	}
 	
@@ -57,7 +66,6 @@ public class ClientManager {
 	 */
 	public void addClient(ClientConnection client) {
 		this.clients.add(client);
-		//this.updateClient(client);
 	}
 	
 	/**
@@ -66,7 +74,6 @@ public class ClientManager {
 	 */
 	public void removeClient(ClientConnection client) {
 		this.clients.remove(client);
-		//this.updateClient(client);
 	}
 	
 	/**
@@ -88,6 +95,16 @@ public class ClientManager {
 	public void updateCurrentClient(TransportObject dto) {
 		ServiceLocator.getInstance().getLogger().info("ClientManager: aktualisiere aktueller Client");
 		this.updateClient(this.getCurrentClient(), dto);
+	}
+	
+	/**
+	 * Verbindungen zu allen Clients schliessen
+	 */
+	public void closeClients() {
+		ServiceLocator.getInstance().getLogger().info("ClientManager: schliese alle Client Connections");
+		for (ClientConnection client : clients) {
+			client.close();
+		}
 	}
 	
 	private void updateClient(ClientConnection client, TransportObject dto) {

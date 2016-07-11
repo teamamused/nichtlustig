@@ -3,11 +3,13 @@ package teamamused.common.models;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.List;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ICardHolder;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IDeadCard;
+import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.cards.CardFactory;
@@ -32,6 +34,7 @@ public class GameBoard implements ICardHolder, Serializable {
 	Hashtable<GameCard, IDeadCard> htDeadCards;
 
 	ICube[] cubes;
+	private List<IPlayer> players;
 
 	public GameBoard() {
 		this.init();
@@ -147,4 +150,14 @@ public class GameBoard implements ICardHolder, Serializable {
 	public ICube[] getCubes() {
 		return this.cubes;
 	}
+
+	
+	/**
+	 * Gibt eine Liste mit mit allen Spielern zurück.
+	 * @return Spielerliste
+	 */
+	public List<IPlayer> getPlayers(){
+		return players;
+	}
+	
 }

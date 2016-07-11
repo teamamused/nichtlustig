@@ -134,7 +134,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		
 		// Definition der Pane für den Würfel-Bereich
 		dicePane = new GridPane();
-		dicePane.initializePane();
+//		dicePane.initializePane();
 		
 
 		// Ausrichtung der Controlls in der Pane

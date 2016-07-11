@@ -18,7 +18,7 @@ public class PlayerRepository {
 	/**
 	 * gibt die PlayerInformationen anhand des Benutzernamens zurück
 	 * @param username Benutzername
-	 * @return Neues PlayerInfo Objekt
+	 * @return PlayerInfo Objekt, null wenn Username nicht vorhanden
 	 */
 	public static PlayerInfo getPlayerInfoByUserName(String username) {
 		IDataBaseContext db = ServiceLocator.getInstance().getDBContext();
@@ -71,5 +71,17 @@ public class PlayerRepository {
 		} else {
 			return null;
 		}
+	}
+	
+	public static boolean isUsernameTaken(String username) {
+		IDataBaseContext db = ServiceLocator.getInstance().getDBContext();
+		// Player nach Username abfragen
+		//System.out.println("es sind " + db.getPlayerInfos().size() + " User vorhanden");
+		Stream<PlayerInfo> players = db.getPlayerInfos().stream().filter(x -> x.Username.equals(username));
+		// Prüffen ob ein Player vorhanden ist
+		if (players.count() > 0) {
+			return true;
+		}
+		return false;
 	}
 }

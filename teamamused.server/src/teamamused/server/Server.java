@@ -1,9 +1,12 @@
 package teamamused.server;
 
 import teamamused.common.ServiceLocator;
+import teamamused.common.dtos.TransportObject;
+import teamamused.common.dtos.TransportableAnswer;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableState;
+import teamamused.common.interfaces.IPlayer;
 import teamamused.server.connect.ClientManager;
 
 /**
@@ -61,19 +64,16 @@ public class Server {
 		return new TransportableState(false, "Funktion noch nicht implementiert");
 	}
 	
-	public TransportableState connectPlayer(TransportableProcedureCall rpc) {
-		return new TransportableState(false, "Funktion noch nicht implementiert");
-	}
-
-	public TransportableState createPlayer(TransportableProcedureCall rpc) {
-		return new TransportableState(false, "Funktion noch nicht implementiert");
+	public TransportObject connectPlayerToGame(TransportableProcedureCall rpc) {
+		if (rpc != null && rpc.getArguments() != null && rpc.getArguments().length >= 1) {
+			IPlayer player = (IPlayer) rpc.getArguments()[0];
+			Game.getInstance().addPlayer(player);
+			return new TransportableAnswer(rpc, true, player.getPlayerNumber());
+		}
+		return new TransportableAnswer(rpc, false, -1);
 	}
 
 	public TransportableState getTopRanking(TransportableProcedureCall rpc) {
-		return new TransportableState(false, "Funktion noch nicht implementiert");
-	}
-
-	public TransportableState validatePlayerLogin(TransportableProcedureCall rpc) {
 		return new TransportableState(false, "Funktion noch nicht implementiert");
 	}
 }

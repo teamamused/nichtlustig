@@ -95,4 +95,24 @@ public enum GameCard {
 	public String toString() {
 		return this.cardName;
 	}
+	
+	public boolean isRiebmann() {
+		return this == ZK_Riebmann1 || this == ZK_Riebmann2 || this == ZK_Riebmann3 || this == ZK_Riebmann4 || this == ZK_Riebmann5;
+	}
+	
+	public boolean isYeti() {
+		return this == ZK_Yeti1 || this == ZK_Yeti2 || this == ZK_Yeti3 || this == ZK_Yeti4 || this == ZK_Yeti5;
+	}
+	
+	public boolean isLemming() {
+		return this == ZK_Lemming1 || this == ZK_Lemming2 || this == ZK_Lemming3 || this == ZK_Lemming4 || this == ZK_Lemming5;
+	}
+	
+	public boolean isProffessoren() {
+		return this == ZK_Professoren1 || this == ZK_Professoren2 || this == ZK_Professoren3 || this == ZK_Professoren4 || this == ZK_Professoren5;
+	}
+	
+	public boolean isDino() {
+		return this == ZK_Dinosaurier1 || this == ZK_Dinosaurier2 || this == ZK_Dinosaurier3 || this == ZK_Dinosaurier4 || this == ZK_Dinosaurier5;
+	}
 }

@@ -28,7 +28,6 @@ import teamamused.common.models.cubes.CubeValue;
 public class BoardManager {
 	private static BoardManager instance;
 	private GameBoard board = new GameBoard();
-	private Game game = Game.getInstance();
 	private ICardHolder currentOwner;
 	private List<ICardHolder> currentOwners;
 	private ICardHolder newOwner;
@@ -84,7 +83,7 @@ public class BoardManager {
 	public List<ITargetCard> getNotValuatedCardsFromPlayer(){
 		notValuatedCardsFromPlayers = null;
 		
-		for(IPlayer player: game.getPlayers()){
+		for(IPlayer player: this.board.getPlayers()){
 			for(ITargetCard targetCard : player.getTargetCards()){
 				if(!targetCard.getIsValuated()){
 					if(!targetCard.getIsCoveredByDead()){
@@ -147,7 +146,7 @@ public class BoardManager {
 
 		for(ITargetCard targetCard : notValuatedCardsFromPlayers){
 			//Prüft die Summe der Würfel, und vergleicht diese mit der Dino-Karte
-			if(targetCard.getGameCard().name().matches("ZK_Dino"+"[1-5]")){
+			if(targetCard.getGameCard().isDino()){
 				for(ICube cube : cubes){
 					if(cube.getCubeColor() != CubeColor.Pink){
 						sumOfCubes += cube.getCurrentValue().FaceValue;
@@ -157,7 +156,7 @@ public class BoardManager {
 					cardsToProposeTemp.add(targetCard);
 				}
 			//Wenn Professoren-Karte spezielle andere Kalkulation
-			}else if(targetCard.getGameCard().name().matches("ZK_Professor"+"[1-5]")){
+			}else if(targetCard.getGameCard().isProffessoren()){
 				cardValues = targetCard.getRequiredCubeValues();
 				for(CubeValue cardValue : cardValues){
 					for(ICube cube : cubesToCompare){
@@ -201,7 +200,7 @@ public class BoardManager {
 				 * Karten zur Auswahl steht. Andere Zielkarten können allenfalls
 				 * miteinander ausgewählt werden.
 				 */
-				if(!card.getGameCard().name().matches("ZK_Dino"+"[1-5]")){
+				if(!card.getGameCard().isDino()){
 					for(CubeValue cubeValue : cubeValuesTemp){
 						for(ICube cube : cubesToCompareTemp){
 							if(cube.getCurrentValue() == cubeValue){
@@ -253,7 +252,7 @@ public class BoardManager {
 		this.newOwner = Game.getInstance().getActivePlayer();
 		this.currentOwners.add(board);
 		
-		for(IPlayer player : Game.getInstance().getPlayers()){
+		for(IPlayer player : this.board.getPlayers()){
 			this.currentOwners.add(player);
 		}
 		
@@ -281,12 +280,7 @@ public class BoardManager {
 					
 					//Prüft, ob die Todeskarte auf eine andere Karte umgedreht gelegt werden muss
 					for(ITargetCard targetCard : targetCardsOfNewOwner){
-						if(targetCard.getIsValuated() &&
-								(targetCard.getGameCard().name().matches("ZK_Lemming"+"[1-5]") ||
-								targetCard.getGameCard().name().matches("ZK_Yeti"+"[1-5]") ||
-								targetCard.getGameCard().name().matches("ZK_Riebmann"+"[1-5]") ||
-								targetCard.getGameCard().name().matches("ZK_Lemming"+"[1-5]") ||
-								targetCard.getGameCard().name().matches("ZK_Professoren"+"[1-5]"))){
+						if(targetCard.getIsValuated() && !targetCard.getGameCard().isDino()){
 							//Todeskarte wird umgedreht auf gewertete Karte gelegt
 							this.newOwner.addDeadCard(card, targetCard);
 							targetCard.setIsCoveredByDead(true);
