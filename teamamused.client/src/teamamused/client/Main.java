@@ -9,34 +9,18 @@ import teamamused.client.gui.WelcomeView;
 import teamamused.client.gui.splashscreen.Splash_Controller;
 import teamamused.client.gui.splashscreen.Splash_Model;
 import teamamused.client.gui.splashscreen.Splash_View;
-	
 import javafx.application.Application;
-
 import javafx.stage.Stage;
-
 import teamamused.client.gui.GameBoardController;
 import teamamused.client.gui.GameBoardModel;
 import teamamused.client.gui.GameBoardView;
-import teamamused.client.libs.Client;
-import teamamused.common.ServiceLocator;
-import teamamused.client.gui.LogInController;
-import teamamused.client.gui.LogInModel;
-import teamamused.client.gui.LogInView;
-import teamamused.client.gui.WelcomeController;
-import teamamused.client.gui.WelcomeModel;
-import teamamused.client.gui.WelcomeView;
-import teamamused.client.gui.splashscreen.Splash_Controller;
-import teamamused.client.gui.splashscreen.Splash_Model;
-import teamamused.client.gui.splashscreen.Splash_View;
-import javafx.application.Application;
-
-import javafx.stage.Stage;
 
 public class Main extends Application {
 
 	private Splash_View splashView;
 	private LogInView logInView;
 	private WelcomeView welcomeView;
+	private GameBoardView gameBoardView;
 	private static Main instance = null;
 
 	@Override
@@ -55,7 +39,6 @@ public class Main extends Application {
 	public void startLogIn() {
 
 		Stage logInStage = new Stage();
-
 		LogInModel model = new LogInModel();
 		logInView = new LogInView(logInStage, model);
 		new LogInController(model, logInView);
@@ -67,13 +50,21 @@ public class Main extends Application {
 	public void startWelcome() {
 
 		Stage welcomeStage = new Stage();
-
 		WelcomeModel model = new WelcomeModel();
 		welcomeView = new WelcomeView(welcomeStage, model);
 		new WelcomeController(model, welcomeView);
 		logInView.stop();
 		logInView = null;
 		welcomeView.start();
+	}
+	
+	public void startGameBoard() {
+		
+		Stage gameBoardStage = new Stage();
+		GameBoardModel model = new GameBoardModel();
+		gameBoardView = new GameBoardView(gameBoardStage, model);
+		new GameBoardController (model, gameBoardView);
+		gameBoardView.start();
 	}
 
 	public static Main getInstance() {
