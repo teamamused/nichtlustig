@@ -1,5 +1,7 @@
 package teamamused.client.gui;
 
-public class ByeModel {
+import teamamused.common.gui.AbstractModel;
+
+public class ByeModel extends AbstractModel {
 
 }

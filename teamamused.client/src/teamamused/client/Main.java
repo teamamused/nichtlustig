@@ -11,9 +11,9 @@ import teamamused.client.gui.splashscreen.Splash_Model;
 import teamamused.client.gui.splashscreen.Splash_View;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import teamamused.client.gui.GameBoardController;
-import teamamused.client.gui.GameBoardModel;
-import teamamused.client.gui.GameBoardView;
+import teamamused.client.gui.gameboard.GameBoardController;
+import teamamused.client.gui.gameboard.GameBoardModel;
+import teamamused.client.gui.gameboard.GameBoardView;
 
 public class Main extends Application {
 
@@ -31,6 +31,7 @@ public class Main extends Application {
 		splashView = new Splash_View(primaryStage, splashModel);
 		new Splash_Controller(this, splashModel, splashView);
 		splashView.start();
+
 
 		// Display the splash screen and begin the initialization
 		splashModel.initialize();

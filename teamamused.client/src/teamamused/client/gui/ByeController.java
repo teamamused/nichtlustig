@@ -1,5 +1,11 @@
 package teamamused.client.gui;
 
-public class ByeController {
+import teamamused.common.gui.AbstractController;
 
+public class ByeController extends AbstractController<ByeModel, ByeView> {
+
+	public ByeController(ByeModel model, ByeView view) {
+		super(model, view);
+
+	}
 }

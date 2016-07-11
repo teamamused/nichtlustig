@@ -4,6 +4,12 @@
 	-fx-base: white;
 	-fx-background: rgb(187, 14, 35);
 }
+.cardPane{
+	-fx-font-size: 16pt;
+	-fx-font-family: "Tempus Sans ITC";
+	-fx-base: white;
+	-fx-background: rgb(187, 14, 35);
+}
 .button:hover{
 	-fx-background: lightgrey;
 }
