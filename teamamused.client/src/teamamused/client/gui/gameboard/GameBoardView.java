@@ -1,9 +1,7 @@
 package teamamused.client.gui.gameboard;
 
 import java.io.FileNotFoundException;
-import java.util.logging.Level;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -12,11 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
-import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
 
 /**
@@ -34,7 +31,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected TextArea txtChatScreen;
 	protected TextField txtChatInput;
 	protected ScrollPane scrollTxt;
-	
+
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
 	}
@@ -52,24 +49,25 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		root.setGridLinesVisible(false);
 
 		Scene scene = new Scene(root);
-		
+
 		// Instanziierung und Zuweisung der Controlls zur Haupt-Pane
 		// TODO
-		
-		//TODO: txtChatScreen ausrichten -> botton
+
+		// TODO: txtChatScreen ausrichten -> botton
 		// Definition der Pane für die linke Navigationsspalte
 		navigation = new VBox();
 		navigation.setPadding(new Insets(20, 20, 20, 20));
 		try {
 			logo = new ImageView(ResourceLoader.getImage("Logo_1.png"));
 		} catch (FileNotFoundException e) {
-			ServiceLocator.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
+			LogHelper.LogException(e);
 		}
 		logo.setFitWidth(200);
 		logo.setPreserveRatio(true);
 		btnGameBoard = new Button("Spielfeld");
 		btnGameBoard.setMaxSize(200, 40);
-		//TODO: Anzahl Buttons für Spieler dynamisch gestalten - je nach Anzahl Mitspieler
+		// TODO: Anzahl Buttons für Spieler dynamisch gestalten - je nach Anzahl
+		// Mitspieler
 		btnPlayer1 = new Button("Spieler 1");
 		btnPlayer1.setMaxSize(200, 40);
 		btnPlayer2 = new Button("Spieler 2");
@@ -81,16 +79,12 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		scrollTxt = new ScrollPane();
 		scrollTxt.setContent(txtChatScreen);
 		navigation.getChildren().addAll(logo, btnGameBoard, btnPlayer1, btnPlayer2, txtChatScreen, txtChatInput);
-		
+
 		root.add(navigation, 0, 0, 1, 10);
-		
+
 		// Definition der Pane für die Spielkarten
-		cardPane = new GridPane();
-		cardPane.setPadding(new Insets(20, 20, 20, 20));
-		cardPane.setHgap(10);
-		cardPane.setVgap(10);
-		cardPane.setGridLinesVisible(false);
-		
+		cardPane = GameBoardView.initializeGridPane();
+
 		// Instanziierung und Zuweisung der Images zur Spielkarten-Pane
 		cardPane.add(getImageView("Riebmann1Vorne.png"), 2, 0);
 		cardPane.add(getImageView("Riebmann2Vorne.png"), 3, 0);
@@ -106,7 +100,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		cardPane.add(getImageView("Lemming2Vorne.png"), 3, 2);
 		cardPane.add(getImageView("Lemming3Vorne.png"), 4, 2);
 		cardPane.add(getImageView("Lemming4Vorne.png"), 5, 2);
-		cardPane.add(getImageView("Lemming5Vorne.png"), 6, 2);	
+		cardPane.add(getImageView("Lemming5Vorne.png"), 6, 2);
 		cardPane.add(getImageView("Professoren1Vorne.png"), 2, 3);
 		cardPane.add(getImageView("Professoren2Vorne.png"), 3, 3);
 		cardPane.add(getImageView("Professoren3Vorne.png"), 4, 3);
@@ -128,14 +122,12 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		cardPane.add(getImageView("Zeitmaschine.png"), 0, 3);
 		cardPane.add(getImageView("Ufo.png"), 1, 1);
 		cardPane.add(getImageView("Roboter.png"), 1, 2);
-		cardPane.add(getImageView("Killervirus.png"), 1, 3 );
-		
+		cardPane.add(getImageView("Killervirus.png"), 1, 3);
+
 		root.add(cardPane, 1, 0);
-		
+
 		// Definition der Pane für den Würfel-Bereich
-		dicePane = new GridPane();
-//		dicePane.initializePane();
-		
+		dicePane = GameBoardView.initializeGridPane();
 
 		// Ausrichtung der Controlls in der Pane
 		// GridPane.setHalignment(restartButton, HPos.LEFT);
@@ -162,18 +154,26 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		try {
 			image = ResourceLoader.getImage(imageName);
 		} catch (FileNotFoundException e) {
-			ServiceLocator.getInstance().getLogger().log(Level.SEVERE, e.getMessage(), e);
+			LogHelper.LogException(e);
 		}
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(100);
 		imageView.setPreserveRatio(true);
 		return imageView;
 	}
-	
-//	private void initializePane(){
-//		pane.setPadding(new Insets(20, 20, 20, 20));
-//		pane.setHgap(10);
-//		pane.setVgap(10);
-//		pane.setGridLinesVisible(false);
-//	}
+
+	/**
+	 * Die Methode instanziiert eine GridPane und gibt dieser Layout-Vorgaben
+	 * mit (Wiederverwendbarkeit von Code)
+	 * 
+	 * @return Die Methode gibt eine "formatierte" GridPane zurück
+	 */
+	private static GridPane initializeGridPane() {
+		GridPane pane = new GridPane();
+		pane.setPadding(new Insets(20, 20, 20, 20));
+		pane.setHgap(10);
+		pane.setVgap(10);
+		pane.setGridLinesVisible(false);
+		return pane;
+	}
 }
