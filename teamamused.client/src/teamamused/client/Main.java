@@ -19,6 +19,18 @@ import teamamused.client.gui.GameBoardModel;
 import teamamused.client.gui.GameBoardView;
 import teamamused.client.libs.Client;
 import teamamused.common.ServiceLocator;
+import teamamused.client.gui.LogInController;
+import teamamused.client.gui.LogInModel;
+import teamamused.client.gui.LogInView;
+import teamamused.client.gui.WelcomeController;
+import teamamused.client.gui.WelcomeModel;
+import teamamused.client.gui.WelcomeView;
+import teamamused.client.gui.splashscreen.Splash_Controller;
+import teamamused.client.gui.splashscreen.Splash_Model;
+import teamamused.client.gui.splashscreen.Splash_View;
+import javafx.application.Application;
+
+import javafx.stage.Stage;
 
 public class Main extends Application {
 
@@ -28,7 +40,6 @@ public class Main extends Application {
 	private static Main instance = null;
 
 	@Override
-	
 	public void start(Stage primaryStage) {
 		Main.instance = this;
 		// Create and display the splash screen and model
