@@ -7,7 +7,6 @@ import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
-import teamamused.common.dtos.TransportObject.TransportType;
 import teamamused.common.dtos.TransportableProcedureCall.RemoteProcedure;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
@@ -121,7 +120,7 @@ public class Client {
 	 */
 	public void sendChatMessage(TransportableChatMessage message) {
 		this.log.info("Client " + this.currPlayer.getPlayerName() + " sendet Chatnachricht");
-		message.send(this.connector.getOutputStream());
+		this.send(message);
 	}
 
 	/**
@@ -167,7 +166,6 @@ public class Client {
 	 */
 	public void sayGoodbye() {
 		if (this.connector != null) {
-			this.send(new TransportObject(TransportType.Goodbye));
 			this.connector.close();
 		}
 	}
@@ -195,7 +193,7 @@ public class Client {
 	
 	private void send(TransportObject dto) {
 		if (this.connector != null) {
-			dto.send(this.connector.getOutputStream());
+			this.connector.getConnection().sendTransportObject(dto);
 		}
 	}
 }
