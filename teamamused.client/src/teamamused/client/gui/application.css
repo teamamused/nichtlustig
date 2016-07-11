@@ -13,3 +13,7 @@
 .button:hover{
 	-fx-background: lightgrey;
 }
+#labelSpielfeld{
+	-fx-font-size: 40pt;
+	-fx-font-weight: bold;
+}

@@ -2,11 +2,14 @@ package teamamused.client.gui.gameboard;
 
 import java.io.FileNotFoundException;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -31,6 +34,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected TextArea txtChatScreen;
 	protected TextField txtChatInput;
 	protected ScrollPane scrollTxt;
+	protected Label labelSpielfeld, labelRollDices, labelSelectedDices;
 
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
@@ -40,23 +44,22 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected Scene createGUI() {
 		stage.setTitle("Team Amused: Spielfeld");
 
-		// TODO: Eventuell keine GridPane als Hauptraster verwenden
 		// Definition der Haupt-Pane
-		root = new GridPane();
-		root.setPadding(new Insets(20, 20, 20, 20));
-		root.setHgap(10);
-		root.setVgap(10);
-		root.setGridLinesVisible(false);
+		root = GameBoardView.initializeGridPane();
 
 		Scene scene = new Scene(root);
 
 		// Instanziierung und Zuweisung der Controlls zur Haupt-Pane
-		// TODO
+		labelSpielfeld = new Label("Spielfeld");
+		labelSpielfeld.setId("labelSpielfeld");
+		labelSpielfeld.setAlignment(Pos.CENTER_RIGHT);
+		root.add(labelSpielfeld, 1, 0);
 
-		// TODO: txtChatScreen ausrichten -> botton
 		// Definition der Pane für die linke Navigationsspalte
-		navigation = new VBox();
+		navigation = new VBox(5);
 		navigation.setPadding(new Insets(20, 20, 20, 20));
+
+		// Instanziierung und Zuordnung der Controlls zur navigation-Pane
 		try {
 			logo = new ImageView(ResourceLoader.getImage("Logo_1.png"));
 		} catch (FileNotFoundException e) {
@@ -78,14 +81,14 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		txtChatInput.setPrefWidth(200);
 		scrollTxt = new ScrollPane();
 		scrollTxt.setContent(txtChatScreen);
+		Tooltip chatInputTool = new Tooltip("Hier kannst du deine Chatnachrichten eingeben");
+		Tooltip.install(txtChatInput, chatInputTool);
 		navigation.getChildren().addAll(logo, btnGameBoard, btnPlayer1, btnPlayer2, txtChatScreen, txtChatInput);
-
-		root.add(navigation, 0, 0, 1, 10);
 
 		// Definition der Pane für die Spielkarten
 		cardPane = GameBoardView.initializeGridPane();
 
-		// Instanziierung und Zuweisung der Images zur Spielkarten-Pane
+		// Instanziierung und Zuordnung der Images zur "cardPane"
 		cardPane.add(getImageView("Riebmann1Vorne.png"), 2, 0);
 		cardPane.add(getImageView("Riebmann2Vorne.png"), 3, 0);
 		cardPane.add(getImageView("Riebmann3Vorne.png"), 4, 0);
@@ -124,10 +127,28 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		cardPane.add(getImageView("Roboter.png"), 1, 2);
 		cardPane.add(getImageView("Killervirus.png"), 1, 3);
 
-		root.add(cardPane, 1, 0);
 
+		
+		
 		// Definition der Pane für den Würfel-Bereich
 		dicePane = GameBoardView.initializeGridPane();
+
+		
+		
+		//TODO: Hier weiterfahren
+		// Instanziierung und Zuordnung der Controlls zur "dicePane"
+		labelRollDices = new Label(
+				"Du darfst insgesamt dreimal würfeln. Wähle die Würfel an, welche du setzen möchtest. Einmal gesetzte Würfel dürfen nicht erneut gewürfelt werden.");
+		labelSelectedDices = new Label("Deine gesetzten Würfel:");
+		
+		
+		dicePane.add(labelRollDices, 0, 0, 10, 1);
+		dicePane.add(labelSelectedDices, 0, 1);
+		
+		// Zuordnung der Sub-Panes zur Haupt-Pane "root"
+		root.add(navigation, 0, 0, 1, 10);
+		root.add(cardPane, 1, 1);
+		root.add(dicePane, 1, 2);
 
 		// Ausrichtung der Controlls in der Pane
 		// GridPane.setHalignment(restartButton, HPos.LEFT);
@@ -140,10 +161,10 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	}
 
 	/**
-	 * Der Methode kann als String ein Bildname übergeben werden, anhand welchem
-	 * der ResourceLoader ein Image-Objekt zurückgibt. Dieses Objekt wird einer
-	 * ImageView übergeben und so in der Grösse angepasst und schlussendlich
-	 * zurückgegeben.
+	 * Dieser Support-Methode kann als String ein Bildname übergeben werden,
+	 * anhand welchem der ResourceLoader ein Image-Objekt zurückgibt. Dieses
+	 * Objekt wird einer ImageView übergeben und so in der Grösse angepasst und
+	 * schlussendlich zurückgegeben.
 	 * 
 	 * @param imageName
 	 *            Methode nimmt den Bildnamen (inkl. Endung) als String entgegen
@@ -157,14 +178,14 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			LogHelper.LogException(e);
 		}
 		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(100);
+		imageView.setFitHeight(120);
 		imageView.setPreserveRatio(true);
 		return imageView;
 	}
 
 	/**
-	 * Die Methode instanziiert eine GridPane und gibt dieser Layout-Vorgaben
-	 * mit (Wiederverwendbarkeit von Code)
+	 * Die Support-Methode instanziiert eine GridPane und gibt dieser
+	 * Layout-Vorgaben mit (Wiederverwendbarkeit von Code)
 	 * 
 	 * @return Die Methode gibt eine "formatierte" GridPane zurück
 	 */
