@@ -1,25 +1,43 @@
 package teamamused.server.gui;
 
-import teamamused.common.gui.AbstractController;
-import javafx.application.Platform;
+import java.util.logging.Logger;
+
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.stage.WindowEvent;
+import teamamused.common.ServiceLocator;
+import teamamused.common.gui.AbstractController;
+import teamamused.server.Server;
 
 public class ServerController extends AbstractController<ServerModel, ServerView> {
+	
+	private static final Logger LOG = ServiceLocator.getInstance().getLogger();
     
     public ServerController(ServerModel model, ServerView view) {
     	super(model, view);
-        this.model = model;
-        this.view = view;
-                
-        // register ourselves to handle window-closing event
-        view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                view.stop();     // closes the GUI
-                Platform.exit(); // ends any JavaFX activities
-                System.exit(0);  // end all activities (our server task) - not good code
-            }
-        });
+
+    	view.restartButton.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				LOG.info("Server wird neu gestartet");
+				// TODO: restart methode aufrufen
+				Server.getInstance();
+			}
+    	});
+    	
+    	
+    	//TODO: Implementation der ChoiceBox in Verbindung mit Translator
+    	
+    	
+    	
+    	//TODO: Für was ist das?
+//        // register ourselves to handle window-closing event
+//        view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+//            @Override
+//            public void handle(WindowEvent event) {
+//                view.stop();     // closes the GUI
+//                Platform.exit(); // ends any JavaFX activities
+//                System.exit(0);  // end all activities (our server task) - not good code
+//            }
+//        });
     }
 }

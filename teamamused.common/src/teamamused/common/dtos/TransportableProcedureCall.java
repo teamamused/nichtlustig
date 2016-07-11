@@ -27,8 +27,21 @@ public class TransportableProcedureCall extends TransportObject {
 		FixDices,
 		GameSpecialCard,
 		CardsChosen,
-		CreatePlayer,
-		ConnectPlayer,
+		/**
+		 * Neuen Spieler erstellen und der DB hinzufügen
+		 * Parameter: String Username, String Passwort  
+		 */
+		RegisterPlayer,
+		/**
+		 * Bereits existierenden Spieler anmelden
+		 * Parameter: String Username, String Passwort  
+		 */
+		LoginPlayer,
+		/**
+		 * Spieler dem Spiel hinzufügen, Voraussetzung ist das der spieler bereits eingelogt ist.
+		 * Parameter: IPlayer Spieler 
+		 */
+		JoinGame,
 		GetTopRanking,
 		
 		// Prozeduren welche vom Server aufgerufen werden

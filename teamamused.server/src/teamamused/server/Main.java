@@ -18,20 +18,18 @@ import teamamused.server.gui.ServerView;
  *
  */
 public class Main extends Application {
-	TextAreaHandler textAreaHandler; 
 	
 	@Override
-	public void start(Stage primaryStage) {		
+	public void start(Stage primaryStage) {
 		// Server Starten
 		ClientAwaiter.getInstance().start();
-        ServiceLocator.getInstance().getLogger().info("Gehe zu gui");
+        ServiceLocator.getInstance().getLogger().info("Gehe zu GUI");
 		
         // Gui initialisieren
         ServerModel model = new ServerModel();
         ServerView view = new ServerView(primaryStage, model);
         new ServerController(model, view);
         
-        //defaultLogger.info("Starte View");
         // gui anzeigen
         view.start();
         

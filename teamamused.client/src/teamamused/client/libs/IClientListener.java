@@ -31,13 +31,6 @@ public interface IClientListener {
 	public default void onGameBoardChanged(GameBoard newGameBoard) {}
 	
 	/**
-	 * Die Mitspieler auflistung hat sich verändert
-	 * 
-	 * @param players Alle aktuell registrierten Spieler
-	 */
-	public default void onPlayersChanged(IPlayer[] players) {}
-	
-	/**
 	 * Der Spieler ist am Zug oder nicht mehr am Zug
 	 * 
 	 * @param isActive Spieler aktiv Ja / Nein
@@ -73,4 +66,59 @@ public interface IClientListener {
 	 * @param rankings Platzierungen der Spielrunde
 	 */
 	public default void onGameFinished(Ranking[] rankings) {}
+	
+	/**
+	 * Antwort auf die Registrieren Anfrage:
+	 * Der Spieler wurde erstellt
+	 * 
+	 * @param player neu Registrierter Spieler
+	 */
+	public default void onRegisterSuccessful(IPlayer player) {}
+
+	/**
+	 * Antwort auf die Registrieren Anfrage:
+	 * Der Spieler wurde nicht erstellt
+	 * 
+	 * @param errorMsg Fehlermeldung
+	 */
+	public default void onRegisterFailed(String errorMsg) {}
+	
+	/**
+	 * Antwort auf die Einloggen Anfrage:
+	 * Der Spieler ist eingelogt
+	 * 
+	 * @param player eingelogter Spieler
+	 */
+	public default void onLoginSuccessful(IPlayer player) {}
+	
+	/**
+	 * Antwort auf die Einloggen Anfrage:
+	 * Das Login schlug fehl
+	 * 
+	 * @param errorMsg Fehlermeldung
+	 */
+	public default void onLoginFailed(String errorMsg) {}
+	
+	/**
+	 * Antwort auf die Spiel beitreten Anfrage:
+	 * Der Spieler ist dem Spiel beigetreten
+	 * 
+	 * @param player Spieler (Neu ist die Spielernummer gesetzt)
+	 */
+	public default void onJoinGameSuccessful(IPlayer player) {}
+	
+	/**
+	 * Antwort auf die Spiel beitreten Anfrage:
+	 * Der Spieler konnte dem Spiel nicht beitreten
+	 * 
+	 * @param errorMsg Fehlermeldung
+	 */
+	public default void onJoinGameFailed(String errorMsg) {}
+	
+	/**
+	 * Der Server hat die Verbindung abgebrochen
+	 * 
+	 */
+	public default void onServerClosedConnection() {}
+	
 }

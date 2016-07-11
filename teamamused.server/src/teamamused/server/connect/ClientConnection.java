@@ -5,13 +5,17 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Logger;
 
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
+import teamamused.common.db.PlayerRepository;
 import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportObject.TransportType;
+import teamamused.common.dtos.TransportableAnswer;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableState;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.interfaces.IPlayer;
+import teamamused.common.models.Player;
 import teamamused.server.Server;
 
 /**
@@ -40,18 +44,18 @@ public class ClientConnection extends Thread {
 		this.clientSocket = clientSocket;
 		this.clientId = clientId;
 		try {
-			ServiceLocator.getInstance().getLogger().info("erstelle Input und Output Streams");
+			this.logger.info("erstelle Input und Output Streams");
 			this.in = new ObjectInputStream(clientSocket.getInputStream());
 			try {
 				username = (String) this.in.readObject();
 			} catch (Exception ex) {
-				this.logger.severe(ex.getMessage());
+				LogHelper.LogException(ex);
 			}
 			this.out = new ObjectOutputStream(clientSocket.getOutputStream());
 		} catch (IOException e) {
-			this.logger.severe(e.getMessage());
+			LogHelper.LogException(e);
 		}
-		ServiceLocator.getInstance().getLogger().info("Streams erstellt");
+		this.logger.info("Streams erstellt");
 	}
 
 	public int getClientId() {
@@ -86,23 +90,32 @@ public class ClientConnection extends Thread {
 			}
 		} catch (Exception e) {
 			// Fehler loggen
-			this.logger.severe(e.toString());
+			LogHelper.LogException(e);
 		} finally {
 			// Socket schliessen
 			this.close();
 		}
 	}
-
+	/**
+	 * Schliesst die In/Outputstream und das Socket
+	 */
 	public void close() {
 		try {
+			this.sendDto(new TransportObject(TransportType.Goodbye));
+			
 			this.clientSocket.getInputStream().close();
 			this.clientSocket.getOutputStream().close();
 			this.clientSocket.close();
 		} catch (Exception e) {
-			this.logger.severe(e.toString());
+			LogHelper.LogException(e);
 		}
 	}
 
+	/**
+	 * Verarbeitet die Clientanfrage je nach Anfrage Typ
+	 * @param dtoIn Anfrage vom Client
+	 * @return Antwort vom Server
+	 */
 	private TransportObject processRequest(TransportObject dtoIn) {
 		this.logger.info("Nachricht vom Client erhalten: " + dtoIn.toString());
 
@@ -130,7 +143,25 @@ public class ClientConnection extends Thread {
 		dtoOut.setClient(this.username);
 		return dtoOut;
 	}
+	
+	public void sendDto(TransportObject dto) {
+		dto.send(this.out);
+	}
+	
+	public void setPlayer(IPlayer player) {
+		this.player = player;
+	}
+	
+	public IPlayer getPlayer() {
+		return this.player;
+	}
 
+
+	/**
+	 * Verarbeitet Prozedur anfragen vom Client, individuell nach Prozedur
+	 * @param rpc Anfrage vom Client
+	 * @return Antwort vom Server
+	 */
 	private TransportObject executeRemoteCall(TransportableProcedureCall rpc) {
 		switch (rpc.getProcedure()) {
 		case StartGame:
@@ -143,22 +174,65 @@ public class ClientConnection extends Thread {
 			return Server.getInstance().fixDices(rpc);
 		case CardsChosen:
 			return Server.getInstance().cardsChosen(rpc);
+		case LoginPlayer:
+			return this.validateLogin(rpc);
+		case RegisterPlayer:
+			return this.createLogin(rpc);
+		case JoinGame:
+			return Server.getInstance().connectPlayerToGame(rpc);
 		default:
 			break;
 		}
 		return new TransportableState(false, "Remote Procedure is undefined");
 	}
 	
-	public void sendDto(TransportObject dto) {
-		dto.send(this.out);
+	/**
+	 * Prüft ob der Spieler vorhanden ist und das Passwort stimmt
+	 * @param rpc Aufruf vom Client
+	 * @return Transportable Answer mit False und NULL fals nicht erfolgreich, true und Player fals erfolgreich 
+	 */
+	private TransportObject validateLogin(TransportableProcedureCall rpc) {
+		if (rpc.getArguments() != null && rpc.getArguments().length == 2) {
+			String username = (String)rpc.getArguments()[0];
+			String password = (String)rpc.getArguments()[1];
+			Player p = PlayerRepository.validatePlayerLogin(username, password);
+			if (p != null) {
+				this.player = p;
+				this.username = username;
+				return new TransportableAnswer(rpc, true, p);
+			} else {
+				if (PlayerRepository.isUsernameTaken(username)) {
+					return new TransportableAnswer(rpc, false, "Passwort ungültig");
+				}
+				return new TransportableAnswer(rpc, false, "Benutzername ungültig");
+			}
+		}
+		return new TransportableAnswer(rpc, false, "Sie müssen einen Benutzer namen und ein Passwort mitgeben");
 	}
 	
-	public void setPlayer(IPlayer player) {
-		this.player = player;
-	}
-	
-	public IPlayer getPlayer() {
-		return this.player;
+	/**
+	 * Prüft ob der Spieler vorhanden ist und das Passwort stimmt
+	 * @param rpc Aufruf vom Client
+	 * @return Transportable Answer mit False und NULL fals nicht erfolgreich, true und Player fals erfolgreich 
+	 */
+	private TransportObject createLogin(TransportableProcedureCall rpc) {
+		if (rpc.getArguments() != null && rpc.getArguments().length == 2) {
+			String username = (String)rpc.getArguments()[0];
+			String password = (String)rpc.getArguments()[1];
+			Player p;
+			try {
+				p = PlayerRepository.createPlayer(username, password);
+				if (p != null) {
+					this.player = p;
+					this.username = username;
+					return new TransportableAnswer(rpc, true, p);
+				}
+			} catch (Exception e) {
+				LogHelper.LogException(e);
+				return new TransportableAnswer(rpc, false, e.getMessage());
+			}
+		}
+		return new TransportableAnswer(rpc, false, "Sie müssen einen Benutzer namen und ein Passwort mitgeben");
 	}
 
 }

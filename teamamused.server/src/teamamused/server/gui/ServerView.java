@@ -1,80 +1,107 @@
 package teamamused.server.gui;
 
-import teamamused.common.gui.AbstractView;
-import teamamused.server.TextAreaHandler;
-import teamamused.server.connect.ClientAwaiter;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import teamamused.common.gui.AbstractView;
+import teamamused.server.TextAreaHandler;
+import teamamused.server.connect.ClientAwaiter;
 
+/**
+ * Die Klasse ServerView stellt nach dem MVC-Pattern die grafische Oberfläche
+ * für den Server dar.
+ * 
+ * @author Michelle
+ *
+ */
 public class ServerView extends AbstractView<ServerModel> {
-	//TextAreaHandler textAreaHandler;
-    protected TextArea txtLog;
-    
-    public ServerView(Stage stage, ServerModel model) {
-    	super (stage, model);
-        stage.setTitle("Team amused Server");
-    }
-
+	
+	protected GridPane root;
+	protected Button restartButton;
+	protected Label labelServer, labelLogo, labelConnect, labelPort, labelIP, labelProtocol, labelTeam;
+	protected Image logo;
+	protected ScrollPane scrollTxt;
+	protected ChoiceBox<String> language;
+	protected TextArea loggingTxtArea;
+	
+	public ServerView(Stage stage, ServerModel model){
+		super(stage, model);
+	}
+	
 	@Override
-    protected void initView() {
-		TextAreaHandler handler = TextAreaHandler.getInstance(); 
-    	this.txtLog = handler.getTextArea();		
+	protected void initView() {
+		// TODO: Für was ist diese Methode?
 	}
 
 	@Override
 	protected Scene createGUI() {
-        
-		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root,400,400);
-
-
-        HBox topBox = new HBox();
-        topBox.setId("TopBox");
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-		Label l =new Label("Dies ist der Server! Juppie!");
-	    Label lblPort = new Label(" Läuft auf Port");
-	    TextField txtPort = new TextField(ClientAwaiter.PORT_NUMBER + "");
-        topBox.getChildren().addAll(l, lblPort, spacer, txtPort);
-        root.setTop(topBox);
+		stage.setTitle("Team Amused: Server");
 		
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
-        root.setCenter(scrollPane);
-        scrollPane.setContent(this.txtLog);
-        this.txtLog.setWrapText(true);
+		//Definition der Pane
+		root = new GridPane();
+		root.setPadding(new Insets(20, 20, 20, 20));
+		root.setHgap(10);
+		root.setVgap(10);
+		root.setGridLinesVisible(false);
+		
+		Scene scene = new Scene (root);
+		
+		logo = new Image("Logo_1.png", 400, 400, true, true);;
+		labelServer = new Label("Dein Server läuft!");
+		labelLogo = new Label("", new ImageView(logo));
+		labelConnect = new Label("Spieler können sich verbinden über:");
+		labelPort = new Label("\u2022" + "  Port " + ClientAwaiter.PORT_NUMBER);
+		labelIP = new Label("\u2022" + "  IP " + ClientAwaiter.IP_ADDRESS);
+		labelProtocol = new Label("Protokoll:");
+		labelTeam = new Label("Team Amused: IT-Projekt an der FHNW, 2016");
+		restartButton = new Button("Server neustarten");
+		scrollTxt = new ScrollPane();
+		language = new ChoiceBox<String>();
+		language.getItems().add("Deutsch");
+		language.getItems().add("Englisch");
+		//Setzt den ersten Wert der Auswahlliste als Default
+		language.getSelectionModel().selectFirst();
+		// holt das TextArea aus dem TextAreaHandler
+		this.loggingTxtArea = TextAreaHandler.getInstance().getTextArea();
+		scrollTxt.setContent(loggingTxtArea);
+		loggingTxtArea.setEditable(false);
 
+		//Hinzufügen der Controlls der Pane
+		root.add(restartButton, 0, 0);
+		root.add(labelServer, 0, 1);
+		root.add(labelLogo, 2, 0);
+		root.add(labelConnect, 0, 2);
+		root.add(labelPort, 1, 2);
+		root.add(labelIP, 1, 3);
+		root.add(labelProtocol, 0, 5);
+		root.add(language, 2, 6);
+		root.add(labelTeam, 0, 6);
+		root.add(loggingTxtArea, 0, 5, 3, 1);
+		
+		//Ausrichtung der Controlls in der Pane
+		GridPane.setHalignment(restartButton, HPos.LEFT);
+		GridPane.setValignment(restartButton, VPos.CENTER);
+		GridPane.setHalignment(labelLogo, HPos.RIGHT);
+		GridPane.setValignment(labelLogo, VPos.TOP);
+		GridPane.setHalignment(language, HPos.RIGHT);
+		GridPane.setValignment(language, VPos.BOTTOM);
+		
+		//Zuweisung des Stylesheets
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		labelServer.setId("labelServer");
+		labelTeam.setId("labelTeam");
+		
 		return scene;
 	}
 
-    public void start() {
-        stage.show();
-    }
-    
-    /**
-     * Stopping the view - just make it invisible
-     */
-    public void stop() {
-        stage.hide();
-    }
-    
-    /**
-     * Getter for the stage, so that the controller can access window events
-     */
-    public Stage getStage() {
-        return stage;
-    }
 }

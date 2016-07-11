@@ -40,6 +40,7 @@ public class GameFinisher {
 	private int notValuatedCards = 0;
 	private int singleDeadCards = 0;
 	private int playerPoints = 0;
+	private int gameID;
 	
 	
 	public GameFinisher(){
@@ -63,15 +64,15 @@ public class GameFinisher {
 	 * @param playerPrePoints Vorpunkte von Professoren-Karte
 	 */
 	public void calcPoints(IPlayer player, int playerPrePoints){
-		playerPoints += playerPrePoints;
+		playerPoints += playerPrePoints; //für Riebmann-Karten
 		playerPoints += valuatedLemmingCards * 4;
 		
 		if(valuatedYetiCards > 0){
 			if(valuatedYetiCards > 1){
 				playerPoints += valuatedYetiCards * 3;
 			}else{
-				
-			}playerPoints += 1;
+				playerPoints += 1;
+			}
 		}
 		
 		playerPoints += valuatedRiebmannCards * 2;
@@ -89,17 +90,15 @@ public class GameFinisher {
 	 */
 	public void finishGame(){
 		//Liest die Spieler aus
-		for(IPlayer player: Game.getInstance().getPlayers()){
-			players.add(player);
-		}
+		this.players = BoardManager.getInstance().getGameBoard().getPlayers();
 		
 		//Liest die Karten der einzelnen Spieler aus
 		for(IPlayer player : players){
 			for(IDeadCard deadCard : player.getDeadCards()){
-				deadCards.add(deadCard);
-				singleDeadCards++;
-				/*maja: klären:
-				 * Wie stelle ich sicher, dass diese auf keiner Zielkarte liegt?*/
+				if(!deadCard.getIsOnTargetCard()){
+					deadCards.add(deadCard);
+					singleDeadCards++;
+				}						
 			}
 			for(ISpecialCard specialCard : player.getSpecialCards()){
 				specialCards.add(specialCard);
@@ -113,26 +112,26 @@ public class GameFinisher {
 				}
 				//Lemming-Karte
 				else if(!targetCard.getIsCoveredByDead()){
-					if(targetCard.getGameCard().name().matches("ZK_Lemming"+"[1-5]")){
+					if(targetCard.getGameCard().isLemming()){
 						valuatedLemmingCards++;
 					}
 					//Yeti-Karte
-					else if(targetCard.getGameCard().name().matches("ZK_Yeti"+"[1-5]")){
+					else if(targetCard.getGameCard().isYeti()){
 						valuatedYetiCards++;
 					}
 					//Riebmann-Karte
-					else if(targetCard.getGameCard().name().matches("ZK_Riebmann"+"[1-5]")){
+					else if(targetCard.getGameCard().isRiebmann()){
 						valuatedRiebmannCards++;
 					}
 					//Dino-Karte
-					else if(targetCard.getGameCard().name().matches("ZK_Dinosaurier"+"[1-5]")){
+					else if(targetCard.getGameCard().isDino()){
 						dinoCardValue += targetCard.getCardValue();
 					}
 					/*Prüft ob ein Spieler eine Professoren-Karte hat{
 					* und erzeugt automatisch eine zufällige Punktzahl von 0-5
 					* für die Karte, welche der Spieler erhält
 					*/	
-					else if(targetCard.getGameCard().name().matches("ZK_Professoren"+"[1-5]")){
+					else if(targetCard.getGameCard().isProffessoren()){
 						playerPrePoints = (int) Math.random() * 6;
 					}
 				}
@@ -149,6 +148,9 @@ public class GameFinisher {
 		
 	}
 	
+	/**
+	 * Setzt die Zähler vom GameFinisher zurück.
+	 */
 	public void resetCounters(){
 		deadCards.clear();
 		specialCards.clear();
@@ -163,26 +165,34 @@ public class GameFinisher {
 		playerPoints = 0;
 	}
 	
+	/**
+	 * Ranking setzen.
+	 */
 	public void setRanking(){
-		//Maja: klären: Wie und wo genau Ranking nachführen?
+		gameID = Game.getInstance().getGameID();
+		Ranking[] inGameRanking = RankingRepository.getInGameRanking(gameID, this.ranking);
+		showRankingToPlayer(inGameRanking);
 	}
 	
-	//Ranking auslesen
+	/**
+	 * Liest das Ranking aus.
+	 * @return Ranking Hashtabelle <IPlayer, Integer>
+	 */
 	public Hashtable<IPlayer, Integer> getRanking(){
 		return ranking;
 	}
 	
-	public void showRankingToPlayer(){
-		//Maja: klären: Wird das in GUI gemacht? Muss ich was tun?
-		
-		// Dem Ranking muss du auch die gameId mitgeben, damit abgespeichrt werden kann in welchem Spiel diese Platzierungen waren
-		int gameId = 1; //etwa so: Game.getInstance().getGameId();
-		// Den hashtable und die gameId dem RankingRepository übergeben, dies macht dir das Ranking Array und fügt die Objekte dem DB Context hinzu
-		Ranking[] inGameRanking = RankingRepository.getInGameRanking(gameId, this.ranking);
-		// Clients sagen das das Game fertig ist und als Parameter die Platzierungen Übergeben
+	/**
+	 * Zeigt den Spielern das Ranking an.
+	 * @param inGameRanking RankingRepository übergeben
+	 */
+	public void showRankingToPlayer(Ranking[] inGameRanking){
 		ClientNotificator.notifyGameFinished(inGameRanking);
 	}
 	
+	/**
+	 * Schliesst das Spiel komplett ab.
+	 */
 	public void closeGame(){
 		//Maja: klären: Wie soll ich das Spiel genau abschliessen?
 
@@ -206,14 +216,14 @@ public class GameFinisher {
 		// 2. GameInfo Objekt erstellen:
 		GameInfo gi = new GameInfo(gameId, spielStart, spielEnde);
 		// Spieler zum GameInfo Objekt hinzufügen
-		for (IPlayer player : Game.getInstance().getPlayers()) {
+		for (IPlayer player : this.players) {
 			gi.Players.add(player.getPlayerName());
 		}
 		// 4. in der Datenbank eine GameInfo hinzufügen:
 		db.addGame(gi);
 		
 		// 5. Ranking speichern und den Spielern anzeigen
-		this.showRankingToPlayer();
+		this.setRanking();
 		
 		// 6. Alle Änderungen an der Datenbank sind bis jetzt nur im Memory
 		//    Um die Daten effektiv zu speichern machst du

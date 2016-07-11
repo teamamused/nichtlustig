@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import teamamused.common.ServiceLocator;
+import teamamused.common.db.GameInfoRepository;
 import teamamused.common.interfaces.IPlayer;
 
 /**
@@ -17,16 +18,17 @@ import teamamused.common.interfaces.IPlayer;
  */
 
 public class Game implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private static Game instance;
-	private Game game = new Game();
 	
 	//gameStatus: 0 = nicht gestartet, 1 = gestartet, 2 = beendet
 	private static int gameStatus = 0;
+	private int gameId;
 	
 	private IPlayer activePlayer;
-	private List<IPlayer> players;
 
 	private Game(){
+		super();
 		this.startGame();
 	}
 	
@@ -35,9 +37,9 @@ public class Game implements Serializable{
 	 */
 	private void startGame() {
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spiel");
-		
+		gameId = GameInfoRepository.getNextGameId();
 		//Spielstatus auf "gestartet" setzen
-		this.gameStatus = 1;
+		gameStatus = 1;
 	}
 	
 	/**
@@ -52,38 +54,25 @@ public class Game implements Serializable{
 	}
 	
 	/**
-	 * Getter Methode für das Spiel
-	 * @return Spiel
-	 */
-	public Game getGame() {
-		return this.game;
-	}
-	
-	/**
 	 * Spieler zu Spiel hinzufügen
 	 * @param player Spieler, welcher hinzugefügt werden soll
 	 */
 	public void addPlayer(IPlayer player){
-		if(this.players.size() <= 4){
-			this.players.add(player);
+		if(this.getPlayersFromGameboard().size() <= 4){
+			player.setPlayerNumber(this.getPlayersFromGameboard().size());
+			this.getPlayersFromGameboard().add(player);
+			ClientNotificator.notifyGameMove("Spieler " + player.getPlayerName() + " ist dem Spiel beigetreten.");
+			ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
 		}else{
 			throw new UnsupportedOperationException("Die maximale Spieleranzahl wurde bereits erreicht, bitte versuchen Sie es später erneut.");
 		}
 	}
 	
 	/**
-	 * Gibt eine Liste mit mit allen Spielern zurück.
-	 * @return Spielerliste
-	 */
-	public List<IPlayer> getPlayers(){
-		return players;
-	}
-	
-	/**
 	 * Legt fest, welcher Spieler mit dem Spiel starten darf.
 	 */
 	public void defineStartPlayer(){
-		this.activePlayer = this.getPlayers().get((int)(Math.random() * 4));
+		this.activePlayer = this.getPlayersFromGameboard().get((int)(Math.random() * 4));
 	}
 	
 	/**
@@ -92,9 +81,9 @@ public class Game implements Serializable{
 	 */
 	public void changeActivePlayer(){
 		if(this.activePlayer.getPlayerNumber() != 3){
-			this.activePlayer = this.getPlayers().get(this.activePlayer.getPlayerNumber() + 1);
+			this.activePlayer = this.getPlayersFromGameboard().get(this.activePlayer.getPlayerNumber() + 1);
 		}else{
-			this.activePlayer = this.getPlayers().get(0);
+			this.activePlayer = this.getPlayersFromGameboard().get(0);
 		}
 	}
 	
@@ -112,4 +101,17 @@ public class Game implements Serializable{
 	public IPlayer getActivePlayer(){
 		return activePlayer;
 	}
+	
+	/**
+	 * Gibt die Game-ID des Spiels zurück.
+	 * @return Game-ID als Integer
+	 */
+	public Integer getGameID(){
+		return this.gameId;
+	}
+	
+	private List<IPlayer> getPlayersFromGameboard() {
+		return BoardManager.getInstance().getGameBoard().getPlayers();
+	}
+	
 }

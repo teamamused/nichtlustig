@@ -107,7 +107,11 @@ public class CubeManager{
 		return counterFixedCubes;
 	}
 	
-	public CubeValue getCurrentPinkCubeValue(){
+	/**
+	 * Liest den pinken Würfel aus und gibt diesen zurück.
+	 * @return pinker Würfel
+	 */
+	public CubeValue getCurrentPinkCube(){
 		for(ICube cube : cubes){
 			if(cube.getCubeColor() == CubeColor.Pink){
 				pinkCube = cube;
@@ -116,6 +120,10 @@ public class CubeManager{
 		return pinkCube.getCurrentValue();
 	}
 	
+	/**
+	 * Gibt einen Array von allen aktuellen Würfeln zurück.
+	 * @return alle Würfel als Array
+	 */
 	public ICube[] getCubes(){
 		return cubes;
 	}
