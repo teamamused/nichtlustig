@@ -6,6 +6,9 @@ import teamamused.client.gui.ByeView;
 import teamamused.client.gui.LogInController;
 import teamamused.client.gui.LogInModel;
 import teamamused.client.gui.LogInView;
+import teamamused.client.gui.RankingController;
+import teamamused.client.gui.RankingModel;
+import teamamused.client.gui.RankingView;
 import teamamused.client.gui.RegisterController;
 import teamamused.client.gui.RegisterModel;
 import teamamused.client.gui.RegisterView;
@@ -27,6 +30,7 @@ public class Main extends Application {
 	private LogInView logInView;
 	private WelcomeView welcomeView;
 	private RegisterView registerView;
+	private RankingView rankingView;
 	private ByeView byeView;
 	private GameBoardView gameBoardView;
 	private static Main instance = null;
@@ -76,6 +80,17 @@ public class Main extends Application {
 		logInView.stop();
 		logInView = null;
 		registerView.start();
+	}
+	
+	public void startRanking() {
+
+		Stage RankingStage = new Stage();
+		RankingModel model = new RankingModel();
+		rankingView = new RankingView(RankingStage, model);
+		new RankingController(model, rankingView);
+		welcomeView.stop();
+		welcomeView = null;
+		rankingView.start();
 	}
 	
 	public void startBye() {

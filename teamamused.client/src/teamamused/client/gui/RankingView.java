@@ -6,7 +6,7 @@ import teamamused.common.gui.AbstractView;
 
 public class RankingView extends AbstractView<RankingModel> {
 
-	protected RankingView(Stage stage, RankingModel model) {
+	public RankingView(Stage stage, RankingModel model) {
 		super(stage, model);
 	}
 
