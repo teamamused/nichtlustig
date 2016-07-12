@@ -1,5 +1,8 @@
 package teamamused.client;
 
+import teamamused.client.gui.ByeController;
+import teamamused.client.gui.ByeModel;
+import teamamused.client.gui.ByeView;
 import teamamused.client.gui.LogInController;
 import teamamused.client.gui.LogInModel;
 import teamamused.client.gui.LogInView;
@@ -20,6 +23,7 @@ public class Main extends Application {
 	private Splash_View splashView;
 	private LogInView logInView;
 	private WelcomeView welcomeView;
+	private ByeView byeView;
 	private GameBoardView gameBoardView;
 	private static Main instance = null;
 
@@ -57,6 +61,17 @@ public class Main extends Application {
 		logInView.stop();
 		logInView = null;
 		welcomeView.start();
+	}
+	
+	public void startBye() {
+
+		Stage ByeStage = new Stage();
+		ByeModel model = new ByeModel();
+		byeView = new ByeView(byeStage, model);
+		new ByeController(model, byeView);
+		welcomeView.stop();
+		welcomeView = null;
+		byeView.start();
 	}
 	
 	public void startGameBoard() {

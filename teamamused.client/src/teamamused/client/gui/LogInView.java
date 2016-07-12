@@ -49,6 +49,7 @@ public class LogInView extends AbstractView<LogInModel> {
 
 		ChoiceBox cbLang = new ChoiceBox();
 		cbLang.setItems(FXCollections.observableArrayList("Deutsch", "English"));
+		
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("Nicht-Lustig.jpg"));
@@ -73,7 +74,7 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(labelNeu, 2, 8);
 		grid.add(linkReg, 2, 9);
 		grid.add(cbLang, 2, 10);
-		grid.add(iview, 1, 0);
+		// grid.add(iview, 0, 10);
 
 		// Add the layout pane to a scene
 		Scene scene = new Scene(grid, 800, 600);
