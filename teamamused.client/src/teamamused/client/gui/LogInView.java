@@ -59,6 +59,16 @@ public class LogInView extends AbstractView<LogInModel> {
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
 		}
+		
+		ImageView iview2 = null;
+		try {
+			iview2 = new ImageView(ResourceLoader.getImage("Sprache.png"));
+			iview2.setFitWidth(20);
+			iview2.setFitWidth(20);
+			iview2.setPreserveRatio(true);
+		} catch (FileNotFoundException e1) {
+			ServiceLocator.getInstance().getLogger().severe(e1.toString());
+		}
 
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER_RIGHT);
@@ -73,7 +83,8 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(btnLogin, 2, 4);
 		grid.add(labelNeu, 2, 8);
 		grid.add(linkReg, 2, 9);
-		grid.add(cbLang, 2, 10);
+		grid.add(iview2, 2, 10);
+		grid.add(cbLang, 3, 10);
 		// grid.add(iview, 0, 10);
 
 		// Add the layout pane to a scene

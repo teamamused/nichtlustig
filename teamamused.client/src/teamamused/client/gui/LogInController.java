@@ -14,9 +14,9 @@ public class LogInController extends AbstractController<LogInModel, LogInView> {
 		});
 		
 		view.linkReg.setOnAction((ActionEvent e) -> {
-			System.out.println("This link is clicked");
+			Main.getInstance().startRegister();
 		});
-
+		
 	}
 
 }

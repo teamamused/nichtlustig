@@ -4,7 +4,7 @@ import teamamused.common.gui.AbstractController;
 
 public class RankingController extends AbstractController<RankingModel, RankingView> {
 
-	protected RankingController(RankingModel model, RankingView view) {
+	public RankingController(RankingModel model, RankingView view) {
 		super(model, view);
 	}
 
