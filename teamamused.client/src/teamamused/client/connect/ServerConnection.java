@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import teamamused.client.libs.Client;
 import teamamused.client.libs.GuiNotificator;
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
 import teamamused.common.dtos.TransportObject;
@@ -36,57 +37,95 @@ public class ServerConnection extends Thread {
 	private Logger log = ServiceLocator.getInstance().getLogger();
 	private GuiNotificator notifyGui;
 	private boolean holdConnection = true;
+	private ServerConnector connector;
 
 	/**
 	 * Konstruktor mit den Initialparametern
-	 * @param socket	socket zum Server
-	 * @param in		Input Stream des Sockets
-	 * @param out		Outputstream des Sockets
+	 * 
+	 * @param socket
+	 *            socket zum Server
+	 * @param username
+	 *            Benutzername
 	 */
-	public ServerConnection(Socket socket, ObjectInputStream in, ObjectOutputStream out) {
+	public ServerConnection(ServerConnector connector, Socket socket, String username) {
 		super();
 		this.socket = socket;
-		this.in = in;
-		this.out = out;
+		this.connector = connector;
+		
+		try {
+			this.out = new ObjectOutputStream(socket.getOutputStream());
+			this.out.writeObject(username);
+
+			this.in = new ObjectInputStream(socket.getInputStream());
+
+		} catch (Exception ex) {
+			LogHelper.LogException(ex);
+		}
 		this.notifyGui = Client.getInstance().getGuiNotificator();
 	}
 
 	/**
-	 * Startet den Thread welcher auf den Server hört bis die Connection geschlossen wird.
+	 * Startet den Thread welcher auf den Server hört bis die Connection
+	 * geschlossen wird.
 	 */
 	public void run() {
-		while (this.holdConnection) {
-			try {
+		try {
+			while (this.holdConnection) {
 				// Auf Nachricht von Server warten
-				TransportObject dtoIn = (TransportObject)in.readObject();
+				TransportObject dtoIn = (TransportObject) in.readObject();
 				// Wenn es ein status ist nicht antworten
-				// Ev einführen das die letzte Nachricht gechaed wird und falls der Status 
-				// NOK ist diese nochmals senden. Noch schauen wie es sich in der Praxis verhält.
+				// Ev einführen das die letzte Nachricht gechaed wird und falls
+				// der Status NOK ist diese nochmals senden. Noch schauen wie es
+				// sich in der Praxis verhält.
 				if (dtoIn.getTransportType() != TransportType.State) {
 					// Nachricht verarbeiten
 					TransportObject answer = this.processRequest(dtoIn);
-					// status zurückmelden
-					answer.send(this.out);
+					if (answer != null) {
+						// status zurückmelden
+						this.sendTransportObject(answer);
+					}
 				}
-				
-			} catch (Exception e) {
-				log.severe(e.toString());
 			}
+
+		} catch (Exception e) {
+			LogHelper.LogException(e);
+		} finally {
+
+			try {
+				if (this.in != null) {
+					this.in.close();
+				}
+			} catch (Exception e) {
+			}
+			try {
+				if (this.out != null) {
+					this.out.close();
+				}
+			} catch (Exception e) {
+			}
+			try {
+				if (this.socket != null) {
+					this.socket.close();
+				}
+			} catch (Exception e) {
+			}
+			this.connector.setConnected(false);
 		}
 	}
-	/**
-	 * Getter für das Socket 
-	 * @return Socket zum server
-	 */
-	public Socket getSocket() {
-		return socket;
+
+	public void sendTransportObject(TransportObject dto) {
+		if (this.out != null) {
+			dto.send(this.out);
+		}
 	}
-	
+
 	/**
-	 * Setzt das Flag das den Thread abbricht und die Verbind schliest
+	 * Setzt das Flag das den Thread abbricht und die Verbindung schliest Sagt
+	 * dem Server Goodbye
 	 */
 	public void closeConnection() {
 		this.holdConnection = false;
+		this.sendTransportObject(new TransportObject(TransportType.Goodbye));
 	}
 
 	private TransportObject processRequest(TransportObject dtoIn) {
@@ -103,21 +142,31 @@ public class ServerConnection extends Thread {
 			dtoOut = this.executeRemoteCall((TransportableProcedureCall) dtoIn);
 			break;
 		case ChatMessage:
-			this.notifyGui.addChatMessage((TransportableChatMessage)dtoIn);
+			this.notifyGui.addChatMessage((TransportableChatMessage) dtoIn);
 			dtoOut = new TransportableState(true, "Nachricht erhalten");
 			break;
 		case Answer:
 			this.processAnswer((TransportableAnswer) dtoIn);
-
+			break;
 		case Goodbye:
-			this.notifyGui.serverClosedConnection();
-			this.closeConnection();
+			// Server sagt Goodbye, wir verabschieden uns ebenfalls von ihm
+			// und informieren das Gui darüber
+			if (this.holdConnection) {
+				this.holdConnection = false;
+				this.notifyGui.serverClosedConnection();
+				dtoOut = new TransportObject(TransportType.Goodbye);
+			} 
+			// ansonsten: wir haben goodbye gesagt, der server hat freundlich
+			// geanwortet nichts mehr zu tun
 			break;
 		default:
 			dtoOut = new TransportableState(false, "unbekanntes Transport Objekt");
 			break;
 		}
-		dtoOut.setClient(clientName);
+		// Wenn es eine Antwort vom Server war oder der Server auf unser goodby antwortet sagen wir nichts
+		if (dtoOut != null) {
+			dtoOut.setClient(clientName);
+		}
 		return dtoOut;
 	}
 
@@ -128,7 +177,7 @@ public class ServerConnection extends Thread {
 		case ShowGameMove:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof String) {
-					this.notifyGui.gameMoveDone((String)params[0]);
+					this.notifyGui.gameMoveDone((String) params[0]);
 					return new TransportableState(true, "Client updated");
 				}
 			}
@@ -136,35 +185,36 @@ public class ServerConnection extends Thread {
 		case ChangeActivePlayer:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof IPlayer) {
-					this.notifyGui.activeChanged(((IPlayer)params[0]).getPlayerName() == Client.getInstance().getPlayer().getPlayerName());
+					this.notifyGui.activeChanged(((IPlayer) params[0]).getPlayerName() == Client.getInstance()
+							.getPlayer().getPlayerName());
 					return new TransportableState(true, "Client updated");
 				}
 			}
 			break;
-			
+
 		case UpdateGameBoard:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof GameBoard) {
-					this.notifyGui.updateGameBoard((GameBoard)params[0]);
+					this.notifyGui.updateGameBoard((GameBoard) params[0]);
 					return new TransportableState(true, "Client updated");
 				}
 			}
 			break;
-			
+
 		case ChooseCards:
 			// Karten kommen als Hashtable of int und List of ITargetCard
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof Hashtable<?, ?>) {
-					this.notifyGui.chooseCards((Hashtable<Integer, List<ITargetCard>>)params[0]);
+					this.notifyGui.chooseCards((Hashtable<Integer, List<ITargetCard>>) params[0]);
 					return new TransportableState(true, "Client updated");
 				}
 			}
 			break;
-			
+
 		case FinishGame:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof Ranking[]) {
-					Client.getInstance().getGuiNotificator().gameFinished((Ranking[])params[0]);
+					Client.getInstance().getGuiNotificator().gameFinished((Ranking[]) params[0]);
 					return new TransportableState(true, "Client updated");
 				}
 			}
@@ -175,37 +225,36 @@ public class ServerConnection extends Thread {
 		return new TransportableState(false, "Remote Procedure is undefined");
 	}
 
-
 	private void processAnswer(TransportableAnswer answer) {
 		switch (answer.getOriginalCall().getProcedure()) {
-			case StartGame:
-				break;
-			case RegisterPlayer:
-				if (answer.isOK()) {
-					Client.getInstance().setPlayer((IPlayer)answer.getReturnValue());
-					this.notifyGui.registerSuccessful((IPlayer)answer.getReturnValue());
-				} else {
-					this.notifyGui.registerFailed((String)answer.getReturnValue());
-				}
-				break;
-			case LoginPlayer:
-				if (answer.isOK()) {
-					Client.getInstance().setPlayer((IPlayer)answer.getReturnValue());
-					this.notifyGui.loginSuccessful((IPlayer)answer.getReturnValue());
-				} else {
-					this.notifyGui.loginFailed((String)answer.getReturnValue());
-				}
-				break;
-			case JoinGame:
-				if (answer.isOK()) {
-					Client.getInstance().setPlayer((IPlayer)answer.getReturnValue());
-					this.notifyGui.joinGameSuccessful((IPlayer)answer.getReturnValue());
-				} else {
-					this.notifyGui.joinGameFailed((String)answer.getReturnValue());
-				}
-				break;
-			default:
-				break;
+		case StartGame:
+			break;
+		case RegisterPlayer:
+			if (answer.isOK()) {
+				Client.getInstance().setPlayer((IPlayer) answer.getReturnValue());
+				this.notifyGui.registerSuccessful((IPlayer) answer.getReturnValue());
+			} else {
+				this.notifyGui.registerFailed((String) answer.getReturnValue());
+			}
+			break;
+		case LoginPlayer:
+			if (answer.isOK()) {
+				Client.getInstance().setPlayer((IPlayer) answer.getReturnValue());
+				this.notifyGui.loginSuccessful((IPlayer) answer.getReturnValue());
+			} else {
+				this.notifyGui.loginFailed((String) answer.getReturnValue());
+			}
+			break;
+		case JoinGame:
+			if (answer.isOK()) {
+				Client.getInstance().setPlayer((IPlayer) answer.getReturnValue());
+				this.notifyGui.joinGameSuccessful((IPlayer) answer.getReturnValue());
+			} else {
+				this.notifyGui.joinGameFailed((String) answer.getReturnValue());
+			}
+			break;
+		default:
+			break;
 		}
 	}
 }
