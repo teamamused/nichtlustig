@@ -129,7 +129,7 @@ public class Client {
 	 */
 	public void joinGame() {
 		this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " tritt Spiel bei");
-		this.send(new TransportableProcedureCall(RemoteProcedure.JoinGame, new Object[] { this.currPlayer.getPlayerName() }));
+		this.send(new TransportableProcedureCall(RemoteProcedure.JoinGame, new Object[] { this.currPlayer}));
 	}
 
 	/**

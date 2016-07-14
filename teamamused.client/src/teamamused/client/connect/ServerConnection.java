@@ -246,11 +246,14 @@ public class ServerConnection extends Thread {
 			}
 			break;
 		case JoinGame:
-			if (answer.isOK()) {
-				Client.getInstance().setPlayer((IPlayer) answer.getReturnValue());
-				this.notifyGui.joinGameSuccessful((IPlayer) answer.getReturnValue());
+			if (answer.isOK() && answer.getReturnValue() instanceof Integer) {
+				int playerNumber = (int)answer.getReturnValue();
+				Client.getInstance().getPlayer().setPlayerNumber(playerNumber);
+				this.notifyGui.joinGameSuccessful((IPlayer)Client.getInstance().getPlayer());
 			} else {
-				this.notifyGui.joinGameFailed((String) answer.getReturnValue());
+				if (answer.getReturnValue() instanceof String) {
+					this.notifyGui.joinGameFailed((String) answer.getReturnValue());
+				}
 			}
 			break;
 		default:

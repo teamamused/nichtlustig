@@ -1,6 +1,7 @@
 package teamamused.common.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
@@ -45,6 +46,8 @@ public class GameBoard implements ICardHolder, Serializable {
 	 */
 	private void init() {
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett");
+		// Spieler initialisieren
+		this.players = new ArrayList<IPlayer>();
 		// Spezialkarten Initialisieren
 		this.htSpecialCards = CardFactory.getSpecialCards();
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett - Spezialkarten erstellt");

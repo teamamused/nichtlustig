@@ -1,6 +1,7 @@
 package teamamused.common.db;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import teamamused.common.ServiceLocator;
@@ -23,11 +24,11 @@ public class PlayerRepository {
 	public static PlayerInfo getPlayerInfoByUserName(String username) {
 		IDataBaseContext db = ServiceLocator.getInstance().getDBContext();
 		// Player nach Username abfragen
-		Stream<PlayerInfo> players = db.getPlayerInfos().stream().filter(x -> x.Username == username);
+		Optional<PlayerInfo> piFound = db.getPlayerInfos().stream().filter(x -> x.Username.equals(username)).findFirst();
 		// Prüffen ob ein Player vorhanden ist
-		if (players.count() > 0) {
+		if (piFound.isPresent()) {
 			// falls vorhanden waren diesen zurückgeben
-			return players.findFirst().get();
+			return piFound.get();
 		} else {
 			// falls keiner vorhanden null zurückgeben
 			return null;
@@ -64,8 +65,10 @@ public class PlayerRepository {
 	 */
 	public static Player validatePlayerLogin(String username, String password) {
 		List<PlayerInfo> pis = ServiceLocator.getInstance().getDBContext().getPlayerInfos();
-		Stream<PlayerInfo> matchedPis = pis.stream().filter(x -> x.Username == username && x.PwHash == password.hashCode());
-		if (matchedPis.count()>0) {
+		// Player nach Username abfragen
+		Optional<PlayerInfo> piFound = pis.stream().filter(x -> x.Username.equals(username) && x.PwHash == password.hashCode()).findFirst();
+		// Prüffen ob ein Player vorhanden ist
+		if (piFound.isPresent()) {
 			// PlayerInfo pi = matchedPis.findFirst().get();
 			return new Player(username);
 		} else {

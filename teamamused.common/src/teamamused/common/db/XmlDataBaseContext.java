@@ -18,7 +18,7 @@ import teamamused.common.Settings;
  * @author Daniel
  *
  */
-public class XmlDataBaseContext extends DataBaseContext {
+public class XmlDataBaseContext extends AbstractDataBaseContext {
 
 	/**
 	 * XML Datei öffnen falls vorhanden und die Daten importierten.

@@ -86,6 +86,9 @@ public class ClientConnection extends Thread {
 						// Antwort loggen
 						this.logger.info("Antwort an Client: " + dtoOut.toString());
 					}
+				} else if (dtoIn == null) {
+					// Verbindung wurde unterbrochen, loop beenden
+					this.isListeningForClient = false;
 				}
 			}
 		} catch (Exception e) {
