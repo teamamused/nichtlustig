@@ -189,6 +189,15 @@ public class Client {
 		this.log.info("Benutzer " + username + " will sich anmelden");
 		this.send(new TransportableProcedureCall(RemoteProcedure.RegisterPlayer, new Object[] { username, password }));
 	}
+
+
+	/**
+	 * Spieler möchte die Bestenliste betrachten.
+	 */
+	public void getRanking() {
+		this.log.info("Benutzer will die Bestenliste betrachten");
+		this.send(new TransportableProcedureCall(RemoteProcedure.GetTopRanking, new Object[] {}));
+	}
 	
 	
 	private void send(TransportObject dto) {

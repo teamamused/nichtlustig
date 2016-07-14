@@ -203,4 +203,15 @@ public class GuiNotificator {
 			gui.onServerClosedConnection();
 		}
 	}
+	
+	/**
+	 * Wird vom Server aufgerufen wenn der Player sich nicht registrieren konnte 
+	 * @param errorMsg Fehlerbeschrieb
+	 */
+	public void rankingRecieved(Ranking[] rankings) {
+		this.log.info("Client: leite Bestenliste an Gui's weiter");
+		for (IClientListener gui : this.guis) {
+			gui.onRankingRecieved(rankings);
+		}
+	}
 }

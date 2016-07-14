@@ -42,6 +42,11 @@ public class TransportableProcedureCall extends TransportObject {
 		 * Parameter: IPlayer Spieler 
 		 */
 		JoinGame,
+
+		/**
+		 * Spieler möchte die Bestenliste betrachten.
+		 * Parameter: <keine>
+		 */
 		GetTopRanking,
 		
 		// Prozeduren welche vom Server aufgerufen werden

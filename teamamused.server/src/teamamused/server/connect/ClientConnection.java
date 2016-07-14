@@ -204,6 +204,8 @@ public class ClientConnection extends Thread {
 			return this.createLogin(rpc);
 		case JoinGame:
 			return Server.getInstance().connectPlayerToGame(rpc);
+		case GetTopRanking:
+			return Server.getInstance().getTopRanking(rpc);
 		default:
 			break;
 		}
