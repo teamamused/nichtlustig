@@ -1,6 +1,8 @@
 package teamamused.server;
 
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
+import teamamused.common.db.RankingRepository;
 import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableAnswer;
 import teamamused.common.dtos.TransportableChatMessage;
@@ -68,12 +70,17 @@ public class Server {
 		if (rpc != null && rpc.getArguments() != null && rpc.getArguments().length >= 1) {
 			IPlayer player = (IPlayer) rpc.getArguments()[0];
 			Game.getInstance().addPlayer(player);
-			return new TransportableAnswer(rpc, true, player.getPlayerNumber());
+			try {
+				return new TransportableAnswer(rpc, true, player.getPlayerNumber());
+			} catch (Exception ex) {
+				LogHelper.LogException(ex);
+				return new TransportableAnswer(rpc, false, ex.toString());
+			}
 		}
-		return new TransportableAnswer(rpc, false, -1);
+		return new TransportableAnswer(rpc, false, "Der Spieler konnte dem Spiel nicht hinzugefügt werden");
 	}
 
-	public TransportableState getTopRanking(TransportableProcedureCall rpc) {
-		return new TransportableState(false, "Funktion noch nicht implementiert");
+	public TransportableAnswer getTopRanking(TransportableProcedureCall rpc) {
+		return new TransportableAnswer(rpc, true, RankingRepository.getTopRanking());
 	}
 }

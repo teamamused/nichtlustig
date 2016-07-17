@@ -198,9 +198,20 @@ public class GuiNotificator {
 	 * @param errorMsg Fehlerbeschrieb
 	 */
 	public void serverClosedConnection() {
-		this.log.info("Client: leite Spiel beitreten gescheitert an Gui's weiter");
+		this.log.info("Client: leite Server hat die Verbindung geschlossen an Gui's weiter");
 		for (IClientListener gui : this.guis) {
 			gui.onServerClosedConnection();
+		}
+	}
+	
+	/**
+	 * Wird vom Server aufgerufen wenn der Player sich nicht registrieren konnte 
+	 * @param errorMsg Fehlerbeschrieb
+	 */
+	public void rankingRecieved(Ranking[] rankings) {
+		this.log.info("Client: leite Bestenliste an Gui's weiter");
+		for (IClientListener gui : this.guis) {
+			gui.onRankingRecieved(rankings);
 		}
 	}
 }

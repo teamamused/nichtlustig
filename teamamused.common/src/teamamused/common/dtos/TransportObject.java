@@ -3,7 +3,8 @@ package teamamused.common.dtos;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import teamamused.common.ServiceLocator;
+
+import teamamused.common.LogHelper;
 
 /**
  * 
@@ -83,7 +84,7 @@ public class TransportObject implements Serializable{
         	out.writeObject(this);
             out.flush();
          } catch (Exception e) {
-        	ServiceLocator.getInstance().getLogger().severe(e.toString());
+        	LogHelper.LogException(e);
         }
     }    
 
@@ -98,7 +99,7 @@ public class TransportObject implements Serializable{
 		try {
 			dto = (TransportObject) in.readObject();
 		} catch (Exception e) {
-        	ServiceLocator.getInstance().getLogger().severe(e.toString());
+        	LogHelper.LogException(e);
 		}
         return dto;
     }

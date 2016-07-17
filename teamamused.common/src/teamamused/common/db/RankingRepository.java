@@ -3,7 +3,6 @@ package teamamused.common.db;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map.Entry;
-import java.util.stream.Stream;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.IDataBaseContext;
@@ -40,12 +39,14 @@ public class RankingRepository {
 		}
 		// Der DB hinzufügen
 		db.addRankings(Arrays.asList(ranks));
-		// Von DB auslesen
-		Stream<Ranking> ranksFromDB = db.getRankings().stream().filter(x -> x.GameId == gameId);
-		if (ranksFromDB.count()> 0) {
-			return ranksFromDB.toArray(size -> new Ranking[size]);
-		} else {
-			return new Ranking[0];
-		}
+		Ranking[] ranksFromDB = db.getRankings().stream().filter(x -> x.GameId == gameId).toArray(x -> new Ranking[x]);
+		return ranksFromDB;
+	}
+	/**
+	 * Gibt die Bestenliste sortiert als Array zurück
+	 * @return Array mit dem Ranking aller Spiele
+	 */
+	public static Ranking[] getTopRanking() {
+		return ServiceLocator.getInstance().getDBContext().getRankings().stream().sorted().toArray(x -> new Ranking[x]);
 	}
 }

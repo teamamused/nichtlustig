@@ -15,41 +15,42 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
-import teamamused.common.gui.AbstractView;
 import teamamused.common.ServiceLocator;
+import teamamused.common.gui.AbstractView;
 
-public class LogInView extends AbstractView<LogInModel> {
+public class RegisterView extends AbstractView<RegisterModel> {
 	
-	protected Button btnLogin;
+	protected Button btnRegister;
 	protected TextField textUser;
 	protected TextField textPassword;
-	protected Hyperlink linkReg;
+	protected TextField textPassword2;
 
-	public LogInView(Stage stage, LogInModel model) {
+	public RegisterView(Stage stage, RegisterModel model) {
 		super(stage, model);
+
 	}
 
+	@Override
 	protected Scene createGUI() {
-
+		
 		// Create the labels
+		Label labelTitle = new Label("Hallo Neuling!");
+		Label labelRegister = new Label("Hier kannst du dich registrieren:");
 		Label labelUser = new Label("Benutzername");
 		Label labelPassword = new Label("Passwort");
-		Label labelNeu = new Label("Neu bei uns?");
+		Label labelPassword2 = new Label("Passwort bestätigen");
 
 		textUser = new TextField();
 		textPassword = new TextField();
-		
-		// 
-		btnLogin = new Button();
-		btnLogin.setText("Login");
+		textPassword2 = new TextField();
 
-		// 
-		linkReg = new Hyperlink();
-		linkReg.setText("Registrieren?");
+		// Create the Button
+		btnRegister = new Button();
+		btnRegister.setText("Registrieren");
 
 		ChoiceBox cbLang = new ChoiceBox();
 		cbLang.setItems(FXCollections.observableArrayList("Deutsch", "English"));
-		
+
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("Nicht-Lustig.jpg"));
@@ -71,21 +72,23 @@ public class LogInView extends AbstractView<LogInModel> {
 		}
 
 		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.CENTER_RIGHT);
+		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(100, 100, 100, 100));
+		grid.setPadding(new Insets(100, 50, 50, 50));
 
-		grid.add(labelUser, 2, 0);
-		grid.add(textUser, 2, 1);
-		grid.add(labelPassword, 2, 2);
-		grid.add(textPassword, 2, 3);
-		grid.add(btnLogin, 2, 4);
-		grid.add(labelNeu, 2, 8);
-		grid.add(linkReg, 2, 9);
-		grid.add(iview2, 2, 10);
-		grid.add(cbLang, 3, 10);
-		// grid.add(iview, 0, 10);
+		grid.add(labelTitle, 0, 1);
+		grid.add(labelRegister, 0, 3);
+		grid.add(labelUser, 0, 5);
+		grid.add(textUser, 0, 6);
+		grid.add(labelPassword, 0, 7);
+		grid.add(textPassword, 0, 8);
+		grid.add(labelPassword2, 0, 9);
+		grid.add(textPassword2, 0, 10);
+		grid.add(btnRegister, 0, 12);
+		grid.add(iview2, 0, 14);
+		grid.add(cbLang, 0, 15);
+		// grid.add(iview, 2, 0);
 
 		// Add the layout pane to a scene
 		Scene scene = new Scene(grid, 800, 600);
@@ -93,14 +96,6 @@ public class LogInView extends AbstractView<LogInModel> {
 		// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;
-	}
-
-	public void start() {
-		stage.show();
-	}
-
-	public void stop() {
-		stage.hide();
 	}
 
 }

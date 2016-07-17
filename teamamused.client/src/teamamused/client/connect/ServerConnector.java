@@ -1,8 +1,4 @@
 package teamamused.client.connect;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Logger;
 
@@ -18,75 +14,64 @@ import teamamused.common.ServiceLocator;
  *
  */
 public class ServerConnector {
-	private Socket socket;
-	private ObjectInputStream in;
-	private ObjectOutputStream out;
 	private String server;
 	private String username;
 	private ServerConnection connection;
 	private int portNumber;
+	private Socket socket;
 	private Logger log = ServiceLocator.getInstance().getLogger();
+	private boolean isConnected = false;
 
+	/**
+	 * Konstruktor für den Server Konektor
+	 * @param server IP oder Hostname des Servers
+	 * @param username Benutzername
+	 * @param portNumber Server Port
+	 */
 	public ServerConnector(String server, String username, int portNumber) {
 		this.server = server;
 		this.portNumber = portNumber;
 		this.username = username;
-
 	}
 	
 	public boolean connect() {
 		// Verbindung zum Server aufbauen
 		this.log.info("Verbinde zum Server " + this.server + ":" + this.portNumber);
 		try {
-			this.socket = new Socket(this.server, this.portNumber);
-		} catch(Exception ex) {
-		     LogHelper.LogException(ex);
-			return false;
-		}
-		this.log.info("Verbindung zum Server aufgebaut. " + this.socket.getInetAddress() + ":" + this.socket.getPort());
-		try {
-			out = new ObjectOutputStream(socket.getOutputStream());
-
-			try
-			{
-				out.writeObject(username);
-			} catch (IOException eIO) {
-				return false;
-			}
+			socket = new Socket(this.server, this.portNumber);
 			
-			in = new ObjectInputStream(socket.getInputStream());
+			this.log.info("Verbindung zum Server aufgebaut. " + socket.getInetAddress() + ":" + socket.getPort());
+			// Server Connection Thread starten
+			this.connection = new ServerConnection(this, socket, this.username);
+			this.connection.start();
+			this.isConnected = true;
 		} catch(Exception ex) {
 		     LogHelper.LogException(ex);
-			return false;
+			this.isConnected = false;
 		}
-		// Server Connection Thread starten
-		connection = new ServerConnection(this.socket, this.in, this.out);
-		connection.start();
-		return true;
+		return this.isConnected;
 	}
 
+	public ServerConnection getConnection() {
+		return this.connection;
+	}
 
 	public void close() {
 		try {
-			this.connection.closeConnection();
-			this.in.close();
-			this.out.close();
-			this.socket.close();
+			if (this.isConnected) {
+				this.isConnected = false;
+				this.connection.closeConnection();
+			}
 		} catch (Exception e) {
-			this.log.severe(e.toString());
+			LogHelper.LogException(e);
 		}
 	}
-	
-	public Socket getSocket() {
-		return this.socket;
-	}
-	
-	public ObjectInputStream getInputStream() {
-		return this.in;
-	}
-	
-	public ObjectOutputStream getOutputStream() {
-		return this.out;
+
+	/**
+	 * @param isConnected besteht die Verbindung
+	 */
+	public void setConnected(boolean isConnected) {
+		this.isConnected = isConnected;
 	}
 
 }

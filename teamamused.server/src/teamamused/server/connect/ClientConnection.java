@@ -76,9 +76,9 @@ public class ClientConnection extends Thread {
 			while (this.isListeningForClient) {
 				// Inkommendes Transport Objekt empfangen
 				TransportObject dtoIn = TransportObject.receive(this.in);
-
-				// Client eine Antwort schicken, ausser wenn ein State zurückkam, dann gibt's keine mehr.
-				if (dtoIn.getTransportType() != TransportType.State) {
+				// Wenn null: Client hat Connection geschlossen					
+				// Sonst: Client eine Antwort schicken, ausser wenn ein State zurückkam, dann gibt's keine mehr.
+				if (dtoIn != null && dtoIn.getTransportType() != TransportType.State) {
 					// inkommendes Objekt verarbeiten
 					TransportObject dtoOut = processRequest(dtoIn);
 					if (dtoOut != null) {
@@ -86,26 +86,45 @@ public class ClientConnection extends Thread {
 						// Antwort loggen
 						this.logger.info("Antwort an Client: " + dtoOut.toString());
 					}
+				} else if (dtoIn == null) {
+					// Verbindung wurde unterbrochen, loop beenden
+					this.isListeningForClient = false;
 				}
 			}
 		} catch (Exception e) {
 			// Fehler loggen
 			LogHelper.LogException(e);
 		} finally {
-			// Socket schliessen
-			this.close();
+			// Socket und streams alles sauber schliessen
+			try { 
+				if(this.in != null) {
+					this.in.close();
+				}
+			}
+			catch(Exception e) {} 
+			try {
+				if(this.out != null) {
+					this.out.close();
+				}
+			}
+			catch(Exception e) {}
+	        try{
+				if(this.clientSocket != null) {
+					this.clientSocket.close();
+				}
+			}
+			catch(Exception e) {}
 		}
 	}
 	/**
-	 * Schliesst die In/Outputstream und das Socket
+	 * Schliesst die Connection vom Server her.
+	 * Hierzu wird dem Client ein nettes Goodby gesendet. 
+	 * Dieser schliesst dan von seiner seite das Socket.
 	 */
 	public void close() {
 		try {
+			this.isListeningForClient = false;
 			this.sendDto(new TransportObject(TransportType.Goodbye));
-			
-			this.clientSocket.getInputStream().close();
-			this.clientSocket.getOutputStream().close();
-			this.clientSocket.close();
 		} catch (Exception e) {
 			LogHelper.LogException(e);
 		}
@@ -132,9 +151,14 @@ public class ClientConnection extends Thread {
 			dtoOut = Server.getInstance().forwardChatMessage((TransportableChatMessage)dtoIn);
 			break;
 		case Goodbye:
-			this.isListeningForClient = false;
 			ClientManager.getInstance().removeClient(this);
-			dtoOut = new TransportableState(true, "Goodbye Client");
+			// Wenn er noch auf den Client wartet, kamm das goodbye vom Client sonst vom Server
+			if (this.isListeningForClient) {
+				this.isListeningForClient = false;
+				dtoOut = new TransportObject(TransportType.Goodbye);
+			} else {
+				return null;
+			}
 			break;
 		default:
 			dtoOut = new TransportableState(false, "unbekanntes Transport Objekt");
@@ -180,6 +204,8 @@ public class ClientConnection extends Thread {
 			return this.createLogin(rpc);
 		case JoinGame:
 			return Server.getInstance().connectPlayerToGame(rpc);
+		case GetTopRanking:
+			return Server.getInstance().getTopRanking(rpc);
 		default:
 			break;
 		}

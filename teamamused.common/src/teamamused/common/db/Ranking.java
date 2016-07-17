@@ -1,5 +1,7 @@
 package teamamused.common.db;
 
+import java.io.Serializable;
+
 /**
  * 
  * Datenhaltungsklasse für die Platzierungen der Spieler.
@@ -8,7 +10,9 @@ package teamamused.common.db;
  * @author Daniel
  *
  */
-public class Ranking {
+public class Ranking implements Serializable, Comparable<Ranking> {
+	/** Versionsnummer für Serialisierung	 */
+	private static final long serialVersionUID = 1L;
 	/** Eindeutige Spielkennungs */
 	public int GameId;
 	/** Eindeutige Spielerkennung */
@@ -44,4 +48,20 @@ public class Ranking {
 		TotalRank = totalRank;
 	}
 	
+	/**
+	 * Vergleichsmethode Anhand des TotalRankings und wenn diese 0 sind anhand des inGameRankings
+	 */
+	public int compareTo(Ranking rank2) {
+		// wenn Total Ranks noch 0 sind ist es ein in Game Ranking
+		if (this.TotalRank == 0 && rank2.TotalRank == 0) {
+			return this.GameRank - rank2.GameRank;
+		}
+		// Sortieren anhand der Rangierungen
+		return this.TotalRank - rank2.TotalRank;
+		
+	}	
+	
+	public String toString() {
+		return this.TotalRank + " - " + this.Username + " Total Punkte: " + this.Points;  
+	}
 }

@@ -9,7 +9,7 @@ package teamamused.common.db;
  * @author Daniel
  *
  */
-public class InMemoryDataBaseContext extends DataBaseContext {
+public class InMemoryDataBaseContext extends AbstractDataBaseContext {
 	/**
 	 * Alle Listen initialisieren, keine Daten werden geladen
 	 * @return Immer true 

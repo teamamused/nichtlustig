@@ -7,7 +7,6 @@ import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
-import teamamused.common.dtos.TransportObject.TransportType;
 import teamamused.common.dtos.TransportableProcedureCall.RemoteProcedure;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
@@ -121,7 +120,7 @@ public class Client {
 	 */
 	public void sendChatMessage(TransportableChatMessage message) {
 		this.log.info("Client " + this.currPlayer.getPlayerName() + " sendet Chatnachricht");
-		message.send(this.connector.getOutputStream());
+		this.send(message);
 	}
 
 	/**
@@ -130,7 +129,7 @@ public class Client {
 	 */
 	public void joinGame() {
 		this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " tritt Spiel bei");
-		this.send(new TransportableProcedureCall(RemoteProcedure.JoinGame, new Object[] { this.currPlayer.getPlayerName() }));
+		this.send(new TransportableProcedureCall(RemoteProcedure.JoinGame, new Object[] { this.currPlayer}));
 	}
 
 	/**
@@ -167,7 +166,6 @@ public class Client {
 	 */
 	public void sayGoodbye() {
 		if (this.connector != null) {
-			this.send(new TransportObject(TransportType.Goodbye));
 			this.connector.close();
 		}
 	}
@@ -191,11 +189,20 @@ public class Client {
 		this.log.info("Benutzer " + username + " will sich anmelden");
 		this.send(new TransportableProcedureCall(RemoteProcedure.RegisterPlayer, new Object[] { username, password }));
 	}
+
+
+	/**
+	 * Spieler möchte die Bestenliste betrachten.
+	 */
+	public void getRanking() {
+		this.log.info("Benutzer will die Bestenliste betrachten");
+		this.send(new TransportableProcedureCall(RemoteProcedure.GetTopRanking, new Object[] {}));
+	}
 	
 	
 	private void send(TransportObject dto) {
 		if (this.connector != null) {
-			dto.send(this.connector.getOutputStream());
+			this.connector.getConnection().sendTransportObject(dto);
 		}
 	}
 }

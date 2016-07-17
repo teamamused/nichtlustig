@@ -121,4 +121,11 @@ public interface IClientListener {
 	 */
 	public default void onServerClosedConnection() {}
 	
+	/**
+	 * Der Spieler hatte den wunsch geäussert die Bestenliste einzusehen, worauf der Server uns diese geschickt hat.
+	 *  
+	 * @param rankings Bestenliste über alle Spiele hinweg
+	 */
+	public default void onRankingRecieved(Ranking[] rankings) {}
+	
 }

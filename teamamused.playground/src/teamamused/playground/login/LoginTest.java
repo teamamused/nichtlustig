@@ -3,7 +3,9 @@ package teamamused.playground.login;
 import teamamused.client.libs.Client;
 import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
+import teamamused.common.db.Ranking;
 import teamamused.common.interfaces.IPlayer;
+import teamamused.common.models.GameBoard;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -32,6 +34,7 @@ public class LoginTest extends Application implements IClientListener {
 	Button btnRegister;
 
 	Button btnJoinGame;
+	Button btnGetRanking;
 	
 	
 	TextArea output;
@@ -67,18 +70,20 @@ public class LoginTest extends Application implements IClientListener {
 		Label lRegister = new Label("Registrieren: ");
 		txtRegisterUser = new TextField("Benutzername");
 		txtRegisterPassword = new TextField("Passwort");
-		btnRegister = new Button("Login");
+		btnRegister = new Button("Registrieren");
 		register.getChildren().addAll(lRegister, txtRegisterUser, txtRegisterPassword, btnRegister);
 		
 		// Join Game
 		this.btnJoinGame = new Button("Spiel beitreten");
-		
+
+		// Get Ranking
+		this.btnGetRanking = new Button("Bestenliste anzeigen");
 		
 		// Output
 		this.output = new TextArea();
 		this.output.minHeight(100);
 		
-		root.getChildren().addAll(lTitel, connectServer, register, login, this.btnJoinGame, this.output);
+		root.getChildren().addAll(lTitel, connectServer, register, login, this.btnJoinGame, this.btnGetRanking, this.output);
 		
 		
 		
@@ -115,6 +120,13 @@ public class LoginTest extends Application implements IClientListener {
 			@Override
 			public void handle(ActionEvent event) {
 				Client.getInstance().joinGame();
+			}
+		});
+		
+		btnGetRanking.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Client.getInstance().getRanking();
 			}
 		});
 		
@@ -158,6 +170,18 @@ public class LoginTest extends Application implements IClientListener {
 		this.addOutput("JoinGame gescheitert: " + msg);		
 	}
 
+	@Override
+	public  void onGameBoardChanged(GameBoard newGameBoard) {
+		this.addOutput("Spielbrett wurde vom Server gesendet: " + newGameBoard);		
+	}
+
+	@Override
+	public void onRankingRecieved(Ranking[] rankings) {
+		for (Ranking rank : rankings) {
+			this.addOutput(rank.toString());
+		}
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

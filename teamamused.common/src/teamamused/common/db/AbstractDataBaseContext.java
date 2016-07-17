@@ -13,11 +13,11 @@ import teamamused.common.interfaces.IDataBaseContext;
  * @author Daniel
  *
  */
-public abstract class DataBaseContext implements IDataBaseContext {
+public abstract class AbstractDataBaseContext implements IDataBaseContext {
 	
-	protected ArrayList<Ranking> rankings;
-	protected ArrayList<PlayerInfo> playerInfos;
-	protected ArrayList<GameInfo> gameInfos;
+	protected ArrayList<Ranking> rankings = null;
+	protected ArrayList<PlayerInfo> playerInfos = null;
+	protected ArrayList<GameInfo> gameInfos = null;
 
 	@Override
 	public ArrayList<Ranking> getRankings() {
@@ -36,20 +36,17 @@ public abstract class DataBaseContext implements IDataBaseContext {
 
 	@Override
 	public boolean addGame(GameInfo gameInfo) {
-		this.gameInfos.add(gameInfo);
-		return true;
+		return this.gameInfos.add(gameInfo);
 	}
 
 	@Override
 	public boolean addPlayerInfo(PlayerInfo newPlayer) {
-		this.playerInfos.add(newPlayer);
-		return false;
+		return this.playerInfos.add(newPlayer);
 	}
 
 	@Override
 	public boolean addRankings(List<Ranking> newRanks) {
-		this.rankings.addAll(newRanks);
-		return false;
+		return this.rankings.addAll(newRanks);
 	}
 
 	@Override
