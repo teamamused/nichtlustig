@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -27,14 +28,17 @@ import teamamused.common.gui.AbstractView;
  */
 public class GameBoardView extends AbstractView<GameBoardModel> {
 
-	protected GridPane root, cardPane, dicePane;
+	protected GridPane root, cardPane, diceCardPane;
 	protected VBox navigation;
-	protected ImageView logo;
-	protected Button btnGameBoard, btnPlayer1, btnPlayer2;
+	protected ImageView logo, linkIcon;
+	protected Image linkImage;
+	protected Hyperlink linkAnleitung;
+	protected Button btnGameBoard, btnPlayer1, btnPlayer2, btnWuerfeln, btnUebernehmen;
 	protected TextArea txtChatScreen;
 	protected TextField txtChatInput;
 	protected ScrollPane scrollTxt;
 	protected Label labelSpielfeld, labelRollDices, labelSelectedDices;
+	protected String url;
 
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
@@ -53,7 +57,21 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		labelSpielfeld = new Label("Spielfeld");
 		labelSpielfeld.setId("labelSpielfeld");
 		labelSpielfeld.setAlignment(Pos.CENTER_RIGHT);
+		url = "http://www.kosmos.de/_files_media/mediathek/downloads/anleitungen/1351/nicht_lustig.pdf";
+		linkAnleitung = new Hyperlink(url); // TODO: Text soll nicht erscheinen,
+											// nur Icon
+		try {
+			linkImage = ResourceLoader.getImage("IconFragezeichen.png");
+		} catch (FileNotFoundException e) {
+			LogHelper.LogException(e);
+		}
+		linkIcon = new ImageView(linkImage);
+		linkIcon.setFitHeight(50);
+		linkIcon.setPreserveRatio(true);
+		linkAnleitung.setGraphic(linkIcon);
+
 		root.add(labelSpielfeld, 1, 0);
+		root.add(linkAnleitung, 10, 0);
 
 		// Definition der Pane für die linke Navigationsspalte
 		navigation = new VBox(5);
@@ -67,14 +85,11 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		}
 		logo.setFitWidth(200);
 		logo.setPreserveRatio(true);
-		btnGameBoard = new Button("Spielfeld");
-		btnGameBoard.setMaxSize(200, 40);
+		btnGameBoard = GameBoardView.initializeButton("Spielfeld");
 		// TODO: Anzahl Buttons für Spieler dynamisch gestalten - je nach Anzahl
 		// Mitspieler
-		btnPlayer1 = new Button("Spieler 1");
-		btnPlayer1.setMaxSize(200, 40);
-		btnPlayer2 = new Button("Spieler 2");
-		btnPlayer2.setMaxSize(200, 40);
+		btnPlayer1 = GameBoardView.initializeButton("Spieler 1");
+		btnPlayer2 = GameBoardView.initializeButton("Spieler 2");
 		txtChatScreen = new TextArea();
 		txtChatScreen.setPrefSize(200, 150);
 		txtChatInput = new TextField();
@@ -127,28 +142,40 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		cardPane.add(getImageView("Roboter.png"), 1, 2);
 		cardPane.add(getImageView("Killervirus.png"), 1, 3);
 
-
-		
-		
 		// Definition der Pane für den Würfel-Bereich
-		dicePane = GameBoardView.initializeGridPane();
+		diceCardPane = GameBoardView.initializeGridPane();
 
-		
-		
-		//TODO: Hier weiterfahren
+		// TODO: Label für Würfel ersetzen
 		// Instanziierung und Zuordnung der Controlls zur "dicePane"
 		labelRollDices = new Label(
-				"Du darfst insgesamt dreimal würfeln. Wähle die Würfel an, welche du setzen möchtest. Einmal gesetzte Würfel dürfen nicht erneut gewürfelt werden.");
+				"Du darfst insgesamt dreimal würfeln. Wähle die Würfel an, welche du setzen möchtest. \nEinmal gesetzte Würfel dürfen nicht erneut gewürfelt werden.");
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
-		
-		
-		dicePane.add(labelRollDices, 0, 0, 10, 1);
-		dicePane.add(labelSelectedDices, 0, 1);
-		
+		btnWuerfeln = GameBoardView.initializeButton("Würfeln");
+		btnUebernehmen = GameBoardView.initializeButton("Übernehmen");
+
+		diceCardPane.add(labelRollDices, 0, 0, 10, 4);
+		diceCardPane.add(new Label("Black"), 0, 5);
+		diceCardPane.add(new Label("Black"), 1, 5);
+		diceCardPane.add(new Label("Red"), 2, 5);
+		diceCardPane.add(new Label("Red"), 3, 5);
+		diceCardPane.add(new Label("White"), 4, 5);
+		diceCardPane.add(new Label("White"), 5, 5);
+		diceCardPane.add(new Label("Pink"), 6, 5);
+		diceCardPane.add(btnWuerfeln, 10, 5);
+		diceCardPane.add(labelSelectedDices, 0, 6, 10, 7);
+		diceCardPane.add(new Label("Black"), 0, 8);
+		diceCardPane.add(new Label("Black"), 1, 8);
+		diceCardPane.add(new Label("Red"), 2, 8);
+		diceCardPane.add(new Label("Red"), 3, 8);
+		diceCardPane.add(new Label("White"), 4, 8);
+		diceCardPane.add(new Label("White"), 5, 8);
+		diceCardPane.add(new Label("Pink"), 6, 8);
+		diceCardPane.add(btnUebernehmen, 10, 8);
+
 		// Zuordnung der Sub-Panes zur Haupt-Pane "root"
 		root.add(navigation, 0, 0, 1, 10);
 		root.add(cardPane, 1, 1);
-		root.add(dicePane, 1, 2);
+		root.add(diceCardPane, 1, 2);
 
 		// Ausrichtung der Controlls in der Pane
 		// GridPane.setHalignment(restartButton, HPos.LEFT);
@@ -161,10 +188,12 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	}
 
 	/**
+	 * Nur für Bilder der Spielfeldkarten verwenden!
+	 * 
 	 * Dieser Support-Methode kann als String ein Bildname übergeben werden,
 	 * anhand welchem der ResourceLoader ein Image-Objekt zurückgibt. Dieses
-	 * Objekt wird einer ImageView übergeben und so in der Grösse angepasst und
-	 * schlussendlich zurückgegeben.
+	 * Objekt wird einer ImageView übergeben und so in der Grösse für dem
+	 * Spielfeld entsprechend angepasst und schlussendlich zurückgegeben.
 	 * 
 	 * @param imageName
 	 *            Methode nimmt den Bildnamen (inkl. Endung) als String entgegen
@@ -194,7 +223,21 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		pane.setPadding(new Insets(20, 20, 20, 20));
 		pane.setHgap(10);
 		pane.setVgap(10);
-		pane.setGridLinesVisible(false);
+		pane.setGridLinesVisible(true);
 		return pane;
+	}
+
+	/**
+	 * Die Support-Methode instanziiert einen Button und gibt diesen formatiert
+	 * zurück (Wiederverwendbarkeit von Code)
+	 * 
+	 * @param buttonText Bezeichnung des Buttons als String
+	 * @return formatiertes Button-Objekt
+	 */
+	private static Button initializeButton(String buttonText) {
+		Button btn = new Button(buttonText);
+		btn.setMaxSize(200, 40);
+		btn.setAlignment(Pos.CENTER);
+		return btn;
 	}
 }
