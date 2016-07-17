@@ -18,6 +18,9 @@ import teamamused.client.gui.WelcomeView;
 import teamamused.client.gui.splashscreen.Splash_Controller;
 import teamamused.client.gui.splashscreen.Splash_Model;
 import teamamused.client.gui.splashscreen.Splash_View;
+import teamamused.client.gui.waitingroom.WaitingRoomController;
+import teamamused.client.gui.waitingroom.WaitingRoomModel;
+import teamamused.client.gui.waitingroom.WaitingRoomView;
 import teamamused.common.ServiceLocator;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -34,6 +37,7 @@ public class Main extends Application {
 	private RankingView rankingView;
 	private ByeView byeView;
 	private GameBoardView gameBoardView;
+	private WaitingRoomView waitingRoomView;
 	private static Main instance = null;
 
 	@Override
@@ -114,6 +118,15 @@ public class Main extends Application {
 		gameBoardView = new GameBoardView(gameBoardStage, model);
 		new GameBoardController (model, gameBoardView);
 		gameBoardView.start();
+	}
+	
+	public void startWaitingRoom() {
+
+		Stage waitingRoomStage = new Stage();
+		WaitingRoomModel model = new WaitingRoomModel();
+		waitingRoomView = new WaitingRoomView(waitingRoomStage, model);
+		new WaitingRoomController(model, waitingRoomView);
+		waitingRoomView.start();
 	}
 
 	public static Main getInstance() {
