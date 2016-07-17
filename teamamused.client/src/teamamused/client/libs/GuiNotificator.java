@@ -52,7 +52,7 @@ public class GuiNotificator {
 	 * @param board
 	 *            aktualisiertes Spielbrett
 	 */
-	public void updateGameBoard(GameBoard board) {
+	public void gameBoardChanged(GameBoard board) {
 		this.log.info("Client: leite update GameBoard an Gui's weiter");
 		for (IClientListener gui : this.guis) {
 			gui.onGameBoardChanged(board);
@@ -65,7 +65,7 @@ public class GuiNotificator {
 	 * @param message
 	 *            Chat Benachrichtigung
 	 */
-	public void addChatMessage(TransportableChatMessage message) {
+	public void chatMessageRecieved(TransportableChatMessage message) {
 		this.log.info("Client: leite Chat Nachricht an Gui's weiter");
 		for (IClientListener gui : this.guis) {
 			gui.onChatMessageRecieved(message);
@@ -78,7 +78,7 @@ public class GuiNotificator {
 	 * @param allowedCards
 	 *            Karten die zur Auswahl stehen
 	 */
-	public void chooseCards(Hashtable<Integer, List<ITargetCard>> options) {
+	public void playerHasToCooseCards(Hashtable<Integer, List<ITargetCard>> options) {
 		this.log.info("Client: leite chooseCards an Gui's weiter");
 		for (IClientListener gui : this.guis) {
 			gui.onPlayerHasToCooseCards(options);
@@ -91,7 +91,7 @@ public class GuiNotificator {
 	 * @param isActive
 	 *            aktiviert ja Nein
 	 */
-	public void activeChanged(boolean isActive) {
+	public void playerIsActivedChanged(boolean isActive) {
 		this.log.info("Client: leite aktiven Spieler Wechsel an Gui's weiter");
 		for (IClientListener gui : this.guis) {
 			gui.onPlayerIsActivedChanged(isActive);
@@ -212,6 +212,17 @@ public class GuiNotificator {
 		this.log.info("Client: leite Bestenliste an Gui's weiter");
 		for (IClientListener gui : this.guis) {
 			gui.onRankingRecieved(rankings);
+		}
+	}
+	
+	/**
+	 * Wird vom Server aufgerufen wenn der Player sich nicht registrieren konnte 
+	 * @param errorMsg Fehlerbeschrieb
+	 */
+	public void numberOfRemeiningDicingChanged(int remDicings) {
+		this.log.info("Client: leite anzahl verbleibende Würfelversuche an Gui's weiter");
+		for (IClientListener gui : this.guis) {
+			gui.onNumberOfRemeiningDicingChanged(remDicings);
 		}
 	}
 }

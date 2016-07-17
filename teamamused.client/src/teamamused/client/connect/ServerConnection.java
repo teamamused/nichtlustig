@@ -142,7 +142,7 @@ public class ServerConnection extends Thread {
 			dtoOut = this.executeRemoteCall((TransportableProcedureCall) dtoIn);
 			break;
 		case ChatMessage:
-			this.notifyGui.addChatMessage((TransportableChatMessage) dtoIn);
+			this.notifyGui.chatMessageRecieved((TransportableChatMessage) dtoIn);
 			dtoOut = new TransportableState(true, "Nachricht erhalten");
 			break;
 		case Answer:
@@ -185,7 +185,7 @@ public class ServerConnection extends Thread {
 		case ChangeActivePlayer:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof IPlayer) {
-					this.notifyGui.activeChanged(((IPlayer) params[0]).getPlayerName() == Client.getInstance()
+					this.notifyGui.playerIsActivedChanged(((IPlayer) params[0]).getPlayerName() == Client.getInstance()
 							.getPlayer().getPlayerName());
 					return new TransportableState(true, "Client updated");
 				}
@@ -195,7 +195,7 @@ public class ServerConnection extends Thread {
 		case UpdateGameBoard:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof GameBoard) {
-					this.notifyGui.updateGameBoard((GameBoard) params[0]);
+					this.notifyGui.gameBoardChanged((GameBoard) params[0]);
 					return new TransportableState(true, "Client updated");
 				}
 			}
@@ -205,7 +205,7 @@ public class ServerConnection extends Thread {
 			// Karten kommen als Hashtable of int und List of ITargetCard
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof Hashtable<?, ?>) {
-					this.notifyGui.chooseCards((Hashtable<Integer, List<ITargetCard>>) params[0]);
+					this.notifyGui.playerHasToCooseCards((Hashtable<Integer, List<ITargetCard>>) params[0]);
 					return new TransportableState(true, "Client updated");
 				}
 			}
@@ -259,6 +259,11 @@ public class ServerConnection extends Thread {
 		case GetTopRanking:
 			if (answer.isOK() && answer.getReturnValue() instanceof Ranking[]) {
 				this.notifyGui.rankingRecieved((Ranking[])answer.getReturnValue());
+			}
+			break;
+		case RollDices:
+			if (answer.isOK() && answer.getReturnValue() instanceof Integer) {
+				this.notifyGui.numberOfRemeiningDicingChanged((int)answer.getReturnValue());
 			}
 			break;
 		default:
