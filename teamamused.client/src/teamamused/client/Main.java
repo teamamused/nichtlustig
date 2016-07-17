@@ -18,6 +18,7 @@ import teamamused.client.gui.WelcomeView;
 import teamamused.client.gui.splashscreen.Splash_Controller;
 import teamamused.client.gui.splashscreen.Splash_Model;
 import teamamused.client.gui.splashscreen.Splash_View;
+import teamamused.common.ServiceLocator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import teamamused.client.gui.gameboard.GameBoardController;
@@ -38,6 +39,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		Main.instance = this;
+		// Setzt dem ServiceLocator die JavaFX-HostServices
+		ServiceLocator.getInstance().setHostServices(getHostServices());
 		// Create and display the splash screen and model
 		Splash_Model splashModel = new Splash_Model();
 		splashView = new Splash_View(primaryStage, splashModel);
