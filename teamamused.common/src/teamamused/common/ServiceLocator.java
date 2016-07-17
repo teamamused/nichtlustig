@@ -2,8 +2,9 @@ package teamamused.common;
 
 import java.util.logging.Logger;
 
+import javafx.application.HostServices;
 import teamamused.common.db.XmlDataBaseContext;
-import teamamused.common.interfaces.*;
+import teamamused.common.interfaces.IDataBaseContext;
 
 /**
  * 
@@ -18,6 +19,7 @@ public class ServiceLocator {
 	public static final String APPLICATION_NAME = "Nicht Lustig";
 	private Settings settings;
 	private IDataBaseContext dbContext;
+	private HostServices hostServices;
 
 	/**
 	 * Getter der Instanz vom ServiceLocater
@@ -102,6 +104,24 @@ public class ServiceLocator {
 	 */
 	public void setSettings(Settings settings) {
 		this.settings = settings;
+	}
+
+	/**
+	 * Gibt die JavaFX-HostServices zurück
+	 * 
+	 * @return {@link HostServices}
+	 */
+	public HostServices getHostServices() {
+		return hostServices;
+	}
+
+	/**
+	 * Setzt die JavaFX-HostServices
+	 * 
+	 * @param hostServices {@link HostServices}
+	 */
+	public void setHostServices(HostServices hostServices) {
+		this.hostServices = hostServices;
 	}
 
 }
