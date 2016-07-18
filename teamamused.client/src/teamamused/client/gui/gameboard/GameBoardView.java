@@ -1,9 +1,13 @@
 package teamamused.client.gui.gameboard;
 
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -19,6 +23,7 @@ import javafx.stage.Stage;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.interfaces.ICube;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für das Spielfeld dar.
@@ -39,6 +44,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected ScrollPane scrollTxt;
 	protected Label labelSpielfeld, labelRollDices, labelSelectedDices;
 	protected String url;
+	protected List<Canvas> cubeCanvas;
 
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
@@ -71,7 +77,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		linkAnleitung.setGraphic(linkIcon);
 
 		root.add(labelSpielfeld, 1, 0);
-		root.add(linkAnleitung, 10, 0);
+		root.add(linkAnleitung, 5, 0);
 
 		// Definition der Pane für die linke Navigationsspalte
 		navigation = new VBox(5);
@@ -154,13 +160,16 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		btnUebernehmen = GameBoardView.initializeButton("Übernehmen");
 
 		diceCardPane.add(labelRollDices, 0, 0, 10, 4);
-		diceCardPane.add(new Label("Black"), 0, 5);
-		diceCardPane.add(new Label("Black"), 1, 5);
-		diceCardPane.add(new Label("Red"), 2, 5);
-		diceCardPane.add(new Label("Red"), 3, 5);
-		diceCardPane.add(new Label("White"), 4, 5);
-		diceCardPane.add(new Label("White"), 5, 5);
-		diceCardPane.add(new Label("Pink"), 6, 5);
+
+		cubeCanvas = new LinkedList<>(); // Die einzelnen Würfel sollen in ein
+											// Canvas umgewandelt werden
+		int i = 0;
+		for (ICube cube : model.getCubes()) {
+			Canvas canvas = cube.getCurrentValue().toCanvas(50, 1);
+			cubeCanvas.add(canvas);
+			diceCardPane.add(canvas, i++, 5);
+		}
+
 		diceCardPane.add(btnWuerfeln, 10, 5);
 		diceCardPane.add(labelSelectedDices, 0, 6, 10, 7);
 		diceCardPane.add(new Label("Black"), 0, 8);
@@ -223,7 +232,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		pane.setPadding(new Insets(20, 20, 20, 20));
 		pane.setHgap(10);
 		pane.setVgap(10);
-		pane.setGridLinesVisible(true);
+		pane.setGridLinesVisible(false);
 		return pane;
 	}
 
@@ -231,7 +240,8 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 * Die Support-Methode instanziiert einen Button und gibt diesen formatiert
 	 * zurück (Wiederverwendbarkeit von Code)
 	 * 
-	 * @param buttonText Bezeichnung des Buttons als String
+	 * @param buttonText
+	 *            Bezeichnung des Buttons als String
 	 * @return formatiertes Button-Objekt
 	 */
 	private static Button initializeButton(String buttonText) {
