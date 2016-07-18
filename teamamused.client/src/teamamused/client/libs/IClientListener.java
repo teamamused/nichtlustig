@@ -127,5 +127,12 @@ public interface IClientListener {
 	 * @param rankings Bestenliste über alle Spiele hinweg
 	 */
 	public default void onRankingRecieved(Ranking[] rankings) {}
+
 	
+	/**
+	 * Der Spieler hat Gewürfelt, der Server sagt Ihm wieviel mal er noch darf
+	 *  
+	 * @param remDices Verbleibende Würfelversuche
+	 */
+	public default void onNumberOfRemeiningDicingChanged(int remDices) {}
 }

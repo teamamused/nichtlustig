@@ -1,5 +1,6 @@
 package teamamused.client.libs;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import teamamused.client.connect.ServerConnector;
@@ -8,6 +9,7 @@ import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableProcedureCall.RemoteProcedure;
+import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.Player;
@@ -143,11 +145,19 @@ public class Client {
 	/**
 	 * Cliente möchte würfeln
 	 * 
-	 * @return anzahl verbleibende Versuche
 	 */
 	public void rollDices() {
 		this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " würfelt");
 		this.send(new TransportableProcedureCall(RemoteProcedure.RollDices));
+	}
+
+	/**
+	 * Cliente möchte Würfel fixieren
+	 * 
+	 */
+	public void fixDices(List <ICube> cubesToFix) {
+		this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " möchte Würfel fixieren");
+		this.send(new TransportableProcedureCall(RemoteProcedure.FixDices, new Object[] { cubesToFix }));
 	}
 
 	/**
@@ -156,9 +166,9 @@ public class Client {
 	 * @param targetCards
 	 *            Zielkarten zur auswahl
 	 */
-	public void cardsChoosen(ITargetCard[] targetCards) {
+	public void cardsChoosen(List<ITargetCard> targetCards) {
 		this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " bestätigt gewählte Zielkarten");
-		// Server.getInstance().allocateCards(targetCards);
+		this.send(new TransportableProcedureCall(RemoteProcedure.CardsChosen, new Object[] { targetCards }));
 	}
 
 	/**

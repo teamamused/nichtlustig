@@ -4,7 +4,6 @@ import java.util.List;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ICube;
-import teamamused.common.models.GameBoard;
 import teamamused.common.models.cubes.CubeColor;
 import teamamused.common.models.cubes.CubeValue;
 
@@ -22,8 +21,6 @@ public class CubeManager{
 	private int diceCounter = 0;
 	private int allowedDicings = 3;
 	private int counterFixedCubes = 0;
-	private GameBoard board = BoardManager.getInstance().getGameBoard();
-	private ICube cubes[] = board.getCubes();
 	private ICube pinkCube;
 	
 	public CubeManager(){
@@ -112,7 +109,7 @@ public class CubeManager{
 	 * @return pinker Würfel
 	 */
 	public CubeValue getCurrentPinkCube(){
-		for(ICube cube : cubes){
+		for(ICube cube : getCubes()){
 			if(cube.getCubeColor() == CubeColor.Pink){
 				pinkCube = cube;
 			}
@@ -125,6 +122,19 @@ public class CubeManager{
 	 * @return alle Würfel als Array
 	 */
 	public ICube[] getCubes(){
-		return cubes;
+		return BoardManager.getInstance().getGameBoard().getCubes();
+	}
+	
+	/**
+	 * Prüft ob alle Würfel fixiert sind.
+	 * @return true wenn alle fixiert sonst false
+	 */
+	public boolean getAllCubesFixed(){
+		for(ICube cube : getCubes()){
+			if(!cube.getIsFixed()){
+				return false;
+			}
+		}
+		return true;
 	}
 }

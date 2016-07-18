@@ -22,10 +22,25 @@ public class TransportableProcedureCall extends TransportObject {
 	 */
 	public enum RemoteProcedure {
 		// Prozeduren welche vom Client aufgerufen werden
+		/**
+		 * Das Spiel wird angestossen
+		 * Parameter: Keine
+		 */
 		StartGame,
+		/**
+		 * Nicht fixierte Würfel werden gerollt
+		 * Parameter: Keine
+		 */
 		RollDices,
+		/**
+		 * Übergebene Würfel werden fixiert:
+		 * Parameter List of ICubes
+		 */
 		FixDices,
-		GameSpecialCard,
+		/**
+		 * Der Spieler hat ausgewählt welche Zielkarten er erhalten will
+		 * Parameter List of ITargetCards
+		 */
 		CardsChosen,
 		/**
 		 * Neuen Spieler erstellen und der DB hinzufügen

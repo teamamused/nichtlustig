@@ -83,12 +83,14 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(btnLogin, 2, 4);
 		grid.add(labelNeu, 2, 8);
 		grid.add(linkReg, 2, 9);
-		grid.add(iview2, 2, 10);
-		grid.add(cbLang, 3, 10);
-		// grid.add(iview, 0, 10);
+		grid.add(iview2, 1, 10);
+		grid.add(cbLang, 2, 10);
+		grid.add(iview, 0, 0);
 
 		// Add the layout pane to a scene
 		Scene scene = new Scene(grid, 800, 600);
+		
+		stage.setTitle("Nicht Lustig: Log-In");
 
 		// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 

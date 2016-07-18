@@ -190,8 +190,6 @@ public class ClientConnection extends Thread {
 		switch (rpc.getProcedure()) {
 		case StartGame:
 			return Server.getInstance().startGame(rpc);
-		case GameSpecialCard:
-			return Server.getInstance().gameSpecialCard(rpc);
 		case RollDices:
 			return Server.getInstance().rollDices(rpc);
 		case FixDices:
