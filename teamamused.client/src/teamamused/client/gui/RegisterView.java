@@ -1,14 +1,13 @@
 package teamamused.client.gui;
 
 import java.io.FileNotFoundException;
-
 import javafx.collections.FXCollections;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -54,8 +53,8 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("Nicht-Lustig.jpg"));
-			iview.setFitWidth(300);
-			iview.setFitWidth(300);
+			iview.setFitWidth(400);
+			iview.setFitWidth(400);
 			iview.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
@@ -70,12 +69,12 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
 		}
-
+		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(100, 50, 50, 50));
+		grid.setPadding(new Insets(80, 50, 50, 50));
 
 		grid.add(labelTitle, 0, 1);
 		grid.add(labelRegister, 0, 3);
@@ -88,10 +87,12 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		grid.add(btnRegister, 0, 12);
 		grid.add(iview2, 0, 14);
 		grid.add(cbLang, 0, 15);
-		// grid.add(iview, 2, 0);
+		//grid.add(iview, 8, 2);
 
 		// Add the layout pane to a scene
 		Scene scene = new Scene(grid, 800, 600);
+		
+		stage.setTitle("Nicht Lustig: Register");
 
 		// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 

@@ -12,12 +12,12 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 
 		// Auf dem Hyperlink wird ein ActionEvent registiert, welches den
 		// Browser öffnet und das entsprechende HTML-Dokument zurückgibt
-		view.linkAnleitung.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				ServiceLocator.getInstance().getHostServices().showDocument(view.linkAnleitung.getText());
-			}
-		});
+//		view.linkAnleitung.setOnAction(new EventHandler<ActionEvent>() {
+//			@Override
+//			public void handle(ActionEvent event) {
+//				ServiceLocator.getInstance().getHostServices().showDocument(view.linkAnleitung.getText());
+//			}
+//		});
 	}
 
 }
