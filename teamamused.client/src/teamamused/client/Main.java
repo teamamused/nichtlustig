@@ -126,6 +126,8 @@ public class Main extends Application {
 		WaitingRoomModel model = new WaitingRoomModel();
 		waitingRoomView = new WaitingRoomView(waitingRoomStage, model);
 		new WaitingRoomController(model, waitingRoomView);
+		welcomeView.stop();
+		welcomeView = null;
 		waitingRoomView.start();
 	}
 
