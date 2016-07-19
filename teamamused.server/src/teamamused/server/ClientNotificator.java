@@ -53,9 +53,9 @@ public class ClientNotificator {
 	 *            Neues Spielbrett
 	 */
 	public static void notifyUpdateGameBoard(GameBoard board) {
-		TransportableProcedureCall gameFinished = new TransportableProcedureCall(
+		TransportableProcedureCall updateBoard = new TransportableProcedureCall(
 				TransportableProcedureCall.RemoteProcedure.UpdateGameBoard, new Object[] { board });
-		ClientManager.getInstance().updateClients(gameFinished);
+		ClientManager.getInstance().updateClients(updateBoard);
 	}
 
 	/**
@@ -66,9 +66,9 @@ public class ClientNotificator {
 	 *            Spieler der neu an die Reihe kommt
 	 */
 	public static void notifyPlayerChanged(IPlayer activePlayer) {
-		TransportableProcedureCall gameFinished = new TransportableProcedureCall(
+		TransportableProcedureCall playerChanged = new TransportableProcedureCall(
 				TransportableProcedureCall.RemoteProcedure.ChangeActivePlayer, new Object[] { activePlayer });
-		ClientManager.getInstance().updateClients(gameFinished);
+		ClientManager.getInstance().updateClients(playerChanged);
 	}
 
 	/**

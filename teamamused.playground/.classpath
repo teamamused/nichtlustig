@@ -5,5 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/teamamused.common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/teamamused.client"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/teamamused.server"/>
+	<classpathentry kind="src" path="images"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

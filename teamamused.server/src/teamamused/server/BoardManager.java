@@ -28,7 +28,7 @@ import teamamused.common.models.cubes.CubeValue;
 
 public class BoardManager {
 	private static BoardManager instance;
-	private GameBoard board = new GameBoard();
+	private GameBoard board;
 	private ICardHolder currentOwner;
 	private List<ICardHolder> currentOwners;
 	private ICardHolder newOwner;
@@ -46,6 +46,8 @@ public class BoardManager {
 	private Hashtable<ITargetCard, ICardHolder> targetCards = new Hashtable<ITargetCard, ICardHolder>();
 
 	private BoardManager() {
+		board = new GameBoard();
+		board.init();
 		/*
 		 * Die Karten werden beim initialisieren des Spiels in der Mitte auf dem
 		 * Spielbrett verteilt (keine Zuteileung an Spieler)

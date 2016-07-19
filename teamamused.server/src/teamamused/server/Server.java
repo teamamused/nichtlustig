@@ -55,9 +55,8 @@ public class Server {
 	public TransportObject startGame(TransportableProcedureCall rpc) {
 		TransportableState state = null;
 		try {
-			Game.getInstance().defineStartPlayer();
 			ClientNotificator.notifyGameMove("Der Spieler " + rpc.getClient() + " hat das Spiel gestartet");
-			ClientNotificator.notifyPlayerChanged(Game.getInstance().getActivePlayer());
+			Game.getInstance().defineStartPlayer();
 			state = new TransportableState(true, "Das Spiel wurde erfolgreich gestartet.");
 		} catch (Exception ex) {
 			// Fehlerfall: Logen und dem Client melden

@@ -18,6 +18,7 @@ import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableState;
 import teamamused.common.dtos.TransportObject.TransportType;
+import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.GameBoard;
@@ -84,6 +85,7 @@ public class ServerConnection extends Thread {
 						// status zurückmelden
 						this.sendTransportObject(answer);
 					}
+					dtoIn = null;
 				}
 			}
 
@@ -185,8 +187,8 @@ public class ServerConnection extends Thread {
 		case ChangeActivePlayer:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof IPlayer) {
-					this.notifyGui.playerIsActivedChanged(((IPlayer) params[0]).getPlayerName() == Client.getInstance()
-							.getPlayer().getPlayerName());
+					this.notifyGui.playerIsActivedChanged(((IPlayer) params[0]).getPlayerName().equals(Client.getInstance()
+							.getPlayer().getPlayerName()));
 					return new TransportableState(true, "Client updated");
 				}
 			}
@@ -195,6 +197,10 @@ public class ServerConnection extends Thread {
 		case UpdateGameBoard:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof GameBoard) {
+
+					for (ICube cube: ((GameBoard) params[0]).getCubes()) {
+					    System.out.println("ServerConnection: " + cube.getCurrentValue().FaceValue);
+					}
 					this.notifyGui.gameBoardChanged((GameBoard) params[0]);
 					return new TransportableState(true, "Client updated");
 				}

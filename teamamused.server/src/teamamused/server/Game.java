@@ -92,7 +92,10 @@ public class Game implements Serializable {
 	 * Legt fest, welcher Spieler mit dem Spiel starten darf.
 	 */
 	public void defineStartPlayer() {
-		this.activePlayer = this.getPlayersFromGameboard().get((int) (Math.random() * 4));
+		List<IPlayer> players = this.getPlayersFromGameboard();
+		this.activePlayer = players.get((int) (Math.random() * players.size()));
+		ClientNotificator.notifyGameMove("Spieler " + this.activePlayer.getPlayerName() + " fängt mit dem Spiel an");
+		ClientNotificator.notifyPlayerChanged(this.activePlayer);
 	}
 
 	/**

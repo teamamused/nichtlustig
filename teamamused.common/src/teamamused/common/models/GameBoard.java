@@ -37,14 +37,11 @@ public class GameBoard implements ICardHolder, Serializable {
 	ICube[] cubes;
 	private List<IPlayer> players;
 
-	public GameBoard() {
-		this.init();
-	}
 
 	/**
 	 * Initialiserung der Karten und Würfel
 	 */
-	private void init() {
+	public void init() {
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett");
 		// Spieler initialisieren
 		this.players = new ArrayList<IPlayer>();

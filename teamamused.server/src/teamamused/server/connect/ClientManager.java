@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportObject;
+import teamamused.common.dtos.TransportableProcedureCall;
+import teamamused.common.dtos.TransportableProcedureCall.RemoteProcedure;
+import teamamused.common.interfaces.ICube;
+import teamamused.common.interfaces.IPlayer;
+import teamamused.common.models.GameBoard;
 import teamamused.server.Game;
 
 /**
@@ -80,7 +85,7 @@ public class ClientManager {
 	 * aktualisiert die Spiel Daten auf allen Clients
 	 * @param dto TransferObjekt welches den Clients gesendet werden soll
 	 */
-	public void updateClients(TransportObject dto) {
+	public synchronized void updateClients(TransportObject dto) {
 		ServiceLocator.getInstance().getLogger().info("ClientManager: aktualisiere alle Clients");
 		for (ClientConnection client : clients) {
 			this.updateClient(client, dto);
@@ -108,6 +113,20 @@ public class ClientManager {
 	}
 	
 	private void updateClient(ClientConnection client, TransportObject dto) {
+		// TODO: zu Debugzwecken, muss wieder entfernt werden
+		if (dto instanceof TransportableProcedureCall) {
+			if (((TransportableProcedureCall)dto).getProcedure() == RemoteProcedure.UpdateGameBoard) {
+				GameBoard x = ((GameBoard)((TransportableProcedureCall)dto).getArguments()[0]);
+
+				for (ICube cube: x.getCubes()) {
+				    System.out.println("ClientManager: " + cube.getCurrentValue().FaceValue);
+				}
+			} else if (((TransportableProcedureCall)dto).getProcedure() == RemoteProcedure.ChangeActivePlayer) {
+				IPlayer p = ((IPlayer)((TransportableProcedureCall)dto).getArguments()[0]);
+			    System.out.println("ClientManager - ChangeActivePlayer: " + p.getPlayerName());
+				
+			}
+		}
 		client.sendDto(dto);
 	}
 }
