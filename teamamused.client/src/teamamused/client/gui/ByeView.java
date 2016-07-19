@@ -45,7 +45,7 @@ public class ByeView extends AbstractView<ByeModel> {
 		// Add the layout pane to a scene
 		Scene scene = new Scene(grid, 800, 600);
 
-		// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;
 	}

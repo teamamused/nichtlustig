@@ -45,7 +45,7 @@ public class LogInView extends AbstractView<LogInModel> {
 
 		// 
 		linkReg = new Hyperlink();
-		linkReg.setText("Registrieren?");
+		linkReg.setText("Registrieren");
 
 		ChoiceBox cbLang = new ChoiceBox();
 		cbLang.setItems(FXCollections.observableArrayList("Deutsch", "English"));
@@ -63,8 +63,8 @@ public class LogInView extends AbstractView<LogInModel> {
 		ImageView iview2 = null;
 		try {
 			iview2 = new ImageView(ResourceLoader.getImage("Sprache.png"));
-			iview2.setFitWidth(20);
-			iview2.setFitWidth(20);
+			iview2.setFitWidth(30);
+			iview2.setFitWidth(30);
 			iview2.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
@@ -80,19 +80,19 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(textUser, 2, 1);
 		grid.add(labelPassword, 2, 2);
 		grid.add(textPassword, 2, 3);
-		grid.add(btnLogin, 2, 4);
-		grid.add(labelNeu, 2, 8);
-		grid.add(linkReg, 2, 9);
+		grid.add(btnLogin, 2, 5);
+		grid.add(labelNeu, 2, 7);
+		grid.add(linkReg, 2, 8);
 		grid.add(iview2, 1, 10);
 		grid.add(cbLang, 2, 10);
-		grid.add(iview, 0, 0);
+		//grid.add(iview, 0, 0);
 
 		// Add the layout pane to a scene
 		Scene scene = new Scene(grid, 800, 600);
 		
 		stage.setTitle("Nicht Lustig: Log-In");
 
-		// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;
 	}

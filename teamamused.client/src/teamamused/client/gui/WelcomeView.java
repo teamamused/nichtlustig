@@ -109,6 +109,8 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		
 		stage.setTitle("Nicht Lustig: Welcome");
 		
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		
 		return scene;
 	}
 

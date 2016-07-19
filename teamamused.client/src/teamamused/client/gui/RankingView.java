@@ -70,7 +70,7 @@ public class RankingView extends AbstractView<RankingModel> {
 
 		stage.setTitle("Nicht Lustig: Ranking");
 
-		// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;
 	}

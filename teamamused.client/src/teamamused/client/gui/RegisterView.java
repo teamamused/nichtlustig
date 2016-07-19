@@ -63,8 +63,8 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		ImageView iview2 = null;
 		try {
 			iview2 = new ImageView(ResourceLoader.getImage("Sprache.png"));
-			iview2.setFitWidth(20);
-			iview2.setFitWidth(20);
+			iview2.setFitWidth(30);
+			iview2.setFitWidth(30);
 			iview2.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
@@ -74,19 +74,19 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(80, 50, 50, 50));
+		grid.setPadding(new Insets(50, 50, 50, 50));
 
-		grid.add(labelTitle, 0, 1);
-		grid.add(labelRegister, 0, 3);
-		grid.add(labelUser, 0, 5);
-		grid.add(textUser, 0, 6);
-		grid.add(labelPassword, 0, 7);
-		grid.add(textPassword, 0, 8);
-		grid.add(labelPassword2, 0, 9);
-		grid.add(textPassword2, 0, 10);
-		grid.add(btnRegister, 0, 12);
+		grid.add(labelTitle, 1, 1);
+		grid.add(labelRegister, 1, 3);
+		grid.add(labelUser, 1, 5);
+		grid.add(textUser, 1, 6);
+		grid.add(labelPassword, 1, 7);
+		grid.add(textPassword, 1, 8);
+		grid.add(labelPassword2, 1, 9);
+		grid.add(textPassword2, 1, 10);
+		grid.add(btnRegister, 1, 12);
 		grid.add(iview2, 0, 14);
-		grid.add(cbLang, 0, 15);
+		grid.add(cbLang, 1, 14);
 		//grid.add(iview, 8, 2);
 
 		// Add the layout pane to a scene
@@ -94,7 +94,7 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		
 		stage.setTitle("Nicht Lustig: Register");
 
-		// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;
 	}
