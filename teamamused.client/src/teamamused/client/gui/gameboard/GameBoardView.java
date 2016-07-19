@@ -216,7 +216,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			LogHelper.LogException(e);
 		}
 		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(120);
+		imageView.setFitHeight(50);
 		imageView.setPreserveRatio(true);
 		return imageView;
 	}

@@ -49,6 +49,7 @@ public class LogInView extends AbstractView<LogInModel> {
 
 		ChoiceBox cbLang = new ChoiceBox();
 		cbLang.setItems(FXCollections.observableArrayList("Deutsch", "English"));
+		cbLang.getSelectionModel().selectFirst();
 		
 		ImageView iview = null;
 		try {

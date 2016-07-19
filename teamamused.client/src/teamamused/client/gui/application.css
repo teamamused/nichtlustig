@@ -14,6 +14,11 @@
 	-fx-background: lightgrey;
 }
 #labelSpielfeld{
-	-fx-font-size: 40pt;
+	-fx-font-size: 35pt;
+	-fx-font-weight: bold;
+}
+
+#labelWelcome{
+	-fx-font-size: 35pt;
 	-fx-font-weight: bold;
 }

@@ -20,6 +20,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 	protected Button btnMulti;
 	protected Button btnTrophy;
 	protected Button btnRanking;
+	protected ImageView iview3;
 
 	public WelcomeView(Stage stage, WelcomeModel model) {
 		super(stage, model);
@@ -31,6 +32,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 
 		// Create the labels
 		Label labelWelcome = new Label("Herzlich Willkommen XYZ");
+		labelWelcome.setId("labelWelcome");
 		Label labelPlay = new Label("Was möchtest du spielen?");
 		
 		// 
@@ -42,12 +44,8 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		btnMulti.setText("Multi-Player");
 		
 		// 
-		btnRanking = new Button();
-		btnRanking.setText("Ranking");
-		
-		//
-		//btnTrophy = new Button();
-		//btnTrophy.setGraphic(new ImageView (iview3));
+		//btnRanking = new Button();
+		//btnRanking.setText("Ranking");
 		
 		ImageView iview = null;
 		try {
@@ -89,23 +87,27 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
 		}
 		
+		//
+		btnTrophy = new Button();
+		btnTrophy.setGraphic(iview3);
+		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(50, 50, 50, 50));
 
-		grid.add(labelWelcome, 0, 0);
+		grid.add(labelWelcome, 0, 0, 20, 1);
 		grid.add(labelPlay, 0, 2);
 		grid.add(btnSingle, 0, 4);
 		grid.add(btnMulti, 12, 4);
 		grid.add(iview, 0, 8);
 		grid.add(iview2, 12, 8);
-		//grid.add(iview3, 16, 12);
-		grid.add(btnRanking, 16, 12);
+		grid.add(btnTrophy, 16, 12);
+		//grid.add(btnRanking, 16, 12);
 		grid.add(iview4, 16, 0);
 		
-		Scene scene = new Scene(grid, 800, 600);
+		Scene scene = new Scene(grid, 900, 600);
 		
 		stage.setTitle("Nicht Lustig: Welcome");
 		

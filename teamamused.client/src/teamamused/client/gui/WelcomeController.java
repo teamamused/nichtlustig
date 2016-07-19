@@ -9,8 +9,12 @@ public class WelcomeController extends AbstractController<WelcomeModel, WelcomeV
 	public WelcomeController(WelcomeModel model, WelcomeView view) {
 		super(model, view);
 		
-		view.btnRanking.setOnAction((ActionEvent e) -> {
+		view.btnTrophy.setOnAction((ActionEvent e) -> {
 			Main.getInstance().startRanking();
+		});
+		
+		view.btnMulti.setOnAction((ActionEvent e) -> {
+			Main.getInstance().startWaitingRoom();
 		});
 		
 	}
