@@ -7,9 +7,6 @@ import teamamused.common.models.Player;
 
 public class WelcomeModel extends AbstractModel {
 	
-	//public String getusername() {
-		//return IPlayer.getPlayerName();
-	//}
 	
 
 }

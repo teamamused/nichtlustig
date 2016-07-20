@@ -19,8 +19,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 	protected Button btnSingle;
 	protected Button btnMulti;
 	protected Button btnTrophy;
-	protected Button btnRanking;
-	protected ImageView iview3;
+	protected Button btnExit;
 
 	public WelcomeView(Stage stage, WelcomeModel model) {
 		super(stage, model);
@@ -38,14 +37,11 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		// 
 		btnSingle = new Button();
 		btnSingle.setText("Single-Player");
+		btnSingle.setDisable(true);
 		
 		// 
 		btnMulti = new Button();
 		btnMulti.setText("Multi-Player");
-		
-		// 
-		//btnRanking = new Button();
-		//btnRanking.setText("Ranking");
 		
 		ImageView iview = null;
 		try {
@@ -70,8 +66,8 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		ImageView iview3 = null;
 		try {
 			iview3 = new ImageView(ResourceLoader.getImage("Pokal.png"));
-			iview3.setFitWidth(50);
-			iview3.setFitWidth(50);
+			iview3.setFitWidth(30);
+			iview3.setFitWidth(30);
 			iview3.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
@@ -80,8 +76,8 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		ImageView iview4 = null;
 		try {
 			iview4 = new ImageView(ResourceLoader.getImage("Exit.png"));
-			iview4.setFitWidth(50);
-			iview4.setFitWidth(50);
+			iview4.setFitWidth(30);
+			iview4.setFitWidth(30);
 			iview4.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
@@ -90,6 +86,10 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		//
 		btnTrophy = new Button();
 		btnTrophy.setGraphic(iview3);
+		
+		//
+		btnExit = new Button();
+		btnExit.setGraphic(iview4);
 		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_LEFT);
@@ -100,12 +100,11 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		grid.add(labelWelcome, 0, 0, 20, 1);
 		grid.add(labelPlay, 0, 2);
 		grid.add(btnSingle, 0, 4);
-		grid.add(btnMulti, 12, 4);
+		grid.add(btnMulti, 14, 4);
 		grid.add(iview, 0, 8);
-		grid.add(iview2, 12, 8);
-		grid.add(btnTrophy, 16, 12);
-		//grid.add(btnRanking, 16, 12);
-		grid.add(iview4, 16, 0);
+		grid.add(iview2, 14, 8);
+		grid.add(btnTrophy, 24, 9);
+		grid.add(btnExit, 24, 0);
 		
 		Scene scene = new Scene(grid, 900, 600);
 		

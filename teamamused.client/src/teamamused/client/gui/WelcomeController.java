@@ -17,6 +17,10 @@ public class WelcomeController extends AbstractController<WelcomeModel, WelcomeV
 			Main.getInstance().startWaitingRoom();
 		});
 		
+		view.btnExit.setOnAction((ActionEvent e) -> {
+			Main.getInstance().startBye();
+		});
+		
 	}
 
 }

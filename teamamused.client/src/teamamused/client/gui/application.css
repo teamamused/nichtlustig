@@ -14,11 +14,37 @@
 	-fx-background: lightgrey;
 }
 #labelSpielfeld{
-	-fx-font-size: 35pt;
+	-fx-font-size: 30pt;
 	-fx-font-weight: bold;
 }
 
 #labelWelcome{
-	-fx-font-size: 35pt;
+	-fx-font-size: 30pt;
 	-fx-font-weight: bold;
 }
+
+#labelTitle{
+	-fx-font-size: 30pt;
+	-fx-font-weight: bold;
+}
+
+#labelRanking{
+	-fx-font-size: 30pt;
+	-fx-font-weight: bold;
+}
+
+#labelWait{
+	-fx-font-size: 30pt;
+	-fx-font-weight: bold;
+}
+
+#labelTschuess{
+	-fx-font-size: 30pt;
+	-fx-font-weight: bold;
+}
+
+#tableRanking{
+	-fx-font-size: 16pt;
+	-fx-base: red;
+}
+
