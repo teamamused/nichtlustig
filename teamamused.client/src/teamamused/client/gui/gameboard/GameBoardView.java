@@ -1,13 +1,11 @@
 package teamamused.client.gui.gameboard;
 
 import java.io.FileNotFoundException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -33,7 +31,7 @@ import teamamused.common.interfaces.ICube;
  */
 public class GameBoardView extends AbstractView<GameBoardModel> {
 
-	protected GridPane root, cardPane, diceCardPane;
+	protected GridPane root, cardPane, dicePane;
 	protected VBox navigation;
 	protected ImageView logo, linkIcon;
 	protected Image linkImage;
@@ -44,7 +42,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected ScrollPane scrollTxt;
 	protected Label labelSpielfeld, labelRollDices, labelSelectedDices;
 	protected String url;
-	protected List<Canvas> cubeCanvas;
+	protected DiceControl[] diceControlArray;
 
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
@@ -92,6 +90,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		logo.setFitWidth(200);
 		logo.setPreserveRatio(true);
 		btnGameBoard = GameBoardView.initializeButton("Spielfeld");
+		btnGameBoard.setDisable(true);
 		// TODO: Anzahl Buttons für Spieler dynamisch gestalten - je nach Anzahl
 		// Mitspieler
 		btnPlayer1 = GameBoardView.initializeButton("Spieler 1");
@@ -149,42 +148,33 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		cardPane.add(getImageView("Killervirus.png"), 1, 3);
 
 		// Definition der Pane für den Würfel-Bereich
-		diceCardPane = GameBoardView.initializeGridPane();
+		dicePane = GameBoardView.initializeGridPane();
 
-		// TODO: Label für Würfel ersetzen
 		// Instanziierung und Zuordnung der Controlls zur "dicePane"
 		labelRollDices = new Label(
-				"Du darfst insgesamt dreimal würfeln. Wähle die Würfel an, welche du setzen möchtest. \nEinmal gesetzte Würfel dürfen nicht erneut gewürfelt werden.");
+				"Du darfst insgesamt dreimal würfeln. Wähle die Würfel an, welche du setzen möchtest.");
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
 		btnWuerfeln = GameBoardView.initializeButton("Würfeln");
 		btnUebernehmen = GameBoardView.initializeButton("Übernehmen");
 
-		diceCardPane.add(labelRollDices, 0, 0, 10, 4);
-
-		cubeCanvas = new LinkedList<>(); // Die einzelnen Würfel sollen in ein
-											// Canvas umgewandelt werden
-		int i = 0;
-		for (ICube cube : model.getCubes()) {
-			Canvas canvas = cube.getCurrentValue().toCanvas(50, 1);
-			cubeCanvas.add(canvas);
-			diceCardPane.add(canvas, i++, 5);
+		dicePane.add(labelRollDices, 0, 0, 10, 4);
+		
+		diceControlArray = new DiceControl[7];
+		ICube[] cubes = model.getCubes();
+		for(int i=0; i<7; i++) {
+			DiceControl diceControl = new DiceControl(cubes[i]);
+			diceControlArray[i] = diceControl;
+			dicePane.add(diceControl, i, 5);			
 		}
-
-		diceCardPane.add(btnWuerfeln, 10, 5);
-		diceCardPane.add(labelSelectedDices, 0, 6, 10, 7);
-		diceCardPane.add(new Label("Black"), 0, 8);
-		diceCardPane.add(new Label("Black"), 1, 8);
-		diceCardPane.add(new Label("Red"), 2, 8);
-		diceCardPane.add(new Label("Red"), 3, 8);
-		diceCardPane.add(new Label("White"), 4, 8);
-		diceCardPane.add(new Label("White"), 5, 8);
-		diceCardPane.add(new Label("Pink"), 6, 8);
-		diceCardPane.add(btnUebernehmen, 10, 8);
+		
+		dicePane.add(btnWuerfeln, 10, 5);
+		dicePane.add(labelSelectedDices, 0, 5, 10, 6);
+		dicePane.add(btnUebernehmen, 10, 10);
 
 		// Zuordnung der Sub-Panes zur Haupt-Pane "root"
 		root.add(navigation, 0, 0, 1, 10);
 		root.add(cardPane, 1, 1);
-		root.add(diceCardPane, 1, 2);
+		root.add(dicePane, 1, 2);
 
 		// Ausrichtung der Controlls in der Pane
 		// GridPane.setHalignment(restartButton, HPos.LEFT);
@@ -194,6 +184,13 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 
 		return scene;
+	}
+	
+	public int displayDice(DiceControl diceControl) {
+		int index = diceControlArray.length % 7;
+		diceControlArray[index] = diceControl;
+		dicePane.add(diceControl, index, 5);
+		return index;
 	}
 
 	/**
