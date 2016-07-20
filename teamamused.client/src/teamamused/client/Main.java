@@ -117,6 +117,8 @@ public class Main extends Application {
 		GameBoardModel model = new GameBoardModel();
 		gameBoardView = new GameBoardView(gameBoardStage, model);
 		new GameBoardController (model, gameBoardView);
+		waitingRoomView.stop();
+		waitingRoomView = null;
 		gameBoardView.start();
 	}
 	

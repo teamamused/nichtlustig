@@ -51,4 +51,12 @@ public interface ICube {
 	 * Setzt die Cube-Werte zurück auf CubeValue 1 für alle Würfel.
 	 */
 	void resetCubeValues();
+
+	
+	/**
+	 * Gibt die interne Nummer des Würfels zurück.
+	 * 0 basiert, bis 6
+	 * @return 0 basierte interne Nummer
+	 */
+	int getCubeNumber();
 }

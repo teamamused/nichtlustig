@@ -9,7 +9,6 @@ import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableProcedureCall.RemoteProcedure;
-import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.Player;
@@ -121,7 +120,9 @@ public class Client {
 	 *            Chat Benachrichtigung
 	 */
 	public void sendChatMessage(TransportableChatMessage message) {
-		this.log.info("Client " + this.currPlayer.getPlayerName() + " sendet Chatnachricht");
+		if (this.currPlayer != null) {
+			this.log.info("Client " + this.currPlayer.getPlayerName() + " sendet Chatnachricht");
+		}
 		this.send(message);
 	}
 
@@ -130,7 +131,9 @@ public class Client {
 	 * 
 	 */
 	public void joinGame() {
-		this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " tritt Spiel bei");
+		if (this.currPlayer != null) {
+			this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " tritt Spiel bei");
+		}
 		this.send(new TransportableProcedureCall(RemoteProcedure.JoinGame, new Object[] { this.currPlayer}));
 	}
 
@@ -138,7 +141,9 @@ public class Client {
 	 * Cliente möchte ein Spiel starten
 	 */
 	public void startGame() {
-		this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " startet Spiel");
+		if (this.currPlayer != null) {
+			this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " startet Spiel");
+		}
 		this.send(new TransportableProcedureCall(RemoteProcedure.StartGame));
 	}
 
@@ -147,17 +152,23 @@ public class Client {
 	 * 
 	 */
 	public void rollDices() {
-		this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " würfelt");
+		if (this.currPlayer != null) {
+			this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " würfelt");
+		}
 		this.send(new TransportableProcedureCall(RemoteProcedure.RollDices));
 	}
 
 	/**
 	 * Cliente möchte Würfel fixieren
 	 * 
+	 * @param cubeFixed
+	 *            Index des Arrays ist die würfelNummer, wert ob fixiert
 	 */
-	public void fixDices(List <ICube> cubesToFix) {
-		this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " möchte Würfel fixieren");
-		this.send(new TransportableProcedureCall(RemoteProcedure.FixDices, new Object[] { cubesToFix }));
+	public void setFixedCubes(boolean[] cubeFixed) {
+		if (this.currPlayer != null) {
+			this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " möchte Würfel fixieren");
+		}
+		this.send(new TransportableProcedureCall(RemoteProcedure.FixDices, new Object[] { cubeFixed }));
 	}
 
 	/**
@@ -167,7 +178,9 @@ public class Client {
 	 *            Zielkarten zur auswahl
 	 */
 	public void cardsChoosen(List<ITargetCard> targetCards) {
-		this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " bestätigt gewählte Zielkarten");
+		if (this.currPlayer != null) {
+			this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " bestätigt gewählte Zielkarten");
+		}
 		this.send(new TransportableProcedureCall(RemoteProcedure.CardsChosen, new Object[] { targetCards }));
 	}
 
@@ -212,6 +225,9 @@ public class Client {
 	
 	private void send(TransportObject dto) {
 		if (this.connector != null) {
+			if (this.currPlayer != null) {
+				dto.setClient(this.currPlayer.getPlayerName());
+			}
 			this.connector.getConnection().sendTransportObject(dto);
 		}
 	}

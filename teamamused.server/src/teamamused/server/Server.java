@@ -10,7 +10,6 @@ import teamamused.common.dtos.TransportableAnswer;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableState;
-import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.server.connect.ClientManager;
@@ -55,9 +54,9 @@ public class Server {
 	public TransportObject startGame(TransportableProcedureCall rpc) {
 		TransportableState state = null;
 		try {
-			Game.getInstance().defineStartPlayer();
 			ClientNotificator.notifyGameMove("Der Spieler " + rpc.getClient() + " hat das Spiel gestartet");
-			ClientNotificator.notifyPlayerChanged(Game.getInstance().getActivePlayer());
+			Game.getInstance().startNextRound();
+			ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
 			state = new TransportableState(true, "Das Spiel wurde erfolgreich gestartet.");
 		} catch (Exception ex) {
 			// Fehlerfall: Logen und dem Client melden
@@ -90,12 +89,11 @@ public class Server {
 
 	public TransportObject fixDices(TransportableProcedureCall rpc) {
 		if (rpc != null && rpc.getArguments() != null && rpc.getArguments().length >= 1
-				&& rpc.getArguments()[0] instanceof List<?>) {
+				&& rpc.getArguments()[0] instanceof boolean[]) {
 			try {
 				// Würfel fixieren
-				@SuppressWarnings("unchecked")
-				List<ICube> cubesToFix = (List<ICube>) rpc.getArguments()[0];
-				CubeManager.getInstance().saveFixedDices(cubesToFix);
+				boolean[] cubesFixed = (boolean[])rpc.getArguments()[0];
+				CubeManager.getInstance().saveFixedDices(cubesFixed);
 				// Clients informieren
 				ClientNotificator.notifyGameMove("Der Spieler " + rpc.getClient() + " hat würfel fixiert.");
 				ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());

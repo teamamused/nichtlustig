@@ -23,13 +23,47 @@ public class CubeFactory {
 	 * @return Array mit den Würfeln
 	 */
 	public static ICube[] getCubes(Hashtable<GameCard, ISpecialCard> htSpecialCards) {
-		Cube white1 = new Cube(CubeColor.White, htSpecialCards.get(GameCard.SK_Zeitmaschine));
-		Cube white2 = new Cube(CubeColor.White, htSpecialCards.get(GameCard.SK_KillerVirus));
-		Cube red1 = new Cube(CubeColor.Red, htSpecialCards.get(GameCard.SK_Clown));
-		Cube red2 = new Cube(CubeColor.Red, htSpecialCards.get(GameCard.SK_RoboterNF700));
-		Cube black1 = new Cube(CubeColor.Black, htSpecialCards.get(GameCard.SK_Ente));
-		Cube black2 = new Cube(CubeColor.Black, htSpecialCards.get(GameCard.SK_UFO));
-		Cube dead = new Cube(CubeColor.Pink, null);
+		return CubeFactory.getCubes(htSpecialCards, null, null);
+	}
+	/**
+	 * Erstellt die 7 Spielbrett Würfel, weist Ihnen die jeweilige
+	 * Spezialkarte zu und setzt das CubeValue
+	 * 
+	 * @param htSpecialCards
+	 *            Hashtable mit den Spezialkarten
+	 * @param values
+	 *            FaceValues der Würfel
+	 * @param fixed
+	 *            ob die Würfel fixiert sind
+	 * @return Array mit den Würfeln
+	 */
+	public static ICube[] getCubes(Hashtable<GameCard, ISpecialCard> htSpecialCards, int[] values, boolean[] fixed) {
+		Cube white1 = new Cube(0, CubeColor.White, htSpecialCards.get(GameCard.SK_Zeitmaschine));
+		Cube white2 = new Cube(1, CubeColor.White, htSpecialCards.get(GameCard.SK_KillerVirus));
+		Cube red1 = new Cube(2, CubeColor.Red, htSpecialCards.get(GameCard.SK_Clown));
+		Cube red2 = new Cube(3, CubeColor.Red, htSpecialCards.get(GameCard.SK_RoboterNF700));
+		Cube black1 = new Cube(4, CubeColor.Black, htSpecialCards.get(GameCard.SK_Ente));
+		Cube black2 = new Cube(5, CubeColor.Black, htSpecialCards.get(GameCard.SK_UFO));
+		Cube dead = new Cube(6, CubeColor.Pink, null);
+
+		if (values != null) {
+			white1.setFaceValue(values[white1.getCubeNumber()]);
+			white2.setFaceValue(values[white2.getCubeNumber()]);
+			red1.setFaceValue(values[red1.getCubeNumber()]);
+			red2.setFaceValue(values[red2.getCubeNumber()]);
+			black1.setFaceValue(values[black1.getCubeNumber()]);
+			black2.setFaceValue(values[black2.getCubeNumber()]);
+			dead.setFaceValue(values[dead.getCubeNumber()]);
+		}
+		if (fixed != null) {
+			white1.setIsFixed(fixed[white1.getCubeNumber()]);
+			white2.setIsFixed(fixed[white2.getCubeNumber()]);
+			red1.setIsFixed(fixed[red1.getCubeNumber()]);
+			red2.setIsFixed(fixed[red2.getCubeNumber()]);
+			black1.setIsFixed(fixed[black1.getCubeNumber()]);
+			black2.setIsFixed(fixed[black2.getCubeNumber()]);
+			dead.setIsFixed(fixed[dead.getCubeNumber()]);
+		}
 		return new ICube[] { white1, white2, red1, red2, black1, black2, dead };
 	}
 }

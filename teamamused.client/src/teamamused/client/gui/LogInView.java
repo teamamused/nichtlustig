@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
@@ -23,6 +24,7 @@ public class LogInView extends AbstractView<LogInModel> {
 	protected Button btnLogin;
 	protected TextField textUser;
 	protected TextField textPassword;
+	protected VBox image;
 	protected Hyperlink linkReg;
 
 	public LogInView(Stage stage, LogInModel model) {
@@ -70,7 +72,11 @@ public class LogInView extends AbstractView<LogInModel> {
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
 		}
-
+		
+		image = new VBox(1);
+		image.setPadding(new Insets(20, 20, 20, 20));
+		image.getChildren().addAll(iview);
+		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER_RIGHT);
 		grid.setHgap(10);
@@ -86,10 +92,10 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(linkReg, 2, 8);
 		grid.add(iview2, 1, 10);
 		grid.add(cbLang, 2, 10);
-		//grid.add(iview, 0, 0);
+		//grid.add(image, 0, 10);
 
 		// Add the layout pane to a scene
-		Scene scene = new Scene(grid, 800, 600);
+		Scene scene = new Scene(grid, 900, 600);
 		
 		stage.setTitle("Nicht Lustig: Log-In");
 

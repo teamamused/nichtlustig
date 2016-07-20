@@ -34,6 +34,7 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		
 		// Create the labels
 		Label labelTitle = new Label("Hallo Neuling!");
+		labelTitle.setId("labelTitle");
 		Label labelRegister = new Label("Hier kannst du dich registrieren:");
 		Label labelUser = new Label("Benutzername");
 		Label labelPassword = new Label("Passwort");
@@ -49,6 +50,7 @@ public class RegisterView extends AbstractView<RegisterModel> {
 
 		ChoiceBox cbLang = new ChoiceBox();
 		cbLang.setItems(FXCollections.observableArrayList("Deutsch", "English"));
+		cbLang.getSelectionModel().selectFirst();
 
 		ImageView iview = null;
 		try {
@@ -76,21 +78,20 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(50, 50, 50, 50));
 
-		grid.add(labelTitle, 1, 1);
-		grid.add(labelRegister, 1, 3);
-		grid.add(labelUser, 1, 5);
-		grid.add(textUser, 1, 6);
-		grid.add(labelPassword, 1, 7);
-		grid.add(textPassword, 1, 8);
-		grid.add(labelPassword2, 1, 9);
-		grid.add(textPassword2, 1, 10);
-		grid.add(btnRegister, 1, 12);
-		grid.add(iview2, 0, 14);
-		grid.add(cbLang, 1, 14);
-		//grid.add(iview, 8, 2);
+		grid.add(labelTitle, 0, 1);
+		grid.add(labelRegister, 0, 3);
+		grid.add(labelUser, 0, 5);
+		grid.add(textUser, 0, 6);
+		grid.add(labelPassword, 0, 7);
+		grid.add(textPassword, 0, 8);
+		grid.add(labelPassword2, 0, 9);
+		grid.add(textPassword2, 0, 10);
+		grid.add(btnRegister, 0, 12);
+		grid.add(iview2, 5, 6);
+		grid.add(cbLang, 6, 6);
 
 		// Add the layout pane to a scene
-		Scene scene = new Scene(grid, 800, 600);
+		Scene scene = new Scene(grid, 900, 600);
 		
 		stage.setTitle("Nicht Lustig: Register");
 

@@ -1,5 +1,9 @@
 package teamamused.common.models;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +11,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import teamamused.common.ServiceLocator;
+import teamamused.common.dtos.TransportableGameBoard;
 import teamamused.common.interfaces.ICardHolder;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IDeadCard;
@@ -37,14 +42,11 @@ public class GameBoard implements ICardHolder, Serializable {
 	ICube[] cubes;
 	private List<IPlayer> players;
 
-	public GameBoard() {
-		this.init();
-	}
 
 	/**
 	 * Initialiserung der Karten und Würfel
 	 */
-	private void init() {
+	public void init() {
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett");
 		// Spieler initialisieren
 		this.players = new ArrayList<IPlayer>();
@@ -64,6 +66,37 @@ public class GameBoard implements ICardHolder, Serializable {
 		this.cubes = CubeFactory.getCubes(htSpecialCards);
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett - Würfel erstellt");
 
+	}
+	/**
+	 * Initialiserung der Karten und Würfel
+	 */
+	public void initFromTransportObject(TransportableGameBoard tgb) {
+		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett");
+		// Spieler initialisieren
+		this.players = new ArrayList<IPlayer>();
+		for (Player p : tgb.players) {
+			this.players.add(p);
+		}
+		// Spielkarten
+		htSpecialCards = new Hashtable<GameCard, ISpecialCard>();
+		htTargetCards = new Hashtable<GameCard, ITargetCard>();
+		htDeadCards = new Hashtable<GameCard, IDeadCard>();
+		
+		Hashtable<GameCard, IDeadCard> allDeadCards = CardFactory.getDeadCards();
+		for (GameCard card : tgb.deadCards) {
+			this.htDeadCards.put(card, allDeadCards.get(card));
+		}
+		Hashtable<GameCard, ISpecialCard> allSpecialCards = CardFactory.getSpecialCards();
+		for (GameCard card : tgb.specialCards) {
+			this.htSpecialCards.put(card, allSpecialCards.get(card));
+		}
+		Hashtable<GameCard, ITargetCard> allTargetCards = CardFactory.getTargetCards();
+		for (GameCard card : tgb.targetCards) {
+			this.htTargetCards.put(card, allTargetCards.get(card));
+		}
+		// Würfel initialisieren
+		this.cubes = CubeFactory.getCubes(htSpecialCards, tgb.cubeValues, tgb.cubeFixed);
+		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett - Würfel erstellt");
 	}
 
 	/**
@@ -152,6 +185,23 @@ public class GameBoard implements ICardHolder, Serializable {
 	 */
 	public ICube[] getCubes() {
 		return this.cubes;
+	}
+	
+	public static GameBoard getGameBoardFromXMLStringOld(String xml) {
+		ByteArrayInputStream baos = new ByteArrayInputStream(xml.getBytes());
+		XMLDecoder decoder = new XMLDecoder(baos);
+		GameBoard board = (GameBoard) decoder.readObject();
+		decoder.close();
+		return board;
+	}
+	
+	public String getTransportableXMLOld() {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		XMLEncoder xmlEncoder = new XMLEncoder(baos);
+		xmlEncoder.writeObject(this);
+		xmlEncoder.close();
+
+		return baos.toString();
 	}
 
 	

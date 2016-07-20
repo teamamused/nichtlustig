@@ -23,28 +23,32 @@ public class ByeView extends AbstractView<ByeModel> {
 
 		// Create the labels
 		Label labelTschuess = new Label("Tschüss und auf Wiedersehen");
+		labelTschuess.setId("labelTschuess");
 		
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("Tschuess.jpg"));
-			iview.setFitWidth(300);
-			iview.setFitWidth(300);
+			iview.setFitWidth(700);
+			iview.setFitWidth(700);
 			iview.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
 		}
 		
 		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.CENTER_RIGHT);
+		grid.setAlignment(Pos.TOP_CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(100, 100, 100, 100));
+		grid.setPadding(new Insets(50, 50, 50, 50));
 
 		grid.add(labelTschuess, 0, 0);
+		grid.add(iview, 0, 3);
 
 		// Add the layout pane to a scene
-		Scene scene = new Scene(grid, 800, 600);
+		Scene scene = new Scene(grid, 900, 600);
 
+		stage.setTitle("Nicht Lustig: Bye");
+		
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;

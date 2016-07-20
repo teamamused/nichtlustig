@@ -32,6 +32,7 @@ public class GameBoardTest {
 	@BeforeClass
 	public static void setUpBeforeClass() {
 		board = new GameBoard();
+		board.init();
 	}
 	
 	/**

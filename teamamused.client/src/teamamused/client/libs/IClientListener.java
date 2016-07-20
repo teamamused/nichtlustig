@@ -11,7 +11,7 @@ import teamamused.common.models.GameBoard;
 
 /**
  * 
- * Dieses Interface ist für alle Klassen welche vom Client benachrichtigungen erhalten wollen.
+ * Dieses Interface ist für alle Klassen welche vom Client Benachrichtigungen erhalten wollen.
  * Betrifft vorallem die GUI's welche die Daten anzeigen.
  * 
  * Sie können sich beim Client registrieren und erhalten dann die folgenden Meldungen.

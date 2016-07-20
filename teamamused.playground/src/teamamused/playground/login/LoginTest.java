@@ -6,6 +6,9 @@ import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.models.GameBoard;
+import teamamused.playground.application.gui.GameBoardController;
+import teamamused.playground.application.gui.GameBoardModel;
+import teamamused.playground.application.gui.GameBoardView;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,7 +23,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class LoginTest extends Application implements IClientListener {
-	
+	static LoginTest instance;
 	TextField txtServer;
 	TextField txtPort;
 	Button btnConnectServer;
@@ -41,6 +44,7 @@ public class LoginTest extends Application implements IClientListener {
 	
 	@Override
 	public void start(Stage primaryStage) {
+		instance = this;
 		// uns beim Client Registrieren
 		Client.getInstance().registerGui(this);
 		VBox root = new VBox(10);
@@ -119,6 +123,7 @@ public class LoginTest extends Application implements IClientListener {
 		btnJoinGame.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				instance.startGameBoard();
 				Client.getInstance().joinGame();
 			}
 		});
@@ -184,6 +189,15 @@ public class LoginTest extends Application implements IClientListener {
 	
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	
+	public void startGameBoard() {
+		Stage gameBoardStage = new Stage();
+		GameBoardModel model = new GameBoardModel();
+		GameBoardView gameBoardView = new GameBoardView(gameBoardStage, model);
+		new GameBoardController (model, gameBoardView);
+		gameBoardView.start();
 	}
 	
 	private void addOutput(String message) {

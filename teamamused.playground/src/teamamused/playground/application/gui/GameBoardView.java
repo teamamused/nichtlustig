@@ -1,8 +1,13 @@
 package teamamused.playground.application.gui;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -13,55 +18,93 @@ import teamamused.common.gui.AbstractView;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IGameCard;
 import teamamused.common.interfaces.ITargetCard;
+import teamamused.server.TextAreaHandler;
 
 public class GameBoardView extends AbstractView<GameBoardModel> {
-
 
 	private final double BUTTON_WIDTH = 110;
 	TilePane todKartenPane;
 	TilePane spielKartenPane;
 	TilePane spezialKartenPane;
-	
+	TextArea txtChat;
+	TextArea txtGameMoves;
+	TextField txtChatNewMsg;
+
 	HBox wuerfel;
-	Button btnDice;
+	Button btnDiceRoll;
+	Button btnDiceFix;
 	Button btnStartGame;
 	Button btnChooseCards;
-	
+	Button btnChatSenden;
+
+	CheckBox[] cbsCubesFixed = new CheckBox[7];
+	Button[] btnsCubesFixed = new Button[7];
+
 	/**
 	 * Konstruktor
-	 * @param stage Stage in welcher die Scene angezeigt wird
-	 * @param model Model für die Datenhaltung
+	 * 
+	 * @param stage
+	 *            Stage in welcher die Scene angezeigt wird
+	 * @param model
+	 *            Model für die Datenhaltung
 	 */
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
 	}
-	
+
 	@Override
 	protected Scene createGUI() {
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, 1120, 810);
+		Scene scene = new Scene(root, 1600, 810);
 		// Oberer Teil
 		HBox topBox = new HBox();
 		// Titel label
 		Label lTitel = new Label();
-		lTitel.setText("Hallo " + this.model.player.getPlayerName() + "! Wenn all deine Homies dem Spiel beigetreten sind kannst du das Spiel hier starten:");
+		lTitel.setText("Hallo " + this.model.player.getPlayerName()
+				+ "! Wenn all deine Homies dem Spiel beigetreten sind kannst du das Spiel hier starten:");
 		// Button zum starten
 		btnStartGame = new Button("Start");
 		topBox.getChildren().addAll(lTitel, btnStartGame);
 		// Karten laden
-		todKartenPane = new TilePane();	
+		HBox karten = new HBox();
+		todKartenPane = new TilePane();
 		spielKartenPane = new TilePane();
 		spezialKartenPane = new TilePane();
 		drawCards();
 		// Würfelhinzufügen
 		this.wuerfel = new HBox();
-		this.btnDice = new Button("würfeln");
+		this.btnDiceRoll = new Button("würfeln");
+		this.btnDiceFix = new Button("fixieren");
 		this.btnChooseCards = new Button("Karten wählen");
+		// Benachrichtigungen
+		VBox right = new VBox();
+		int rightWidt = 150;
+		right.maxWidth(rightWidt);
+		Label lSpielzuege = new Label("Spielzüge:");
+		txtGameMoves = new TextArea("Starte Gui");
+		txtGameMoves.maxWidth(rightWidt);
+		
+		// Chat selber
+		Label lChat = new Label("Chat:");
+		txtChat = new TextArea("");
+		txtChat.maxWidth(rightWidt);
+		// Nachricht senden
+		HBox bottomBox = new HBox();
+		txtChatNewMsg = new TextField("Nachricht senden");
+		txtChatNewMsg.prefWidthProperty().bind(txtChat.widthProperty().multiply(0.8));
+		btnChatSenden = new Button("senden");
+		btnChatSenden.prefWidthProperty().bind(txtChat.widthProperty().multiply(0.2));
+		bottomBox.getChildren().addAll(txtChatNewMsg, btnChatSenden);
+		// Loging
+		Label lLogging = new Label("Loging (nur Test):");
+		TextArea loggingTxtArea = TextAreaHandler.getInstance().getTextArea();
+		loggingTxtArea.setEditable(false);
+		right.getChildren().addAll(lSpielzuege, txtGameMoves, lChat, txtChat, bottomBox, lLogging, loggingTxtArea);
 		// Alle Elemente im Gui anordnen
 		root.setTop(topBox);
-		root.setLeft(todKartenPane);
-		root.setCenter(spielKartenPane);
-		root.setRight(spezialKartenPane);
+		karten.getChildren().addAll(todKartenPane, spielKartenPane, spezialKartenPane);
+		root.setCenter(karten);
+		root.setRight(right);
 		root.setBottom(wuerfel);
 		try {
 			// CSS Gestaltungs File laden
@@ -72,29 +115,39 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		// anzeigen
 		return scene;
 	}
-	
+
 	/**
 	 * Alle Karten zeichnen
 	 */
 	protected void drawCards() {
-		// Tod Karten laden	
-		this.todKartenPane.getChildren().clear();
-		this.addCardsToPane(todKartenPane, this.model.spielbrett.getDeadCards(), 2, 3);
-		// Zielkarten laden
-		this.spielKartenPane.getChildren().clear();
-		this.addCardsToPane(spielKartenPane, this.model.spielbrett.getTargetCards(), 5, 5);
-		// Spezialkarten laden
-		this.spezialKartenPane.getChildren().clear();
-		this.addCardsToPane(spezialKartenPane, this.model.spielbrett.getSpecialCards(), 2, 3);
+		if (this.model.spielbrett != null) {
+			// Tod Karten laden
+			if (this.todKartenPane.getChildren() != null && !this.todKartenPane.getChildren().isEmpty()) {
+				this.todKartenPane.getChildren().clear();
+			}
+			this.addCardsToPane(todKartenPane, this.model.spielbrett.getDeadCards(), 2, 3);
+			// Zielkarten laden
+			if (this.spielKartenPane.getChildren() != null && !this.spielKartenPane.getChildren().isEmpty()) {
+				this.spielKartenPane.getChildren().clear();
+			}
+			this.addCardsToPane(spielKartenPane, this.model.spielbrett.getTargetCards(), 5, 5);
+			// Spezialkarten laden
+			if (this.spezialKartenPane.getChildren() != null && !this.spezialKartenPane.getChildren().isEmpty()) {
+				this.spezialKartenPane.getChildren().clear();
+			}
+			this.addCardsToPane(spezialKartenPane, this.model.spielbrett.getSpecialCards(), 2, 3);
+		}
 	}
-	
+
 	/**
 	 * 
-	 * Nur zum Test, bei uns im Spiel anders.
-	 * Zeigt die übergebenen Karten dort an wo sonst die Würfel angezeigt werden
+	 * Nur zum Test, bei uns im Spiel anders. Zeigt die übergebenen Karten dort
+	 * an wo sonst die Würfel angezeigt werden
 	 * 
-	 * @param text Angezeigter Text vor den Karten
-	 * @param cards Die Karten selber
+	 * @param text
+	 *            Angezeigter Text vor den Karten
+	 * @param cards
+	 *            Die Karten selber
 	 */
 	protected void drawCards(String text, ITargetCard[] cards) {
 		// Würfel löschen
@@ -106,7 +159,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		// Karten laden zeichnen
 		TilePane kartenPane = new TilePane();
 		this.addCardsToPane(kartenPane, cards, 6, 2);
-		
+
 		// Gui hinzufügen
 		this.wuerfel.getChildren().add(lblText);
 		this.wuerfel.getChildren().add(kartenPane);
@@ -115,28 +168,65 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	/**
 	 * Würfel zeichnen
-	 * @param remainingDraws Wieviel mal noch gewürfelt werden darf
+	 * 
+	 * @param remainingDraws
+	 *            Wieviel mal noch gewürfelt werden darf
 	 */
-	protected void drawCubes(int remainingDraws) {
+	protected void drawCubes() {
 		int diceSize = 50;
 		ICube[] cubes = this.model.spielbrett.getCubes();
 		wuerfel.getChildren().clear();
 		wuerfel.minHeight(diceSize + 10);
 		for (ICube cube : cubes) {
-			wuerfel.getChildren().add(cube.getCurrentValue().toCanvas(diceSize, 10));
+			this.btnsCubesFixed[cube.getCubeNumber()] = new Button();
+			this.btnsCubesFixed[cube.getCubeNumber()].setGraphic(cube.getCurrentValue().toCanvas(diceSize, 10));
+			
+			model.cubesFixed[cube.getCubeNumber()] = cube.getIsFixed();
+
+			this.cbsCubesFixed[cube.getCubeNumber()] = new CheckBox();
+			this.cbsCubesFixed[cube.getCubeNumber()].setDisable(true);
+			this.cbsCubesFixed[cube.getCubeNumber()].setSelected(cube.getIsFixed());
+			if (cbsCubesFixed[cube.getCubeNumber()].isSelected()) {
+				cbsCubesFixed[cube.getCubeNumber()].setText("fixiert");
+			} else {
+				cbsCubesFixed[cube.getCubeNumber()].setText("");
+			}
+			
+			this.btnsCubesFixed[cube.getCubeNumber()].setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					cbsCubesFixed[cube.getCubeNumber()].setSelected(!cbsCubesFixed[cube.getCubeNumber()].isSelected());
+					if (cbsCubesFixed[cube.getCubeNumber()].isSelected()) {
+						cbsCubesFixed[cube.getCubeNumber()].setText("fixiert");
+					} else {
+						cbsCubesFixed[cube.getCubeNumber()].setText("");
+					}
+					model.cubesFixed[cube.getCubeNumber()] = cbsCubesFixed[cube.getCubeNumber()].isSelected();
+				}
+			});
+
+			VBox wuerfelBtns = new VBox();
+			wuerfelBtns.getChildren().addAll(this.btnsCubesFixed[cube.getCubeNumber()], this.cbsCubesFixed[cube.getCubeNumber()]);
+			wuerfel.getChildren().add(wuerfelBtns);
 		}
-		Label lblRemainingDraws = new Label("Sie dürfen noch " + remainingDraws + " mal würfeln");
+		Label lblRemainingDraws = new Label("Sie dürfen noch " + model.remainingDices + " mal würfeln");
 		wuerfel.getChildren().add(lblRemainingDraws);
-		wuerfel.getChildren().add(btnDice);
+		VBox wuerfelButtons = new VBox();
+		wuerfelButtons.getChildren().addAll(btnDiceRoll, btnDiceFix);
+		wuerfel.getChildren().add(wuerfelButtons);
 	}
 
 	/**
 	 * Fügt die Karten einer TilePane hinzu
 	 * 
-	 * @param p Panel in welches die Karten gezeichnet werden sollen
-	 * @param cards Die Karten selber
-	 * @param anzReihen in wieviele Reihen/Spalten 
-	 * @param anzZeilen in wieviel Zeilen
+	 * @param p
+	 *            Panel in welches die Karten gezeichnet werden sollen
+	 * @param cards
+	 *            Die Karten selber
+	 * @param anzReihen
+	 *            in wieviele Reihen/Spalten
+	 * @param anzZeilen
+	 *            in wieviel Zeilen
 	 */
 	private void addCardsToPane(TilePane p, IGameCard[] cards, int anzReihen, int anzZeilen) {
 		// abstand zwischen den Buttons

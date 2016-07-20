@@ -34,7 +34,16 @@ public class Player implements IPlayer, Serializable {
 	 * @param username Benutzername
 	 */
 	public Player(String username) {
+		super();
 		this.username = username;
+	}
+	/**
+	 * Instanziert einen neuen Spieler
+	 * @param username Benutzername
+	 */
+	public Player(String username, int playerNumber) {
+		this(username);
+		this.playerNumber = playerNumber;
 	}
 
 	/**
