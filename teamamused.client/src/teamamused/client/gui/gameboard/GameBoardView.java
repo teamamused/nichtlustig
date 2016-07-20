@@ -1,7 +1,6 @@
 package teamamused.client.gui.gameboard;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
