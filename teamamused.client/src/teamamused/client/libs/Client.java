@@ -9,7 +9,6 @@ import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableProcedureCall.RemoteProcedure;
-import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.Player;
@@ -162,12 +161,14 @@ public class Client {
 	/**
 	 * Cliente möchte Würfel fixieren
 	 * 
+	 * @param cubeFixed
+	 *            Index des Arrays ist die würfelNummer, wert ob fixiert
 	 */
-	public void fixDices(List <ICube> cubesToFix) {
+	public void setFixedCubes(boolean[] cubeFixed) {
 		if (this.currPlayer != null) {
 			this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " möchte Würfel fixieren");
 		}
-		this.send(new TransportableProcedureCall(RemoteProcedure.FixDices, new Object[] { cubesToFix }));
+		this.send(new TransportableProcedureCall(RemoteProcedure.FixDices, new Object[] { cubeFixed }));
 	}
 
 	/**

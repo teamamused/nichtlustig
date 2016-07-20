@@ -95,7 +95,6 @@ public class Game implements Serializable {
 		List<IPlayer> players = this.getPlayersFromGameboard();
 		this.activePlayer = players.get((int) (Math.random() * players.size()));
 		ClientNotificator.notifyGameMove("Spieler " + this.activePlayer.getPlayerName() + " fängt mit dem Spiel an");
-		ClientNotificator.notifyPlayerChanged(this.activePlayer);
 	}
 
 	/**
@@ -103,10 +102,17 @@ public class Game implements Serializable {
 	 * abgeschlossen und die Wertung inkl. Kartenausteilung beendet wurde.
 	 */
 	public void changeActivePlayer() {
-		if (this.activePlayer.getPlayerNumber() != 3) {
-			this.activePlayer = this.getPlayersFromGameboard().get(this.activePlayer.getPlayerNumber() + 1);
+		List<IPlayer> players = this.getPlayersFromGameboard();
+		// Wenn noch kein Spieler aktiv, einen Startspieler bestimmen
+		if (this.activePlayer == null) {
+			this.defineStartPlayer();
 		} else {
-			this.activePlayer = this.getPlayersFromGameboard().get(0);
+			// Wenn bereits ein Spieler aktiv ist, den nächsten aktivieren
+			if (this.activePlayer.getPlayerNumber() != players.size()) {
+				this.activePlayer = players.get(this.activePlayer.getPlayerNumber() + 1);
+			} else {
+				this.activePlayer = players.get(0);
+			}
 		}
 		ClientNotificator.notifyPlayerChanged(this.activePlayer);
 	}
@@ -204,6 +210,7 @@ public class Game implements Serializable {
 	/**
 	 * TODO: Dani an Maja: Mal so eingeführt um Server fertig zu stellen, Maja
 	 * bitte sagen ob ok und anpassen / ergänzen
+	 * 
 	 */
 	public void startNextRound() {
 		if (this.gameStatus != GameState.finished) {

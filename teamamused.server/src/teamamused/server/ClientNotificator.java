@@ -7,6 +7,7 @@ import teamamused.common.db.Ranking;
 import teamamused.common.models.GameBoard;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.interfaces.IPlayer;
+import teamamused.common.dtos.TransportableGameBoard;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.server.connect.ClientManager;
 
@@ -53,8 +54,9 @@ public class ClientNotificator {
 	 *            Neues Spielbrett
 	 */
 	public static void notifyUpdateGameBoard(GameBoard board) {
+		TransportableGameBoard tboard =  TransportableGameBoard.getTransportObjectFromGameBoard(board);
 		TransportableProcedureCall updateBoard = new TransportableProcedureCall(
-				TransportableProcedureCall.RemoteProcedure.UpdateGameBoard, new Object[] { board });
+				TransportableProcedureCall.RemoteProcedure.UpdateGameBoard, new Object[] { tboard });
 		ClientManager.getInstance().updateClients(updateBoard);
 	}
 

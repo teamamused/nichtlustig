@@ -1,7 +1,10 @@
 package teamamused.playground.application.gui;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -28,10 +31,14 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	TextField txtChatNewMsg;
 
 	HBox wuerfel;
-	Button btnDice;
+	Button btnDiceRoll;
+	Button btnDiceFix;
 	Button btnStartGame;
 	Button btnChooseCards;
 	Button btnChatSenden;
+
+	CheckBox[] cbsCubesFixed = new CheckBox[7];
+	Button[] btnsCubesFixed = new Button[7];
 
 	/**
 	 * Konstruktor
@@ -66,7 +73,8 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		drawCards();
 		// Würfelhinzufügen
 		this.wuerfel = new HBox();
-		this.btnDice = new Button("würfeln");
+		this.btnDiceRoll = new Button("würfeln");
+		this.btnDiceFix = new Button("fixieren");
 		this.btnChooseCards = new Button("Karten wählen");
 		// Benachrichtigungen
 		VBox right = new VBox();
@@ -165,18 +173,47 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 *            Wieviel mal noch gewürfelt werden darf
 	 */
 	protected void drawCubes() {
-		System.out.println("Zeichne Würfel");
 		int diceSize = 50;
 		ICube[] cubes = this.model.spielbrett.getCubes();
 		wuerfel.getChildren().clear();
 		wuerfel.minHeight(diceSize + 10);
 		for (ICube cube : cubes) {
-			System.out.println("GameBoard: " + cube.getCurrentValue().FaceValue);
-			wuerfel.getChildren().add(cube.getCurrentValue().toCanvas(diceSize, 10));
+			this.btnsCubesFixed[cube.getCubeNumber()] = new Button();
+			this.btnsCubesFixed[cube.getCubeNumber()].setGraphic(cube.getCurrentValue().toCanvas(diceSize, 10));
+			
+			model.cubesFixed[cube.getCubeNumber()] = cube.getIsFixed();
+
+			this.cbsCubesFixed[cube.getCubeNumber()] = new CheckBox();
+			this.cbsCubesFixed[cube.getCubeNumber()].setDisable(true);
+			this.cbsCubesFixed[cube.getCubeNumber()].setSelected(cube.getIsFixed());
+			if (cbsCubesFixed[cube.getCubeNumber()].isSelected()) {
+				cbsCubesFixed[cube.getCubeNumber()].setText("fixiert");
+			} else {
+				cbsCubesFixed[cube.getCubeNumber()].setText("");
+			}
+			
+			this.btnsCubesFixed[cube.getCubeNumber()].setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					cbsCubesFixed[cube.getCubeNumber()].setSelected(!cbsCubesFixed[cube.getCubeNumber()].isSelected());
+					if (cbsCubesFixed[cube.getCubeNumber()].isSelected()) {
+						cbsCubesFixed[cube.getCubeNumber()].setText("fixiert");
+					} else {
+						cbsCubesFixed[cube.getCubeNumber()].setText("");
+					}
+					model.cubesFixed[cube.getCubeNumber()] = cbsCubesFixed[cube.getCubeNumber()].isSelected();
+				}
+			});
+
+			VBox wuerfelBtns = new VBox();
+			wuerfelBtns.getChildren().addAll(this.btnsCubesFixed[cube.getCubeNumber()], this.cbsCubesFixed[cube.getCubeNumber()]);
+			wuerfel.getChildren().add(wuerfelBtns);
 		}
 		Label lblRemainingDraws = new Label("Sie dürfen noch " + model.remainingDices + " mal würfeln");
 		wuerfel.getChildren().add(lblRemainingDraws);
-		wuerfel.getChildren().add(btnDice);
+		VBox wuerfelButtons = new VBox();
+		wuerfelButtons.getChildren().addAll(btnDiceRoll, btnDiceFix);
+		wuerfel.getChildren().add(wuerfelButtons);
 	}
 
 	/**

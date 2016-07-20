@@ -20,13 +20,16 @@ public class GameBoardModel extends AbstractModel {
     // Ob der Spieler aktiv ist
     boolean isPlayerActive;
     
+    // Ob Würfel Fixiert sind
+    boolean[] cubesFixed = new boolean[7];
+    
     // Falls es mehrere Zielkarten gibt zum auswählen, hier die Auswahl
     Hashtable<Integer, List<ITargetCard>> cardsToChooseOptions;
     
 	List<ITargetCard> cardsChoosen = null;
     
     // Wenn der Spieler am würfeln ist, wievielmal er noch darf
-    int remainingDices = 0;
+    int remainingDices = 3;
     
     /**
      * Konstruktor, initial Daten von Client holen

@@ -34,7 +34,7 @@ public class TransportableProcedureCall extends TransportObject {
 		RollDices,
 		/**
 		 * Übergebene Würfel werden fixiert:
-		 * Parameter List of ICubes
+		 * Parameter: boolean[7]  Index des Arrays ist die würfelNummer, wert ob fixiert
 		 */
 		FixDices,
 		/**

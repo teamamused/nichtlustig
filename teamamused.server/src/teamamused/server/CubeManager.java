@@ -1,7 +1,5 @@
 package teamamused.server;
 
-import java.util.List;
-
 import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.models.cubes.CubeColor;
@@ -88,10 +86,13 @@ public class CubeManager{
 	 * Würfel, welche der Spieler ausgewählt hat, effektiv fixieren lassen.
 	 * @param cubesToFix zu fixierende Würfel
 	 */
-	public void saveFixedDices(List <ICube> cubesToFix){
-		for(ICube cube : cubesToFix){
-			cube.setIsFixed(true);
-			counterFixedCubes++;
+	public void saveFixedDices(boolean[] cubesToFix){
+		this.counterFixedCubes = 0;
+		for (int i = 0; i<cubesToFix.length; i++) {
+			BoardManager.getInstance().getGameBoard().getCubes()[i].setIsFixed(cubesToFix[i]);
+			if (cubesToFix[i]) {
+				counterFixedCubes++;
+			}
 		}
 	}
 	

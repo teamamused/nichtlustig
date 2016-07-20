@@ -15,6 +15,7 @@ import teamamused.common.db.Ranking;
 import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableAnswer;
 import teamamused.common.dtos.TransportableChatMessage;
+import teamamused.common.dtos.TransportableGameBoard;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableState;
 import teamamused.common.dtos.TransportObject.TransportType;
@@ -196,7 +197,13 @@ public class ServerConnection extends Thread {
 
 		case UpdateGameBoard:
 			if (params != null && params.length >= 1) {
-				if (params[0] instanceof GameBoard) {
+				if (params[0] instanceof TransportableGameBoard) {
+					GameBoard gb = new GameBoard();
+					gb.initFromTransportObject((TransportableGameBoard)params[0]);
+					this.notifyGui.gameBoardChanged(gb);
+					return new TransportableState(true, "Client updated");
+					
+				} else if (params[0] instanceof GameBoard) {
 
 					for (ICube cube: ((GameBoard) params[0]).getCubes()) {
 					    System.out.println("ServerConnection: " + cube.getCurrentValue().FaceValue);

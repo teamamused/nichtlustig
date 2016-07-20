@@ -14,7 +14,6 @@ import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.gui.AbstractController;
-import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.GameBoard;
 import teamamused.client.libs.Client;
@@ -22,20 +21,31 @@ import teamamused.client.libs.Client;
 public class GameBoardController extends AbstractController<GameBoardModel, GameBoardView> implements IClientListener {
 	/**
 	 * Konstruktor des GameboardControllers
-	 * @param model Instanz des GameBoardModel
-	 * @param view Instanz der GameBoardView
+	 * 
+	 * @param model
+	 *            Instanz des GameBoardModel
+	 * @param view
+	 *            Instanz der GameBoardView
 	 */
 	public GameBoardController(GameBoardModel model, GameBoardView view) {
 		super(model, view);
-		// Dem Client Mitteilen dass man über aktualisierungen informiert werden will
+		// Dem Client Mitteilen dass man über aktualisierungen informiert werden
+		// will
 		Client.getInstance().registerGui(this);
 		// Im Konstruktor werden alle Gui Events mit den zugehörigen Aktionen
 		// verknüpft
 		// Button Würfeln
-		view.btnDice.setOnAction(new EventHandler<ActionEvent>() {
+		view.btnDiceRoll.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Client.getInstance().rollDices();
+			}
+		});
+		// Button Würfel fixieren
+		view.btnDiceFix.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Client.getInstance().setFixedCubes(model.cubesFixed);
 			}
 		});
 		// Button Spiel starten
@@ -49,8 +59,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		view.btnChooseCards.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				// Hier müsste dem Spieler eine mölgichkeit gegeben werden die Karten die er will auszuwählen
-				// Danach geprüft werden ob mit seinem erwürfeltem die Auswahl legitim ist
+				// Hier müsste dem Spieler eine mölgichkeit gegeben werden die
+				// Karten die er will auszuwählen
+				// Danach geprüft werden ob mit seinem erwürfeltem die Auswahl
+				// legitim ist
 				// Dann die ausgewählten zuteilen und nicht einfach alle
 				Client.getInstance().cardsChoosen(model.cardsChoosen);
 				view.wuerfel.getChildren().clear();
@@ -68,61 +80,64 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	/**
 	 * Der Spieler muss zwischen den möglichen Zielkarten auswählen
 	 * 
-	 * @param allowedCards Karten welche zur auswahl stehen
+	 * @param allowedCards
+	 *            Karten welche zur auswahl stehen
 	 */
 	@Override
 	public void onPlayerHasToCooseCards(Hashtable<Integer, List<ITargetCard>> options) {
 		List<ITargetCard> allowedCards = options.values().stream().findFirst().get();
 		model.cardsToChooseOptions = options;
-		Platform.runLater(() -> { 
-		// nicht schön gemacht von mir, es wird nur die erste möglichkeit angezeigt:
-		ITargetCard[] karten = Arrays.copyOf(allowedCards.toArray(), allowedCards.size(), ITargetCard[].class);
-		ServiceLocator.getInstance().getLogger().info("GameboardController: zeige auszuwählende Karten an");
-		this.view.drawCards("Bitte wählen Sie \ndie gewünschten Zielkarten aus:", karten);
+		Platform.runLater(() -> {
+			// nicht schön gemacht von mir, es wird nur die erste möglichkeit
+			// angezeigt:
+			ITargetCard[] karten = Arrays.copyOf(allowedCards.toArray(), allowedCards.size(), ITargetCard[].class);
+			ServiceLocator.getInstance().getLogger().info("GameboardController: zeige auszuwählende Karten an");
+			this.view.drawCards("Bitte wählen Sie \ndie gewünschten Zielkarten aus:", karten);
 		});
 	}
 
 	/**
 	 * Der Status des Spielers wurde gewechselt
-	 * @param isActive Spieler aktiv Ja/Nein
+	 * 
+	 * @param isActive
+	 *            Spieler aktiv Ja/Nein
 	 */
 	@Override
 	public void onPlayerIsActivedChanged(boolean isActive) {
 		System.out.println("Player aktiv hat gewechselt, neu: " + isActive);
 		this.model.isPlayerActive = isActive;
 		if (isActive) {
-			Platform.runLater(() -> { 
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Du bist am Zug");
-			alert.setHeaderText(null);
-			alert.setContentText("Du bist an der Reihe mit Würfeln!");
-			alert.showAndWait();
-			view.drawCubes();
+			Platform.runLater(() -> {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Du bist am Zug");
+				alert.setHeaderText(null);
+				alert.setContentText("Du bist an der Reihe mit Würfeln!");
+				alert.showAndWait();
+				view.drawCubes();
 			});
 		}
 	}
-	
+
 	/**
 	 * Daten für das Spielbrett aktualisieren
-	 * @param newGameBoard Neues Spielbrett
+	 * 
+	 * @param newGameBoard
+	 *            Neues Spielbrett
 	 */
 	@Override
 	public void onGameBoardChanged(GameBoard newGameBoard) {
 		model.spielbrett = newGameBoard;
-
-		for (ICube cube: newGameBoard.getCubes()) {
-		    System.out.println("Controller: " + cube.getCurrentValue().FaceValue);
-		}
-		System.out.println("Neues Spielbrett erhalten");
-		Platform.runLater(() -> { 
+		Platform.runLater(() -> {
 			view.drawCards();
 			view.drawCubes();
 		});
 	}
+
 	/**
 	 * Der Spieler hat Gewürfelt, der Server sagt Ihm wieviel mal er noch darf
-	 *  
-	 * @param remDices Verbleibende Würfelversuche
+	 * 
+	 * @param remDices
+	 *            Verbleibende Würfelversuche
 	 */
 	@Override
 	public void onNumberOfRemeiningDicingChanged(int remDices) {
@@ -132,14 +147,14 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onChatMessageRecieved(TransportableChatMessage message) {
 		DateFormat df = DateFormat.getTimeInstance();
-		view.txtChat.appendText(df.format(message.getTime()) + " - " + message.getSender() + ": " + message.getMessage());
+		view.txtChat.appendText(df.format(message.getTime()) + " - " + message.getSender() + ": "
+				+ message.getMessage());
 		view.txtChat.appendText("\n");
 	}
 
-
 	@Override
 	public void onNewGameMove(String move) {
-		view.txtGameMoves.appendText(move+ "\n");
+		view.txtGameMoves.appendText(move + "\n");
 	}
 
 	private void sendMessage() {
