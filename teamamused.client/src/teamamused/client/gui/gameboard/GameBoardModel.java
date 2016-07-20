@@ -6,8 +6,11 @@ import teamamused.common.models.GameBoard;
 
 public class GameBoardModel extends AbstractModel {
 	
+	// FIXME: get gameBoard from server
 	private GameBoard gameBoard = new GameBoard();
-//	private Set<GameBoardView> observers = new HashSet<>(); 
+	{
+		gameBoard.init();
+	}
 
 	/**
 	 * Methode für die aktuellen Werte der Würfel
@@ -28,15 +31,6 @@ public class GameBoardModel extends AbstractModel {
 				cube.dice();				
 			}
 		}
-//		notifyObservers();
 	}
-	
-//	public void register(GameBoardView view) {
-//		observers.add(view);
-//	}
-//	
-//	private void notifyObservers() {
-//		observers.forEach(o -> o.getStage().setScene(o.createGUI()));
-//	}
 	
 }
