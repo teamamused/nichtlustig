@@ -123,7 +123,7 @@ public class ServerConnection extends Thread {
 	}
 
 	/**
-	 * Setzt das Flag das den Thread abbricht und die Verbindung schliest Sagt
+	 * Setzt das Flag das den Thread abbricht und die Verbindung schliesst sagt
 	 * dem Server Goodbye
 	 */
 	public void closeConnection() {
@@ -166,7 +166,7 @@ public class ServerConnection extends Thread {
 			dtoOut = new TransportableState(false, "unbekanntes Transport Objekt");
 			break;
 		}
-		// Wenn es eine Antwort vom Server war oder der Server auf unser goodby antwortet sagen wir nichts
+		// Wenn es eine Antwort vom Server war oder der Server auf unser goodbye antwortet sagen wir nichts
 		if (dtoOut != null) {
 			dtoOut.setClient(clientName);
 		}

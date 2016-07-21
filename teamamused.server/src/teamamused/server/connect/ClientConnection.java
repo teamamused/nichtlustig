@@ -22,7 +22,7 @@ import teamamused.server.Server;
  * 
  * Der ClientListener ist ein Thread welcher im Hintergrund läuft und auf
  * Anfragen der Clients reagiert. Es besteht pro verbundener Client ein Thread.
- * Er nimmt anfragen entgegen und leitet sie an die zuständige Stelle weiter
+ * Er nimmt Anfragen entgegen und leitet sie an die zuständige Stelle weiter
  * 
  * Angelehnt an die Klasse "ServerThreadForClient" aus dem Modul Software
  * Architektur 2 mit Brad.
