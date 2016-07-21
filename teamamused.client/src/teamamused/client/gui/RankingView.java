@@ -42,14 +42,20 @@ public class RankingView extends AbstractView<RankingModel> {
         TableColumn date = new TableColumn("Datum");
         
         table.getColumns().addAll(rank, name, points, date);
-        
-		// 
-		btnBack = new Button();
-		btnBack.setText("Zurück");
 
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("Exit.png"));
+			iview.setFitWidth(30);
+			iview.setFitWidth(30);
+			iview.setPreserveRatio(true);
+		} catch (FileNotFoundException e1) {
+			ServiceLocator.getInstance().getLogger().severe(e1.toString());
+		}
+		
+		ImageView iview2 = null;
+		try {
+			iview = new ImageView(ResourceLoader.getImage("Back.png"));
 			iview.setFitWidth(30);
 			iview.setFitWidth(30);
 			iview.setPreserveRatio(true);
@@ -61,6 +67,10 @@ public class RankingView extends AbstractView<RankingModel> {
 		btnExit = new Button();
 		btnExit.setGraphic(iview);
 		
+		// 
+		btnBack = new Button();
+		btnBack.setGraphic(iview2);
+		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
@@ -69,8 +79,8 @@ public class RankingView extends AbstractView<RankingModel> {
 
 		grid.add(labelRanking, 0, 0, 20, 1);
 		grid.add(table, 0, 2);
-		//grid.add(btnBack, 20, 4);
-		grid.add(btnExit, 42, 0);
+		grid.add(btnBack, 20, 0);
+		grid.add(btnExit, 43, 0);
 
 		// Add the layout pane to a scene
 		Scene scene = new Scene(grid, 900, 600);
