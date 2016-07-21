@@ -35,7 +35,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected ImageView logo, linkIcon;
 	protected Image linkImage;
 	protected Hyperlink linkAnleitung;
-	protected Button btnGameBoard, btnPlayer1, btnPlayer2, btnWuerfeln, btnUebernehmen;
+	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnLink;
 	protected TextArea txtChatScreen;
 	protected TextField txtChatInput;
 	protected ScrollPane scrollTxt;
@@ -61,8 +61,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		labelSpielfeld.setId("labelSpielfeld");
 		labelSpielfeld.setAlignment(Pos.CENTER_RIGHT);
 		url = "http://www.kosmos.de/_files_media/mediathek/downloads/anleitungen/1351/nicht_lustig.pdf";
-		linkAnleitung = new Hyperlink(url); // TODO: Text soll nicht erscheinen,
-											// nur Icon
 		try {
 			linkImage = ResourceLoader.getImage("IconFragezeichen.png");
 		} catch (FileNotFoundException e) {
@@ -71,10 +69,11 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		linkIcon = new ImageView(linkImage);
 		linkIcon.setFitHeight(50);
 		linkIcon.setPreserveRatio(true);
-		linkAnleitung.setGraphic(linkIcon);
+		btnLink = new Button("", linkIcon);
+		btnLink.setId("btnLink");
 
 		root.add(labelSpielfeld, 1, 0);
-		root.add(linkAnleitung, 5, 0);
+		root.add(btnLink, 5, 0);
 
 		// Definition der Pane für die linke Navigationsspalte
 		navigation = new VBox(5);
@@ -88,22 +87,23 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		}
 		logo.setFitWidth(200);
 		logo.setPreserveRatio(true);
-		btnGameBoard = GameBoardView.initializeButton("Spielfeld");
-		btnGameBoard.setDisable(true);
 		// TODO: Anzahl Buttons für Spieler dynamisch gestalten - je nach Anzahl
 		// Mitspieler
 		btnPlayer1 = GameBoardView.initializeButton("Spieler 1");
 		btnPlayer2 = GameBoardView.initializeButton("Spieler 2");
+		btnPlayer3 = GameBoardView.initializeButton("Spieler 3");
+		btnPlayer4 = GameBoardView.initializeButton("Spieler 4");		
 		txtChatScreen = new TextArea();
-		txtChatScreen.setPrefSize(200, 150);
+		txtChatScreen.setPrefSize(200, 300);
 		txtChatInput = new TextField();
 		txtChatInput.setPrefWidth(200);
 		scrollTxt = new ScrollPane();
 		scrollTxt.setContent(txtChatScreen);
 		Tooltip chatInputTool = new Tooltip("Hier kannst du deine Chatnachrichten eingeben");
 		Tooltip.install(txtChatInput, chatInputTool);
-		navigation.getChildren().addAll(logo, btnGameBoard, btnPlayer1, btnPlayer2, txtChatScreen, txtChatInput);
-
+		navigation.getChildren().addAll(logo, btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, txtChatScreen, txtChatInput);
+		navigation.setAlignment(Pos.TOP_CENTER);
+		
 		// Definition der Pane für die Spielkarten
 		cardPane = GameBoardView.initializeGridPane();
 

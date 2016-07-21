@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import teamamused.client.gui.cardPopup.CardPopupController;
@@ -19,14 +20,15 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	public GameBoardController(GameBoardModel model, GameBoardView view) {
 		super(model, view);
 
-		// Auf dem Hyperlink wird ein ActionEvent registiert, welches den
-		// Browser öffnet und das entsprechende HTML-Dokument zurückgibt
-		view.linkAnleitung.setOnAction(new EventHandler<ActionEvent>() {
+		// Auf dem Button wird ein MouseEvent registiert, welches den
+		// Browser öffnet und das entsprechende HTML-Dokument (Spielregeln) zurückgibt
+		view.btnLink.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(ActionEvent event) {
-				ServiceLocator.getInstance().getHostServices().showDocument(view.linkAnleitung.getText());
+			public void handle(MouseEvent event) {
+				ServiceLocator.getInstance().getHostServices().showDocument(view.url);
 			}
 		});
+		
 
 		// Zu den DiceControl-Objekten der View wird ein Handler
 		// registriert. Durch den Klick auf einen Würfel, wird dieser gesetzt.
@@ -35,12 +37,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				@Override
 				public void handle(MouseEvent event) {
 					DiceControl diceControl = (DiceControl) event.getSource();
-					diceControl.getCube().setIsFixed(true);
-					diceControl.hideDice();
-					int index = Arrays.asList(view.diceControlArray).indexOf(diceControl);
-					DiceControl diceControlChosen = new DiceControl(diceControl.getCube());
-					diceControlChosen.showDice();
-					view.dicePane.add(diceControlChosen, index, 10);
+					moveDownSelectedDice(diceControl);
 				}
 			});
 		}
@@ -57,6 +54,13 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 					for (DiceControl diceControl : view.diceControlArray) {
 						if (!diceControl.getCube().getIsFixed()) {
 							diceControl.showDice();
+						}
+					}
+					//TODO: unteren Teil in Handler zu Übernehmen-Button inkl. Senden an Server
+				} else if (countDice == 4) {
+					for(DiceControl diceControl : view.diceControlArray) {
+						if (!diceControl.getCube().getIsFixed()) {
+							moveDownSelectedDice(diceControl);
 						}
 					}
 				}
@@ -77,6 +81,15 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		CardPopupView cardPopupView = new CardPopupView(popupStage, model);
 		new CardPopupController(model, cardPopupView);
 		cardPopupView.start();
+	}
+	
+	private void moveDownSelectedDice(DiceControl diceControl) {
+		diceControl.getCube().setIsFixed(true);
+		diceControl.hideDice();
+		int index = Arrays.asList(view.diceControlArray).indexOf(diceControl);
+		DiceControl diceControlChosen = new DiceControl(diceControl.getCube());
+		diceControlChosen.showDice();
+		view.dicePane.add(diceControlChosen, index, 10);
 	}
 
 }
