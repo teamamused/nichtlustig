@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import teamamused.client.libs.Client;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
@@ -37,7 +38,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 	protected Scene createGUI() {
 
 		// Labels erstellen
-		Label labelWelcome = new Label("Herzlich Willkommen XYZ");
+		Label labelWelcome = new Label("Herzlich Willkommen " + Client.getInstance().getPlayer().getPlayerName());
 		labelWelcome.setId("labelWelcome");
 		Label labelPlay = new Label("Was möchtest du spielen?");
 		
