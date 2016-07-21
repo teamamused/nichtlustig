@@ -1,7 +1,6 @@
 package teamamused.client.gui;
 
 import java.io.FileNotFoundException;
-
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,6 +18,13 @@ import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
 import teamamused.common.ServiceLocator;
 
+/**
+ * Diese Klasse stellt die grafische Oberfläche für das Log-In dar.
+ * 
+ * @author Sandra
+ *
+ */
+
 public class LogInView extends AbstractView<LogInModel> {
 	
 	protected Button btnLogin;
@@ -33,22 +39,24 @@ public class LogInView extends AbstractView<LogInModel> {
 
 	protected Scene createGUI() {
 
-		// Create the labels
+		// Labels erstellen
 		Label labelUser = new Label("Benutzername");
 		Label labelPassword = new Label("Passwort");
 		Label labelNeu = new Label("Neu bei uns?");
 
+		// Textfelder erstellen
 		textUser = new TextField();
 		textPassword = new TextField();
 		
-		// 
+		// Login-Button erstellen
 		btnLogin = new Button();
 		btnLogin.setText("Login");
 
-		// 
+		// Hyperlink für Registrierung erstellen
 		linkReg = new Hyperlink();
 		linkReg.setText("Registrieren");
 
+		// ChoiceBox erstellen und Auswahlmöglichkeiten festlegen
 		ChoiceBox cbLang = new ChoiceBox();
 		cbLang.setItems(FXCollections.observableArrayList("Deutsch", "English"));
 		cbLang.getSelectionModel().selectFirst();
@@ -94,11 +102,13 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(cbLang, 2, 10);
 		//grid.add(image, 0, 10);
 
-		// Add the layout pane to a scene
+		// Das Layout Pane einer Scene hinzufügen
 		Scene scene = new Scene(grid, 900, 600);
 		
+		// Fenstertitel setzen
 		stage.setTitle("Nicht Lustig: Log-In");
 
+		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;

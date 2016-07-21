@@ -13,6 +13,13 @@ import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
 
+/**
+ * Diese Klasse stellt die grafische Oberfläche für die Tschüss-Seite dar.
+ * 
+ * @author Sandra
+ *
+ */
+
 public class ByeView extends AbstractView<ByeModel> {
 
 	public ByeView(Stage stage, ByeModel model) {
@@ -21,7 +28,7 @@ public class ByeView extends AbstractView<ByeModel> {
 
 	protected Scene createGUI() {
 
-		// Create the labels
+		// Label erstellen
 		Label labelTschuess = new Label("Tschüss und auf Wiedersehen");
 		labelTschuess.setId("labelTschuess");
 		
@@ -44,11 +51,13 @@ public class ByeView extends AbstractView<ByeModel> {
 		grid.add(labelTschuess, 0, 0);
 		grid.add(iview, 0, 3);
 
-		// Add the layout pane to a scene
+		// Das Layout Pane einer Scene hinzufügen
 		Scene scene = new Scene(grid, 900, 600);
 
+		// Fenstertitel setzen
 		stage.setTitle("Nicht Lustig: Bye");
 		
+		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;

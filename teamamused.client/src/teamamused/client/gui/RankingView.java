@@ -16,6 +16,13 @@ import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
 
+/**
+ * Diese Klasse stellt die grafische Oberfläche für die Ranking-Seite dar.
+ * 
+ * @author Sandra
+ *
+ */
+
 public class RankingView extends AbstractView<RankingModel> {
 	
 	protected Button btnBack;
@@ -28,14 +35,16 @@ public class RankingView extends AbstractView<RankingModel> {
 	@Override
 	protected Scene createGUI() {
 
-		// Create the labels
+		// Label erstellen
 		Label labelRanking = new Label("Unsere Besten:");
 		labelRanking.setId("labelRanking");
 		
+		// Tabelle erstellen
 		TableView table = new TableView();
 		table.setEditable(true);
 		table.setId("tableRanking");
-		 
+		
+		// Spaltentitel festlegen
         TableColumn rank = new TableColumn("Rang");
         TableColumn name = new TableColumn("Name");
         TableColumn points = new TableColumn("Punkte");
@@ -55,19 +64,19 @@ public class RankingView extends AbstractView<RankingModel> {
 		
 		ImageView iview2 = null;
 		try {
-			iview = new ImageView(ResourceLoader.getImage("Back.png"));
-			iview.setFitWidth(30);
-			iview.setFitWidth(30);
-			iview.setPreserveRatio(true);
+			iview2 = new ImageView(ResourceLoader.getImage("Back.png"));
+			iview2.setFitWidth(30);
+			iview2.setFitWidth(30);
+			iview2.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
 		}
 
-		//
+		// Exit-Button mit Bild erstellen
 		btnExit = new Button();
 		btnExit.setGraphic(iview);
 		
-		// 
+		// Back-Button mit Bild erstellen
 		btnBack = new Button();
 		btnBack.setGraphic(iview2);
 		
@@ -79,14 +88,16 @@ public class RankingView extends AbstractView<RankingModel> {
 
 		grid.add(labelRanking, 0, 0, 20, 1);
 		grid.add(table, 0, 2);
-		grid.add(btnBack, 20, 0);
+		grid.add(btnBack, 41, 0);
 		grid.add(btnExit, 43, 0);
 
-		// Add the layout pane to a scene
+		// Das Layout Pane einer Scene hinzufügen
 		Scene scene = new Scene(grid, 900, 600);
 
+		// Fenstertitel setzen
 		stage.setTitle("Nicht Lustig: Ranking");
 
+		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;

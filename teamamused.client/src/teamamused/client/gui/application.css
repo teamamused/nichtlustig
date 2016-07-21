@@ -11,7 +11,7 @@
 	-fx-background: rgb(187, 14, 35);
 }
 .button:hover{
-	-fx-background: lightgrey;
+	-fx-background: lightyellow;
 }
 #labelSpielfeld{
 	-fx-font-size: 30pt;
