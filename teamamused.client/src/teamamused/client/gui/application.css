@@ -48,3 +48,6 @@
 	-fx-base: red;
 }
 
+#btnLink{
+	-fx-background-color: transparent;
+}
