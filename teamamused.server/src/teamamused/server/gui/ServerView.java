@@ -1,5 +1,7 @@
 package teamamused.server.gui;
 
+import java.io.FileNotFoundException;
+
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -13,6 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import teamamused.common.ResourceLoader;
+import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
 import teamamused.server.TextAreaHandler;
 import teamamused.server.connect.ClientAwaiter;
@@ -30,17 +34,13 @@ public class ServerView extends AbstractView<ServerModel> {
 	protected Button restartButton;
 	protected Label labelServer, labelLogo, labelConnect, labelPort, labelIP, labelProtocol, labelTeam;
 	protected Image logo;
+	protected ImageView spracheImageView;
 	protected ScrollPane scrollTxt;
 	protected ChoiceBox<String> language;
 	protected TextArea loggingTxtArea;
 	
 	public ServerView(Stage stage, ServerModel model){
 		super(stage, model);
-	}
-	
-	@Override
-	protected void initView() {
-		// TODO: Für was ist diese Methode?
 	}
 
 	@Override
@@ -49,14 +49,22 @@ public class ServerView extends AbstractView<ServerModel> {
 		
 		//Definition der Pane
 		root = new GridPane();
-		root.setPadding(new Insets(20, 20, 20, 20));
+		root.setPadding(new Insets(50, 50, 50, 50));
 		root.setHgap(10);
 		root.setVgap(10);
 		root.setGridLinesVisible(false);
 		
-		Scene scene = new Scene (root);
+		Scene scene = new Scene (root, 900, 600);
 		
-		logo = new Image("Logo_1.png", 400, 400, true, true);;
+		logo = new Image("Logo_1.png", 250, 250, true, true);
+		try {
+			spracheImageView = new ImageView(ResourceLoader.getImage("Sprache.png"));
+			spracheImageView.setFitWidth(30);
+			spracheImageView.setFitWidth(30);
+			spracheImageView.setPreserveRatio(true);
+		} catch (FileNotFoundException e) {
+			ServiceLocator.getInstance().getLogger().severe(e.toString());
+		}
 		labelServer = new Label("Dein Server läuft!");
 		labelLogo = new Label("", new ImageView(logo));
 		labelConnect = new Label("Spieler können sich verbinden über:");
@@ -75,6 +83,14 @@ public class ServerView extends AbstractView<ServerModel> {
 		this.loggingTxtArea = TextAreaHandler.getInstance().getTextArea();
 		scrollTxt.setContent(loggingTxtArea);
 		loggingTxtArea.setEditable(false);
+		try {
+			spracheImageView = new ImageView(ResourceLoader.getImage("Sprache.png"));
+			spracheImageView.setFitWidth(30);
+			spracheImageView.setFitWidth(30);
+			spracheImageView.setPreserveRatio(true);
+		} catch (FileNotFoundException e) {
+			ServiceLocator.getInstance().getLogger().severe(e.toString());
+		}
 
 		//Hinzufügen der Controlls der Pane
 		root.add(restartButton, 0, 0);
@@ -85,6 +101,7 @@ public class ServerView extends AbstractView<ServerModel> {
 		root.add(labelIP, 1, 3);
 		root.add(labelProtocol, 0, 5);
 		root.add(language, 2, 6);
+		root.add(spracheImageView, 2, 6);
 		root.add(labelTeam, 0, 6);
 		root.add(loggingTxtArea, 0, 5, 3, 1);
 		
@@ -95,6 +112,8 @@ public class ServerView extends AbstractView<ServerModel> {
 		GridPane.setValignment(labelLogo, VPos.TOP);
 		GridPane.setHalignment(language, HPos.RIGHT);
 		GridPane.setValignment(language, VPos.BOTTOM);
+		GridPane.setHalignment(spracheImageView, HPos.LEFT);
+		GridPane.setValignment(spracheImageView, VPos.CENTER);
 		
 		//Zuweisung des Stylesheets
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
