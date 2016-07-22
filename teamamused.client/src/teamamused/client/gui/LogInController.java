@@ -2,7 +2,6 @@ package teamamused.client.gui;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.ButtonBase;
 import teamamused.client.Main;
 import teamamused.client.libs.Client;
 import teamamused.common.ServiceLocator;

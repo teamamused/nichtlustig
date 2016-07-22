@@ -2,7 +2,6 @@ package teamamused.client.gui;
 
 import java.io.FileNotFoundException;
 import javafx.collections.FXCollections;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,7 +10,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
@@ -42,6 +44,8 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		// Labels erstellen
 		Label labelTitle = new Label("Hallo Neuling!");
 		labelTitle.setId("labelTitle");
+		Label labelCopyright = new Label("Copyright © 2016, Team amused (FHNW)");
+		labelCopyright.setId("labelCopyright");
 		Label labelRegister = new Label("Hier kannst du dich registrieren:");
 		Label labelRegUser = new Label("Benutzername");
 		Label labelRegPassword = new Label("Passwort");
@@ -63,9 +67,9 @@ public class RegisterView extends AbstractView<RegisterModel> {
 
 		ImageView iview = null;
 		try {
-			iview = new ImageView(ResourceLoader.getImage("Nicht-Lustig.jpg"));
-			iview.setFitWidth(400);
-			iview.setFitWidth(400);
+			iview = new ImageView(ResourceLoader.getImage("NichtLustig.png"));
+			iview.setFitWidth(380);
+			iview.setFitWidth(380);
 			iview.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
@@ -85,7 +89,7 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(50, 50, 50, 50));
+		grid.setPadding(new Insets(30, 50, 30, 50));
 
 		grid.add(labelTitle, 0, 1);
 		grid.add(labelRegister, 0, 3);
@@ -95,12 +99,28 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		grid.add(textRegPassword, 0, 8);
 		grid.add(labelRegPassword2, 0, 9);
 		grid.add(textRegPassword2, 0, 10);
-		grid.add(btnRegister, 0, 12);
-		grid.add(iview2, 5, 6);
-		grid.add(cbLang, 6, 6);
+		
+		HBox hbox = new HBox();
+		hbox.setPadding(new Insets(0, 50, 50, 50));
+		hbox.setAlignment(Pos.CENTER_LEFT);
+	    hbox.setSpacing(15);
+	    hbox.getChildren().addAll(iview2, cbLang);
+	    hbox.getChildren().addAll(btnRegister);
+		
+		VBox vbox = new VBox();
+		vbox.setPadding(new Insets(80, 80, 0, 50));
+		vbox.setAlignment(Pos.TOP_CENTER);
+		vbox.setSpacing(10);
+		vbox.getChildren().addAll(iview);
+		vbox.getChildren().addAll(labelCopyright);
+	    
+		BorderPane border = new BorderPane();
+		border.setLeft(grid);
+		border.setRight(vbox);
+		border.setBottom(hbox);
 
 		// Das Layout Pane einer Scene hinzufügen
-		Scene scene = new Scene(grid, 900, 600);
+		Scene scene = new Scene(border, 900, 600);
 		
 		// Fenstertitel setzen
 		stage.setTitle("Nicht Lustig: Register");
