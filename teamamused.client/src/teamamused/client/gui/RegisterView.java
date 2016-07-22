@@ -27,9 +27,9 @@ import teamamused.common.gui.AbstractView;
 public class RegisterView extends AbstractView<RegisterModel> {
 	
 	protected Button btnRegister;
-	protected TextField textUser;
-	protected TextField textPassword;
-	protected TextField textPassword2;
+	protected TextField textRegUser;
+	protected TextField textRegPassword;
+	protected TextField textRegPassword2;
 
 	public RegisterView(Stage stage, RegisterModel model) {
 		super(stage, model);
@@ -43,14 +43,14 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		Label labelTitle = new Label("Hallo Neuling!");
 		labelTitle.setId("labelTitle");
 		Label labelRegister = new Label("Hier kannst du dich registrieren:");
-		Label labelUser = new Label("Benutzername");
-		Label labelPassword = new Label("Passwort");
-		Label labelPassword2 = new Label("Passwort bestätigen");
+		Label labelRegUser = new Label("Benutzername");
+		Label labelRegPassword = new Label("Passwort");
+		Label labelRegPassword2 = new Label("Passwort bestätigen");
 
 		// Textfelder erstellen
-		textUser = new TextField();
-		textPassword = new TextField();
-		textPassword2 = new TextField();
+		textRegUser = new TextField();
+		textRegPassword = new TextField();
+		textRegPassword2 = new TextField();
 
 		// Registrierungs-Button erstellen
 		btnRegister = new Button();
@@ -89,12 +89,12 @@ public class RegisterView extends AbstractView<RegisterModel> {
 
 		grid.add(labelTitle, 0, 1);
 		grid.add(labelRegister, 0, 3);
-		grid.add(labelUser, 0, 5);
-		grid.add(textUser, 0, 6);
-		grid.add(labelPassword, 0, 7);
-		grid.add(textPassword, 0, 8);
-		grid.add(labelPassword2, 0, 9);
-		grid.add(textPassword2, 0, 10);
+		grid.add(labelRegUser, 0, 5);
+		grid.add(textRegUser, 0, 6);
+		grid.add(labelRegPassword, 0, 7);
+		grid.add(textRegPassword, 0, 8);
+		grid.add(labelRegPassword2, 0, 9);
+		grid.add(textRegPassword2, 0, 10);
 		grid.add(btnRegister, 0, 12);
 		grid.add(iview2, 5, 6);
 		grid.add(cbLang, 6, 6);

@@ -29,7 +29,10 @@ import teamamused.common.ServiceLocator;
 
 public class LogInView extends AbstractView<LogInModel> {
 
+	protected Button btnConnectServer;
 	protected Button btnLogin;
+	protected TextField textServer;
+	protected TextField textPort;
 	protected TextField textUser;
 	protected TextField textPassword;
 	protected Hyperlink linkReg;
@@ -41,15 +44,25 @@ public class LogInView extends AbstractView<LogInModel> {
 	protected Scene createGUI() {
 
 		// Labels erstellen
-		Label copyright = new Label("Copyright © 2016, Team amused");
-		copyright.setId("labelCopyright");
+		Label labelCopyright = new Label("Copyright © 2016, Team amused (FHNW)");
+		labelCopyright.setId("labelCopyright");
+		Label labelServer = new Label("Server:");
+		Label labelPort = new Label("Port:");
 		Label labelUser = new Label("Benutzername");
 		Label labelPassword = new Label("Passwort");
 		Label labelNeu = new Label("Neu bei uns?");
 
 		// Textfelder erstellen
+		textServer = new TextField();
+		textServer.setPrefWidth(120);
+		textPort = new TextField();
+		textPort.setPrefWidth(120);
 		textUser = new TextField();
 		textPassword = new TextField();
+		
+		// Login-Button erstellen
+		btnConnectServer = new Button();
+		btnConnectServer.setText("Mit Server verbinden");
 		
 		// Login-Button erstellen
 		btnLogin = new Button();
@@ -110,17 +123,17 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(cbLang, 2, 10);
 		
 		HBox hbox = new HBox();
-		hbox.setPadding(new Insets(20, 50, 0, 0));
+		hbox.setPadding(new Insets(20, 50, 0, 50));
 		hbox.setAlignment(Pos.TOP_RIGHT);
-	    hbox.setSpacing(10);
-	    hbox.getChildren().addAll(iview3);
+	    hbox.setSpacing(15);
+	    hbox.getChildren().addAll(labelServer, textServer, labelPort, textPort, btnConnectServer, iview3);
 	    
 		VBox vbox = new VBox();
 		vbox.setPadding(new Insets(30, 0, 0, 70));
 		vbox.setAlignment(Pos.TOP_CENTER);
 		vbox.setSpacing(10);
 		vbox.getChildren().addAll(iview);
-		vbox.getChildren().addAll(copyright);
+		vbox.getChildren().addAll(labelCopyright);
 	    
 		BorderPane border = new BorderPane();
 		border.setTop(hbox);
