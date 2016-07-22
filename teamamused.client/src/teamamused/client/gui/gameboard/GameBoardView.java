@@ -1,7 +1,10 @@
 package teamamused.client.gui.gameboard;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,6 +24,7 @@ import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
 import teamamused.common.interfaces.ICube;
+import teamamused.common.models.Player;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für das Spielfeld dar.
@@ -38,7 +42,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnLink;
 	protected TextArea txtChatScreen;
 	protected TextField txtChatInput;
-	protected ScrollPane scrollTxt;
+	protected ScrollPane scrollTxt, scrollPane;
 	protected Label labelSpielfeld, labelRollDices, labelSelectedDices;
 	protected String url;
 	protected DiceControl[] diceControlArray;
@@ -53,6 +57,8 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		// Definition der Haupt-Pane
 		root = GameBoardView.initializeGridPane();
+		scrollPane = new ScrollPane();
+		scrollPane.setContent(root);
 
 		Scene scene = new Scene(root);
 
@@ -74,6 +80,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		root.add(labelSpielfeld, 1, 0);
 		root.add(btnLink, 5, 0);
+		GridPane.setHalignment(labelSpielfeld, HPos.CENTER);
 
 		// Definition der Pane für die linke Navigationsspalte
 		navigation = new VBox(5);
@@ -92,7 +99,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		btnPlayer1 = GameBoardView.initializeButton("Spieler 1");
 		btnPlayer2 = GameBoardView.initializeButton("Spieler 2");
 		btnPlayer3 = GameBoardView.initializeButton("Spieler 3");
-		btnPlayer4 = GameBoardView.initializeButton("Spieler 4");		
+		btnPlayer4 = GameBoardView.initializeButton("Spieler 4");
 		txtChatScreen = new TextArea();
 		txtChatScreen.setPrefSize(200, 300);
 		txtChatInput = new TextField();
@@ -101,9 +108,9 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		scrollTxt.setContent(txtChatScreen);
 		Tooltip chatInputTool = new Tooltip("Hier kannst du deine Chatnachrichten eingeben");
 		Tooltip.install(txtChatInput, chatInputTool);
-		navigation.getChildren().addAll(logo, btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, txtChatScreen, txtChatInput);
-		navigation.setAlignment(Pos.TOP_CENTER);
-		
+		navigation.getChildren().addAll(logo, btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, txtChatScreen,
+				txtChatInput);
+
 		// Definition der Pane für die Spielkarten
 		cardPane = GameBoardView.initializeGridPane();
 
@@ -157,15 +164,15 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		btnUebernehmen = GameBoardView.initializeButton("Übernehmen");
 
 		dicePane.add(labelRollDices, 0, 0, 10, 4);
-		
+
 		diceControlArray = new DiceControl[7];
 		ICube[] cubes = model.getCubes();
-		for(int i=0; i<7; i++) {
+		for (int i = 0; i < 7; i++) {
 			DiceControl diceControl = new DiceControl(cubes[i]);
 			diceControlArray[i] = diceControl;
-			dicePane.add(diceControl, i, 5);			
+			dicePane.add(diceControl, i, 5);
 		}
-		
+
 		dicePane.add(btnWuerfeln, 10, 5);
 		dicePane.add(labelSelectedDices, 0, 5, 10, 6);
 		dicePane.add(btnUebernehmen, 10, 10);
@@ -182,14 +189,57 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		// Zuweisung des Stylesheets
 		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 
+		disablePlayer();
+
 		return scene;
 	}
-	
+
+	/**
+	 * TODO
+	 * 
+	 * @param diceControl
+	 * @return
+	 */
 	public int displayDice(DiceControl diceControl) {
 		int index = diceControlArray.length % 7;
 		diceControlArray[index] = diceControl;
 		dicePane.add(diceControl, index, 5);
 		return index;
+	}
+
+	/**
+	 * Diese Support-Methode deaktiviert anhand der Anzahl Spieler die nicht
+	 * verwendeten Button-Objekte.
+	 */
+//	public void disablePlayer() {
+//		List<Player> playerList = model.getPlayerList();
+//		List<Button> btnArray = new ArrayList<>();
+//		btnArray.add(btnPlayer1);
+//		btnArray.add(btnPlayer2);
+//		btnArray.add(btnPlayer3);
+//		btnArray.add(btnPlayer4);
+//		for (Button btn : btnArray) {
+//			btn.setDisable(true);
+//			for (int i = 0; i < playerList.size(); i++) {
+//				btn.setDisable(false);
+//			}
+//		}
+//	}
+	public void disablePlayer() {
+		List<Player> playerList = model.getPlayerList();
+		List<Button> btnArray = new ArrayList<>();
+		btnArray.add(btnPlayer1);
+		btnArray.add(btnPlayer2);
+		btnArray.add(btnPlayer3);
+		btnArray.add(btnPlayer4);
+		for (Button btn : btnArray) {
+			btn.setDisable(true);
+		}
+		for (int index = 0; index < playerList.size(); index++) {
+			Button btn = btnArray.get(index);
+			btn.setDisable(false);
+		}
+	
 	}
 
 	/**
@@ -212,7 +262,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			LogHelper.LogException(e);
 		}
 		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(50);
+		imageView.setFitHeight(100);
 		imageView.setPreserveRatio(true);
 		return imageView;
 	}
