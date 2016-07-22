@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.ButtonBase;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import teamamused.client.gui.cardPopup.CardPopupController;
@@ -67,6 +66,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 		});
 
+		// TODO - muss für jeden Button gelten
 		view.btnPlayer1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -75,6 +75,9 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		});
 	}
 
+	/**
+	 * TODO
+	 */
 	public void showPopup() {
 		Stage popupStage = new Stage();
 		CardPopupModel model = new CardPopupModel();
@@ -83,6 +86,11 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		cardPopupView.start();
 	}
 	
+	/**
+	 * TODO
+	 * 
+	 * @param diceControl
+	 */
 	private void moveDownSelectedDice(DiceControl diceControl) {
 		diceControl.getCube().setIsFixed(true);
 		diceControl.hideDice();
