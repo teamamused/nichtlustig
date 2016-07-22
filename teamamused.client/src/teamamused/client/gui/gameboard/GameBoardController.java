@@ -16,10 +16,12 @@ import teamamused.common.gui.AbstractController;
 
 public class GameBoardController extends AbstractController<GameBoardModel, GameBoardView> {
 
-	int countDice = 0;
+	protected int countDice = 0;
+	protected GameBoardModel model;
 
 	public GameBoardController(GameBoardModel model, GameBoardView view) {
 		super(model, view);
+		this.model = model;
 
 		// Auf dem Button wird ein MouseEvent registiert, welches den
 		// Browser öffnet und das entsprechende HTML-Dokument (Spielregeln)
@@ -78,12 +80,15 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		});
 
 		// Auf den Spieler-Buttons wird ein Handler registriert, um das Popup
-		// aufzurufen.
+		// aufzurufen. Damit man weiss, welcher Spieler-Button geklickt wurde,
+		// wird diese Information in das GameBoardModel geschrieben.
 		for (Button btnPlayer : view.btnArray) {
 			btnPlayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					showPopup();
+					Button b = (Button) event.getSource();
+					model.setBtnPlayerClicked(view.btnArray.indexOf(b)+1);
+					showCardPopup();
 				}
 			});
 		}
@@ -91,8 +96,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 
 	/**
 	 * TODO
+	 * 
+	 * @throws Exception
 	 */
-	public void showPopup() {
+	public void showCardPopup() {
 		Stage popupStage = new Stage();
 		CardPopupModel model = new CardPopupModel();
 		CardPopupView cardPopupView = new CardPopupView(popupStage, model);

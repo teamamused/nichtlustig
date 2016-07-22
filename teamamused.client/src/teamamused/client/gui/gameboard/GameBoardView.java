@@ -227,7 +227,9 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		for (Button btn : btnArray) {
 			btn.setDisable(true);
 		}
-		for (int index = 0; index < playerList.size(); index++) {
+//		for (int index = 0; index < playerList.size(); index++) {
+		//TODO: Nur für Testing! Wieder rückgängig machen...
+		for (int index = 0; index < 2; index++) {
 			Button btn = btnArray.get(index);
 			btn.setDisable(false);
 		}

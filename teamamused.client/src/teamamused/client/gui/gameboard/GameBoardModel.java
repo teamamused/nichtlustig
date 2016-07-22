@@ -10,6 +10,15 @@ import teamamused.common.models.GameBoard;
 import teamamused.common.models.Player;
 
 public class GameBoardModel extends AbstractModel {
+	protected int btnPlayerClicked;
+	
+	public void setBtnPlayerClicked(int btnNumber) {
+		this.btnPlayerClicked = btnNumber;
+	}
+	
+	public int getBtnPlayerClicked() {
+		return btnPlayerClicked;
+	}
 	
 	// FIXME: get gameBoard from server
 	private GameBoard gameBoard = new GameBoard();
