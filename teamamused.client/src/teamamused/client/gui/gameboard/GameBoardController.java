@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import teamamused.client.Main;
 import teamamused.client.gui.cardPopup.CardPopupController;
 import teamamused.client.gui.cardPopup.CardPopupModel;
 import teamamused.client.gui.cardPopup.CardPopupView;
@@ -28,6 +29,13 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 		});
 		
+		// Der Klick auf den Exit-Button führt zur Tschüss-Seite.
+		view.btnExit.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Main.getInstance().startBye3();
+			}
+		});
 
 		// Zu den DiceControl-Objekten der View wird ein Handler
 		// registriert. Durch den Klick auf einen Würfel, wird dieser gesetzt.

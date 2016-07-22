@@ -36,10 +36,10 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	protected GridPane root, cardPane, dicePane;
 	protected VBox navigation;
-	protected ImageView logo, linkIcon;
-	protected Image linkImage;
+	protected ImageView logo, linkIcon, exitIcon;
+	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
-	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnLink;
+	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnLink, btnExit;
 	protected TextArea txtChatScreen;
 	protected TextField txtChatInput;
 	protected ScrollPane scrollTxt, scrollPane;
@@ -53,7 +53,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	@Override
 	protected Scene createGUI() {
-		stage.setTitle("Team Amused: Spielfeld");
+		stage.setTitle("Nicht Lustig: Spielfeld");
 
 		// Definition der Haupt-Pane
 		root = GameBoardView.initializeGridPane();
@@ -73,13 +73,24 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			LogHelper.LogException(e);
 		}
 		linkIcon = new ImageView(linkImage);
-		linkIcon.setFitHeight(50);
+		linkIcon.setFitHeight(40);
 		linkIcon.setPreserveRatio(true);
 		btnLink = new Button("", linkIcon);
 		btnLink.setId("btnLink");
+		try {
+			exitImage = ResourceLoader.getImage("Exit.png");
+		} catch (FileNotFoundException e) {
+			LogHelper.LogException(e);
+		}	
+		exitIcon = new ImageView(exitImage);
+		exitIcon.setFitHeight(30);
+		exitIcon.setPreserveRatio(true);
+		btnExit = new Button("", exitIcon);
+		btnExit.setId("btnExit");
 
 		root.add(labelSpielfeld, 1, 0);
-		root.add(btnLink, 5, 0);
+		root.add(btnLink, 4, 0);
+		root.add(btnExit, 5, 0);
 		GridPane.setHalignment(labelSpielfeld, HPos.CENTER);
 
 		// Definition der Pane für die linke Navigationsspalte
@@ -182,10 +193,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		root.add(cardPane, 1, 1);
 		root.add(dicePane, 1, 2);
 
-		// Ausrichtung der Controlls in der Pane
-		// GridPane.setHalignment(restartButton, HPos.LEFT);
-		// GridPane.setValignment(restartButton, VPos.CENTER);
-
 		// Zuweisung des Stylesheets
 		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 
@@ -211,20 +218,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 * Diese Support-Methode deaktiviert anhand der Anzahl Spieler die nicht
 	 * verwendeten Button-Objekte.
 	 */
-//	public void disablePlayer() {
-//		List<Player> playerList = model.getPlayerList();
-//		List<Button> btnArray = new ArrayList<>();
-//		btnArray.add(btnPlayer1);
-//		btnArray.add(btnPlayer2);
-//		btnArray.add(btnPlayer3);
-//		btnArray.add(btnPlayer4);
-//		for (Button btn : btnArray) {
-//			btn.setDisable(true);
-//			for (int i = 0; i < playerList.size(); i++) {
-//				btn.setDisable(false);
-//			}
-//		}
-//	}
 	public void disablePlayer() {
 		List<Player> playerList = model.getPlayerList();
 		List<Button> btnArray = new ArrayList<>();
