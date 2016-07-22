@@ -46,6 +46,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected Label labelSpielfeld, labelRollDices, labelSelectedDices;
 	protected String url;
 	protected DiceControl[] diceControlArray;
+	protected List<Button> btnArray;
 
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
@@ -105,12 +106,15 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		}
 		logo.setFitWidth(200);
 		logo.setPreserveRatio(true);
-		// TODO: Anzahl Buttons für Spieler dynamisch gestalten - je nach Anzahl
-		// Mitspieler
 		btnPlayer1 = GameBoardView.initializeButton("Spieler 1");
 		btnPlayer2 = GameBoardView.initializeButton("Spieler 2");
 		btnPlayer3 = GameBoardView.initializeButton("Spieler 3");
 		btnPlayer4 = GameBoardView.initializeButton("Spieler 4");
+		btnArray = new ArrayList<>();
+		btnArray.add(btnPlayer1);
+		btnArray.add(btnPlayer2);
+		btnArray.add(btnPlayer3);
+		btnArray.add(btnPlayer4);
 		txtChatScreen = new TextArea();
 		txtChatScreen.setPrefSize(200, 300);
 		txtChatInput = new TextField();
@@ -220,11 +224,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 */
 	public void disablePlayer() {
 		List<Player> playerList = model.getPlayerList();
-		List<Button> btnArray = new ArrayList<>();
-		btnArray.add(btnPlayer1);
-		btnArray.add(btnPlayer2);
-		btnArray.add(btnPlayer3);
-		btnArray.add(btnPlayer4);
 		for (Button btn : btnArray) {
 			btn.setDisable(true);
 		}

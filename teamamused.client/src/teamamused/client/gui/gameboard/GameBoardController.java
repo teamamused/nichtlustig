@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import teamamused.client.Main;
@@ -21,14 +22,15 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		super(model, view);
 
 		// Auf dem Button wird ein MouseEvent registiert, welches den
-		// Browser öffnet und das entsprechende HTML-Dokument (Spielregeln) zurückgibt
+		// Browser öffnet und das entsprechende HTML-Dokument (Spielregeln)
+		// zurückgibt
 		view.btnLink.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				ServiceLocator.getInstance().getHostServices().showDocument(view.url);
 			}
 		});
-		
+
 		// Der Klick auf den Exit-Button führt zur Tschüss-Seite.
 		view.btnExit.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
@@ -63,9 +65,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 							diceControl.showDice();
 						}
 					}
-					//TODO: unteren Teil in Handler zu Übernehmen-Button inkl. Senden an Server
+					// TODO: unteren Teil in Handler zu Übernehmen-Button inkl.
+					// Senden an Server
 				} else if (countDice == 4) {
-					for(DiceControl diceControl : view.diceControlArray) {
+					for (DiceControl diceControl : view.diceControlArray) {
 						if (!diceControl.getCube().getIsFixed()) {
 							moveDownSelectedDice(diceControl);
 						}
@@ -74,13 +77,16 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 		});
 
-		// TODO - muss für jeden Button gelten
-		view.btnPlayer1.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				showPopup();
-			}
-		});
+		// Auf den Spieler-Buttons wird ein Handler registriert, um das Popup
+		// aufzurufen.
+		for (Button btnPlayer : view.btnArray) {
+			btnPlayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					showPopup();
+				}
+			});
+		}
 	}
 
 	/**
@@ -93,7 +99,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		new CardPopupController(model, cardPopupView);
 		cardPopupView.start();
 	}
-	
+
 	/**
 	 * TODO
 	 * 
