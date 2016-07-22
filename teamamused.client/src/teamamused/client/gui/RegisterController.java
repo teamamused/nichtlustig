@@ -10,7 +10,7 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 		super(model, view);
 		
 		view.btnRegister.setOnAction((ActionEvent e) -> {
-			Main.getInstance().startWelcome();
+			Main.getInstance().startWelcome2();
 		});
 		
 	}

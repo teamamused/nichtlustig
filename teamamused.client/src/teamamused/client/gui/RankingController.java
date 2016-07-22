@@ -10,11 +10,11 @@ public class RankingController extends AbstractController<RankingModel, RankingV
 		super(model, view);
 		
 		view.btnBack.setOnAction((ActionEvent e) -> {
-			Main.getInstance().startWelcome();
+			Main.getInstance().startWelcome3();
 		});
 		
 		view.btnExit.setOnAction((ActionEvent e) -> {
-			Main.getInstance().startBye();
+			Main.getInstance().startBye2();
 		});
 		
 	}

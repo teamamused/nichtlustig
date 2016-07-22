@@ -78,6 +78,28 @@ public class Main extends Application {
 		welcomeView.start();
 	}
 	
+	public void startWelcome2() {
+
+		Stage welcomeStage = new Stage();
+		WelcomeModel model = new WelcomeModel();
+		welcomeView = new WelcomeView(welcomeStage, model);
+		new WelcomeController(model, welcomeView);
+		registerView.stop();
+		registerView = null;
+		welcomeView.start();
+	}
+	
+	public void startWelcome3() {
+
+		Stage welcomeStage = new Stage();
+		WelcomeModel model = new WelcomeModel();
+		welcomeView = new WelcomeView(welcomeStage, model);
+		new WelcomeController(model, welcomeView);
+		rankingView.stop();
+		rankingView = null;
+		welcomeView.start();
+	}
+	
 	public void startRegister() {
 
 		Stage RegisterStage = new Stage();
@@ -108,6 +130,17 @@ public class Main extends Application {
 		new ByeController(model, byeView);
 		welcomeView.stop();
 		welcomeView = null;
+		byeView.start();
+	}
+	
+	public void startBye2() {
+
+		Stage ByeStage = new Stage();
+		ByeModel model = new ByeModel();
+		byeView = new ByeView(ByeStage, model);
+		new ByeController(model, byeView);
+		rankingView.stop();
+		rankingView = null;
 		byeView.start();
 	}
 	

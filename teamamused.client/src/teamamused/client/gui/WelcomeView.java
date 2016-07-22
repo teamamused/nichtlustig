@@ -10,9 +10,17 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import teamamused.client.libs.Client;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
+
+/**
+ * Diese Klasse stellt die grafische Oberfläche für die Willkommensseite dar.
+ * 
+ * @author Sandra
+ *
+ */
 
 public class WelcomeView extends AbstractView<WelcomeModel> {
 	
@@ -29,17 +37,17 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 	@Override
 	protected Scene createGUI() {
 
-		// Create the labels
-		Label labelWelcome = new Label("Herzlich Willkommen XYZ");
+		// Labels erstellen
+		Label labelWelcome = new Label("Herzlich Willkommen " + Client.getInstance().getPlayer().getPlayerName());
 		labelWelcome.setId("labelWelcome");
 		Label labelPlay = new Label("Was möchtest du spielen?");
 		
-		// 
+		// Single-Player-Button erstellen und auf disable stellen
 		btnSingle = new Button();
 		btnSingle.setText("Single-Player");
 		btnSingle.setDisable(true);
 		
-		// 
+		// Multi-Player-Button erstellen 
 		btnMulti = new Button();
 		btnMulti.setText("Multi-Player");
 		
@@ -83,11 +91,11 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
 		}
 		
-		//
+		// Ranking-Button mit Bild erstellen
 		btnTrophy = new Button();
 		btnTrophy.setGraphic(iview3);
 		
-		//
+		// Exit-Button mit Bild erstellen
 		btnExit = new Button();
 		btnExit.setGraphic(iview4);
 		
@@ -106,10 +114,13 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		grid.add(btnTrophy, 24, 9);
 		grid.add(btnExit, 24, 0);
 		
+		// Das Layout Pane einer Scene hinzufügen
 		Scene scene = new Scene(grid, 900, 600);
 		
+		// Fenstertitel setzen
 		stage.setTitle("Nicht Lustig: Welcome");
 		
+		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		
 		return scene;

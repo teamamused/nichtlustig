@@ -17,6 +17,13 @@ import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
 
+/**
+ * Diese Klasse stellt die grafische Oberfläche für die Registrierungsseite dar.
+ * 
+ * @author Sandra
+ *
+ */
+
 public class RegisterView extends AbstractView<RegisterModel> {
 	
 	protected Button btnRegister;
@@ -32,7 +39,7 @@ public class RegisterView extends AbstractView<RegisterModel> {
 	@Override
 	protected Scene createGUI() {
 		
-		// Create the labels
+		// Labels erstellen
 		Label labelTitle = new Label("Hallo Neuling!");
 		labelTitle.setId("labelTitle");
 		Label labelRegister = new Label("Hier kannst du dich registrieren:");
@@ -40,14 +47,16 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		Label labelPassword = new Label("Passwort");
 		Label labelPassword2 = new Label("Passwort bestätigen");
 
+		// Textfelder erstellen
 		textUser = new TextField();
 		textPassword = new TextField();
 		textPassword2 = new TextField();
 
-		// Create the Button
+		// Registrierungs-Button erstellen
 		btnRegister = new Button();
 		btnRegister.setText("Registrieren");
 
+		// ChoiceBox erstellen und Auswahlmöglichkeiten festlegen
 		ChoiceBox cbLang = new ChoiceBox();
 		cbLang.setItems(FXCollections.observableArrayList("Deutsch", "English"));
 		cbLang.getSelectionModel().selectFirst();
@@ -90,11 +99,13 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		grid.add(iview2, 5, 6);
 		grid.add(cbLang, 6, 6);
 
-		// Add the layout pane to a scene
+		// Das Layout Pane einer Scene hinzufügen
 		Scene scene = new Scene(grid, 900, 600);
 		
+		// Fenstertitel setzen
 		stage.setTitle("Nicht Lustig: Register");
 
+		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;
