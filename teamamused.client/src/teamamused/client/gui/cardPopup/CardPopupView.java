@@ -1,38 +1,85 @@
 package teamamused.client.gui.cardPopup;
 
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
+import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.common.gui.AbstractView;
 
 public class CardPopupView extends AbstractView<CardPopupModel> {
-	
-	Popup cardPopup;
-	
+
+	protected Label labelText, cardsRival, specialCardsRival;
+	protected Button btnTakeCard, btnClose;
+	protected GameBoardModel gameBoardModel;
+
 	public CardPopupView(Stage stage, CardPopupModel model) {
 		super(stage, model);
 	}
-	
+
 	protected Scene createGUI() {
-		stage.setTitle("Titel");
-		GridPane grid = new GridPane();
-		Scene scene = new Scene(grid);
+		stage.setTitle("Nicht Lustig: Karten der Gegner");
+
+		// Definition der Pane
+		GridPane root = new GridPane();
+		root.setPadding(new Insets(50, 50, 50, 50));
+		root.setHgap(10);
+		root.setVgap(10);
+		root.setAlignment(Pos.CENTER);
+		root.setGridLinesVisible(true);
+
+		Scene scene = new Scene(root, 900, 600);
+
+		// Instanziierung und Zuweisung der Controlls zur Pane
+		labelText = new Label(
+				"Hier kannst du die Karten deines Gegners sehen und allenfalls\nvon ihm Karten stibitzen.");
+		// Erste Variante funktioniert nicht - wieso? TODO
+		// cardsRival = new Label("Karten von Spieler " +
+		// gameBoardModel.getBtnPlayerClicked());
+		cardsRival = new Label("Karten von Spieler " + "Nr");
+		specialCardsRival = new Label("Sonderkarten von Spieler " + "Nr");
+		btnTakeCard = CardPopupView.initializeButton("Karte(n) nehmen");
+		btnClose = CardPopupView.initializeButton("schliessen");
+
+		root.add(labelText, 0, 0, 5, 1);
+		root.add(cardsRival, 0, 2);
+		root.add(specialCardsRival, 0, 3);
+		root.add(btnTakeCard, 5, 4);
+		root.add(btnClose, 5, 7);
 		
-		cardPopup = new Popup();
-		cardPopup.setX(300);
-		cardPopup.setY(200);
-		cardPopup.getContent().addAll(new Label("Hallo"));
-		
+		GridPane.setHalignment(btnTakeCard, HPos.RIGHT);
+		GridPane.setHalignment(btnClose, HPos.RIGHT);
+
+		// Zuweisung des Stylesheets
+		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
+
 		return scene;
-		
+
 	}
-	
+
+	/**
+	 * Die Support-Methode instanziiert einen Button und gibt diesen formatiert
+	 * zurück (Wiederverwendbarkeit von Code)
+	 * 
+	 * @param buttonText
+	 *            Bezeichnung des Buttons als String
+	 * @return formatiertes Button-Objekt
+	 */
+	private static Button initializeButton(String buttonText) {
+		Button btn = new Button(buttonText);
+		btn.setMaxSize(200, 40);
+		btn.setAlignment(Pos.CENTER);
+		return btn;
+	}
+
 	public Scene getScene() {
 		return scene;
 	}
-	
+
 	public void start() {
 		stage.show();
 	}
