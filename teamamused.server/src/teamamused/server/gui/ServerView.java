@@ -118,9 +118,9 @@ public class ServerView extends AbstractView<ServerModel> {
 
 		// Prozentualle grösse definieren für das verhalten beim maximieren
 	     ColumnConstraints col1 = new ColumnConstraints();
-	     col1.setPercentWidth(33);
+	     col1.setPercentWidth(45);
 	     ColumnConstraints col2 = new ColumnConstraints();
-	     col2.setPercentWidth(34);
+	     col2.setPercentWidth(22);
 	     ColumnConstraints col3 = new ColumnConstraints();
 	     col3.setPercentWidth(33);
 	     root.getColumnConstraints().addAll(col1, col2, col3);
