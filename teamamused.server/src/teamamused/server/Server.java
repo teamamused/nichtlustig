@@ -3,7 +3,6 @@ package teamamused.server;
 import java.util.List;
 
 import teamamused.common.LogHelper;
-import teamamused.common.ServiceLocator;
 import teamamused.common.db.RankingRepository;
 import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableAnswer;
@@ -37,6 +36,27 @@ public class Server {
 		}
 		return instance;
 	}
+	
+	/**
+	 * Startet den Server neu.
+	 * Alle bestehenden Connections werden getrennt, der Spielstand nicht gespeichert. 
+	 */	
+	public static void resetServer() {
+		try {
+			// Clients trennen
+			ClientManager.getInstance().closeClients();
+			ClientManager.resetClientManager();
+			// BoardManager und CubeManager zurücksetzen
+			BoardManager.resetBoardManager();
+			CubeManager.resetCubeManager();
+			// Spiel zurücksetzen
+			Game.resetGame();
+			// Server neu starten
+			instance = new Server();
+		} catch (Exception ex) {
+			LogHelper.LogException(ex);
+		}
+	}
 
 	public TransportObject forwardChatMessage(TransportableChatMessage msg) {
 		TransportableState state = null;
@@ -45,7 +65,7 @@ public class Server {
 			state = new TransportableState(true, "Nachricht wurde erfolgreich weitergeleitet");
 		} catch (Exception ex) {
 			// Fehlerfall: Logen und dem Client melden
-			ServiceLocator.getInstance().getLogger().severe(ex.getMessage());
+			LogHelper.LogException(ex);
 			state = new TransportableState(false, "Nachricht konnte nicht weitergeleitet werden. " + ex.getMessage());
 		}
 		return state;
@@ -60,7 +80,7 @@ public class Server {
 			state = new TransportableState(true, "Das Spiel wurde erfolgreich gestartet.");
 		} catch (Exception ex) {
 			// Fehlerfall: Logen und dem Client melden
-			ServiceLocator.getInstance().getLogger().severe(ex.getMessage());
+			LogHelper.LogException(ex);
 			state = new TransportableState(false, "Das Spiel konnte nicht gestartet werden. " + ex.getMessage());
 		}
 		return state;
@@ -81,7 +101,7 @@ public class Server {
 			}
 		} catch (Exception ex) {
 			// Fehlerfall: Logen und dem Client melden
-			ServiceLocator.getInstance().getLogger().severe(ex.getMessage());
+			LogHelper.LogException(ex);
 			answer = new TransportableAnswer(rpc, false, "Ein Fehler tratt beim Würfeln auf. " + ex.getMessage());
 		}
 		return answer;
@@ -104,7 +124,7 @@ public class Server {
 				return new TransportableState(true, "Die fixierten Würfel würden gespeichert");
 			} catch (Exception ex) {
 				// Fehlerfall: Logen und dem Client melden
-				ServiceLocator.getInstance().getLogger().severe(ex.getMessage());
+				LogHelper.LogException(ex);
 				return new TransportableState(false, "Die fixierten Würfel konnten nicht gespeichert werden"
 						+ ex.getMessage());
 			}
@@ -126,7 +146,7 @@ public class Server {
 				return new TransportableState(true, "Die ausgewählten Karten wurden dem Server gemeldet und die Spielrunde abgeschlossen");
 			} catch (Exception ex) {
 				// Fehlerfall: Logen und dem Client melden
-				ServiceLocator.getInstance().getLogger().severe(ex.getMessage());
+				LogHelper.LogException(ex);
 				return new TransportableState(false, "Die ausgewählten Karten konnten nicht übergeben werden"
 						+ ex.getMessage());
 			}

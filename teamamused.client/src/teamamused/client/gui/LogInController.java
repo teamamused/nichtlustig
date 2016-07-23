@@ -1,21 +1,22 @@
 package teamamused.client.gui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.ButtonBase;
 import teamamused.client.Main;
 import teamamused.client.libs.Client;
+import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractController;
+import teamamused.common.interfaces.IPlayer;
 
-public class LogInController extends AbstractController<LogInModel, LogInView> {
+public class LogInController extends AbstractController<LogInModel, LogInView>  implements IClientListener {
 	
 	public LogInController(LogInModel model, LogInView view) {
 		super(model, view);
-		
-		view.btnLogin.setOnAction((ActionEvent e) -> {
-			Main.getInstance().startWelcome();
-		});
+
+		// uns beim Client Registrieren
+		Client.getInstance().registerGui(this);
 		
 		view.btnLogin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -40,6 +41,20 @@ public class LogInController extends AbstractController<LogInModel, LogInView> {
 			Main.getInstance().startRegister();
 		});
 		
+	}
+
+	@Override
+	public void onLoginSuccessful(IPlayer player) {
+		ServiceLocator.getInstance().getLogger().info("Login für Spieler " + player.getPlayerName() + " erfolgreich");	
+		// wenn öbis vom Server ufgruefe wird, wo im Gui gmacht sell werte muess es immer mit dem Platform.runLater ufgruefe werde
+		Platform.runLater(() -> {
+			Main.getInstance().startWelcome();
+		});
+	}
+	@Override
+	public void onLoginFailed(String msg) {
+		ServiceLocator.getInstance().getLogger().info("Login gescheitert: " + msg);		
+		// Irgend es Label ihblände mit em Text "Fehler beim anmelden: "+ msg
 	}
 
 }

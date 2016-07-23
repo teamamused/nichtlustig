@@ -261,7 +261,7 @@ public class ServerConnection extends Thread {
 		case JoinGame:
 			if (answer.isOK() && answer.getReturnValue() instanceof Integer) {
 				int playerNumber = (int)answer.getReturnValue();
-				Client.getInstance().getPlayer().setPlayerNumber(playerNumber);
+				Client.getInstance().getPlayer().initForGame(playerNumber);
 				this.notifyGui.joinGameSuccessful((IPlayer)Client.getInstance().getPlayer());
 			} else {
 				if (answer.getReturnValue() instanceof String) {

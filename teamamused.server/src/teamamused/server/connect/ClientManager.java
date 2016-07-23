@@ -36,6 +36,12 @@ public class ClientManager {
 		return instance;
 	}
 	/**
+	 * Setzt den ClientManager zurück
+	 */
+	public static void resetClientManager() {
+		instance = new ClientManager();
+	}
+	/**
 	 * Getter aller verbundenen Clients
 	 * @return Auflistung mit allen Clients
 	 */

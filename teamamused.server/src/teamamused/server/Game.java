@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.Logger;
 
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.GameInfoRepository;
 import teamamused.common.interfaces.IPlayer;
@@ -38,22 +40,14 @@ public class Game implements Serializable {
 	// gameStatus: 0 = nicht gestartet, 1 = gestartet, 2 = beendet
 	private GameState gameStatus = GameState.notStarted;
 	private int gameId;
+	private Logger log;
 
 	private IPlayer activePlayer;
 
 	private Game() {
 		super();
+		this.log = ServiceLocator.getInstance().getLogger();
 		this.startGame();
-	}
-
-	/**
-	 * Initialisieren des Spiels (Game)
-	 */
-	private void startGame() {
-		ServiceLocator.getInstance().getLogger().info("Initialisiere Spiel");
-		gameId = GameInfoRepository.getNextGameId();
-		// Spielstatus auf "gestartet" setzen
-		gameStatus = GameState.running;
 	}
 
 	/**
@@ -71,14 +65,24 @@ public class Game implements Serializable {
 	}
 
 	/**
+	 * Setzt das aktuelle Spiel zurück.
+	 * Kein Speichern des Spielstandes
+	 * Spiel startet von vorne
+	 */
+	public static void resetGame() {
+		instance = new Game();
+	}
+
+	/**
 	 * Spieler zu Spiel hinzufügen
 	 * 
 	 * @param player
 	 *            Spieler, welcher hinzugefügt werden soll
 	 */
 	public void addPlayer(IPlayer player) {
+		this.log.info("Füge Spieler " + player.getPlayerName() + " hinzu");
 		if (this.getPlayersFromGameboard().size() <= 4) {
-			player.setPlayerNumber(this.getPlayersFromGameboard().size());
+			player.initForGame(this.getPlayersFromGameboard().size()+1);
 			this.getPlayersFromGameboard().add(player);
 			ClientNotificator.notifyGameMove("Spieler " + player.getPlayerName() + " ist dem Spiel beigetreten.");
 			ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
@@ -92,6 +96,7 @@ public class Game implements Serializable {
 	 * Legt fest, welcher Spieler mit dem Spiel starten darf.
 	 */
 	public void defineStartPlayer() {
+		this.log.info("Bestimme Startspieler");
 		List<IPlayer> players = this.getPlayersFromGameboard();
 		this.activePlayer = players.get((int) (Math.random() * players.size()));
 		ClientNotificator.notifyGameMove("Spieler " + this.activePlayer.getPlayerName() + " fängt mit dem Spiel an");
@@ -102,13 +107,14 @@ public class Game implements Serializable {
 	 * abgeschlossen und die Wertung inkl. Kartenausteilung beendet wurde.
 	 */
 	public void changeActivePlayer() {
+		this.log.info("Wechsle den aktiven Spieler");
 		List<IPlayer> players = this.getPlayersFromGameboard();
 		// Wenn noch kein Spieler aktiv, einen Startspieler bestimmen
 		if (this.activePlayer == null) {
 			this.defineStartPlayer();
 		} else {
 			// Wenn bereits ein Spieler aktiv ist, den nächsten aktivieren
-			if (this.activePlayer.getPlayerNumber() != players.size()) {
+			if (this.activePlayer.getPlayerNumber() < players.size()) {
 				this.activePlayer = players.get(this.activePlayer.getPlayerNumber() + 1);
 			} else {
 				this.activePlayer = players.get(0);
@@ -121,6 +127,7 @@ public class Game implements Serializable {
 	 * Game-Status auf "beendet" ändern.
 	 */
 	public void setGameIsFinished() {
+		this.log.info("Setze Spiel beendet");
 		gameStatus = GameState.finished;
 	}
 
@@ -148,19 +155,31 @@ public class Game implements Serializable {
 	 * im Code an Maja
 	 */
 	public void finishRound() {
+		this.log.info("Beende aktuelle Spielrunde");
 		// Wertung anhand des Pinken Würfels durchführen
+		this.log.info("Wertung wird durchgeführt");
 		Valuation val = new Valuation();
 		val.valuate(BoardManager.getInstance());
-		// Prüfen welche Karten der Spieler erhalten darf
-		BoardManager.getInstance().valuatePlayerDice();
-
 		// Hallo Maja :)
+		// Prüfen welche Karten der Spieler erhalten darf
+		// Dani an Maja: kann man das getNotValuatedCardsFromPlayer nicht gleich im valutatePlayerDice machen?
+		BoardManager.getInstance().getNotValuatedCardsFromPlayer();
+		try {
+			BoardManager.getInstance().valuatePlayerDice();
+		} catch (Exception ex) {
+			LogHelper.LogException(ex);
+		}
+
+		this.log.info("Holle Karten zum vorschlagen");
 		Hashtable<Integer, List<ITargetCard>> cardsToPropose = BoardManager.getInstance().getCardsToPropose();
-		int optionCount = cardsToPropose.size();
+		int optionCount = 0;
+		if (cardsToPropose != null) {
+			optionCount = cardsToPropose.size();
+		}
 
 		// Dani an Maja: ev. der Teil hier in valuatePlayerDice nehmen?
-		// Prüfen ob der Spieler eine Todeskarte nehmen muss. Dazu Spezialkarten
-		// prüfen
+		// Prüfen ob der Spieler eine Todeskarte nehmen muss. 
+		// Dazu Spezialkarten prüfen
 		ISpecialCard playerIsForcedToDead = null;
 		ISpecialCard playerIsBewaredOfDead = null;
 		for (ISpecialCard card : this.activePlayer.getSpecialCards()) {
@@ -186,6 +205,8 @@ public class Game implements Serializable {
 						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!");
 				BoardManager.getInstance().switchCardOwner(playerIsForcedToDead, null);
 			} else {
+				ClientNotificator.notifyGameMove("Der Spieler " + this.activePlayer.getPlayerName()
+						+ " wurde vom Tod heimgesucht!");
 				// Spieler den Tod zuteilen
 				int deadNumber = CubeManager.getInstance().getCurrentPinkCube().FaceValue;
 				BoardManager.getInstance().addDeadCardToDeploy(deadNumber);
@@ -194,13 +215,18 @@ public class Game implements Serializable {
 		//
 		// Wenn mehrere Optionen zur Auswal:
 		if (optionCount > 1) {
+			this.log.info("Sende dem Spieler die Kartenauswahl Optionen");
 			// Dem Client mitteilen, das er sich für eine Möglichkeit entscheien
 			// soll.
 			ClientNotificator.notifyCardsToChoose(cardsToPropose);
 
-		} else if (optionCount == 1) {
-			// Wenn nur eine Auswahlmöglichkeit karten direkt zuteilen und
-			// nächste Runde starten
+		} else {
+			this.log.info("Teile dem Spieler die Karten zu");
+			// Wenn nur eine Auswahlmöglichkeit oder sogar keine (dann Tod)
+			// Karten direkt zuteilen und nächste Runde starten
+			if (optionCount == 1) { 
+				BoardManager.getInstance().takeProposedCards(cardsToPropose.get(0));
+			}
 			BoardManager.getInstance().deployCards();
 			this.startNextRound();
 		}
@@ -213,6 +239,7 @@ public class Game implements Serializable {
 	 * 
 	 */
 	public void startNextRound() {
+		this.log.info("Starte nächse Spielrunde");
 		if (this.gameStatus != GameState.finished) {
 			// Nächsten Spieler aktivieren
 			this.changeActivePlayer();
@@ -247,11 +274,26 @@ public class Game implements Serializable {
 				BoardManager.getInstance().switchCardOwner(dicingCard, null);
 			}
 			CubeManager.getInstance().initForNextRound(additionalDicings);
+			
 		}
 	}
 
+	/**
+	 * Spieler auflistung vom Gameboard holen
+	 * @return Liste der Spieler
+	 */
 	private List<IPlayer> getPlayersFromGameboard() {
 		return BoardManager.getInstance().getGameBoard().getPlayers();
+	}
+
+	/**
+	 * Initialisieren des Spiels (Game)
+	 */
+	private void startGame() {
+		ServiceLocator.getInstance().getLogger().info("Initialisiere Spiel");
+		gameId = GameInfoRepository.getNextGameId();
+		// Spielstatus auf "gestartet" setzen
+		gameStatus = GameState.running;
 	}
 
 }

@@ -63,7 +63,7 @@ public class Game {
 	public int addPlayer(IServerListener client, IPlayer player) {
 		int playerNumber = players.size() + 1;
 		this.players.put(playerNumber, player);
-		player.setPlayerNumber(playerNumber);
+		player.initForGame(playerNumber);
 		ClientManager.getInstance().addPlayerToClient(client, player);
 		return playerNumber;
 	}

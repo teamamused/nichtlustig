@@ -213,4 +213,8 @@ public class GameBoard implements ICardHolder, Serializable {
 		return players;
 	}
 	
+	public String toString() {
+		return "Spielbrett";
+	}
+	
 }

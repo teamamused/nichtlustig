@@ -13,6 +13,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
@@ -114,7 +115,16 @@ public class ServerView extends AbstractView<ServerModel> {
 		GridPane.setValignment(language, VPos.BOTTOM);
 		GridPane.setHalignment(spracheImageView, HPos.LEFT);
 		GridPane.setValignment(spracheImageView, VPos.CENTER);
-		
+
+		// Prozentualle grösse definieren für das verhalten beim maximieren
+	     ColumnConstraints col1 = new ColumnConstraints();
+	     col1.setPercentWidth(33);
+	     ColumnConstraints col2 = new ColumnConstraints();
+	     col2.setPercentWidth(34);
+	     ColumnConstraints col3 = new ColumnConstraints();
+	     col3.setPercentWidth(33);
+	     root.getColumnConstraints().addAll(col1, col2, col3);
+	     
 		//Zuweisung des Stylesheets
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		labelServer.setId("labelServer");
