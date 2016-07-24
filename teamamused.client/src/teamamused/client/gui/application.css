@@ -60,6 +60,11 @@
 #btnExit{
 	-fx-background-color: transparent;
 }
+
+#btnTrophy{
+	-fx-background-color: transparent;
+}
+
 #cardPopupLabelText{
 	-fx-font-size: 17pt;
 }
