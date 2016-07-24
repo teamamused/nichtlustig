@@ -18,9 +18,9 @@ public class ServerController extends AbstractController<ServerModel, ServerView
     	view.restartButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
+				view.loggingTxtArea.clear();
 				LOG.info("Server wird neu gestartet");
-				// TODO: restart methode aufrufen
-				Server.getInstance();
+				Server.resetServer();
 			}
     	});
     	

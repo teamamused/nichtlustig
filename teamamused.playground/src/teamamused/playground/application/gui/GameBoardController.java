@@ -1,7 +1,6 @@
 package teamamused.playground.application.gui;
 
 import java.text.DateFormat;
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -10,8 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 import teamamused.client.libs.IClientListener;
-import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.gui.AbstractController;
 import teamamused.common.interfaces.ITargetCard;
@@ -55,19 +54,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				Client.getInstance().startGame();
 			}
 		});
-		// Button Spiel starten
-		view.btnChooseCards.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				// Hier müsste dem Spieler eine mölgichkeit gegeben werden die
-				// Karten die er will auszuwählen
-				// Danach geprüft werden ob mit seinem erwürfeltem die Auswahl
-				// legitim ist
-				// Dann die ausgewählten zuteilen und nicht einfach alle
-				Client.getInstance().cardsChoosen(model.cardsChoosen);
-				view.wuerfel.getChildren().clear();
-			}
-		});
 		// Chat Message senden
 		view.btnChatSenden.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -85,14 +71,12 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	@Override
 	public void onPlayerHasToCooseCards(Hashtable<Integer, List<ITargetCard>> options) {
-		List<ITargetCard> allowedCards = options.values().stream().findFirst().get();
-		model.cardsToChooseOptions = options;
 		Platform.runLater(() -> {
-			// nicht schön gemacht von mir, es wird nur die erste möglichkeit
-			// angezeigt:
-			ITargetCard[] karten = Arrays.copyOf(allowedCards.toArray(), allowedCards.size(), ITargetCard[].class);
-			ServiceLocator.getInstance().getLogger().info("GameboardController: zeige auszuwählende Karten an");
-			this.view.drawCards("Bitte wählen Sie \ndie gewünschten Zielkarten aus:", karten);
+				Stage chooseStage = new Stage();
+				ChooseCardsModel model = new ChooseCardsModel(options);
+				ChooseCardsView cv = new ChooseCardsView(chooseStage, model);
+				new ChooseCardsController(model, cv);
+				cv.start();
 		});
 	}
 

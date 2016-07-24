@@ -36,6 +36,15 @@ public class CubeManager{
 	}
 	
 	/**
+	 * Setzt das aktuelle Spiel zurück.
+	 * Kein Speichern des Spielstandes
+	 * Spiel startet von vorne
+	 */
+	public static void resetCubeManager() {
+		instance = new CubeManager();
+	}
+
+	/**
 	 * Liest den aktuellen Wert des angegebenen Würfels aus.
 	 * @param cube Würfel, von dem man den Wert auslesen möchte
 	 * @return Wert von Würfel
@@ -76,10 +85,12 @@ public class CubeManager{
 	/**
 	 * Variablen für nächstes Würfeln initialisieren
 	 * @param additionalDicings Zusätzliche Würfelversuche (0 oder +/-1)
+	 * @return Anzahl Versuche
 	 */
-	public void initForNextRound(int additionalDicings) {
+	public int initForNextRound(int additionalDicings) {
 		this.diceCounter = 0;
 		this.allowedDicings = 3 + additionalDicings;
+		return this.allowedDicings;
 	}
 	
 	/**

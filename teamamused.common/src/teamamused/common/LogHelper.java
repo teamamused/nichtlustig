@@ -50,6 +50,7 @@ public class LogHelper {
 	 * @param ex Ausnahme zum Loggen
 	 */
 	public static void LogException(Exception ex) {
-	     ServiceLocator.getInstance().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
+		ex.printStackTrace();
+	    ServiceLocator.getInstance().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
 	}
 }

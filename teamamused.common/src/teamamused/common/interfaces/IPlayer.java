@@ -17,10 +17,11 @@ public interface IPlayer extends ICardHolder {
 	
 	/**
 	 * Weisst dem Spieler seine Nummer zu
+	 * und initialisiert Ihn für eine Neues Spiel
 	 * @param number
 	 * 	Spieler Nummer
 	 */
-	void setPlayerNumber(int number);
+	void initForGame(int number);
 	
 	/**
 	 * Gibt den Namen des Spielers zurück

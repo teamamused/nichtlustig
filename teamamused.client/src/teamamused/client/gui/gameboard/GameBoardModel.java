@@ -3,7 +3,6 @@ package teamamused.client.gui.gameboard;
 import java.util.ArrayList;
 import java.util.List;
 
-import teamamused.common.dtos.TransportableGameBoard;
 import teamamused.common.gui.AbstractModel;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.models.GameBoard;
@@ -53,8 +52,9 @@ public class GameBoardModel extends AbstractModel {
 	 * @return Gibt eine ArrayList mit Player-Objekten zurück.
 	 */
 	public List<Player> getPlayerList() {
-		TransportableGameBoard tgb = TransportableGameBoard.getTransportObjectFromGameBoard(gameBoard);
-		ArrayList<Player> playerList = tgb.players;
+		//BeanGameBoard tgb = BeanGameBoard.getTransportObjectFromGameBoard(gameBoard);
+		//ArrayList<Player> playerList = tgb.players;
+		ArrayList<Player> playerList = new ArrayList<Player>();
 		return playerList;
 	}
 	
