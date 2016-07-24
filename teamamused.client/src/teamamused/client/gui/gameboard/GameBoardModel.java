@@ -10,17 +10,20 @@ import teamamused.common.models.Player;
 
 public class GameBoardModel extends AbstractModel {
 	protected int btnPlayerClicked;
-	
+
+	// Wird vom Handler der Player-Buttons im Controller aufgerufen
 	public void setBtnPlayerClicked(int btnNumber) {
 		this.btnPlayerClicked = btnNumber;
 	}
-	
+
+	// Gibt die Nummer des Spielers, wessen Button geklickt wurde, zurück
 	public int getBtnPlayerClicked() {
 		return btnPlayerClicked;
 	}
-	
+
 	// FIXME: get gameBoard from server
 	private GameBoard gameBoard = new GameBoard();
+
 	{
 		gameBoard.init();
 	}
@@ -40,22 +43,23 @@ public class GameBoardModel extends AbstractModel {
 	 */
 	public void dice() {
 		for (ICube cube : getCubes()) {
-			if(!cube.getIsFixed()) {
-				cube.dice();				
+			if (!cube.getIsFixed()) {
+				cube.dice();
 			}
 		}
 	}
-	
+
 	/**
 	 * Diese Methode liest alle Spieler in eine ArrayList und gibt diese zurück.
 	 * 
 	 * @return Gibt eine ArrayList mit Player-Objekten zurück.
 	 */
 	public List<Player> getPlayerList() {
-		//BeanGameBoard tgb = BeanGameBoard.getTransportObjectFromGameBoard(gameBoard);
-		//ArrayList<Player> playerList = tgb.players;
+		// BeanGameBoard tgb =
+		// BeanGameBoard.getTransportObjectFromGameBoard(gameBoard);
+		// ArrayList<Player> playerList = tgb.players;
 		ArrayList<Player> playerList = new ArrayList<Player>();
 		return playerList;
 	}
-	
+
 }
