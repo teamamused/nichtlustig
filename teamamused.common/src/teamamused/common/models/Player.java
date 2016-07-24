@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Hashtable;
 
+import teamamused.common.dtos.BeanPlayer;
 import teamamused.common.interfaces.IDeadCard;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
+import teamamused.common.models.cards.CardFactory;
 import teamamused.common.models.cards.GameCard;
 
 /**
@@ -26,7 +28,7 @@ public class Player implements IPlayer, Serializable {
 	private transient Hashtable<GameCard, IDeadCard> htDeadCards;
 	private transient Hashtable<IDeadCard, ITargetCard> htDeadOnTargetCards;
 
-	private String username;
+	private String playername;
 	private int playerNumber = 0;
 
 	public Player() {
@@ -35,12 +37,25 @@ public class Player implements IPlayer, Serializable {
 	/**
 	 * Instanziert einen neuen Spieler
 	 * 
-	 * @param username
+	 * @param playername
 	 *            Benutzername
 	 */
-	public Player(String username) {
+	public Player(String playername) {
 		this();
-		this.username = username;
+		this.playername = playername;
+	}
+
+	/**
+	 * Instanziert einen neuen Spieler
+	 * 
+	 * @param playername
+	 *            Benutzername
+	 * @param playerNumber
+	 *            Spieler nummer
+	 */
+	public Player(String playername, int playerNumber) {
+		this(playername);
+		this.playerNumber = playerNumber;
 	}
 
 	/**
@@ -49,9 +64,25 @@ public class Player implements IPlayer, Serializable {
 	 * @param username
 	 *            Benutzername
 	 */
-	public Player(String username, int playerNumber) {
-		this(username);
-		this.playerNumber = playerNumber;
+	public Player(BeanPlayer transportablePlayer) {
+		this(transportablePlayer.playername, transportablePlayer.playerNumber);
+		// Spielkarten
+		htSpecialCards = new Hashtable<GameCard, ISpecialCard>();
+		htTargetCards = new Hashtable<GameCard, ITargetCard>();
+		htDeadCards = new Hashtable<GameCard, IDeadCard>();
+		
+		Hashtable<GameCard, IDeadCard> allDeadCards = CardFactory.getDeadCards();
+		for (GameCard card : transportablePlayer.deadCards) {
+			this.htDeadCards.put(card, allDeadCards.get(card));
+		}
+		Hashtable<GameCard, ISpecialCard> allSpecialCards = CardFactory.getSpecialCards();
+		for (GameCard card : transportablePlayer.specialCards) {
+			this.htSpecialCards.put(card, allSpecialCards.get(card));
+		}
+		Hashtable<GameCard, ITargetCard> allTargetCards = CardFactory.getTargetCards();
+		for (GameCard card : transportablePlayer.targetCards) {
+			this.htTargetCards.put(card, allTargetCards.get(card));
+		}
 	}
 	/**
 	 * Implementierung von:
@@ -200,7 +231,7 @@ public class Player implements IPlayer, Serializable {
 	 */
 	@Override
 	public String getPlayerName() {
-		return this.username;
+		return this.playername;
 	}
 
 	/**
@@ -216,6 +247,6 @@ public class Player implements IPlayer, Serializable {
 
 	@Override
 	public String toString() {
-		return this.username;
+		return this.playername;
 	}
 }

@@ -11,7 +11,8 @@ import java.util.Hashtable;
 import java.util.List;
 
 import teamamused.common.ServiceLocator;
-import teamamused.common.dtos.TransportableGameBoard;
+import teamamused.common.dtos.BeanGameBoard;
+import teamamused.common.dtos.BeanPlayer;
 import teamamused.common.interfaces.ICardHolder;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IDeadCard;
@@ -67,15 +68,16 @@ public class GameBoard implements ICardHolder, Serializable {
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett - Würfel erstellt");
 
 	}
+	
 	/**
 	 * Initialiserung der Karten und Würfel
 	 */
-	public void initFromTransportObject(TransportableGameBoard tgb) {
+	public void initFromTransportObject(BeanGameBoard tgb) {
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett");
 		// Spieler initialisieren
 		this.players = new ArrayList<IPlayer>();
-		for (Player p : tgb.players) {
-			this.players.add(p);
+		for (BeanPlayer p : tgb.players) {
+			this.players.add(new Player(p));
 		}
 		// Spielkarten
 		htSpecialCards = new Hashtable<GameCard, ISpecialCard>();
