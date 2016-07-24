@@ -9,7 +9,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import teamamused.client.Main;
 import teamamused.client.gui.cardPopup.CardPopupController;
-import teamamused.client.gui.cardPopup.CardPopupModel;
 import teamamused.client.gui.cardPopup.CardPopupView;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractController;
@@ -101,7 +100,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	public void showCardPopup() {
 		Stage popupStage = new Stage();
-		CardPopupModel model = new CardPopupModel();
+//		CardPopupModel model = new CardPopupModel();
 		CardPopupView cardPopupView = new CardPopupView(popupStage, model);
 		new CardPopupController(model, cardPopupView);
 		cardPopupView.start();

@@ -11,13 +11,12 @@ import javafx.stage.Stage;
 import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.common.gui.AbstractView;
 
-public class CardPopupView extends AbstractView<CardPopupModel> {
+public class CardPopupView extends AbstractView<GameBoardModel> {
 
 	protected Label labelText, cardsRival, specialCardsRival;
 	protected Button btnTakeCard, btnClose;
-	protected GameBoardModel gameBoardModel;
 
-	public CardPopupView(Stage stage, CardPopupModel model) {
+	public CardPopupView(Stage stage, GameBoardModel model) {
 		super(stage, model);
 	}
 
@@ -38,9 +37,8 @@ public class CardPopupView extends AbstractView<CardPopupModel> {
 		labelText = new Label(
 				"Hier kannst du die Karten deines Gegners sehen und allenfalls\nvon ihm Karten stibitzen.");
 		// Erste Variante funktioniert nicht - wieso? TODO
-		// cardsRival = new Label("Karten von Spieler " +
-		// gameBoardModel.getBtnPlayerClicked());
-		cardsRival = new Label("Karten von Spieler " + "Nr");
+		cardsRival = new Label("Karten von Spieler " + model.getBtnPlayerClicked());
+		// cardsRival = new Label("Karten von Spieler " + "Nr");
 		specialCardsRival = new Label("Sonderkarten von Spieler " + "Nr");
 		btnTakeCard = CardPopupView.initializeButton("Karte(n) nehmen");
 		btnClose = CardPopupView.initializeButton("schliessen");
@@ -50,7 +48,7 @@ public class CardPopupView extends AbstractView<CardPopupModel> {
 		root.add(specialCardsRival, 0, 3);
 		root.add(btnTakeCard, 5, 4);
 		root.add(btnClose, 5, 7);
-		
+
 		GridPane.setHalignment(btnTakeCard, HPos.RIGHT);
 		GridPane.setHalignment(btnClose, HPos.RIGHT);
 

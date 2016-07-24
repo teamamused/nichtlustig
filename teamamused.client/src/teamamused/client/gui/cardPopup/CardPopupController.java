@@ -2,11 +2,12 @@ package teamamused.client.gui.cardPopup;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.common.gui.AbstractController;
 
-public class CardPopupController extends AbstractController<CardPopupModel, CardPopupView> {
+public class CardPopupController extends AbstractController<GameBoardModel, CardPopupView> {
 
-	public CardPopupController(CardPopupModel model, CardPopupView view) {
+	public CardPopupController(GameBoardModel model, CardPopupView view) {
 		super(model, view);
 		
 		// Der Klick auf den Schliessen-Button schliesst das Fenster
