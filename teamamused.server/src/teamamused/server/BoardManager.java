@@ -33,9 +33,9 @@ public class BoardManager {
 	private ICardHolder currentOwner;
 	private List<ICardHolder> currentOwners;
 	private ICardHolder newOwner;
-	private List<ITargetCard> targetCardsToDeploy;
-	private List<ISpecialCard> specialCardsToDeploy;
-	private List<IDeadCard> deadCardsToDeploy;
+	private List<ITargetCard> targetCardsToDeploy = new ArrayList<ITargetCard>();
+	private List<ISpecialCard> specialCardsToDeploy = new ArrayList<ISpecialCard>();
+	private List<IDeadCard> deadCardsToDeploy= new ArrayList<IDeadCard>();
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose;
 	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
 	private List<ITargetCard> playerTargetCardsToValuate;
@@ -160,11 +160,15 @@ public class BoardManager {
 		List<ITargetCard> cardsToProposeTemp = new ArrayList<ITargetCard>();
 		List<ITargetCard> cardsToProposeTemp2 = new ArrayList<ITargetCard>();
 		List<ICube> cubesToCompareTemp = new ArrayList<ICube>();
+		deadCardsToDeploy = null;
+		specialCardsToDeploy = null;
+		targetCardsToDeploy = null;
 
-		for (ITargetCard targetCard : notValuatedCardsFromPlayers) {
+		//Verteilung von Zielkarten wird geprüft
+		for (ITargetCard targetCard : targetCards.keySet()) {
 			// Prüft die Summe der Würfel, und vergleicht diese mit der
 			// Dino-Karte
-			if (targetCard.getGameCard().isDino()) {
+			if (targetCard.getGameCard().isDino() && !targetCard.getIsValuated()) {
 				for (ICube cube : cubes) {
 					if (cube.getCubeColor() != CubeColor.Pink) {
 						sumOfCubes += cube.getCurrentValue().FaceValue;
@@ -172,9 +176,10 @@ public class BoardManager {
 				}
 				if (targetCard.getRequiredPoints() <= sumOfCubes) {
 					cardsToProposeTemp.add(targetCard);
+					targetCardsToDeploy.add(targetCard);
 				}
 				// Wenn Professoren-Karte spezielle andere Kalkulation
-			} else if (targetCard.getGameCard().isProffessoren()) {
+			} else if (targetCard.getGameCard().isProffessoren() && (!targetCard.getIsValuated()|| !targetCard.getIsCoveredByDead())) {
 				cardValues = targetCard.getRequiredCubeValues();
 				for (CubeValue cardValue : cardValues) {
 					for (ICube cube : cubesToCompare) {
@@ -187,10 +192,11 @@ public class BoardManager {
 				}
 				if (matchPoints > 2) {
 					cardsToProposeTemp.add(targetCard);
+					targetCardsToDeploy.add(targetCard);
 				}
 				matchPoints = 0;
 				// Wenn nicht Dino-Karte oder Professoren-Karte
-			} else {
+			} else if(!targetCard.getIsValuated() || !targetCard.getIsCoveredByDead()) {
 				cardValues = targetCard.getRequiredCubeValues();
 				for (CubeValue cardValue : cardValues) {
 					for (ICube cube : cubesToCompare) {
@@ -203,6 +209,7 @@ public class BoardManager {
 				}
 				if (matchPoints > 1) {
 					cardsToProposeTemp.add(targetCard);
+					targetCardsToDeploy.add(targetCard);
 				}
 				matchPoints = 0;
 			}
@@ -237,6 +244,27 @@ public class BoardManager {
 
 			cardsToProposeTemp2 = null;
 		}
+		
+		//Verteilung von Spezialkarten wird geprüft
+		for(ISpecialCard specialCard : specialCards.keySet()){
+			for(ICube cube : cubesToCompare){
+				if (cube.getSpecialCard() == specialCard){
+					specialCardsToDeploy.add(specialCard);
+				}
+			}
+		}
+		
+		//Verteilung von Todeskarten wird geprüft
+		if(targetCardsToDeploy.isEmpty()){
+			for(IDeadCard deadCard : deadCards.keySet()){
+				if(deadCard.getCardCalue() == CubeManager.getInstance().getCurrentPinkCube().FaceValue){
+					deadCardsToDeploy.add(deadCard);
+				}
+			}
+		}else{
+			deadCardsToDeploy = null;
+		}
+
 
 	}
 
@@ -273,7 +301,6 @@ public class BoardManager {
 			this.currentOwner = ownerNow;
 
 			// Verteilen der Spezialkarten
-			// Dani an Maja: SpecialCardsToDeploy ist noch nirgends zugewiesen
 			if (specialCardsToDeploy != null) {
 				for (ISpecialCard card : specialCardsToDeploy) {
 					if (specialCards.get(card) == currentOwner) {
@@ -376,9 +403,6 @@ public class BoardManager {
 	}
 
 	public void addDeadCardToDeploy(int deadNumber) {
-		if (this.deadCardsToDeploy == null) {
-			this.deadCardsToDeploy = new ArrayList<IDeadCard>();
-		}
 		IDeadCard dc = null;
 		for (IDeadCard card : this.deadCards.keySet()) {
 			if (card.getCardCalue() == deadNumber) {
