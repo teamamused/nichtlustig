@@ -390,11 +390,8 @@ public class BoardManager {
 	}
 
 	/**
-	 * Dani an Maja: ev ist dies unnötig, wegen proposeCards. oder was ist
-	 * propose Cards und wiso nimmt dieser einen Parameter entgegen?
-	 * 
 	 * Getter für die Karten welche dem Spieler gemäss der Methode
-	 * valuatePlayerDice zur auswahl stehen
+	 * valuatePlayerDice zur Auswahl stehen
 	 * 
 	 * @return Karten, welche dem Spieler zur Auswahl vorgeschlagt werden
 	 */
