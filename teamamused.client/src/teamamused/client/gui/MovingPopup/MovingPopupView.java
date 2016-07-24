@@ -8,14 +8,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.common.gui.AbstractView;
 
-public class MovingPopupView extends AbstractView<MovingPopupModel> {
+public class MovingPopupView extends AbstractView<GameBoardModel> {
 
 	protected Label labelQueue, labelDice, labelCards, labelNext;
 	protected Button btnBack;
 	
-	public MovingPopupView(Stage stage, MovingPopupModel model) {
+	public MovingPopupView(Stage stage, GameBoardModel model) {
 		super(stage, model);
 	}
 
