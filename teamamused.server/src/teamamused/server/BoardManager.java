@@ -37,7 +37,7 @@ public class BoardManager {
 	private List<ISpecialCard> specialCardsToDeploy;
 	private List<IDeadCard> deadCardsToDeploy;
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose;
-	private List<ITargetCard> notValuatedCardsFromPlayers;
+	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
 	private List<ITargetCard> playerTargetCardsToValuate;
 
 	// Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett
@@ -99,7 +99,7 @@ public class BoardManager {
 	 * @return nicht gewertete Spieler-Karten
 	 */
 	public List<ITargetCard> getNotValuatedCardsFromPlayer() {
-		notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
+		notValuatedCardsFromPlayers = null;
 
 		for (IPlayer player : this.board.getPlayers()) {
 			for (ITargetCard targetCard : player.getTargetCards()) {
@@ -127,8 +127,6 @@ public class BoardManager {
 		for (ITargetCard card : playerTargetCardsToValuate) {
 			if (card.getCardValue() != pinkCube) {
 				playerTargetCardsToValuate.remove(card);
-			} else {
-				notValuatedCardsFromPlayers.remove(card);
 			}
 		}
 	}
@@ -137,10 +135,13 @@ public class BoardManager {
 	 * Wertet die Karten der Spieler nach einem abgeschlossenen Spielzug.
 	 */
 	public void valuePlayerCards() {
-		for (ITargetCard card : playerTargetCardsToValuate) {
-			card.setIsValuated(true);
-			ClientNotificator.notifyGameMove("Karte " + card.toString() + " von Spieler " + targetCards.get(card)
-					+ " wurde gewertet.");
+		if(playerTargetCardsToValuate != null){
+			for (ITargetCard card : playerTargetCardsToValuate) {
+				card.setIsValuated(true);
+				notValuatedCardsFromPlayers.remove(card);
+				ClientNotificator.notifyGameMove("Karte " + card.toString() + " von Spieler " + targetCards.get(card)
+						+ " wurde gewertet.");
+			}
 		}
 		playerTargetCardsToValuate = null;
 		ClientNotificator.notifyUpdateGameBoard(board);
@@ -249,6 +250,7 @@ public class BoardManager {
 	 *            Zielkarten, welche der Spieler nehmen möchte
 	 */
 	public void takeProposedCards(List<ITargetCard> targetCardsToTake) {
+		targetCardsToDeploy = null;
 		for (ITargetCard card : targetCardsToTake) {
 			this.targetCardsToDeploy.add(card);
 		}
