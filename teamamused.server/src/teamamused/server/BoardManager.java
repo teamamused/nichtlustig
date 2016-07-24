@@ -239,17 +239,6 @@ public class BoardManager {
 
 	}
 
-	/**
-	 * Hat der Spieler mehrere Karten zur Auswahl, wird ihm mit dieser Methode
-	 * eine Auswahl an Karten gegeben, welche er nehmen kann.
-	 * 
-	 * @param targetCardsToChoose
-	 *            Zielkarten, welche dem Spieler zur Auswahl präsentiert werden
-	 * @return Karten, welche dem Spieler zur Auswahl vorgeschlagt werden
-	 */
-	public Hashtable<Integer, List<ITargetCard>> proposeCards(List<ITargetCard> targetCardsToChoose) {
-		return cardsToPropose;
-	}
 
 	/**
 	 * Hat der Spieler mehrere Karten zur Auswahl, wird über das GUI mit dieser
