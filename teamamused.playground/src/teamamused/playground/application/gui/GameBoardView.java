@@ -34,7 +34,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	Button btnDiceRoll;
 	Button btnDiceFix;
 	Button btnStartGame;
-	Button btnChooseCards;
 	Button btnChatSenden;
 
 	CheckBox[] cbsCubesFixed = new CheckBox[7];
@@ -75,7 +74,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		this.wuerfel = new HBox();
 		this.btnDiceRoll = new Button("würfeln");
 		this.btnDiceFix = new Button("fixieren");
-		this.btnChooseCards = new Button("Karten wählen");
 		// Benachrichtigungen
 		VBox right = new VBox();
 		int rightWidt = 150;
@@ -163,7 +161,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		// Gui hinzufügen
 		this.wuerfel.getChildren().add(lblText);
 		this.wuerfel.getChildren().add(kartenPane);
-		this.wuerfel.getChildren().add(this.btnChooseCards);
 	}
 
 	/**

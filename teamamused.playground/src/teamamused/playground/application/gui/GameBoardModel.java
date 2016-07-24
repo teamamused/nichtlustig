@@ -1,10 +1,7 @@
 package teamamused.playground.application.gui;
 
-import java.util.Hashtable;
-import java.util.List;
 
 import teamamused.common.gui.AbstractModel;
-import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.GameBoard;
 import teamamused.common.models.Player;
 import teamamused.client.libs.Client;
@@ -22,11 +19,6 @@ public class GameBoardModel extends AbstractModel {
     
     // Ob Würfel Fixiert sind
     boolean[] cubesFixed = new boolean[7];
-    
-    // Falls es mehrere Zielkarten gibt zum auswählen, hier die Auswahl
-    Hashtable<Integer, List<ITargetCard>> cardsToChooseOptions;
-    
-	List<ITargetCard> cardsChoosen = null;
     
     // Wenn der Spieler am würfeln ist, wievielmal er noch darf
     int remainingDices = 3;

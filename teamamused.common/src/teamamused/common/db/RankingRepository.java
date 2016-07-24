@@ -31,15 +31,15 @@ public class RankingRepository {
 		int rank = 1;
 		for (Entry<IPlayer, Integer> pp : playerPoints.entrySet()) {
 			Ranking r = new Ranking();
-			r.Username = pp.getKey().getPlayerName();
-			r.GameId = gameId;
-			r.GameRank = rank;
+			r.setUsername(pp.getKey().getPlayerName());
+			r.setGameId(gameId);
+			r.setGameRank(rank);
 			ranks[rank -1] = r;
 			rank ++;
 		}
 		// Der DB hinzufügen
 		db.addRankings(Arrays.asList(ranks));
-		Ranking[] ranksFromDB = db.getRankings().stream().filter(x -> x.GameId == gameId).toArray(x -> new Ranking[x]);
+		Ranking[] ranksFromDB = db.getRankings().stream().filter(x -> x.getGameId() == gameId).toArray(x -> new Ranking[x]);
 		return ranksFromDB;
 	}
 	/**
