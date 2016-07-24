@@ -56,9 +56,7 @@ public class Game implements Serializable {
 	 * @return Instanz des Games
 	 */
 	public static Game getInstance() {
-		// Dani an Maja: wieso willst du ein neues Spiel machen falls es noch
-		// nicht beendet ist? So verliere ich immer den active Player
-		if (instance == null /* || instance.gameStatus != 2 */) {
+		if (instance == null) {
 			instance = new Game();
 		}
 		return instance;
