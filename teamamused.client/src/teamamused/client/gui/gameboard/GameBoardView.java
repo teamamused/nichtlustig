@@ -286,7 +286,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 */
 	private static Button initializeButton(String buttonText) {
 		Button btn = new Button(buttonText);
-		btn.setMaxSize(200, 40);
+		btn.setPrefSize(200, 40);
 		btn.setAlignment(Pos.CENTER);
 		return btn;
 	}
