@@ -88,7 +88,8 @@ public class CubeManager{
 	 * @return Anzahl Versuche
 	 */
 	public int initForNextRound(int additionalDicings) {
-		this.resetCounters();
+		//this.resetCounters();
+		this.diceCounter = 0;
 		this.allowedDicings = 3 + additionalDicings;
 		return this.allowedDicings;
 	}

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 
+import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ICardHolder;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IDeadCard;
@@ -153,21 +154,26 @@ public class BoardManager {
 	 * abgeschlossen hat.
 	 */
 	public void valuatePlayerDice() {
-		ICube cubes[] = CubeManager.getInstance().getCubes();
 		int sumOfCubes = 0;
 		CubeValue[] cardValues;
 		int matchPoints = 0;
-		List<ICube> cubesToCompare = Arrays.asList(cubes);
+		List<ICube> cubesToCompare = new ArrayList<ICube>();
 		List<ITargetCard> cardsToProposeTemp = new ArrayList<ITargetCard>();
 		List<ITargetCard> cardsToProposeTemp2 = new ArrayList<ITargetCard>();
 		List<ICube> cubesToCompareTemp = new ArrayList<ICube>();
 		List<IDeadCard> deadCardsToDeploy = new ArrayList<IDeadCard>();
 		specialCardsToDeploy = new ArrayList<ISpecialCard>();
 		targetCardsToDeploy = new ArrayList<ITargetCard>();
-
+		
+		//Würfel in ArrayListe schreiben für kommende Vergleiche von
+		//verschiedenen Kartentypen
+		for(ICube cube : CubeManager.getInstance().getCubes()){
+			cubesToCompare.add(cube);
+		}
+		
 		//Verteilung von Spezialkarten wird geprüft
 		for(ICube cube : cubesToCompare){
-			if(cube.getSpecialCard() != null){
+			if(cube.getCurrentValue().FaceValue == 0){
 				specialCardsToDeploy.add(cube.getSpecialCard());
 				cubesToCompare.remove(cube);
 			}
@@ -194,7 +200,7 @@ public class BoardManager {
 				for (CubeValue cardValue : cardValues) {
 					for (ICube cube : cubesToCompare) {
 						if (cube.getCubeColor() != CubeColor.Pink) {
-							if (cardValue == cube.getCurrentValue()) {
+							if (cardValue.FaceValue == cube.getCurrentValue().FaceValue) {
 								matchPoints += 1;
 							}
 						}
@@ -211,7 +217,7 @@ public class BoardManager {
 				for (CubeValue cardValue : cardValues) {
 					for (ICube cube : cubesToCompare) {
 						if (cube.getCubeColor() != CubeColor.Pink) {
-							if (cardValue == cube.getCurrentValue()) {
+							if (cardValue.FaceValue == cube.getCurrentValue().FaceValue) {
 								matchPoints += 1;
 							}
 						}
@@ -239,7 +245,7 @@ public class BoardManager {
 				if (!card.getGameCard().isDino()) {
 					for (CubeValue cubeValue : cubeValuesTemp) {
 						for (ICube cube : cubesToCompareTemp) {
-							if (cube.getCurrentValue() == cubeValue) {
+							if (cube.getCurrentValue().FaceValue == cubeValue.FaceValue) {
 								cubesToCompareTemp.remove(cube);
 							}
 						}
@@ -403,7 +409,7 @@ public class BoardManager {
 		newOwner.addSpecialCard(sc);
 	}
 
-	public void addDeadCardToDeploy(int deadNumber) {
+	/*public void addDeadCardToDeploy(int deadNumber) {
 		IDeadCard dc = null;
 		for (IDeadCard card : this.deadCards.keySet()) {
 			if (card.getCardCalue() == deadNumber) {
@@ -414,7 +420,7 @@ public class BoardManager {
 		if (dc != null) {
 			this.deadCardsToDeploy.add(dc);
 		}
-	}
+	}*/
 
 	/**
 	 * Getter für die Karten welche dem Spieler gemäss der Methode

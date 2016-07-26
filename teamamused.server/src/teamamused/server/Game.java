@@ -174,7 +174,7 @@ public class Game implements Serializable {
 		}
 
 		// Dani an Maja: ev. der Teil hier in valuatePlayerDice nehmen?
-		// Prüfen ob der Spieler eine Todeskarte nehmen muss. 
+		// Prüfen ob der Spieler eine Todeskarte nehmen muss 
 		// Dazu Spezialkarten prüfen
 		ISpecialCard playerIsForcedToDead = null;
 		ISpecialCard playerIsBewaredOfDead = null;
@@ -200,13 +200,13 @@ public class Game implements Serializable {
 				ClientNotificator.notifyGameMove("Der Spieler " + this.activePlayer.getPlayerName()
 						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!");
 				BoardManager.getInstance().switchCardOwner(playerIsForcedToDead, null);
-			} else {
+			} /*else {
 				ClientNotificator.notifyGameMove("Der Spieler " + this.activePlayer.getPlayerName()
-						+ " wurde vom Tod heimgesucht!");
+						+ " wurde vom Tod heimgesucht!");*/
 				// Spieler den Tod zuteilen
-				int deadNumber = CubeManager.getInstance().getCurrentPinkCube().FaceValue;
+				/*int deadNumber = CubeManager.getInstance().getCurrentPinkCube().FaceValue;
 				BoardManager.getInstance().addDeadCardToDeploy(deadNumber);
-			}
+			}*/
 		}
 		//
 		// Wenn mehrere Optionen zur Auswal:

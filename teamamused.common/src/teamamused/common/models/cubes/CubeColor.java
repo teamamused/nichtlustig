@@ -38,4 +38,16 @@ public enum CubeColor {
 	public Color getForegroundColor() {
 		return this.foreColor;
 	}
+	
+	@Override
+	public String toString() {
+		if (this.backColor.equals(Color.RED)) {
+			return "RED";
+		} else if (this.backColor.equals(Color.WHITE)) {
+			return "WHITE";
+		} else if (this.backColor.equals(Color.BLACK)) {
+			return "BLACK";
+		}
+		return "No Color";
+	}
 }

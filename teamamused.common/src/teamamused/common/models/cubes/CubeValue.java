@@ -60,8 +60,15 @@ public class CubeValue implements Serializable {
 	 *            zu vergleichender CubeValue
 	 * @return sind die CubeValues identisch Ja/Nein
 	 */
-	public boolean equals(CubeValue otherCubeValue) {
-		return this.Color.getForegroundColor().equals(otherCubeValue.Color.getForegroundColor()) && this.FaceValue == otherCubeValue.FaceValue;
+	@Override
+	public boolean equals(Object obj) {
+		CubeValue otherCubeValue = (CubeValue)obj;
+		return this.Color.getBackgroundColor().equals(otherCubeValue.Color.getBackgroundColor()) && this.FaceValue == otherCubeValue.FaceValue;
+	}
+
+	@Override
+	public String toString() {
+		return this.Color.toString() + " - " + this.FaceValue;
 	}
 
 	/**
