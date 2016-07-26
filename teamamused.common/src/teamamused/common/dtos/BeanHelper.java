@@ -38,7 +38,6 @@ public class BeanHelper {
 		for (IPlayer player : board.getPlayers()) {
 			tgb.players.add(getPlayerBeanFromObject(player));
 		}
-		
 		return tgb;
 	}
 	

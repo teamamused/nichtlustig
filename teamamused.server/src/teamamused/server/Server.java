@@ -108,11 +108,14 @@ public class Server {
 	}
 
 	public TransportObject fixDices(TransportableProcedureCall rpc) {
-		if (rpc != null && rpc.getArguments() != null && rpc.getArguments().length >= 1
-				&& rpc.getArguments()[0] instanceof boolean[]) {
+		if (rpc != null && rpc.getArguments() != null && rpc.getArguments().length >= 7
+				&& rpc.getArguments()[0] instanceof Boolean) {
 			try {
 				// Würfel fixieren
-				boolean[] cubesFixed = (boolean[])rpc.getArguments()[0];
+				boolean[] cubesFixed = new boolean[7];
+				for (int i = 0; i< 7; i++) {
+					cubesFixed[i] = (boolean)rpc.getArguments()[i];
+				}
 				CubeManager.getInstance().saveFixedDices(cubesFixed);
 				// Clients informieren
 				ClientNotificator.notifyGameMove("Der Spieler " + rpc.getClient() + " hat würfel fixiert.");

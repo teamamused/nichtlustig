@@ -34,7 +34,7 @@ public class TransportableProcedureCall extends TransportObject {
 		RollDices,
 		/**
 		 * Übergebene Würfel werden fixiert:
-		 * Parameter: boolean[7]  Index des Arrays ist die würfelNummer, wert ob fixiert
+		 * Parameter: 7 boolean im Object[].  Index des Arrays ist die würfelNummer, wert ob fixiert
 		 */
 		FixDices,
 		/**
@@ -77,7 +77,11 @@ public class TransportableProcedureCall extends TransportObject {
 		UpdateGameBoard,
 		/**
 		 * Aktiviert den nächsten Spieler. 
-		 * Parameter: IPlayer neuer aktiver Spieler
+		 * Parameter: 
+		 * 		Index 0: IPlayer neuer aktiver Spieler
+		 * 		Index 1: int Anzahl würfelversuche (da durch sonderkarten zwischen 2 und 4 möglich
+		 * 		Index 2: int Anzahl würfelversuche (da durch sonderkarten zwischen 2 und 4 möglich
+		 * 	
 		*/
 		ChangeActivePlayer,
 		/**
@@ -92,8 +96,8 @@ public class TransportableProcedureCall extends TransportObject {
 		FinishGame
 	}
 	
-	RemoteProcedure procedure;
-	Object[] arguments;
+	volatile RemoteProcedure procedure;
+	volatile Object[] arguments;
 
 	/**
 	 * Konstruktor zur Initialiierung einen neuen, Parameter lossen, Remote Calls

@@ -168,7 +168,11 @@ public class Client {
 		if (this.currPlayer != null) {
 			this.log.info("Client Spieler " + this.currPlayer.getPlayerName() + " möchte Würfel fixieren");
 		}
-		this.send(new TransportableProcedureCall(RemoteProcedure.FixDices, new Object[] { cubeFixed }));
+		Object[] args = new Object[7];
+		for (int i = 0; i< 7; i++) {
+			args[i] = cubeFixed[i];
+		}
+		this.send(new TransportableProcedureCall(RemoteProcedure.FixDices, args));
 	}
 
 	/**

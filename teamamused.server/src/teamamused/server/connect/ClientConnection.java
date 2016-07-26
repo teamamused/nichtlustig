@@ -1,4 +1,5 @@
 package teamamused.server.connect;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -76,8 +77,9 @@ public class ClientConnection extends Thread {
 			while (this.isListeningForClient) {
 				// Inkommendes Transport Objekt empfangen
 				TransportObject dtoIn = TransportObject.receive(this.in);
-				// Wenn null: Client hat Connection geschlossen					
-				// Sonst: Client eine Antwort schicken, ausser wenn ein State zurückkam, dann gibt's keine mehr.
+				// Wenn null: Client hat Connection geschlossen
+				// Sonst: Client eine Antwort schicken, ausser wenn ein State
+				// zurückkam, dann gibt's keine mehr.
 				if (dtoIn != null && dtoIn.getTransportType() != TransportType.State) {
 					// inkommendes Objekt verarbeiten
 					TransportObject dtoOut = processRequest(dtoIn);
@@ -96,30 +98,30 @@ public class ClientConnection extends Thread {
 			LogHelper.LogException(e);
 		} finally {
 			// Socket und streams alles sauber schliessen
-			try { 
-				if(this.in != null) {
+			try {
+				if (this.in != null) {
 					this.in.close();
 				}
+			} catch (Exception e) {
 			}
-			catch(Exception e) {} 
 			try {
-				if(this.out != null) {
+				if (this.out != null) {
 					this.out.close();
 				}
+			} catch (Exception e) {
 			}
-			catch(Exception e) {}
-	        try{
-				if(this.clientSocket != null) {
+			try {
+				if (this.clientSocket != null) {
 					this.clientSocket.close();
 				}
+			} catch (Exception e) {
 			}
-			catch(Exception e) {}
 		}
 	}
+
 	/**
-	 * Schliesst die Connection vom Server her.
-	 * Hierzu wird dem Client ein nettes Goodby gesendet. 
-	 * Dieser schliesst dan von seiner seite das Socket.
+	 * Schliesst die Connection vom Server her. Hierzu wird dem Client ein
+	 * nettes Goodby gesendet. Dieser schliesst dan von seiner seite das Socket.
 	 */
 	public void close() {
 		try {
@@ -132,7 +134,9 @@ public class ClientConnection extends Thread {
 
 	/**
 	 * Verarbeitet die Clientanfrage je nach Anfrage Typ
-	 * @param dtoIn Anfrage vom Client
+	 * 
+	 * @param dtoIn
+	 *            Anfrage vom Client
 	 * @return Antwort vom Server
 	 */
 	private TransportObject processRequest(TransportObject dtoIn) {
@@ -148,11 +152,12 @@ public class ClientConnection extends Thread {
 			dtoOut = this.executeRemoteCall((TransportableProcedureCall) dtoIn);
 			break;
 		case ChatMessage:
-			dtoOut = Server.getInstance().forwardChatMessage((TransportableChatMessage)dtoIn);
+			dtoOut = Server.getInstance().forwardChatMessage((TransportableChatMessage) dtoIn);
 			break;
 		case Goodbye:
 			ClientManager.getInstance().removeClient(this);
-			// Wenn er noch auf den Client wartet, kamm das goodbye vom Client sonst vom Server
+			// Wenn er noch auf den Client wartet, kamm das goodbye vom Client
+			// sonst vom Server
 			if (this.isListeningForClient) {
 				this.isListeningForClient = false;
 				dtoOut = new TransportObject(TransportType.Goodbye);
@@ -167,58 +172,72 @@ public class ClientConnection extends Thread {
 		dtoOut.setClient(this.username);
 		return dtoOut;
 	}
-	
+
 	public void sendDto(TransportObject dto) {
 		dto.send(this.out);
 	}
-	
+
 	public void setPlayer(IPlayer player) {
 		this.player = player;
 	}
-	
+
 	public IPlayer getPlayer() {
 		return this.player;
 	}
 
-
 	/**
 	 * Verarbeitet Prozedur anfragen vom Client, individuell nach Prozedur
-	 * @param rpc Anfrage vom Client
+	 * 
+	 * @param rpc
+	 *            Anfrage vom Client
 	 * @return Antwort vom Server
 	 */
 	private TransportObject executeRemoteCall(TransportableProcedureCall rpc) {
+		TransportObject retval = null;
 		switch (rpc.getProcedure()) {
 		case StartGame:
-			return Server.getInstance().startGame(rpc);
+			retval = Server.getInstance().startGame(rpc);
+			break;
 		case RollDices:
-			return Server.getInstance().rollDices(rpc);
+			retval = Server.getInstance().rollDices(rpc);
+			break;
 		case FixDices:
-			return Server.getInstance().fixDices(rpc);
+			retval = Server.getInstance().fixDices(rpc);
+			break;
 		case CardsChosen:
-			return Server.getInstance().cardsChosen(rpc);
+			retval = Server.getInstance().cardsChosen(rpc);
+			break;
 		case LoginPlayer:
-			return this.validateLogin(rpc);
+			retval = this.validateLogin(rpc);
+			break;
 		case RegisterPlayer:
-			return this.createLogin(rpc);
+			retval = this.createLogin(rpc);
+			break;
 		case JoinGame:
-			return Server.getInstance().connectPlayerToGame(rpc);
+			retval = Server.getInstance().connectPlayerToGame(rpc);
+			break;
 		case GetTopRanking:
-			return Server.getInstance().getTopRanking(rpc);
+			retval = Server.getInstance().getTopRanking(rpc);
+			break;
 		default:
+			retval = new TransportableState(false, "Remote Procedure is undefined");
 			break;
 		}
-		return new TransportableState(false, "Remote Procedure is undefined");
+		return retval;
 	}
-	
+
 	/**
 	 * Prüft ob der Spieler vorhanden ist und das Passwort stimmt
-	 * @param rpc Aufruf vom Client
-	 * @return Transportable Answer mit False und NULL fals nicht erfolgreich, true und Player fals erfolgreich 
+	 * 
+	 * @param rpc
+	 *            Aufruf vom Client
+	 * @return Transportable Answer mit False und NULL fals nicht erfolgreich,
+	 *         true und Player fals erfolgreich
 	 */
 	private TransportObject validateLogin(TransportableProcedureCall rpc) {
 		if (rpc.getArguments() != null && rpc.getArguments().length == 2) {
-			String username = (String)rpc.getArguments()[0];
-			String password = (String)rpc.getArguments()[1];
+			String username = (String) rpc.getArguments()[0];
+			String password = (String) rpc.getArguments()[1];
 			Player p = PlayerRepository.validatePlayerLogin(username, password);
 			if (p != null) {
 				this.player = p;
@@ -233,16 +252,19 @@ public class ClientConnection extends Thread {
 		}
 		return new TransportableAnswer(rpc, false, "Sie müssen einen Benutzer namen und ein Passwort mitgeben");
 	}
-	
+
 	/**
 	 * Prüft ob der Spieler vorhanden ist und das Passwort stimmt
-	 * @param rpc Aufruf vom Client
-	 * @return Transportable Answer mit False und NULL fals nicht erfolgreich, true und Player fals erfolgreich 
+	 * 
+	 * @param rpc
+	 *            Aufruf vom Client
+	 * @return Transportable Answer mit False und NULL fals nicht erfolgreich,
+	 *         true und Player fals erfolgreich
 	 */
 	private TransportObject createLogin(TransportableProcedureCall rpc) {
 		if (rpc.getArguments() != null && rpc.getArguments().length == 2) {
-			String username = (String)rpc.getArguments()[0];
-			String password = (String)rpc.getArguments()[1];
+			String username = (String) rpc.getArguments()[0];
+			String password = (String) rpc.getArguments()[1];
 			Player p;
 			try {
 				p = PlayerRepository.createPlayer(username, password);

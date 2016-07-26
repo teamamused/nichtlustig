@@ -2,6 +2,7 @@ package teamamused.playground.login;
 
 import teamamused.client.libs.Client;
 import teamamused.client.libs.IClientListener;
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
 import teamamused.common.db.DataBaseHelper;
@@ -213,7 +214,11 @@ public class LoginTest extends Application implements IClientListener {
 	}
 	
 	public static void main(String[] args) {
-		launch(args);
+		try {
+			launch(args);
+		} catch (Exception ex){
+			LogHelper.LogException(ex);
+		}
 	}
 
 	
