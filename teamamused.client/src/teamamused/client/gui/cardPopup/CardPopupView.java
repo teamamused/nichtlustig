@@ -2,7 +2,6 @@ package teamamused.client.gui.cardPopup;
 
 import java.io.FileNotFoundException;
 
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -58,8 +57,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		titlePane.setPrefWidth(1000);
 
 		// Definition der Pane für den Text zu den Zielkarten inkl.
-		// Instanziierung
-		// und Zuweisung der Controlls
+		// Instanziierung und Zuweisung der Controlls
 		cardTxtPane = new HBox();
 		cardsRival = new Label("Karten von Spieler " + model.getBtnPlayerClicked());
 		cardTxtPane.getChildren().add(cardsRival);
@@ -81,7 +79,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		specialCardsRival = new Label("Spezialkarten von Spieler " + model.getBtnPlayerClicked());
 		specialCardTxtPane.getChildren().add(specialCardsRival);
 
-		// TODO: Muss dynamisch gestalten sein - Umbruch regeln
+		// TODO: Muss dynamisch gestalten sein
 		// Definition der Pane für die Spezialkarten inkl. Instanziierung und
 		// Zuweisung der Controlls
 		specialCardsFlowPane = new FlowPane();
