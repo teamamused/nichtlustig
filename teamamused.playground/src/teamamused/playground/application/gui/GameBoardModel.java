@@ -17,6 +17,10 @@ public class GameBoardModel extends AbstractModel {
     // Ob der Spieler aktiv ist
     boolean isPlayerActive;
     
+    boolean targetCardsNeedsUpdate = true;
+    boolean deadCardsNeedsUpdate = true;
+    boolean speicalCardsNeedsUpdate = true;
+    
     // Ob Würfel Fixiert sind
     boolean[] cubesFixed = new boolean[7];
     

@@ -70,7 +70,7 @@ public class ClientNotificator {
 	 */
 	public static void notifyPlayerChanged(IPlayer activePlayer) {
 		TransportableProcedureCall playerChanged = new TransportableProcedureCall(
-				TransportableProcedureCall.RemoteProcedure.ChangeActivePlayer, new Object[] { activePlayer });
+				TransportableProcedureCall.RemoteProcedure.ChangeActivePlayer, new Object[] { activePlayer, CubeManager.getInstance().getRemainingTries() });
 		ClientManager.getInstance().updateClients(playerChanged);
 	}
 

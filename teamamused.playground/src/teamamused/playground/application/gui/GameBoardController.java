@@ -44,6 +44,14 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		view.btnDiceFix.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				System.out.println("Button Pressed:");
+				System.out.println(model.cubesFixed[0]);
+				System.out.println(model.cubesFixed[1]);
+				System.out.println(model.cubesFixed[2]);
+				System.out.println(model.cubesFixed[3]);
+				System.out.println(model.cubesFixed[4]);
+				System.out.println(model.cubesFixed[5]);
+				System.out.println(model.cubesFixed[6]);
 				Client.getInstance().setFixedCubes(model.cubesFixed);
 			}
 		});
@@ -110,7 +118,17 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	@Override
 	public void onGameBoardChanged(GameBoard newGameBoard) {
+		if (model.spielbrett != null) {
+			model.speicalCardsNeedsUpdate = newGameBoard.getSpecialCards().length != model.spielbrett.getSpecialCards().length;
+			model.targetCardsNeedsUpdate = newGameBoard.getTargetCards().length != model.spielbrett.getTargetCards().length;
+			model.deadCardsNeedsUpdate = newGameBoard.getDeadCards().length != model.spielbrett.getDeadCards().length;
+		} else {
+			model.speicalCardsNeedsUpdate = true;
+			model.targetCardsNeedsUpdate = true;
+			model.deadCardsNeedsUpdate = true;
+		}
 		model.spielbrett = newGameBoard;
+		
 		Platform.runLater(() -> {
 			view.drawCards();
 			view.drawCubes();

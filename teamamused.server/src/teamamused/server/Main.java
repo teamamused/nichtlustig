@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.server.connect.ClientAwaiter;
 import teamamused.server.gui.ServerController;
@@ -45,6 +46,10 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		launch(args);		
+		try {
+			launch(args);
+		} catch (Exception ex) {
+			LogHelper.LogException(ex);
+		}
 	}
 }
