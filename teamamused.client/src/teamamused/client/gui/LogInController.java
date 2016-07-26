@@ -15,7 +15,7 @@ public class LogInController extends AbstractController<LogInModel, LogInView>  
 	public LogInController(LogInModel model, LogInView view) {
 		super(model, view);
 
-		// uns beim Client Registrieren
+		// Beim Client registrieren
 		Client.getInstance().registerGui(this);
 		
 		view.btnLogin.setOnAction(new EventHandler<ActionEvent>() {

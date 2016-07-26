@@ -51,6 +51,7 @@ public class LogInView extends AbstractView<LogInModel> {
 		Label labelUser = new Label("Benutzername");
 		Label labelPassword = new Label("Passwort");
 		Label labelNeu = new Label("Neu bei uns?");
+		Label labelFail = new Label("Log-In fehlgeschlagen");
 
 		// Textfelder erstellen
 		textServer = new TextField();
@@ -117,10 +118,11 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(labelPassword, 2, 2);
 		grid.add(textPassword, 2, 3);
 		grid.add(btnLogin, 2, 5);
-		grid.add(labelNeu, 2, 7);
-		grid.add(linkReg, 2, 8);
-		grid.add(iview2, 1, 10);
-		grid.add(cbLang, 2, 10);
+		grid.add(labelFail, 2, 7);
+		grid.add(labelNeu, 2, 8);
+		grid.add(linkReg, 2, 9);
+		grid.add(iview2, 1, 11);
+		grid.add(cbLang, 2, 11);
 		
 		HBox hbox = new HBox();
 		hbox.setPadding(new Insets(30, 50, 0, 50));
