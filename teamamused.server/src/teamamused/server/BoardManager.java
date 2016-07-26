@@ -1,6 +1,7 @@
 package teamamused.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -32,11 +33,11 @@ public class BoardManager {
 	private ICardHolder currentOwner;
 	private List<ICardHolder> currentOwners;
 	private ICardHolder newOwner;
-	private List<ITargetCard> targetCardsToDeploy;
-	private List<ISpecialCard> specialCardsToDeploy;
-	private List<IDeadCard> deadCardsToDeploy;
+	private List<ITargetCard> targetCardsToDeploy = new ArrayList<ITargetCard>();
+	private List<ISpecialCard> specialCardsToDeploy = new ArrayList<ISpecialCard>();
+	private List<IDeadCard> deadCardsToDeploy= new ArrayList<IDeadCard>();
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose;
-	private List<ITargetCard> notValuatedCardsFromPlayers;
+	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
 	private List<ITargetCard> playerTargetCardsToValuate;
 
 	// Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett
@@ -73,6 +74,14 @@ public class BoardManager {
 			instance = new BoardManager();
 		}
 		return instance;
+	}
+
+	/**
+	 * Setzt das aktuelle Spiel zurück. Kein Speichern des Spielstandes Spiel
+	 * startet von vorne
+	 */
+	public static void resetBoardManager() {
+		instance = new BoardManager();
 	}
 
 	/**
@@ -118,8 +127,6 @@ public class BoardManager {
 		for (ITargetCard card : playerTargetCardsToValuate) {
 			if (card.getCardValue() != pinkCube) {
 				playerTargetCardsToValuate.remove(card);
-			} else {
-				notValuatedCardsFromPlayers.remove(card);
 			}
 		}
 	}
@@ -128,10 +135,13 @@ public class BoardManager {
 	 * Wertet die Karten der Spieler nach einem abgeschlossenen Spielzug.
 	 */
 	public void valuePlayerCards() {
-		for (ITargetCard card : playerTargetCardsToValuate) {
-			card.setIsValuated(true);
-			ClientNotificator.notifyGameMove("Karte " + card.toString() + " von Spieler " + targetCards.get(card)
-					+ " wurde gewertet.");
+		if(playerTargetCardsToValuate != null){
+			for (ITargetCard card : playerTargetCardsToValuate) {
+				card.setIsValuated(true);
+				notValuatedCardsFromPlayers.remove(card);
+				ClientNotificator.notifyGameMove("Karte " + card.toString() + " von Spieler " + targetCards.get(card)
+						+ " wurde gewertet.");
+			}
 		}
 		playerTargetCardsToValuate = null;
 		ClientNotificator.notifyUpdateGameBoard(board);
@@ -141,25 +151,24 @@ public class BoardManager {
 	 * Wertet den Würfel-Wurf des Spielers aus, sobald dieser seinen Spielzug
 	 * abgeschlossen hat.
 	 */
-	@SuppressWarnings("null")
 	public void valuatePlayerDice() {
 		ICube cubes[] = CubeManager.getInstance().getCubes();
 		int sumOfCubes = 0;
 		CubeValue[] cardValues;
 		int matchPoints = 0;
-		List<ICube> cubesToCompare = null;
-		List<ITargetCard> cardsToProposeTemp = null;
-		List<ITargetCard> cardsToProposeTemp2 = null;
-		List<ICube> cubesToCompareTemp = null;
+		List<ICube> cubesToCompare = Arrays.asList(cubes);
+		List<ITargetCard> cardsToProposeTemp = new ArrayList<ITargetCard>();
+		List<ITargetCard> cardsToProposeTemp2 = new ArrayList<ITargetCard>();
+		List<ICube> cubesToCompareTemp = new ArrayList<ICube>();
+		deadCardsToDeploy = null;
+		specialCardsToDeploy = null;
+		targetCardsToDeploy = null;
 
-		for (ICube cube : cubes) {
-			cubesToCompare.add(cube);
-		}
-
-		for (ITargetCard targetCard : notValuatedCardsFromPlayers) {
+		//Verteilung von Zielkarten wird geprüft
+		for (ITargetCard targetCard : targetCards.keySet()) {
 			// Prüft die Summe der Würfel, und vergleicht diese mit der
 			// Dino-Karte
-			if (targetCard.getGameCard().isDino()) {
+			if (targetCard.getGameCard().isDino() && !targetCard.getIsValuated()) {
 				for (ICube cube : cubes) {
 					if (cube.getCubeColor() != CubeColor.Pink) {
 						sumOfCubes += cube.getCurrentValue().FaceValue;
@@ -167,9 +176,10 @@ public class BoardManager {
 				}
 				if (targetCard.getRequiredPoints() <= sumOfCubes) {
 					cardsToProposeTemp.add(targetCard);
+					targetCardsToDeploy.add(targetCard);
 				}
 				// Wenn Professoren-Karte spezielle andere Kalkulation
-			} else if (targetCard.getGameCard().isProffessoren()) {
+			} else if (targetCard.getGameCard().isProffessoren() && (!targetCard.getIsValuated()|| !targetCard.getIsCoveredByDead())) {
 				cardValues = targetCard.getRequiredCubeValues();
 				for (CubeValue cardValue : cardValues) {
 					for (ICube cube : cubesToCompare) {
@@ -182,10 +192,11 @@ public class BoardManager {
 				}
 				if (matchPoints > 2) {
 					cardsToProposeTemp.add(targetCard);
+					targetCardsToDeploy.add(targetCard);
 				}
 				matchPoints = 0;
 				// Wenn nicht Dino-Karte oder Professoren-Karte
-			} else {
+			} else if(!targetCard.getIsValuated() || !targetCard.getIsCoveredByDead()) {
 				cardValues = targetCard.getRequiredCubeValues();
 				for (CubeValue cardValue : cardValues) {
 					for (ICube cube : cubesToCompare) {
@@ -198,6 +209,7 @@ public class BoardManager {
 				}
 				if (matchPoints > 1) {
 					cardsToProposeTemp.add(targetCard);
+					targetCardsToDeploy.add(targetCard);
 				}
 				matchPoints = 0;
 			}
@@ -232,20 +244,30 @@ public class BoardManager {
 
 			cardsToProposeTemp2 = null;
 		}
+		
+		//Verteilung von Spezialkarten wird geprüft
+		for(ISpecialCard specialCard : specialCards.keySet()){
+			for(ICube cube : cubesToCompare){
+				if (cube.getSpecialCard() == specialCard){
+					specialCardsToDeploy.add(specialCard);
+				}
+			}
+		}
+		
+		//Verteilung von Todeskarten wird geprüft
+		if(targetCardsToDeploy.isEmpty()){
+			for(IDeadCard deadCard : deadCards.keySet()){
+				if(deadCard.getCardCalue() == CubeManager.getInstance().getCurrentPinkCube().FaceValue){
+					deadCardsToDeploy.add(deadCard);
+				}
+			}
+		}else{
+			deadCardsToDeploy = null;
+		}
+
 
 	}
 
-	/**
-	 * Hat der Spieler mehrere Karten zur Auswahl, wird ihm mit dieser Methode
-	 * eine Auswahl an Karten gegeben, welche er nehmen kann.
-	 * 
-	 * @param targetCardsToChoose
-	 *            Zielkarten, welche dem Spieler zur Auswahl präsentiert werden
-	 * @return Karten, welche dem Spieler zur Auswahl vorgeschlagt werden
-	 */
-	public Hashtable<Integer, List<ITargetCard>> proposeCards(List<ITargetCard> targetCardsToChoose) {
-		return cardsToPropose;
-	}
 
 	/**
 	 * Hat der Spieler mehrere Karten zur Auswahl, wird über das GUI mit dieser
@@ -256,6 +278,7 @@ public class BoardManager {
 	 *            Zielkarten, welche der Spieler nehmen möchte
 	 */
 	public void takeProposedCards(List<ITargetCard> targetCardsToTake) {
+		targetCardsToDeploy = null;
 		for (ITargetCard card : targetCardsToTake) {
 			this.targetCardsToDeploy.add(card);
 		}
@@ -267,6 +290,7 @@ public class BoardManager {
 	public void deployCards() {
 
 		this.newOwner = Game.getInstance().getActivePlayer();
+		this.currentOwners = new ArrayList<ICardHolder>();
 		this.currentOwners.add(board);
 
 		for (IPlayer player : this.board.getPlayers()) {
@@ -277,56 +301,64 @@ public class BoardManager {
 			this.currentOwner = ownerNow;
 
 			// Verteilen der Spezialkarten
-			for (ISpecialCard card : specialCardsToDeploy) {
-				if (specialCards.get(card) == currentOwner) {
-					this.currentOwner.removeSpecialCard(card);
-					this.newOwner.addSpecialCard(card);
-					this.specialCards.remove(card, currentOwner);
-					this.specialCards.put(card, newOwner);
-					ClientNotificator.notifyGameMove("Spezialkarte " + card + " wurde von Spieler " + currentOwner
-							+ " zu Spieler " + newOwner + " verschoben.");
+			if (specialCardsToDeploy != null) {
+				for (ISpecialCard card : specialCardsToDeploy) {
+					if (specialCards.get(card) == currentOwner) {
+						this.currentOwner.removeSpecialCard(card);
+						this.newOwner.addSpecialCard(card);
+						this.specialCards.remove(card, currentOwner);
+						this.specialCards.put(card, newOwner);
+						ClientNotificator.notifyGameMove("Spezialkarte " + card + " wurde von Spieler " + currentOwner
+								+ " zu Spieler " + newOwner + " verschoben.");
+					}
 				}
 			}
 
 			// Verteilen der Todeskarten
-			for (IDeadCard card : deadCardsToDeploy) {
-				if (deadCards.get(card) == currentOwner && newOwner != board) {
-					this.currentOwner.removeDeadCard(card);
+			if (deadCardsToDeploy != null) {
+				for (IDeadCard card : deadCardsToDeploy) {
+					if (deadCards.get(card) == currentOwner && newOwner != board) {
+						this.currentOwner.removeDeadCard(card);
 
-					ITargetCard[] targetCardsOfNewOwner = newOwner.getTargetCards();
+						ITargetCard[] targetCardsOfNewOwner = newOwner.getTargetCards();
 
-					// Prüft, ob die Todeskarte auf eine andere Karte umgedreht
-					// gelegt werden muss
-					for (ITargetCard targetCard : targetCardsOfNewOwner) {
-						if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino()) {
-							// Todeskarte wird umgedreht auf gewertete Karte
-							// gelegt
-							this.newOwner.addDeadCard(card, targetCard);
-							targetCard.setIsCoveredByDead(true);
-						} else {
-							// Todeskarte wird normal neben Zielkarten hingelegt
-							this.newOwner.addDeadCard(card, null);
-							targetCard.setIsValuated(false);
+						// Prüft, ob die Todeskarte auf eine andere Karte
+						// umgedreht
+						// gelegt werden muss
+						for (ITargetCard targetCard : targetCardsOfNewOwner) {
+							if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino()) {
+								// Todeskarte wird umgedreht auf gewertete Karte
+								// gelegt
+								this.newOwner.addDeadCard(card, targetCard);
+								targetCard.setIsCoveredByDead(true);
+							} else {
+								// Todeskarte wird normal neben Zielkarten
+								// hingelegt
+								this.newOwner.addDeadCard(card, null);
+								targetCard.setIsValuated(false);
+							}
 						}
+
+						this.deadCards.remove(card, currentOwner);
+						this.deadCards.put(card, newOwner);
+
+						ClientNotificator.notifyGameMove("Todeskarte " + card + " wurde von Spieler " + currentOwner
+								+ " zu Spieler " + newOwner + " verschoben.");
 					}
-
-					this.deadCards.remove(card, currentOwner);
-					this.deadCards.put(card, newOwner);
-
-					ClientNotificator.notifyGameMove("Todeskarte " + card + " wurde von Spieler " + currentOwner
-							+ " zu Spieler " + newOwner + " verschoben.");
 				}
 			}
-
 			// Verteilen der Zielkarten
-			for (ITargetCard card : targetCardsToDeploy) {
-				if (targetCards.get(card) == currentOwner) {
-					this.currentOwner.removeTargetCard(card);
-					this.newOwner.addTargetCard(card);
-					this.targetCards.remove(card, currentOwner);
-					this.targetCards.put(card, newOwner);
-					ClientNotificator.notifyGameMove("Zielkarte " + card + " wurde von Spieler " + currentOwner
-							+ " zu Spieler " + newOwner + " verschoben.");
+			// Dani an Maja: targetCardsToDeploy können null sein oder?
+			if (targetCardsToDeploy != null) {
+				for (ITargetCard card : targetCardsToDeploy) {
+					if (targetCards.get(card) == currentOwner) {
+						this.currentOwner.removeTargetCard(card);
+						this.newOwner.addTargetCard(card);
+						this.targetCards.remove(card, currentOwner);
+						this.targetCards.put(card, newOwner);
+						ClientNotificator.notifyGameMove("Zielkarte " + card + " wurde von Spieler " + currentOwner
+								+ " zu Spieler " + newOwner + " verschoben.");
+					}
 				}
 			}
 
@@ -352,8 +384,7 @@ public class BoardManager {
 
 	/**
 	 * Dani an Maja: Habe diese Methode ergänzt da ich sowas brauche, OK für
-	 * dich?
-	 * Kartenhalter wechseln.
+	 * dich? Kartenhalter wechseln.
 	 * 
 	 * @param sc
 	 *            Spezialkarte welche einen neuen Besitzer hat.
@@ -370,11 +401,8 @@ public class BoardManager {
 		oldOwner.removeSpecialCard(sc);
 		newOwner.addSpecialCard(sc);
 	}
-	
+
 	public void addDeadCardToDeploy(int deadNumber) {
-		if (this.deadCardsToDeploy == null) {
-			this.deadCardsToDeploy = new ArrayList<IDeadCard>();
-		}
 		IDeadCard dc = null;
 		for (IDeadCard card : this.deadCards.keySet()) {
 			if (card.getCardCalue() == deadNumber) {
@@ -388,9 +416,8 @@ public class BoardManager {
 	}
 
 	/**
-	 * Dani an Maja: ev ist dies unnötig, wegen proposeCards. oder was ist propose Cards und wiso nimmt dieser einen Parameter entgegen?
-	 * 
-	 * Getter für die Karten welche dem Spieler gemäss der Methode valuatePlayerDice zur auswahl stehen
+	 * Getter für die Karten welche dem Spieler gemäss der Methode
+	 * valuatePlayerDice zur Auswahl stehen
 	 * 
 	 * @return Karten, welche dem Spieler zur Auswahl vorgeschlagt werden
 	 */

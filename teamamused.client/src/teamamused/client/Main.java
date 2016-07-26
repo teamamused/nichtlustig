@@ -144,6 +144,17 @@ public class Main extends Application {
 		byeView.start();
 	}
 	
+	public void startBye3() {
+
+		Stage ByeStage = new Stage();
+		ByeModel model = new ByeModel();
+		byeView = new ByeView(ByeStage, model);
+		new ByeController(model, byeView);
+		gameBoardView.stop();
+		gameBoardView = null;
+		byeView.start();
+	}
+	
 	public void startGameBoard() {
 		
 		Stage gameBoardStage = new Stage();

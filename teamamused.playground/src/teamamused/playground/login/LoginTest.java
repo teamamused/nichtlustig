@@ -4,12 +4,17 @@ import teamamused.client.libs.Client;
 import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
+import teamamused.common.db.DataBaseHelper;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.models.GameBoard;
 import teamamused.playground.application.gui.GameBoardController;
 import teamamused.playground.application.gui.GameBoardModel;
 import teamamused.playground.application.gui.GameBoardView;
+import teamamused.playground.application.gui.RankingModel;
+import teamamused.playground.application.gui.RankingView;
+import teamamused.playground.application.gui.RankingController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -37,6 +42,7 @@ public class LoginTest extends Application implements IClientListener {
 	Button btnRegister;
 
 	Button btnJoinGame;
+	Button btnCreateDemoRanking;
 	Button btnGetRanking;
 	
 	
@@ -79,6 +85,9 @@ public class LoginTest extends Application implements IClientListener {
 		
 		// Join Game
 		this.btnJoinGame = new Button("Spiel beitreten");
+		
+		// btnCreateDemoRanking Ranking
+		this.btnCreateDemoRanking = new Button("Demo Bestenlisten Daten anlegen(vor Server start, da Server diese Cached)");
 
 		// Get Ranking
 		this.btnGetRanking = new Button("Bestenliste anzeigen");
@@ -87,7 +96,7 @@ public class LoginTest extends Application implements IClientListener {
 		this.output = new TextArea();
 		this.output.minHeight(100);
 		
-		root.getChildren().addAll(lTitel, connectServer, register, login, this.btnJoinGame, this.btnGetRanking, this.output);
+		root.getChildren().addAll(lTitel, connectServer, register, login, this.btnJoinGame, this.btnGetRanking, this.btnCreateDemoRanking, this.output);
 		
 		
 		
@@ -117,6 +126,14 @@ public class LoginTest extends Application implements IClientListener {
 			@Override
 			public void handle(ActionEvent event) {
 				Client.getInstance().registerPlayer(txtRegisterUser.getText(),txtRegisterPassword.getText());
+			}
+		});
+		
+		btnCreateDemoRanking.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				DataBaseHelper.createDemoData(true, true, true);
+				ServiceLocator.getInstance().getDBContext().saveContext();
 			}
 		});
 		
@@ -182,9 +199,17 @@ public class LoginTest extends Application implements IClientListener {
 
 	@Override
 	public void onRankingRecieved(Ranking[] rankings) {
+		
 		for (Ranking rank : rankings) {
 			this.addOutput(rank.toString());
 		}
+		Platform.runLater(() -> {
+			Stage rs = new Stage();
+			RankingModel model = new RankingModel(rankings);
+			RankingView rv = new RankingView(rs, model);
+			new RankingController (model, rv);
+			rv.start();
+		});
 	}
 	
 	public static void main(String[] args) {

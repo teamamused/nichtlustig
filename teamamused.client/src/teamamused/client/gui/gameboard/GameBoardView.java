@@ -36,16 +36,17 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	protected GridPane root, cardPane, dicePane;
 	protected VBox navigation;
-	protected ImageView logo, linkIcon;
-	protected Image linkImage;
+	protected ImageView logo, linkIcon, exitIcon;
+	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
-	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnLink;
+	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnLink, btnExit;
 	protected TextArea txtChatScreen;
 	protected TextField txtChatInput;
 	protected ScrollPane scrollTxt, scrollPane;
 	protected Label labelSpielfeld, labelRollDices, labelSelectedDices;
 	protected String url;
 	protected DiceControl[] diceControlArray;
+	protected List<Button> btnArray;
 
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
@@ -53,7 +54,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	@Override
 	protected Scene createGUI() {
-		stage.setTitle("Team Amused: Spielfeld");
+		stage.setTitle("Nicht Lustig: Spielfeld");
 
 		// Definition der Haupt-Pane
 		root = GameBoardView.initializeGridPane();
@@ -73,13 +74,24 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			LogHelper.LogException(e);
 		}
 		linkIcon = new ImageView(linkImage);
-		linkIcon.setFitHeight(50);
+		linkIcon.setFitHeight(40);
 		linkIcon.setPreserveRatio(true);
 		btnLink = new Button("", linkIcon);
 		btnLink.setId("btnLink");
+		try {
+			exitImage = ResourceLoader.getImage("Exit.png");
+		} catch (FileNotFoundException e) {
+			LogHelper.LogException(e);
+		}	
+		exitIcon = new ImageView(exitImage);
+		exitIcon.setFitHeight(30);
+		exitIcon.setPreserveRatio(true);
+		btnExit = new Button("", exitIcon);
+		btnExit.setId("btnExit");
 
 		root.add(labelSpielfeld, 1, 0);
-		root.add(btnLink, 5, 0);
+		root.add(btnLink, 4, 0);
+		root.add(btnExit, 5, 0);
 		GridPane.setHalignment(labelSpielfeld, HPos.CENTER);
 
 		// Definition der Pane für die linke Navigationsspalte
@@ -94,12 +106,15 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		}
 		logo.setFitWidth(200);
 		logo.setPreserveRatio(true);
-		// TODO: Anzahl Buttons für Spieler dynamisch gestalten - je nach Anzahl
-		// Mitspieler
 		btnPlayer1 = GameBoardView.initializeButton("Spieler 1");
 		btnPlayer2 = GameBoardView.initializeButton("Spieler 2");
 		btnPlayer3 = GameBoardView.initializeButton("Spieler 3");
 		btnPlayer4 = GameBoardView.initializeButton("Spieler 4");
+		btnArray = new ArrayList<>();
+		btnArray.add(btnPlayer1);
+		btnArray.add(btnPlayer2);
+		btnArray.add(btnPlayer3);
+		btnArray.add(btnPlayer4);
 		txtChatScreen = new TextArea();
 		txtChatScreen.setPrefSize(200, 300);
 		txtChatInput = new TextField();
@@ -182,10 +197,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		root.add(cardPane, 1, 1);
 		root.add(dicePane, 1, 2);
 
-		// Ausrichtung der Controlls in der Pane
-		// GridPane.setHalignment(restartButton, HPos.LEFT);
-		// GridPane.setValignment(restartButton, VPos.CENTER);
-
 		// Zuweisung des Stylesheets
 		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 
@@ -211,31 +222,14 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 * Diese Support-Methode deaktiviert anhand der Anzahl Spieler die nicht
 	 * verwendeten Button-Objekte.
 	 */
-//	public void disablePlayer() {
-//		List<Player> playerList = model.getPlayerList();
-//		List<Button> btnArray = new ArrayList<>();
-//		btnArray.add(btnPlayer1);
-//		btnArray.add(btnPlayer2);
-//		btnArray.add(btnPlayer3);
-//		btnArray.add(btnPlayer4);
-//		for (Button btn : btnArray) {
-//			btn.setDisable(true);
-//			for (int i = 0; i < playerList.size(); i++) {
-//				btn.setDisable(false);
-//			}
-//		}
-//	}
 	public void disablePlayer() {
 		List<Player> playerList = model.getPlayerList();
-		List<Button> btnArray = new ArrayList<>();
-		btnArray.add(btnPlayer1);
-		btnArray.add(btnPlayer2);
-		btnArray.add(btnPlayer3);
-		btnArray.add(btnPlayer4);
 		for (Button btn : btnArray) {
 			btn.setDisable(true);
 		}
-		for (int index = 0; index < playerList.size(); index++) {
+//		for (int index = 0; index < playerList.size(); index++) {
+		//TODO: Nur für Testing! Wieder rückgängig machen...
+		for (int index = 0; index < 2; index++) {
 			Button btn = btnArray.get(index);
 			btn.setDisable(false);
 		}
@@ -292,7 +286,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 */
 	private static Button initializeButton(String buttonText) {
 		Button btn = new Button(buttonText);
-		btn.setMaxSize(200, 40);
+		btn.setPrefSize(200, 40);
 		btn.setAlignment(Pos.CENTER);
 		return btn;
 	}

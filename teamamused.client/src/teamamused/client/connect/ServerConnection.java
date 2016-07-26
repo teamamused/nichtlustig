@@ -15,7 +15,7 @@ import teamamused.common.db.Ranking;
 import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableAnswer;
 import teamamused.common.dtos.TransportableChatMessage;
-import teamamused.common.dtos.TransportableGameBoard;
+import teamamused.common.dtos.BeanGameBoard;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableState;
 import teamamused.common.dtos.TransportObject.TransportType;
@@ -197,9 +197,9 @@ public class ServerConnection extends Thread {
 
 		case UpdateGameBoard:
 			if (params != null && params.length >= 1) {
-				if (params[0] instanceof TransportableGameBoard) {
+				if (params[0] instanceof BeanGameBoard) {
 					GameBoard gb = new GameBoard();
-					gb.initFromTransportObject((TransportableGameBoard)params[0]);
+					gb.initFromTransportObject((BeanGameBoard)params[0]);
 					this.notifyGui.gameBoardChanged(gb);
 					return new TransportableState(true, "Client updated");
 					
@@ -261,7 +261,7 @@ public class ServerConnection extends Thread {
 		case JoinGame:
 			if (answer.isOK() && answer.getReturnValue() instanceof Integer) {
 				int playerNumber = (int)answer.getReturnValue();
-				Client.getInstance().getPlayer().setPlayerNumber(playerNumber);
+				Client.getInstance().getPlayer().initForGame(playerNumber);
 				this.notifyGui.joinGameSuccessful((IPlayer)Client.getInstance().getPlayer());
 			} else {
 				if (answer.getReturnValue() instanceof String) {

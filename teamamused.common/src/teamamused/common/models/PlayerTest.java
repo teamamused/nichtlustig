@@ -32,7 +32,7 @@ public class PlayerTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		player = new Player(PLAYER_NAME);
-		player.setPlayerNumber(PLAYER_NUMBER);
+		player.initForGame(PLAYER_NUMBER);
 	}
 
 	/**
@@ -120,13 +120,13 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link teamamused.common.models.Player#setPlayerNumber(int)}.
+	 * Test method for {@link teamamused.common.models.Player#initForGame(int)}.
 	 */
 	@Test
 	public void testSetPlayerNumber() {
-		player.setPlayerNumber(PLAYER_NUMBER + 1);
+		player.initForGame(PLAYER_NUMBER + 1);
 		assertEquals(player.getPlayerNumber(), PLAYER_NUMBER + 1);
-		player.setPlayerNumber(PLAYER_NUMBER);
+		player.initForGame(PLAYER_NUMBER);
 	}
 
 }
