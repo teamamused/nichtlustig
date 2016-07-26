@@ -46,7 +46,7 @@ public class ServerView extends AbstractView<ServerModel> {
 
 	@Override
 	protected Scene createGUI() {
-		stage.setTitle("Team Amused: Server");
+		stage.setTitle("Nicht Lustig: Server");
 		
 		//Definition der Pane
 		root = new GridPane();
