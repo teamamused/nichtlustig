@@ -2,12 +2,13 @@ package teamamused.client.gui.GameOver;
 
 import java.io.FileNotFoundException;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -20,19 +21,12 @@ import teamamused.common.gui.AbstractView;
 public class GameOverView extends AbstractView<GameOverModel> {
 
 	protected GridPane root;
-	protected HBox titlePane, lastPane;
+	protected HBox imagePane, buttonPane;
 	protected VBox contentPane;
 	protected Label labelTxt, labelWinner;
 	protected Button btnNewStart, btnClose, btnTrophy;
-	protected Image trophyImage;
-	protected ImageView trophyIcon;
-	// Zusatzbild fehlt noch
-
-	// HBox für Logo rechts
-	// VBox für labelTxt links
-	// für labelWinner links
-	// für Bild
-	// HBox für Buttons und Trophy
+	protected ImageView logo, giftImage, trophyIcon;
+	protected ScrollPane scrollPane;
 
 	public GameOverView(Stage stage, GameOverModel model) {
 		super(stage, model);
@@ -44,31 +38,66 @@ public class GameOverView extends AbstractView<GameOverModel> {
 
 		// Definition der Haupt-Pane
 		root = new GridPane();
-		root.setPadding(new Insets(50, 50, 50, 50));
+		root.setPadding(new Insets(10, 10, 10, 10));
 		root.setHgap(10);
 		root.setVgap(10);
-		root.setGridLinesVisible(false);
+		root.setGridLinesVisible(true);
+		scrollPane = new ScrollPane();
+		scrollPane.setContent(root);
 
-		// Definition der Titel-Pane inkl. Instanziierung und Zuweisung der
-		// Controlls
-		titlePane = new HBox();
-//		titlePane.getChildren().add("logo"); -> siehe Server
-		
-		labelTxt = new Label("Das Spiel ist nun zu Ende...");
-		labelWinner = new Label("Herzliche Gratulation: Spieler " + "Nr" + " gewinnt!");
-		btnNewStart = GameOverView.initializeButton("Spiel erneut spielen");
-		btnClose = GameOverView.initializeButton("Spiel beenden");
+		// Instanziierung des Logos
 		try {
-			trophyImage = ResourceLoader.getImage("Pokal.png");
+			logo = new ImageView(ResourceLoader.getImage("Logo_1.png"));
 		} catch (FileNotFoundException e) {
 			LogHelper.LogException(e);
 		}
-		trophyIcon = new ImageView(trophyImage);
+		logo.setFitWidth(200);
+		logo.setPreserveRatio(true);
+
+		// Definition der Content-Pane inkl. Instanziierung und Zuweisung der
+		// Controlls
+		contentPane = new VBox();
+		labelTxt = new Label("Das Spiel ist nun zu Ende...");
+		labelTxt.setId("labelGameOver");
+		labelWinner = new Label("Herzliche Gratulation: Spieler " + "Nr" + " gewinnt!");
+		contentPane.getChildren().addAll(labelTxt, labelWinner);
+		contentPane.setPrefWidth(900);
+
+		// Definition der Image-Pane inkl. Instanziierung und Zuweisung des
+		// Bildes
+		imagePane = new HBox();
+		try {
+			giftImage = new ImageView(ResourceLoader.getImage("Geschenk.jpg"));
+		} catch (FileNotFoundException e) {
+			LogHelper.LogException(e);
+		}
+		giftImage.setFitHeight(300);
+		giftImage.setPreserveRatio(true);
+		imagePane.getChildren().add(giftImage);
+		
+		// Definition der Button-Pane inkl. Instanziierung und Zuweisung der
+		// Controlls
+		buttonPane = new HBox();
+		btnNewStart = GameOverView.initializeButton("Spiel erneut spielen");
+		btnClose = GameOverView.initializeButton("Spiel beenden");
+		try {
+			trophyIcon = new ImageView(ResourceLoader.getImage("Pokal.png"));
+		} catch (FileNotFoundException e) {
+			LogHelper.LogException(e);
+		}
 		trophyIcon.setFitHeight(30);
 		trophyIcon.setPreserveRatio(true);
 		btnTrophy = new Button("", trophyIcon);
 		btnTrophy.setId("btnTrophy");
-
+		buttonPane.getChildren().addAll(btnNewStart, btnClose, trophyIcon);
+		
+		// Zuweisung der Subpanes zur Haupt-Pane
+		root.add(logo, 0, 0);
+		GridPane.setHalignment(logo, HPos.RIGHT);
+		root.add(contentPane, 0, 1);
+		root.add(imagePane, 0, 2);
+		root.add(buttonPane, 0, 3);
+		
 		Scene scene = new Scene(root, 900, 600);
 
 		// Zuweisung des Stylesheets

@@ -68,3 +68,7 @@
 #cardPopupLabelText{
 	-fx-font-size: 17pt;
 }
+
+#labelGameOver{
+	-fx-font-size: 17pt;
+}
