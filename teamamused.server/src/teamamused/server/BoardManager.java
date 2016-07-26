@@ -165,7 +165,8 @@ public class BoardManager {
 		specialCardsToDeploy = new ArrayList<ISpecialCard>();
 		targetCardsToDeploy = new ArrayList<ITargetCard>();
 		
-		//Würfel in ArrayListe schreiben für kommende Vergleiche von verschiedenen Kartentypen
+		//Würfel in ArrayListe schreiben für kommende Vergleiche von
+		//verschiedenen Kartentypen
 		for(ICube cube : CubeManager.getInstance().getCubes()){
 			cubesToCompare.add(cube);
 		}

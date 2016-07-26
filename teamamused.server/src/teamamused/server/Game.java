@@ -174,7 +174,7 @@ public class Game implements Serializable {
 		}
 
 		// Dani an Maja: ev. der Teil hier in valuatePlayerDice nehmen?
-		// Prüfen ob der Spieler eine Todeskarte nehmen muss. 
+		// Prüfen ob der Spieler eine Todeskarte nehmen muss 
 		// Dazu Spezialkarten prüfen
 		ISpecialCard playerIsForcedToDead = null;
 		ISpecialCard playerIsBewaredOfDead = null;
