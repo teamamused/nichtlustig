@@ -99,7 +99,6 @@ public class BoardManager {
 	 * @return nicht gewertete Spieler-Karten
 	 */
 	public List<ITargetCard> getNotValuatedCardsFromPlayer() {
-		notValuatedCardsFromPlayers = null;
 
 		for (IPlayer player : this.board.getPlayers()) {
 			for (ITargetCard targetCard : player.getTargetCards()) {
@@ -122,11 +121,13 @@ public class BoardManager {
 	 *            Wert von pinkem Würfel zur Wertung
 	 */
 	public void valuatePlayerCards(int pinkCube) {
-		playerTargetCardsToValuate = notValuatedCardsFromPlayers;
+		if(notValuatedCardsFromPlayers != null){
+			playerTargetCardsToValuate = notValuatedCardsFromPlayers;
 
-		for (ITargetCard card : playerTargetCardsToValuate) {
-			if (card.getCardValue() != pinkCube) {
-				playerTargetCardsToValuate.remove(card);
+			for (ITargetCard card : playerTargetCardsToValuate) {
+				if (card.getCardValue() != pinkCube) {
+					playerTargetCardsToValuate.remove(card);
+				}
 			}
 		}
 	}
@@ -160,16 +161,24 @@ public class BoardManager {
 		List<ITargetCard> cardsToProposeTemp = new ArrayList<ITargetCard>();
 		List<ITargetCard> cardsToProposeTemp2 = new ArrayList<ITargetCard>();
 		List<ICube> cubesToCompareTemp = new ArrayList<ICube>();
-		deadCardsToDeploy = null;
-		specialCardsToDeploy = null;
-		targetCardsToDeploy = null;
+		List<IDeadCard> deadCardsToDeploy = new ArrayList<IDeadCard>();
+		specialCardsToDeploy = new ArrayList<ISpecialCard>();
+		targetCardsToDeploy = new ArrayList<ITargetCard>();
 
+		//Verteilung von Spezialkarten wird geprüft
+		for(ICube cube : cubesToCompare){
+			if(cube.getSpecialCard() != null){
+				specialCardsToDeploy.add(cube.getSpecialCard());
+				cubesToCompare.remove(cube);
+			}
+		}
+		
 		//Verteilung von Zielkarten wird geprüft
 		for (ITargetCard targetCard : targetCards.keySet()) {
 			// Prüft die Summe der Würfel, und vergleicht diese mit der
 			// Dino-Karte
 			if (targetCard.getGameCard().isDino() && !targetCard.getIsValuated()) {
-				for (ICube cube : cubes) {
+				for (ICube cube : cubesToCompare) {
 					if (cube.getCubeColor() != CubeColor.Pink) {
 						sumOfCubes += cube.getCurrentValue().FaceValue;
 					}
@@ -177,6 +186,7 @@ public class BoardManager {
 				if (targetCard.getRequiredPoints() <= sumOfCubes) {
 					cardsToProposeTemp.add(targetCard);
 					targetCardsToDeploy.add(targetCard);
+					sumOfCubes = 0;
 				}
 				// Wenn Professoren-Karte spezielle andere Kalkulation
 			} else if (targetCard.getGameCard().isProffessoren() && (!targetCard.getIsValuated()|| !targetCard.getIsCoveredByDead())) {
@@ -193,8 +203,8 @@ public class BoardManager {
 				if (matchPoints > 2) {
 					cardsToProposeTemp.add(targetCard);
 					targetCardsToDeploy.add(targetCard);
+					matchPoints = 0;
 				}
-				matchPoints = 0;
 				// Wenn nicht Dino-Karte oder Professoren-Karte
 			} else if(!targetCard.getIsValuated() || !targetCard.getIsCoveredByDead()) {
 				cardValues = targetCard.getRequiredCubeValues();
@@ -210,8 +220,8 @@ public class BoardManager {
 				if (matchPoints > 1) {
 					cardsToProposeTemp.add(targetCard);
 					targetCardsToDeploy.add(targetCard);
+					matchPoints = 0;
 				}
-				matchPoints = 0;
 			}
 		}
 
@@ -243,15 +253,6 @@ public class BoardManager {
 			cardsToPropose.put(cardsToPropose.size() + 1, cardsToProposeTemp2);
 
 			cardsToProposeTemp2 = null;
-		}
-		
-		//Verteilung von Spezialkarten wird geprüft
-		for(ISpecialCard specialCard : specialCards.keySet()){
-			for(ICube cube : cubesToCompare){
-				if (cube.getSpecialCard() == specialCard){
-					specialCardsToDeploy.add(specialCard);
-				}
-			}
 		}
 		
 		//Verteilung von Todeskarten wird geprüft
