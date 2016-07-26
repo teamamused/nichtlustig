@@ -156,12 +156,10 @@ public class Game implements Serializable {
 		this.log.info("Beende aktuelle Spielrunde");
 		// Wertung anhand des Pinken Würfels durchführen
 		this.log.info("Wertung wird durchgeführt");
-		Valuation val = new Valuation();
-		val.valuate(BoardManager.getInstance());
+		BoardManager.getInstance().valuate();
 		// Hallo Maja :)
 		// Prüfen welche Karten der Spieler erhalten darf
 		// Dani an Maja: kann man das getNotValuatedCardsFromPlayer nicht gleich im valutatePlayerDice machen?
-		BoardManager.getInstance().getNotValuatedCardsFromPlayer();
 		try {
 			BoardManager.getInstance().valuatePlayerDice();
 		} catch (Exception ex) {
@@ -241,7 +239,7 @@ public class Game implements Serializable {
 		if (this.gameStatus != GameState.finished) {
 			// Nächsten Spieler aktivieren
 			this.changeActivePlayer();
-			// Prüfen ob der Spieler Spezial karten hat welche er spielen muss
+			// Prüfen ob der Spieler Spezialkarten hat welche er spielen muss
 			ISpecialCard[] specialCardByCurrentPlayer = this.activePlayer.getSpecialCards();
 			boolean playerHasToSkip = false;
 			// Es gibt mehrere Spezialkarten welche die Anzahl würfelversüche

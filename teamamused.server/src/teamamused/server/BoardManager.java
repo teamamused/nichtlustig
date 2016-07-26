@@ -33,9 +33,9 @@ public class BoardManager {
 	private ICardHolder currentOwner;
 	private List<ICardHolder> currentOwners;
 	private ICardHolder newOwner;
-	private List<ITargetCard> targetCardsToDeploy;
-	private List<ISpecialCard> specialCardsToDeploy;
-	private List<IDeadCard> deadCardsToDeploy;
+	private List<ITargetCard> targetCardsToDeploy = new ArrayList<ITargetCard>();
+	private List<ISpecialCard> specialCardsToDeploy = new ArrayList<ISpecialCard>();
+	private List<IDeadCard> deadCardsToDeploy= new ArrayList<IDeadCard>();
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose;
 	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
 	private List<ITargetCard> playerTargetCardsToValuate;
@@ -99,7 +99,6 @@ public class BoardManager {
 	 * @return nicht gewertete Spieler-Karten
 	 */
 	public List<ITargetCard> getNotValuatedCardsFromPlayer() {
-		notValuatedCardsFromPlayers = null;
 
 		for (IPlayer player : this.board.getPlayers()) {
 			for (ITargetCard targetCard : player.getTargetCards()) {
@@ -122,11 +121,13 @@ public class BoardManager {
 	 *            Wert von pinkem Würfel zur Wertung
 	 */
 	public void valuatePlayerCards(int pinkCube) {
-		playerTargetCardsToValuate = notValuatedCardsFromPlayers;
+		if(notValuatedCardsFromPlayers != null){
+			playerTargetCardsToValuate = notValuatedCardsFromPlayers;
 
-		for (ITargetCard card : playerTargetCardsToValuate) {
-			if (card.getCardValue() != pinkCube) {
-				playerTargetCardsToValuate.remove(card);
+			for (ITargetCard card : playerTargetCardsToValuate) {
+				if (card.getCardValue() != pinkCube) {
+					playerTargetCardsToValuate.remove(card);
+				}
 			}
 		}
 	}
@@ -160,21 +161,35 @@ public class BoardManager {
 		List<ITargetCard> cardsToProposeTemp = new ArrayList<ITargetCard>();
 		List<ITargetCard> cardsToProposeTemp2 = new ArrayList<ITargetCard>();
 		List<ICube> cubesToCompareTemp = new ArrayList<ICube>();
+		List<IDeadCard> deadCardsToDeploy = new ArrayList<IDeadCard>();
+		specialCardsToDeploy = new ArrayList<ISpecialCard>();
+		targetCardsToDeploy = new ArrayList<ITargetCard>();
 
-		for (ITargetCard targetCard : notValuatedCardsFromPlayers) {
+		//Verteilung von Spezialkarten wird geprüft
+		for(ICube cube : cubesToCompare){
+			if(cube.getSpecialCard() != null){
+				specialCardsToDeploy.add(cube.getSpecialCard());
+				cubesToCompare.remove(cube);
+			}
+		}
+		
+		//Verteilung von Zielkarten wird geprüft
+		for (ITargetCard targetCard : targetCards.keySet()) {
 			// Prüft die Summe der Würfel, und vergleicht diese mit der
 			// Dino-Karte
-			if (targetCard.getGameCard().isDino()) {
-				for (ICube cube : cubes) {
+			if (targetCard.getGameCard().isDino() && !targetCard.getIsValuated()) {
+				for (ICube cube : cubesToCompare) {
 					if (cube.getCubeColor() != CubeColor.Pink) {
 						sumOfCubes += cube.getCurrentValue().FaceValue;
 					}
 				}
 				if (targetCard.getRequiredPoints() <= sumOfCubes) {
 					cardsToProposeTemp.add(targetCard);
+					targetCardsToDeploy.add(targetCard);
+					sumOfCubes = 0;
 				}
 				// Wenn Professoren-Karte spezielle andere Kalkulation
-			} else if (targetCard.getGameCard().isProffessoren()) {
+			} else if (targetCard.getGameCard().isProffessoren() && (!targetCard.getIsValuated()|| !targetCard.getIsCoveredByDead())) {
 				cardValues = targetCard.getRequiredCubeValues();
 				for (CubeValue cardValue : cardValues) {
 					for (ICube cube : cubesToCompare) {
@@ -187,10 +202,11 @@ public class BoardManager {
 				}
 				if (matchPoints > 2) {
 					cardsToProposeTemp.add(targetCard);
+					targetCardsToDeploy.add(targetCard);
+					matchPoints = 0;
 				}
-				matchPoints = 0;
 				// Wenn nicht Dino-Karte oder Professoren-Karte
-			} else {
+			} else if(!targetCard.getIsValuated() || !targetCard.getIsCoveredByDead()) {
 				cardValues = targetCard.getRequiredCubeValues();
 				for (CubeValue cardValue : cardValues) {
 					for (ICube cube : cubesToCompare) {
@@ -203,8 +219,9 @@ public class BoardManager {
 				}
 				if (matchPoints > 1) {
 					cardsToProposeTemp.add(targetCard);
+					targetCardsToDeploy.add(targetCard);
+					matchPoints = 0;
 				}
-				matchPoints = 0;
 			}
 		}
 
@@ -237,6 +254,18 @@ public class BoardManager {
 
 			cardsToProposeTemp2 = null;
 		}
+		
+		//Verteilung von Todeskarten wird geprüft
+		if(targetCardsToDeploy.isEmpty()){
+			for(IDeadCard deadCard : deadCards.keySet()){
+				if(deadCard.getCardCalue() == CubeManager.getInstance().getCurrentPinkCube().FaceValue){
+					deadCardsToDeploy.add(deadCard);
+				}
+			}
+		}else{
+			deadCardsToDeploy = null;
+		}
+
 
 	}
 
@@ -273,7 +302,6 @@ public class BoardManager {
 			this.currentOwner = ownerNow;
 
 			// Verteilen der Spezialkarten
-			// Dani an Maja: SpecialCardsToDeploy ist noch nirgends zugewiesen
 			if (specialCardsToDeploy != null) {
 				for (ISpecialCard card : specialCardsToDeploy) {
 					if (specialCards.get(card) == currentOwner) {
@@ -376,9 +404,6 @@ public class BoardManager {
 	}
 
 	public void addDeadCardToDeploy(int deadNumber) {
-		if (this.deadCardsToDeploy == null) {
-			this.deadCardsToDeploy = new ArrayList<IDeadCard>();
-		}
 		IDeadCard dc = null;
 		for (IDeadCard card : this.deadCards.keySet()) {
 			if (card.getCardCalue() == deadNumber) {

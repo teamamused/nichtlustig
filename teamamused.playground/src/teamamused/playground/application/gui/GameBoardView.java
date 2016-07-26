@@ -81,7 +81,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		Label lSpielzuege = new Label("Spielzüge:");
 		txtGameMoves = new TextArea("Starte Gui");
 		txtGameMoves.maxWidth(rightWidt);
-		
+
 		// Chat selber
 		Label lChat = new Label("Chat:");
 		txtChat = new TextArea("");
@@ -120,20 +120,26 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected void drawCards() {
 		if (this.model.spielbrett != null) {
 			// Tod Karten laden
-			if (this.todKartenPane.getChildren() != null && !this.todKartenPane.getChildren().isEmpty()) {
-				this.todKartenPane.getChildren().clear();
+			if (model.deadCardsNeedsUpdate) {
+				if (this.todKartenPane.getChildren() != null && !this.todKartenPane.getChildren().isEmpty()) {
+					this.todKartenPane.getChildren().clear();
+				}
+				this.addCardsToPane(todKartenPane, this.model.spielbrett.getDeadCards(), 2, 3);
 			}
-			this.addCardsToPane(todKartenPane, this.model.spielbrett.getDeadCards(), 2, 3);
 			// Zielkarten laden
-			if (this.spielKartenPane.getChildren() != null && !this.spielKartenPane.getChildren().isEmpty()) {
-				this.spielKartenPane.getChildren().clear();
+			if (model.targetCardsNeedsUpdate) {
+				if (this.spielKartenPane.getChildren() != null && !this.spielKartenPane.getChildren().isEmpty()) {
+					this.spielKartenPane.getChildren().clear();
+				}
+				this.addCardsToPane(spielKartenPane, this.model.spielbrett.getTargetCards(), 5, 5);
 			}
-			this.addCardsToPane(spielKartenPane, this.model.spielbrett.getTargetCards(), 5, 5);
 			// Spezialkarten laden
-			if (this.spezialKartenPane.getChildren() != null && !this.spezialKartenPane.getChildren().isEmpty()) {
-				this.spezialKartenPane.getChildren().clear();
+			if (model.speicalCardsNeedsUpdate) {
+				if (this.spezialKartenPane.getChildren() != null && !this.spezialKartenPane.getChildren().isEmpty()) {
+					this.spezialKartenPane.getChildren().clear();
+				}
+				this.addCardsToPane(spezialKartenPane, this.model.spielbrett.getSpecialCards(), 2, 3);
 			}
-			this.addCardsToPane(spezialKartenPane, this.model.spielbrett.getSpecialCards(), 2, 3);
 		}
 	}
 
@@ -177,7 +183,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		for (ICube cube : cubes) {
 			this.btnsCubesFixed[cube.getCubeNumber()] = new Button();
 			this.btnsCubesFixed[cube.getCubeNumber()].setGraphic(cube.getCurrentValue().toCanvas(diceSize, 10));
-			
+
 			model.cubesFixed[cube.getCubeNumber()] = cube.getIsFixed();
 
 			this.cbsCubesFixed[cube.getCubeNumber()] = new CheckBox();
@@ -188,7 +194,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			} else {
 				cbsCubesFixed[cube.getCubeNumber()].setText("");
 			}
-			
+
 			this.btnsCubesFixed[cube.getCubeNumber()].setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -203,7 +209,8 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			});
 
 			VBox wuerfelBtns = new VBox();
-			wuerfelBtns.getChildren().addAll(this.btnsCubesFixed[cube.getCubeNumber()], this.cbsCubesFixed[cube.getCubeNumber()]);
+			wuerfelBtns.getChildren().addAll(this.btnsCubesFixed[cube.getCubeNumber()],
+					this.cbsCubesFixed[cube.getCubeNumber()]);
 			wuerfel.getChildren().add(wuerfelBtns);
 		}
 		Label lblRemainingDraws = new Label("Sie dürfen noch " + model.remainingDices + " mal würfeln");

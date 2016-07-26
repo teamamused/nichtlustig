@@ -51,18 +51,19 @@ public class LogInView extends AbstractView<LogInModel> {
 		Label labelUser = new Label("Benutzername");
 		Label labelPassword = new Label("Passwort");
 		Label labelNeu = new Label("Neu bei uns?");
+		Label labelFail = new Label("Log-In fehlgeschlagen");
 
 		// Textfelder erstellen
 		textServer = new TextField();
-		textServer.setPrefWidth(120);
+		textServer.setPrefWidth(140);
 		textPort = new TextField();
-		textPort.setPrefWidth(120);
+		textPort.setPrefWidth(100);
 		textUser = new TextField();
 		textPassword = new TextField();
 		
 		// Login-Button erstellen
 		btnConnectServer = new Button();
-		btnConnectServer.setText("Mit Server verbinden");
+		btnConnectServer.setText("Server verbinden");
 		
 		// Login-Button erstellen
 		btnLogin = new Button();
@@ -117,16 +118,27 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(labelPassword, 2, 2);
 		grid.add(textPassword, 2, 3);
 		grid.add(btnLogin, 2, 5);
-		grid.add(labelNeu, 2, 7);
-		grid.add(linkReg, 2, 8);
-		grid.add(iview2, 1, 10);
-		grid.add(cbLang, 2, 10);
+		grid.add(labelFail, 2, 7);
+		grid.add(labelNeu, 2, 8);
+		grid.add(linkReg, 2, 9);
+		grid.add(iview2, 1, 11);
+		grid.add(cbLang, 2, 11);
 		
 		HBox hbox = new HBox();
-		hbox.setPadding(new Insets(20, 50, 0, 50));
-		hbox.setAlignment(Pos.TOP_RIGHT);
+		hbox.setPadding(new Insets(30, 50, 0, 50));
+		hbox.setAlignment(Pos.CENTER);
 	    hbox.setSpacing(15);
-	    hbox.getChildren().addAll(labelServer, textServer, labelPort, textPort, btnConnectServer, iview3);
+	    hbox.getChildren().addAll(labelServer, textServer, labelPort, textPort, btnConnectServer);
+	    
+	    HBox hbox2 = new HBox();
+		hbox2.setPadding(new Insets(30, 50, 0, 0));
+		hbox2.setAlignment(Pos.TOP_RIGHT);
+	    hbox2.setSpacing(15);
+	    hbox2.getChildren().addAll(iview3);
+	    
+		BorderPane border = new BorderPane();
+		border.setLeft(hbox);
+		border.setRight(hbox2);
 	    
 		VBox vbox = new VBox();
 		vbox.setPadding(new Insets(30, 0, 0, 70));
@@ -135,13 +147,13 @@ public class LogInView extends AbstractView<LogInModel> {
 		vbox.getChildren().addAll(iview);
 		vbox.getChildren().addAll(labelCopyright);
 	    
-		BorderPane border = new BorderPane();
-		border.setTop(hbox);
-		border.setLeft(vbox);
-		border.setCenter(grid);
+		BorderPane border2 = new BorderPane();
+		border2.setTop(border);
+		border2.setLeft(vbox);
+		border2.setCenter(grid);
 
 		// Das Layout Pane einer Scene hinzufügen
-		Scene scene = new Scene(border, 900, 600);
+		Scene scene = new Scene(border2, 900, 600);
 		
 		// Fenstertitel setzen
 		stage.setTitle("Nicht Lustig: Log-In");

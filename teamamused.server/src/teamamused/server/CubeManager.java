@@ -88,7 +88,7 @@ public class CubeManager{
 	 * @return Anzahl Versuche
 	 */
 	public int initForNextRound(int additionalDicings) {
-		this.diceCounter = 0;
+		this.resetCounters();
 		this.allowedDicings = 3 + additionalDicings;
 		return this.allowedDicings;
 	}
@@ -148,5 +148,13 @@ public class CubeManager{
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * Getter für die Anzahl verbleibende Würfelversuche des aktiven Players
+	 * @return Anzahl Versuche
+	 */
+	public int getRemainingTries() {
+		return this.allowedDicings - this.diceCounter;
 	}
 }
