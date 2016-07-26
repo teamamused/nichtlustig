@@ -87,4 +87,5 @@ public interface ICardHolder {
 	default void addDeadCard(IDeadCard deadCard, ITargetCard targetCard) {
 		throw new UnsupportedOperationException("Dem Kartenhalter können keine Todeskarten hinzugefügt werden.");
 	}
+	
 }

@@ -32,7 +32,7 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 	@Override
 	protected Scene createGUI() {
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, 1600, 810);
+		Scene scene = new Scene(root, 320, 350);
 		// Oberer Teil
 		HBox topBox = new HBox();
 		// Titel label
@@ -42,7 +42,7 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 		topBox.getChildren().addAll(lTitel);
 		// Für alle Optionen eine VBox
 		VBox options = new VBox();
-		for (int i = 0; i < model.cardsToChooseOptions.size(); i++) {
+		for (int i : model.cardsToChooseOptions.keySet()) {
 			// Pro Option Karten laden
 			options.getChildren().add(drawCards(i));
 		}

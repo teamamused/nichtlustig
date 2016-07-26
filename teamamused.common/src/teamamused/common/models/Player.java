@@ -249,4 +249,12 @@ public class Player implements IPlayer, Serializable {
 	public String toString() {
 		return this.playername;
 	}
+
+	/**
+	 * Vergleiche via Username, da dieser Unique sein muss
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return this.toString().equals(obj.toString());
+	}
 }
