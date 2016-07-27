@@ -3,7 +3,9 @@ package teamamused.server;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.Logger;
 
+import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ICardHolder;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IDeadCard;
@@ -28,6 +30,7 @@ import teamamused.common.models.cubes.CubeValue;
 public class BoardManager {
 	private static BoardManager instance;
 	private GameBoard board;
+	private Logger log;
 	private List<ITargetCard> targetCardsToDeploy = new ArrayList<ITargetCard>();
 	private List<ISpecialCard> specialCardsToDeploy = new ArrayList<ISpecialCard>();
 	private List<IDeadCard> deadCardsToDeploy = new ArrayList<IDeadCard>();
@@ -42,6 +45,7 @@ public class BoardManager {
 	private Hashtable<ITargetCard, ICardHolder> targetCards = new Hashtable<ITargetCard, ICardHolder>();
 
 	private BoardManager() {
+		this.log = ServiceLocator.getInstance().getLogger();
 		board = new GameBoard();
 		board.init();
 		/*
@@ -183,10 +187,9 @@ public class BoardManager {
 				specialCardsToDeploy.add(cube.getCurrentValue().SpecialCard);
 			} else {
 				cubeValues.add(cube.getCurrentValue());
-				System.out.println("erreichte Value:" + cube.getCurrentValue());
 			}
 		}
-		System.out.println("Erreichte Punkte: " + sumOfCubes + " Spezialkarten: " + specialCardsToDeploy.size());
+		this.log.info("Erreichte Punkte: " + sumOfCubes + " Spezialkarten: " + specialCardsToDeploy.size());
 
 		// Falls eine DinoKarte möglich ist, ist diese Option 1
 		this.checkDinoCards(sumOfCubes);
@@ -348,12 +351,10 @@ public class BoardManager {
 			}
 		}
 		if (dinoCard != null) {
-			System.out.println("Vorschlag: " + this.cardsToPropose.size() + 1 + dinoCard);
+			this.log.info("Vorschlag: " + this.cardsToPropose.size() + 1 + dinoCard);
 			ArrayList<ITargetCard> dinos = new ArrayList<ITargetCard>();
 			dinos.add(dinoCard);
 			this.cardsToPropose.put(this.cardsToPropose.size() + 1, dinos);
-		} else {
-			System.out.println("Kein Dino erreicht");
 		}
 	}
 
@@ -375,10 +376,8 @@ public class BoardManager {
 			}
 		}
 		if (proffessors.size() > 0) {
-			System.out.println("Vorschlag: " + cardsToPropose.size() + 1 + " Proffessoren Karten " + proffessors);
+			this.log.info("Vorschlag: " + cardsToPropose.size() + 1 + " Proffessoren Karten " + proffessors);
 			cardsToPropose.put(cardsToPropose.size() + 1, proffessors);
-		} else {
-			System.out.println("Keine Proffessoren erreicht");
 		}
 	}
 
@@ -387,13 +386,10 @@ public class BoardManager {
 		for (ITargetCard targetCard : targetCards.keySet()) {
 			if ((targetCard.getGameCard().isLemming() || targetCard.getGameCard().isRiebmann() || targetCard
 					.getGameCard().isYeti()) && !targetCard.getIsValuated()) {
-				System.out.println("Prüfe: " + targetCard);
 				boolean match = true;
 				for (CubeValue val : targetCard.getRequiredCubeValues()) {
 					if (!cubeValues.contains(val)) {
 						match = false;
-						System.out.println("Fehlte: " + val);
-
 					} else {
 						cubeValues.remove(val);
 					}
@@ -404,10 +400,8 @@ public class BoardManager {
 			}
 		}
 		if (restliche.size() > 0) {
-			System.out.println("Vorschlag: " + cardsToPropose.size() + 1 + " - " + restliche);
+			this.log.info("Vorschlag: " + cardsToPropose.size() + 1 + " - " + restliche);
 			cardsToPropose.put(cardsToPropose.size() + 1, restliche);
-		} else {
-			System.out.println("Keine Riebmanns,Yetis oder Lemminge erreicht");
 		}
 	}
 

@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import teamamused.common.db.DataBaseContextTest;
 import teamamused.common.models.GameBoardTest;
 import teamamused.common.models.PlayerTest;
+import teamamused.common.models.cards.TargetCardTest;
 
 /**
  * teamamused.common Testsuite um alle Tests des common Projektes auf einmal auszuführen.
@@ -18,7 +19,8 @@ import teamamused.common.models.PlayerTest;
 @SuiteClasses({
 	GameBoardTest.class,
 	PlayerTest.class,
-	DataBaseContextTest.class
+	DataBaseContextTest.class,
+	TargetCardTest.class
 })
 public class CommonTestSuite {
 

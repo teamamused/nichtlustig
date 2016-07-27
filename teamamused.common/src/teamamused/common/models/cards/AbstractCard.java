@@ -3,7 +3,6 @@ package teamamused.common.models.cards;
 import java.io.Serializable;
 import java.util.logging.Level;
 
-import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.IGameCard;
@@ -80,17 +79,19 @@ public abstract class AbstractCard implements IGameCard, Serializable {
 		return Integer.compare(this.card.cardNumber, card2.getGameCard().cardNumber);
 	}
 
+
 	/**
 	 * Vergleiche erfolgen über die GameCard ID
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		try {
-			return ((IGameCard) obj).getGameCard().cardNumber == this.getGameCard().cardNumber;
-		} catch (Exception ex) {
-			LogHelper.LogException(ex);
-			return false;
-		}
+		IGameCard gc = (IGameCard) obj;
+		return (gc.getGameCard().getCardNumber() == this.getGameCard().getCardNumber());
 	}
 
+	@Override
+	public int hashCode() {
+		int hash = this.getGameCard().cardNumber % 5;
+		return hash;
+	}
 }

@@ -13,98 +13,98 @@ class TargetCard extends AbstractCard implements ITargetCard {
 
 	/** Versionsnummer des Transport Objektes */
 	private static final long serialVersionUID = 1;
-	
-    private int cardValue;
-    private int requiredPoints;
-    private boolean isValuated;
-    private boolean isCoveredByDead;
-    CubeValue[] requiredCubeValues;
 
-    /**
-     * Initialisiert eine neue Zielkarte
-     * 
-     * @param card
-     *            Kartenkennung
-     * @param cardValue
-     *            Kartenwert (für die Wertung)
-     * @param requiredPoints
-     *            Punkte welche benötigt werden um diese Karte zu bekommen
-     * @param cubeValues
-     *            Würfel kombinationen welche benötigt werden um diese Karte zu
-     *            bekommen
-     */
-    public TargetCard(GameCard card, int cardValue, int requiredPoints, CubeValue[] cubeValues) {
-	super(card);
-	this.cardValue = cardValue;
-	this.requiredPoints = requiredPoints;
-	this.requiredCubeValues = cubeValues;
-    }
+	private int cardValue;
+	private int requiredPoints;
+	private boolean isValuated;
+	private boolean isCoveredByDead;
+	CubeValue[] requiredCubeValues;
 
-    /**
-     * Implementierung von:
-     * 
-     * @see teamamused.common.interfaces.ITargetCard#getCardCalue()
-     */
-    @Override
-    public int getCardValue() {
-	return this.cardValue;
-    }
+	/**
+	 * Initialisiert eine neue Zielkarte
+	 * 
+	 * @param card
+	 *            Kartenkennung
+	 * @param cardValue
+	 *            Kartenwert (für die Wertung)
+	 * @param requiredPoints
+	 *            Punkte welche benötigt werden um diese Karte zu bekommen
+	 * @param cubeValues
+	 *            Würfel kombinationen welche benötigt werden um diese Karte zu
+	 *            bekommen
+	 */
+	public TargetCard(GameCard card, int cardValue, int requiredPoints, CubeValue[] cubeValues) {
+		super(card);
+		this.cardValue = cardValue;
+		this.requiredPoints = requiredPoints;
+		this.requiredCubeValues = cubeValues;
+	}
 
-    /**
-     * Implementierung von:
-     * 
-     * @see teamamused.common.interfaces.ITargetCard#getIsValuated()
-     */
-    @Override
-    public boolean getIsValuated() {
-	return this.isValuated;
-    }
+	/**
+	 * Implementierung von:
+	 * 
+	 * @see teamamused.common.interfaces.ITargetCard#getCardCalue()
+	 */
+	@Override
+	public int getCardValue() {
+		return this.cardValue;
+	}
 
-    /**
-     * Implementierung von:
-     * 
-     * @see teamamused.common.interfaces.ITargetCard#setIsValuated()
-     */
-    @Override
-    public void setIsValuated(boolean isValuated) {
-	this.isValuated = isValuated;
-    }
+	/**
+	 * Implementierung von:
+	 * 
+	 * @see teamamused.common.interfaces.ITargetCard#getIsValuated()
+	 */
+	@Override
+	public boolean getIsValuated() {
+		return this.isValuated;
+	}
 
-    /**
-     * Implementierung von:
-     * 
-     * @see teamamused.common.interfaces.ITargetCard#getRequiredPoints()
-     */
-    @Override
-    public int getRequiredPoints() {
-	return this.requiredPoints;
-    }
+	/**
+	 * Implementierung von:
+	 * 
+	 * @see teamamused.common.interfaces.ITargetCard#setIsValuated()
+	 */
+	@Override
+	public void setIsValuated(boolean isValuated) {
+		this.isValuated = isValuated;
+	}
 
-    /**
-     * Implementierung von:
-     * 
-     * @see teamamused.common.interfaces.ITargetCard#getRequiredCubeValues()
-     */
-    @Override
-    public CubeValue[] getRequiredCubeValues() {
-	return this.requiredCubeValues;
-    }
+	/**
+	 * Implementierung von:
+	 * 
+	 * @see teamamused.common.interfaces.ITargetCard#getRequiredPoints()
+	 */
+	@Override
+	public int getRequiredPoints() {
+		return this.requiredPoints;
+	}
 
-    /**
-     * Implementierung von:
-     * 
-     * @see teamamused.common.interfaces.ITargetCard#getIsCoveredByDead()
-     */
+	/**
+	 * Implementierung von:
+	 * 
+	 * @see teamamused.common.interfaces.ITargetCard#getRequiredCubeValues()
+	 */
+	@Override
+	public CubeValue[] getRequiredCubeValues() {
+		return this.requiredCubeValues;
+	}
+
+	/**
+	 * Implementierung von:
+	 * 
+	 * @see teamamused.common.interfaces.ITargetCard#getIsCoveredByDead()
+	 */
 	@Override
 	public boolean getIsCoveredByDead() {
 		return this.isCoveredByDead;
 	}
 
-    /**
-     * Implementierung von:
-     * 
-     * @see teamamused.common.interfaces.ITargetCard#setIsCoveredByDead()
-     */
+	/**
+	 * Implementierung von:
+	 * 
+	 * @see teamamused.common.interfaces.ITargetCard#setIsCoveredByDead()
+	 */
 	@Override
 	public void setIsCoveredByDead(boolean isCovered) {
 		this.isCoveredByDead = isCovered;
