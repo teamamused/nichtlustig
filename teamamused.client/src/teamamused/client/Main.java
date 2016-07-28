@@ -189,6 +189,17 @@ public class Main extends Application {
 		welcomeView = null;
 		waitingRoomView.start();
 	}
+	
+	public void startWaitingRoom2() {
+
+		Stage waitingRoomStage = new Stage();
+		WaitingRoomModel model = new WaitingRoomModel();
+		waitingRoomView = new WaitingRoomView(waitingRoomStage, model);
+		new WaitingRoomController(model, waitingRoomView);
+		gameOverView.stop();
+		gameOverView = null;
+		waitingRoomView.start();
+	}
 
 	public static Main getInstance() {
 		return instance;
