@@ -81,9 +81,10 @@ public class ServerView extends AbstractView<ServerModel> {
 		//Setzt den ersten Wert der Auswahlliste als Default
 		language.getSelectionModel().selectFirst();
 		// holt das TextArea aus dem TextAreaHandler
-		this.loggingTxtArea = TextAreaHandler.getInstance().getTextArea();
-		scrollTxt.setContent(loggingTxtArea);
+		loggingTxtArea = TextAreaHandler.getInstance().getTextArea();
 		loggingTxtArea.setEditable(false);
+		loggingTxtArea.setId("loggingArea");
+		scrollTxt.setContent(loggingTxtArea);
 		try {
 			spracheImageView = new ImageView(ResourceLoader.getImage("Sprache.png"));
 			spracheImageView.setFitWidth(30);
@@ -99,7 +100,7 @@ public class ServerView extends AbstractView<ServerModel> {
 		root.add(labelLogo, 2, 0);
 		root.add(labelConnect, 0, 2);
 		root.add(labelPort, 1, 2);
-		root.add(labelIP, 1, 3);
+		root.add(labelIP, 1, 3, 2, 1);
 		root.add(labelProtocol, 0, 5);
 		root.add(language, 2, 6);
 		root.add(spracheImageView, 2, 6);
@@ -116,7 +117,7 @@ public class ServerView extends AbstractView<ServerModel> {
 		GridPane.setHalignment(spracheImageView, HPos.LEFT);
 		GridPane.setValignment(spracheImageView, VPos.CENTER);
 
-		// Prozentualle grösse definieren für das verhalten beim maximieren
+		// Prozentualle Grösse wird definiert für das Verhalten beim Maximieren
 	     ColumnConstraints col1 = new ColumnConstraints();
 	     col1.setPercentWidth(45);
 	     ColumnConstraints col2 = new ColumnConstraints();

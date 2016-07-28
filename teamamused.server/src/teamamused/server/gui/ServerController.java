@@ -25,11 +25,7 @@ public class ServerController extends AbstractController<ServerModel, ServerView
     	});
     	
     	
-    	//TODO: Implementation der ChoiceBox in Verbindung mit Translator
-    	
-    	
-    	
-    	//TODO: Für was ist das?
+//    	// TODO: Für was ist das?
 //        // register ourselves to handle window-closing event
 //        view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 //            @Override
