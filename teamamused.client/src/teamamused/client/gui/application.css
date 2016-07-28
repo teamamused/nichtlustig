@@ -65,10 +65,6 @@
 	-fx-background-color: transparent;
 }
 
-#cardPopupLabelText{
-	-fx-font-size: 17pt;
-}
-
-#labelGameOver{
+#subtitle{
 	-fx-font-size: 17pt;
 }
