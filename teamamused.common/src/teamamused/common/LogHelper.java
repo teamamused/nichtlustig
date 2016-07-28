@@ -51,6 +51,6 @@ public class LogHelper {
 	 */
 	public static void LogException(Exception ex) {
 		ex.printStackTrace();
-	    ServiceLocator.getInstance().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
+	    ServiceLocator.getInstance().getLogger().log(Level.SEVERE, ex.toString(), ex);
 	}
 }

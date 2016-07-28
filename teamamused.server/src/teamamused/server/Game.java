@@ -113,7 +113,7 @@ public class Game implements Serializable {
 		} else {
 			// Wenn bereits ein Spieler aktiv ist, den nächsten aktivieren
 			if (this.activePlayer.getPlayerNumber() < players.size()) {
-				this.activePlayer = players.get(this.activePlayer.getPlayerNumber() + 1);
+				this.activePlayer = players.get(this.activePlayer.getPlayerNumber());
 			} else {
 				this.activePlayer = players.get(0);
 			}
@@ -156,8 +156,12 @@ public class Game implements Serializable {
 		this.log.info("Beende aktuelle Spielrunde");
 		// Wertung anhand des Pinken Würfels durchführen
 		this.log.info("Wertung wird durchgeführt");
-		BoardManager.getInstance().valuate();
-		
+		try {
+			BoardManager.getInstance().valuate();
+		} catch (Exception ex) {
+			this.log.info("Schade wars...");
+			LogHelper.LogException(ex);
+		}
 		// Prüfen welche Karten der Spieler erhalten darf
 		this.log.info("Holle Karten zum vorschlagen");
 		try {
@@ -176,13 +180,18 @@ public class Game implements Serializable {
 			ClientNotificator.notifyCardsToChoose(cardsToPropose);
 
 		} else {
-			this.log.info("Teile dem Spieler die Karten zu");
+			this.log.info("Teile dem Spieler die Karten zu, anzahl Optionen: " + optionCount);
 			// Wenn nur eine Auswahlmöglichkeit oder sogar keine (dann Tod)
 			// Karten direkt zuteilen und nächste Runde starten
 			if (optionCount == 1) {
 				// Wenn es nur eine möglichkeit gibt diese Option nehmen
-				if (cardsToPropose.contains(1)) {
+				if (cardsToPropose.containsKey(1)) {
 					BoardManager.getInstance().takeProposedCards(cardsToPropose.get(1));
+				} else {
+					this.log.info("CardsToPropose enthält kein Vorschlag");
+					System.out.println(cardsToPropose);
+					System.out.println(cardsToPropose.keySet());
+					System.out.println(cardsToPropose.values());
 				}
 			}
 			BoardManager.getInstance().deployCards();

@@ -122,6 +122,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			model.speicalCardsNeedsUpdate = newGameBoard.getSpecialCards().length != model.spielbrett.getSpecialCards().length;
 			model.targetCardsNeedsUpdate = newGameBoard.getTargetCards().length != model.spielbrett.getTargetCards().length;
 			model.deadCardsNeedsUpdate = newGameBoard.getDeadCards().length != model.spielbrett.getDeadCards().length;
+
 		} else {
 			model.speicalCardsNeedsUpdate = true;
 			model.targetCardsNeedsUpdate = true;
@@ -132,6 +133,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		Platform.runLater(() -> {
 			view.drawCards();
 			view.drawCubes();
+			view.drawPlayers();
 		});
 	}
 
