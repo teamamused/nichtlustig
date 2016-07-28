@@ -17,6 +17,11 @@ import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
 
+/**
+ * Die Klasse stellt die grafische Oberfläche für die Schlussseite dar.
+ * @author Michelle
+ *
+ */
 public class GameOverView extends AbstractView<GameOverModel> {
 
 	protected GridPane root;
