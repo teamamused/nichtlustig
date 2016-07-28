@@ -15,6 +15,7 @@ import teamamused.client.gui.RegisterView;
 import teamamused.client.gui.WelcomeController;
 import teamamused.client.gui.WelcomeModel;
 import teamamused.client.gui.WelcomeView;
+import teamamused.client.gui.GameOver.GameOverView;
 import teamamused.client.gui.splashscreen.Splash_Controller;
 import teamamused.client.gui.splashscreen.Splash_Model;
 import teamamused.client.gui.splashscreen.Splash_View;
@@ -38,6 +39,7 @@ public class Main extends Application {
 	private ByeView byeView;
 	private GameBoardView gameBoardView;
 	private WaitingRoomView waitingRoomView;
+	private GameOverView gameOverView;
 	private static Main instance = null;
 
 	@Override
@@ -152,6 +154,17 @@ public class Main extends Application {
 		new ByeController(model, byeView);
 		gameBoardView.stop();
 		gameBoardView = null;
+		byeView.start();
+	}
+	
+	public void startBye4() {
+
+		Stage ByeStage = new Stage();
+		ByeModel model = new ByeModel();
+		byeView = new ByeView(ByeStage, model);
+		new ByeController(model, byeView);
+		gameOverView.stop();
+		gameOverView = null;
 		byeView.start();
 	}
 	
