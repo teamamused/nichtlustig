@@ -124,6 +124,17 @@ public class Main extends Application {
 		rankingView.start();
 	}
 	
+	public void startRanking2() {
+
+		Stage RankingStage = new Stage();
+		RankingModel model = new RankingModel();
+		rankingView = new RankingView(RankingStage, model);
+		new RankingController(model, rankingView);
+		gameOverView.stop();
+		gameOverView = null;
+		rankingView.start();
+	}
+	
 	public void startBye() {
 
 		Stage ByeStage = new Stage();
