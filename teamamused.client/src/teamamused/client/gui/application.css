@@ -68,3 +68,7 @@
 #subtitle{
 	-fx-font-size: 17pt;
 }
+
+#chatArea{
+	-fx-font-size: 12pt;
+}
