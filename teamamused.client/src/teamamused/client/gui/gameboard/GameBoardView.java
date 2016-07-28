@@ -39,11 +39,11 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected ImageView logo, linkIcon, exitIcon;
 	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
-	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnLink, btnExit;
+	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnBestaetigen, btnLink, btnExit;
 	protected TextArea txtChatScreen;
 	protected TextField txtChatInput;
 	protected ScrollPane scrollTxt, scrollPane;
-	protected Label labelSpielfeld, labelRollDices, labelSelectedDices;
+	protected Label labelSpielfeld, labelRollDices, labelSelectedDices, labelSelectCards;
 	protected String url;
 	protected DiceControl[] diceControlArray;
 	protected List<Button> btnArray;
@@ -61,7 +61,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		scrollPane = new ScrollPane();
 		scrollPane.setContent(root);
 
-		Scene scene = new Scene(root);
+		Scene scene = new Scene(root, 1500, 1000);
 
 		// Instanziierung und Zuweisung der Controlls zur Haupt-Pane
 		labelSpielfeld = new Label("Spielfeld");
@@ -117,6 +117,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		btnArray.add(btnPlayer4);
 		txtChatScreen = new TextArea();
 		txtChatScreen.setPrefSize(200, 300);
+		txtChatScreen.setEditable(false);
 		txtChatInput = new TextField();
 		txtChatInput.setPrefWidth(200);
 		scrollTxt = new ScrollPane();
@@ -175,22 +176,27 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		labelRollDices = new Label(
 				"Du darfst insgesamt dreimal würfeln. Wähle die Würfel an, welche du setzen möchtest.");
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
-		btnWuerfeln = GameBoardView.initializeButton("Würfeln");
-		btnUebernehmen = GameBoardView.initializeButton("Übernehmen");
+		labelSelectCards = new Label("Wähle deine Karten und schliesse deinen Zug mit \"bestätigen\" ab.");
+		
+		btnWuerfeln = GameBoardView.initializeButton("würfeln");
+		btnUebernehmen = GameBoardView.initializeButton("übernehmen");
+		btnBestaetigen = GameBoardView.initializeButton("bestätigen");
 
-		dicePane.add(labelRollDices, 0, 0, 10, 4);
+		dicePane.add(labelRollDices, 0, 0, 9, 1);
 
 		diceControlArray = new DiceControl[7];
 		ICube[] cubes = model.getCubes();
 		for (int i = 0; i < 7; i++) {
 			DiceControl diceControl = new DiceControl(cubes[i]);
 			diceControlArray[i] = diceControl;
-			dicePane.add(diceControl, i, 5);
+			dicePane.add(diceControl, i, 1);
 		}
 
-		dicePane.add(btnWuerfeln, 10, 5);
-		dicePane.add(labelSelectedDices, 0, 5, 10, 6);
-		dicePane.add(btnUebernehmen, 10, 10);
+		dicePane.add(btnWuerfeln, 10, 1);
+		dicePane.add(labelSelectedDices, 0, 3, 9, 1);
+		dicePane.add(btnUebernehmen, 10, 4);
+		dicePane.add(labelSelectCards, 0, 6, 9, 1);
+		dicePane.add(btnBestaetigen, 10, 6);
 
 		// Zuordnung der Sub-Panes zur Haupt-Pane "root"
 		root.add(navigation, 0, 0, 1, 10);
