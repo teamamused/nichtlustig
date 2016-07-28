@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.ListChangeListener;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,7 +14,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,9 +39,9 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected ImageView logo, linkIcon, exitIcon;
 	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
-	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnBestaetigen, btnLink, btnExit;
-	protected TextArea txtChatScreen;
-	protected TextField txtChatInput;
+	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnBestaetigen,
+			btnLink, btnExit, btnSenden;
+	protected TextArea txtChatInput, txtChatScreen;
 	protected ScrollPane scrollTxt, scrollPane;
 	protected Label labelSpielfeld, labelRollDices, labelSelectedDices, labelSelectCards;
 	protected String url;
@@ -82,7 +82,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			exitImage = ResourceLoader.getImage("Exit.png");
 		} catch (FileNotFoundException e) {
 			LogHelper.LogException(e);
-		}	
+		}
 		exitIcon = new ImageView(exitImage);
 		exitIcon.setFitHeight(30);
 		exitIcon.setPreserveRatio(true);
@@ -116,16 +116,19 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		btnArray.add(btnPlayer3);
 		btnArray.add(btnPlayer4);
 		txtChatScreen = new TextArea();
-		txtChatScreen.setPrefSize(200, 300);
+		txtChatScreen.setPrefSize(200, 400);
 		txtChatScreen.setEditable(false);
-		txtChatInput = new TextField();
-		txtChatInput.setPrefWidth(200);
+		txtChatInput = new TextArea();
+		txtChatInput.setPrefSize(200, 150);
+		btnSenden = new Button("Nachricht senden");
+		btnSenden.setPrefSize(200, 40);
+		btnSenden.setAlignment(Pos.CENTER);
 		scrollTxt = new ScrollPane();
 		scrollTxt.setContent(txtChatScreen);
 		Tooltip chatInputTool = new Tooltip("Hier kannst du deine Chatnachrichten eingeben");
 		Tooltip.install(txtChatInput, chatInputTool);
 		navigation.getChildren().addAll(logo, btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, txtChatScreen,
-				txtChatInput);
+				txtChatInput, btnSenden);
 
 		// Definition der Pane für die Spielkarten
 		cardPane = GameBoardView.initializeGridPane();
@@ -177,7 +180,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 				"Du darfst insgesamt dreimal würfeln. Wähle die Würfel an, welche du setzen möchtest.");
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
 		labelSelectCards = new Label("Wähle deine Karten und schliesse deinen Zug mit \"bestätigen\" ab.");
-		
+
 		btnWuerfeln = GameBoardView.initializeButton("würfeln");
 		// TODO: setDisable vom Server steuern lassen
 		btnWuerfeln.setDisable(false);
@@ -210,6 +213,20 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		disablePlayer();
 
+		// Auf der ObserverList wird ein ListChangeListener registriert, welcher
+		// immer, wenn etwas der Liste hinzugefügt wird, dieses auf dem Screen
+		// ausgibt. get(0), da immer nur etwas daher kommt.
+		model.chatMessages.addListener(new ListChangeListener<String>() {
+			@Override
+			public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> change) {
+				if (!change.next())
+					return;
+				if (change.wasAdded()) {
+					txtChatScreen.appendText("\n" + change.getAddedSubList().get(0));
+				}
+			}
+		});
+
 		return scene;
 	}
 
@@ -236,12 +253,12 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			btn.setDisable(true);
 		}
 		for (int index = 0; index < playerList.size(); index++) {
-		//TODO: Nur für Testing! Wieder auskommentieren...
-//		for (int index = 0; index < 3; index++) {
+			// TODO: Nur für Testing! Wieder auskommentieren...
+			// for (int index = 0; index < 3; index++) {
 			Button btn = btnArray.get(index);
 			btn.setDisable(false);
 		}
-	
+
 	}
 
 	/**
