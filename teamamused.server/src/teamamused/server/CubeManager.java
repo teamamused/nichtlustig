@@ -60,7 +60,7 @@ public class CubeManager{
 		diceCounter = 0;
 		allowedDicings = 3;
 		counterFixedCubes = 0;
-		ICube[] currentCubes = BoardManager.getInstance().getGameBoard().getCubes();
+		ICube[] currentCubes = getCubes();
 		for(ICube cube : currentCubes){
 			cube.setIsFixed(false);
 			cube.resetCubeValues();
@@ -74,7 +74,7 @@ public class CubeManager{
 	public int rollDices(){
 		ServiceLocator.getInstance().getLogger().info("CubeManager: rolle Würfel");
 		this.diceCounter++;
-		for (ICube cube: BoardManager.getInstance().getGameBoard().getCubes()) {
+		for (ICube cube: getCubes()) {
 		    if (!cube.getIsFixed()) {
 		    	cube.dice();
 		    }
@@ -88,7 +88,11 @@ public class CubeManager{
 	 * @return Anzahl Versuche
 	 */
 	public int initForNextRound(int additionalDicings) {
-		this.resetCounters();
+		ICube[] currentCubes = getCubes();
+		for(ICube cube : currentCubes){
+			cube.setIsFixed(false);
+		}
+		this.diceCounter = 0;
 		this.allowedDicings = 3 + additionalDicings;
 		return this.allowedDicings;
 	}

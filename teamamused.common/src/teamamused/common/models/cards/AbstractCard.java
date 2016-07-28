@@ -9,8 +9,9 @@ import teamamused.common.interfaces.IGameCard;
 import javafx.scene.image.Image;
 
 /**
- * Dies ist die Basisklasse aller Spielkarten.
- * Hier ist die zentrale Logik wie das Laden der Hinter / Fordergrundbilder definiert.
+ * Dies ist die Basisklasse aller Spielkarten. Hier ist die zentrale Logik wie
+ * das Laden der Hinter / Fordergrundbilder definiert.
+ * 
  * @author Daniel Hirsbrunner
  *
  */
@@ -19,13 +20,14 @@ public abstract class AbstractCard implements IGameCard, Serializable {
 	/** Versionsnummer des Transport Objektes */
 	private static final long serialVersionUID = 1;
 	private GameCard card;
-	
+
 	public AbstractCard(GameCard card) {
 		this.card = card;
 	}
 
 	/**
-	 * Implementierung von: 
+	 * Implementierung von:
+	 * 
 	 * @see teamamused.common.interfaces.IGameCard#getGameCard()
 	 */
 	@Override
@@ -34,7 +36,8 @@ public abstract class AbstractCard implements IGameCard, Serializable {
 	}
 
 	/**
-	 * Implementierung von: 
+	 * Implementierung von:
+	 * 
 	 * @see teamamused.common.interfaces.IGameCard#getBackgroundImage()
 	 */
 	@Override
@@ -48,7 +51,8 @@ public abstract class AbstractCard implements IGameCard, Serializable {
 	}
 
 	/**
-	 * Implementierung von: 
+	 * Implementierung von:
+	 * 
 	 * @see teamamused.common.interfaces.IGameCard#getForegroundImage()
 	 */
 	@Override
@@ -60,17 +64,34 @@ public abstract class AbstractCard implements IGameCard, Serializable {
 		}
 		return null;
 	}
+
 	/**
 	 * Gibt den Namen der aktuellen Karte zurück
 	 */
 	public String toString() {
 		return this.card.toString();
 	}
+
 	/**
-	 * vergleicht die aktuelle Karte mit der Übergebenen Anhand der Kartennummer 
+	 * vergleicht die aktuelle Karte mit der Übergebenen Anhand der Kartennummer
 	 */
 	public int compareTo(IGameCard card2) {
-	    return Integer.compare(this.card.cardNumber, card2.getGameCard().cardNumber);
+		return Integer.compare(this.card.cardNumber, card2.getGameCard().cardNumber);
 	}
 
+
+	/**
+	 * Vergleiche erfolgen über die GameCard ID
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		IGameCard gc = (IGameCard) obj;
+		return (gc.getGameCard().getCardNumber() == this.getGameCard().getCardNumber());
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = this.getGameCard().cardNumber % 5;
+		return hash;
+	}
 }

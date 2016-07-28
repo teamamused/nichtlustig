@@ -17,6 +17,7 @@ import teamamused.common.interfaces.ITargetCard;
 public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 
 	private final double BUTTON_WIDTH = 110;
+
 	/**
 	 * Konstruktor
 	 * 
@@ -32,7 +33,7 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 	@Override
 	protected Scene createGUI() {
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, 1600, 810);
+		Scene scene = new Scene(root, 320, 350);
 		// Oberer Teil
 		HBox topBox = new HBox();
 		// Titel label
@@ -42,7 +43,7 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 		topBox.getChildren().addAll(lTitel);
 		// Für alle Optionen eine VBox
 		VBox options = new VBox();
-		for (int i = 0; i < model.cardsToChooseOptions.size(); i++) {
+		for (int i : model.cardsToChooseOptions.keySet()) {
 			// Pro Option Karten laden
 			options.getChildren().add(drawCards(i));
 		}
@@ -65,8 +66,8 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 	protected Button drawCards(int optionNr) {
 		Button btn = new Button();
 		if (this.model.cardsToChooseOptions != null) {
-			btn.setId(optionNr+"");
-			HBox box = new HBox(); 
+			btn.setId(optionNr + "");
+			HBox box = new HBox();
 			for (ITargetCard card : model.cardsToChooseOptions.get(optionNr)) {
 				ImageView iv = new ImageView(card.getForegroundImage());
 				iv.setFitHeight(BUTTON_WIDTH - 5);
@@ -76,7 +77,8 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 			btn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-				Client.getInstance().cardsChoosen(model.cardsToChooseOptions.get(optionNr));
+					Client.getInstance().cardsChoosen(model.cardsToChooseOptions.get(optionNr));
+					stop();
 				}
 			});
 			btn.setGraphic(box);

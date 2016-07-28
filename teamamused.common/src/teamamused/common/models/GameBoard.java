@@ -219,4 +219,12 @@ public class GameBoard implements ICardHolder, Serializable {
 		return "Spielbrett";
 	}
 	
+	/**
+	 * Vergleiche benötigt für CardHolders und dort soll der über den Namen gehen
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return this.toString().equals(obj.toString());
+	}
+	
 }
