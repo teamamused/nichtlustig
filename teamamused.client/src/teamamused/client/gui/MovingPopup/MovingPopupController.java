@@ -5,6 +5,12 @@ import javafx.scene.input.MouseEvent;
 import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.common.gui.AbstractController;
 
+/**
+ * Die Controller-Klasse nimmt Benutzerinteraktionen der MovingPopupView entgegen.
+ * 
+ * @author Michelle
+ *
+ */
 public class MovingPopupController extends AbstractController<GameBoardModel, MovingPopupView> {
 
 	public MovingPopupController(GameBoardModel model, MovingPopupView view) {
