@@ -15,13 +15,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import teamamused.client.gui.gameboard.GameBoardModel;
+import teamamused.client.libs.Client;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für die Benachrichtigung über
- * den Spielzug des Gegners dar.
+ * den Spielzug des Gegners dar. Für die Datenhaltung verwendet sie das Model
+ * des GameBoards.
  * 
  * @author Michelle
  *
@@ -54,11 +56,10 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 
 		Scene scene = new Scene(root, 1000, 700);
 
-		// TODO: Nr. des aktuellen Spielers
 		// Definition der Titel-Pane inkl. Instanziierung und Zuweisung der
 		// Controlls
 		titlePane = new HBox();
-		labelQueue = new Label("Spieler " + "Nr" + " ist an der Reihe...");
+		labelQueue = new Label("Spieler " + Client.getInstance().getPlayer().getPlayerNumber() + " ist an der Reihe...");
 		labelQueue.setId("subtitle");
 		titlePane.getChildren().add(labelQueue);
 		titlePane.setPrefWidth(1000);
