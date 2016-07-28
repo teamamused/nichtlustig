@@ -78,7 +78,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		linkIcon.setFitHeight(40);
 		linkIcon.setPreserveRatio(true);
 		btnLink = new Button("", linkIcon);
-		btnLink.setId("btnLink");
+		btnLink.setId("btnTransparent");
 		try {
 			exitImage = ResourceLoader.getImage("Exit.png");
 		} catch (FileNotFoundException e) {
@@ -88,7 +88,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		exitIcon.setFitHeight(30);
 		exitIcon.setPreserveRatio(true);
 		btnExit = new Button("", exitIcon);
-		btnExit.setId("btnExit");
+		btnExit.setId("btnTransparent");
 
 		root.add(labelSpielfeld, 1, 0);
 		root.add(btnLink, 4, 0);

@@ -75,10 +75,12 @@ public class RankingView extends AbstractView<RankingModel> {
 		// Exit-Button mit Bild erstellen
 		btnExit = new Button();
 		btnExit.setGraphic(iview);
+		btnExit.setId("btnTransparent");
 		
 		// Back-Button mit Bild erstellen
 		btnBack = new Button();
 		btnBack.setGraphic(iview2);
+		btnExit.setId("btnTransparent");
 		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_LEFT);

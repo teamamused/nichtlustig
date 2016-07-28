@@ -107,7 +107,7 @@ public class GameOverView extends AbstractView<GameOverModel> {
 		trophyIcon.setFitHeight(30);
 		trophyIcon.setPreserveRatio(true);
 		btnTrophy = new Button("", trophyIcon);
-		btnTrophy.setId("btnTrophy");
+		btnTrophy.setId("btnTransparent");
 		rankingPane.setAlignment(Pos.CENTER_RIGHT);
 		rankingPane.setPadding(new Insets(10, 10, 10, 10));
 		rankingPane.getChildren().add(btnTrophy);

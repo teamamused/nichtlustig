@@ -53,15 +53,7 @@
 	-fx-base: red;
 }
 
-#btnLink{
-	-fx-background-color: transparent;
-}
-
-#btnExit{
-	-fx-background-color: transparent;
-}
-
-#btnTrophy{
+#btnTransparent{
 	-fx-background-color: transparent;
 }
 

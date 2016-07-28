@@ -94,12 +94,12 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		// Ranking-Button mit Bild erstellen
 		btnTrophy = new Button();
 		btnTrophy.setGraphic(iview3);
-		btnTrophy.setId("btnTrophy");
+		btnTrophy.setId("btnTransparent");
 		
 		// Exit-Button mit Bild erstellen
 		btnExit = new Button();
 		btnExit.setGraphic(iview4);
-		btnExit.setId("btnExit");
+		btnExit.setId("btnTransparent");
 		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_LEFT);

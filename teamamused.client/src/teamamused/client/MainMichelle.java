@@ -1,19 +1,32 @@
 package teamamused.client;
 
 import javafx.application.Application;
-import javafx.application.HostServices;
 import javafx.stage.Stage;
+import teamamused.client.gui.ByeController;
+import teamamused.client.gui.ByeModel;
+import teamamused.client.gui.ByeView;
 import teamamused.client.gui.LogInController;
 import teamamused.client.gui.LogInModel;
 import teamamused.client.gui.LogInView;
+import teamamused.client.gui.RankingController;
+import teamamused.client.gui.RankingModel;
+import teamamused.client.gui.RankingView;
 import teamamused.client.gui.WelcomeController;
 import teamamused.client.gui.WelcomeModel;
 import teamamused.client.gui.WelcomeView;
+import teamamused.client.gui.GameOver.GameOverView;
+import teamamused.client.gui.MovingPopup.MovingPopupController;
+import teamamused.client.gui.MovingPopup.MovingPopupView;
 import teamamused.client.gui.gameboard.GameBoardController;
 import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.client.gui.gameboard.GameBoardView;
 import teamamused.client.gui.splashscreen.Splash_View;
+import teamamused.client.gui.waitingroom.WaitingRoomController;
+import teamamused.client.gui.waitingroom.WaitingRoomModel;
+import teamamused.client.gui.waitingroom.WaitingRoomView;
+import teamamused.client.libs.Client;
 import teamamused.common.ServiceLocator;
+import teamamused.common.models.Player;
 
 /*
  * TODO: NICHT EINCHECKEN!!!!
@@ -24,28 +37,47 @@ public class MainMichelle extends Application {
 	private LogInView logInView;
 	private WelcomeView welcomeView;
 	private GameBoardView gameBoardView;
+	private ByeView byeView;
+	private RankingView rankingView;
+	private MovingPopupView movingPopupView;
+	private GameOverView gameOverView;
+	private WaitingRoomView waitingRoomView;
 	private static MainMichelle instance = null;
 
 	@Override
 	public void start(Stage primaryStage) {
+		instance = this;
 		
 		ServiceLocator.getInstance().setHostServices(getHostServices());
-
-		//TODO: Sandra -> Start-Button muss Client.getInstance().startGame() aufrufen
+		
+		// der server sollte schon verbunden sein
+		Client.getInstance().connectToServer("localhost", "michelle", 9636);
+		// spieler sollte schon registriert sein
+		Client.getInstance().setPlayer(new Player("michelle"));
 		
 		// Spiel starten
 //		Client.getInstance().startGame();
         ServiceLocator.getInstance().getLogger().info("Gehe zu GUI");
 		
-        // Initialisierung des GameBoard-GUI
+//        // Initialisierung des GameBoard-GUI
         GameBoardModel model = new GameBoardModel();
-        GameBoardView view = new GameBoardView(primaryStage, model);
-        new GameBoardController(model, view);
+        gameBoardView = new GameBoardView(primaryStage, model);
+        new GameBoardController(model, gameBoardView);
+        
+        // Initialisierung des MovingPopups
+//        movingPopupView = new MovingPopupView(primaryStage, model);
+//        new MovingPopupController(model, movingPopupView);
+//        
+        // Initialisierung der GameOver-GUI
+//        GameOverModel model2 = new GameOverModel();
+//        gameOverView = new GameOverView(primaryStage, model2);
+//        new GameOverController(model2, gameOverView);
         
         //defaultLogger.info("Starte View");
         // gui anzeigen
-        view.start();
-        
+        gameBoardView.start();
+//        movingPopupView.start();
+//        gameOverView.start();
 
         ServiceLocator.getInstance().getLogger().info("Client ist verbunden!");
 	}
@@ -78,6 +110,50 @@ public class MainMichelle extends Application {
 		welcomeView = new WelcomeView(welcomeStage, model);
 		new WelcomeController(model, welcomeView);
 		welcomeView.start();
+	}
+	
+	public void startWaitingRoom2() {
+
+		Stage waitingRoomStage = new Stage();
+		WaitingRoomModel model = new WaitingRoomModel();
+		waitingRoomView = new WaitingRoomView(waitingRoomStage, model);
+		new WaitingRoomController(model, waitingRoomView);
+		gameOverView.stop();
+		gameOverView = null;
+		waitingRoomView.start();
+	}
+	
+	public void startRanking2() {
+
+		Stage RankingStage = new Stage();
+		RankingModel model = new RankingModel();
+		rankingView = new RankingView(RankingStage, model);
+		new RankingController(model, rankingView);
+		gameOverView.stop();
+		gameOverView = null;
+		rankingView.start();
+	}
+	
+	public void startBye3() {
+
+		Stage ByeStage = new Stage();
+		ByeModel model = new ByeModel();
+		byeView = new ByeView(ByeStage, model);
+		new ByeController(model, byeView);
+		gameBoardView.stop();
+		gameBoardView = null;
+		byeView.start();
+	}
+	
+	public void startBye4() {
+
+		Stage ByeStage = new Stage();
+		ByeModel model = new ByeModel();
+		byeView = new ByeView(ByeStage, model);
+		new ByeController(model, byeView);
+		gameOverView.stop();
+		gameOverView = null;
+		byeView.start();
 	}
 	
 	public void startGameBoard() {
