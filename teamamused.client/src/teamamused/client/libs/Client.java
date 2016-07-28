@@ -61,7 +61,7 @@ public class Client {
 	 *            Server Port
 	 * @return erfolgreich
 	 */
-	public boolean ConnectToServer(String serverName, String username, int portNumber) {
+	public boolean connectToServer(String serverName, String username, int portNumber) {
 		this.connector = new ServerConnector(serverName, username, portNumber);
 		return this.connector.connect();
 	}
