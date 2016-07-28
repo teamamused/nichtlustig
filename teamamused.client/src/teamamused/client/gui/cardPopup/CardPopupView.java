@@ -19,6 +19,13 @@ import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
 
+/**
+ * Diese Klasse stellt die grafische Oberfläche für die Anzeige der Gegnerkarten
+ * dar.
+ * 
+ * @author Michelle
+ *
+ */
 public class CardPopupView extends AbstractView<GameBoardModel> {
 
 	protected GridPane root;
@@ -96,6 +103,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		btnTakeCard = CardPopupView.initializeButton("Karte(n) nehmen");
 		btnClose = CardPopupView.initializeButton("schliessen");
 		buttonPane.getChildren().addAll(btnTakeCard, btnClose);
+		buttonPane.setSpacing(10);
 		buttonPane.setAlignment(Pos.BASELINE_RIGHT);
 
 		root.add(titlePane, 0, 0);
