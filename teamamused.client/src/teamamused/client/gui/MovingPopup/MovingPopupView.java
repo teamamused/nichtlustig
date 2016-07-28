@@ -49,7 +49,7 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 		root.setHgap(10);
 		root.setVgap(10);
 		root.setAlignment(Pos.TOP_LEFT);
-		root.setGridLinesVisible(true);
+		root.setGridLinesVisible(false);
 		scrollPane = new ScrollPane();
 		scrollPane.setContent(root);
 
@@ -59,6 +59,7 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 		// Controlls
 		titlePane = new HBox();
 		labelQueue = new Label("Spieler " + model.getBtnPlayerClicked() + " ist an der Reihe...");
+		labelQueue.setId("subtitle");
 		titlePane.getChildren().add(labelQueue);
 		titlePane.setPrefWidth(1000);
 
@@ -79,7 +80,7 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 		// Definition der Pane für den Text zu den Karten inkl.
 		// Instanziierung und Zuweisung der Controlls
 		cardTxtPane = new HBox();
-		labelCards = new Label("Der Spieler hat folgende Karten erwürelt:");
+		labelCards = new Label("Der Spieler hat folgende Karten erwürfelt:");
 		cardTxtPane.getChildren().add(labelCards);
 
 		// TODO: Muss dynamisch gestalten sein
@@ -93,15 +94,17 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 				getImageView("Ente.png"), getImageView("Killervirus.png"), getImageView("Ente.png"),
 				getImageView("Killervirus.png"), getImageView("Ente.png"));
 
+		// TODO: Nr. des nächsten Spielers
 		// Definition der Schluss-Pane inkl.
 		// Instanziierung und Zuweisung der Controlls
 		nextPlayerPane = new HBox();
-		labelNext = new Label("Spieler " + model.getBtnPlayerClicked() + " ist nun am Zug!");
+		labelNext = new Label("Spieler " + "Nr" + " ist nun am Zug!");
 		btnClose = new Button("schliessen");
 		btnClose.setPrefSize(180, 40);
 		btnClose.setAlignment(Pos.CENTER);
 		nextPlayerPane.getChildren().addAll(labelNext, btnClose);
-		nextPlayerPane.setAlignment(Pos.BASELINE_RIGHT);
+		nextPlayerPane.setAlignment(Pos.BASELINE_LEFT);
+		nextPlayerPane.setSpacing(470);
 
 		root.add(titlePane, 0, 0);
 		root.add(diceTxtPane, 0, 2);
