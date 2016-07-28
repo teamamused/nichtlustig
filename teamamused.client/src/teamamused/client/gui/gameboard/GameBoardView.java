@@ -17,6 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -120,6 +121,8 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		txtChatScreen.setEditable(false);
 		txtChatInput = new TextArea();
 		txtChatInput.setPrefSize(200, 150);
+		txtChatScreen.setId("chatArea");
+		txtChatInput.setId("chatArea");
 		btnSenden = new Button("Nachricht senden");
 		btnSenden.setPrefSize(200, 40);
 		btnSenden.setAlignment(Pos.CENTER);
@@ -226,7 +229,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 				}
 			}
 		});
-
+		
 		return scene;
 	}
 
@@ -253,7 +256,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			btn.setDisable(true);
 		}
 		for (int index = 0; index < playerList.size(); index++) {
-			// TODO: Nur für Testing! Wieder auskommentieren...
+			// TODO: Unterer Teil nur für Testing! Wieder auskommentieren...
 			// for (int index = 0; index < 3; index++) {
 			Button btn = btnArray.get(index);
 			btn.setDisable(false);
@@ -297,7 +300,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		pane.setPadding(new Insets(20, 20, 20, 20));
 		pane.setHgap(10);
 		pane.setVgap(10);
-		pane.setGridLinesVisible(true);
+		pane.setGridLinesVisible(false);
 		return pane;
 	}
 

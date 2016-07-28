@@ -19,18 +19,18 @@ import teamamused.common.models.Player;
  *
  */
 public class GameBoardModel extends AbstractModel implements IClientListener {
-	protected Player player = (Player) Client.getInstance().getPlayer();
+	public Player player = (Player) Client.getInstance().getPlayer();
 
 	// In der ObserverList werden Nachrichten gespeichert
 	protected ObservableList<String> chatMessages = FXCollections.observableArrayList();
-
-	// Speichert die Spieler-Nr. des Buttons, welcher geklickt wurde
-	protected int btnPlayerClicked;
 
 	// Registriert das GUI
 	public GameBoardModel() {
 		Client.getInstance().registerGui(this);
 	}
+	
+	// Speichert die Spieler-Nr. des Buttons, welcher geklickt wurde
+	protected int btnPlayerClicked;
 
 	// Wird vom Handler der Player-Buttons im Controller aufgerufen
 	public void setBtnPlayerClicked(int btnNumber) {

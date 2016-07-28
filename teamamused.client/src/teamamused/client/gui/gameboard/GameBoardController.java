@@ -11,6 +11,7 @@ import teamamused.client.Main;
 import teamamused.client.gui.cardPopup.CardPopupController;
 import teamamused.client.gui.cardPopup.CardPopupView;
 import teamamused.client.libs.Client;
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.gui.AbstractController;
@@ -81,6 +82,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 						}
 					}
 				}
+//				Client.getInstance().rollDices(); TODO
 			}
 		});
 
@@ -102,19 +104,22 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		view.btnUebernehmen.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO: Würfelwerte an Server senden
+//				Client.getInstance().setFixedCubes(cubeFixed); TODO
 				view.btnBestaetigen.setDisable(false);
 			}
 			
 		});
 		
 		// Sendet die eingegebene Nachricht an den Server
+		try {
 		view.btnSenden.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				Client.getInstance().sendChatMessage(new TransportableChatMessage(model.player.getPlayerName(), view.txtChatInput.getText()));
 			}
-		});
+		});} catch (Exception e) {
+			LogHelper.LogException(e);
+		}
 	}
 
 	/**
