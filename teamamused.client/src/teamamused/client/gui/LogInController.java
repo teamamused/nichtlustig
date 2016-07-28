@@ -28,7 +28,7 @@ public class LogInController extends AbstractController<LogInModel, LogInView>  
 		view.btnConnectServer.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				boolean erfolgreich = Client.getInstance().ConnectToServer(view.textServer.getText(), view.textUser.getText(), Integer.parseInt(view.textPort.getText()));
+				boolean erfolgreich = Client.getInstance().connectToServer(view.textServer.getText(), view.textUser.getText(), Integer.parseInt(view.textPort.getText()));
 				if (erfolgreich) {
 					ServiceLocator.getInstance().getLogger().info("Erfolgreich zum Server verbunden");
 				} else {
