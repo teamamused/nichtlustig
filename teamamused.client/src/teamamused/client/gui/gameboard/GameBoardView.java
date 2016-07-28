@@ -179,6 +179,8 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		labelSelectCards = new Label("Wähle deine Karten und schliesse deinen Zug mit \"bestätigen\" ab.");
 		
 		btnWuerfeln = GameBoardView.initializeButton("würfeln");
+		// TODO: setDisable vom Server steuern lassen
+		btnWuerfeln.setDisable(false);
 		btnUebernehmen = GameBoardView.initializeButton("übernehmen");
 		btnBestaetigen = GameBoardView.initializeButton("bestätigen");
 
@@ -278,7 +280,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		pane.setPadding(new Insets(20, 20, 20, 20));
 		pane.setHgap(10);
 		pane.setVgap(10);
-		pane.setGridLinesVisible(false);
+		pane.setGridLinesVisible(true);
 		return pane;
 	}
 
@@ -294,6 +296,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		Button btn = new Button(buttonText);
 		btn.setPrefSize(200, 40);
 		btn.setAlignment(Pos.CENTER);
+		btn.setDisable(true);
 		return btn;
 	}
 }

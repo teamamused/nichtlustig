@@ -13,6 +13,12 @@ import teamamused.client.gui.cardPopup.CardPopupView;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractController;
 
+/**
+ * Diese Controller-Klasse nimmt die Benutzerinteraktionen des GameBoard entgegen.
+ * 
+ * @author Michelle
+ *
+ */
 public class GameBoardController extends AbstractController<GameBoardModel, GameBoardView> {
 
 	protected int countDice = 0;
@@ -66,8 +72,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 							diceControl.showDice();
 						}
 					}
-					// TODO: unteren Teil in Handler zu Übernehmen-Button inkl.
-					// Senden an Server
 				} else if (countDice == 4) {
 					for (DiceControl diceControl : view.diceControlArray) {
 						if (!diceControl.getCube().getIsFixed()) {
@@ -91,10 +95,21 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				}
 			});
 		}
+		
+		//
+		view.btnUebernehmen.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO: Würfelwerte an Server senden
+				view.btnBestaetigen.setDisable(false);
+				
+			}
+			
+		});
 	}
 
 	/**
-	 * TODO
+	 * Die Methode ruft das Fenster mit den Karten des jeweiligen Spielers auf.
 	 * 
 	 * @throws Exception
 	 */
@@ -107,7 +122,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	}
 
 	/**
-	 * TODO
+	 * Diese Methode verschiebt die Würfel nach unten zu den gesetzten Würfeln.
 	 * 
 	 * @param diceControl
 	 */
@@ -117,7 +132,8 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		int index = Arrays.asList(view.diceControlArray).indexOf(diceControl);
 		DiceControl diceControlChosen = new DiceControl(diceControl.getCube());
 		diceControlChosen.showDice();
-		view.dicePane.add(diceControlChosen, index, 10);
+		view.dicePane.add(diceControlChosen, index, 4);
+		view.btnUebernehmen.setDisable(false);
 	}
 
 }
