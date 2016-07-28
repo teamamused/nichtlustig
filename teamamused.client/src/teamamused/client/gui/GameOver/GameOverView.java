@@ -58,7 +58,7 @@ public class GameOverView extends AbstractView<GameOverModel> {
 		// Controlls
 		contentPane = new VBox();
 		labelTxt = new Label("Das Spiel ist nun zu Ende...");
-		labelTxt.setId("labelGameOver");
+		labelTxt.setId("subtitle");
 		labelWinner = new Label("Herzliche Gratulation: Spieler " + "Nr" + " gewinnt!");
 		contentPane.getChildren().addAll(labelTxt, labelWinner);
 		contentPane.setPrefWidth(900);

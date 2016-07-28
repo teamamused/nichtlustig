@@ -14,7 +14,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import teamamused.client.gui.cardPopup.CardPopupView;
 import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
@@ -55,10 +54,11 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 
 		Scene scene = new Scene(root, 1000, 700);
 
+		// TODO: Nr. des aktuellen Spielers
 		// Definition der Titel-Pane inkl. Instanziierung und Zuweisung der
 		// Controlls
 		titlePane = new HBox();
-		labelQueue = new Label("Spieler " + model.getBtnPlayerClicked() + " ist an der Reihe...");
+		labelQueue = new Label("Spieler " + "Nr" + " ist an der Reihe...");
 		labelQueue.setId("subtitle");
 		titlePane.getChildren().add(labelQueue);
 		titlePane.setPrefWidth(1000);

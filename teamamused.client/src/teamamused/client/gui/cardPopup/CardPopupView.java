@@ -52,7 +52,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		titlePane = new HBox();
 		labelText = new Label(
 				"Hier siehst du die Karten deines Gegners und kannst ihm allenfalls seine Karten \"stibitzen\":");
-		labelText.setId("cardPopupLabelText");
+		labelText.setId("subtitle");
 		titlePane.getChildren().add(labelText);
 		titlePane.setPrefWidth(1000);
 
