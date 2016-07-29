@@ -58,7 +58,7 @@ public class ClientManager {
 		if (Game.getInstance().getActivePlayer() != null) {
 			String currPlayerName = Game.getInstance().getActivePlayer().getPlayerName();
 			for (ClientConnection cc : this.clients) {
-				if (cc.getPlayer().getPlayerName() == currPlayerName) {
+				if (cc.getPlayer().getPlayerName().equals(currPlayerName)) {
 					return cc;
 				}
 			}

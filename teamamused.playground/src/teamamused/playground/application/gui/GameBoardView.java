@@ -22,6 +22,7 @@ import teamamused.common.interfaces.IGameCard;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.server.TextAreaHandler;
+import teamamused.client.libs.Client;
 
 public class GameBoardView extends AbstractView<GameBoardModel> {
 
@@ -239,6 +240,10 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		if (model.spielbrett != null) {
 			for (IPlayer p : model.spielbrett.getPlayers()) {
 				Button btn = new Button(p.getPlayerNumber() + " - " + p.getPlayerName());
+				// Aktiven Spieler hervorheben
+				if (Client.getInstance().getActivePlayer() != null && p.getPlayerNumber() == Client.getInstance().getActivePlayer().getPlayerNumber()) {
+					btn.setStyle("-fx-font: 22 arial; -fx-base: #b6e7c9;");
+				}
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {

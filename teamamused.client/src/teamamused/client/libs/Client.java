@@ -27,6 +27,7 @@ public class Client {
 	private Logger log;
 	private GuiNotificator guis;
 	private Player currPlayer;
+	private IPlayer activePlayer;
 	ServerConnector connector;
 
 	/**
@@ -81,6 +82,24 @@ public class Client {
 	 */
 	public void setPlayer(IPlayer player) {
 		this.currPlayer = (Player) player;
+	}
+
+	/**
+	 * getter für Player
+	 * 
+	 * @return aktuelles Spieler Objekt
+	 */
+	public IPlayer getActivePlayer() {
+		return this.activePlayer;
+	}
+
+	/**
+	 * getter für Player
+	 * 
+	 * @return aktuelles Spieler Objekt
+	 */
+	public void setActivePlayer(IPlayer activePlayer) {
+		this.activePlayer = activePlayer;
 	}
 
 	/**

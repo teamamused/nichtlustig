@@ -31,7 +31,7 @@ public class ShowPlayerView extends AbstractView<ShowPlayerModel> {
 	@Override
 	protected Scene createGUI() {
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, 500, 400);
+		Scene scene = new Scene(root, 540, 450);
 		// Titel label
 		Label lTitel = new Label();
 		lTitel.setText("Der spieler " + model.player.getPlayerName() + " hat folgende Karten");

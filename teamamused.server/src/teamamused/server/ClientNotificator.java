@@ -44,7 +44,7 @@ public class ClientNotificator {
 	public static void notifyCardsToChoose(Hashtable<Integer, List<ITargetCard>> options) {
 		TransportableProcedureCall chooseCards = new TransportableProcedureCall(
 				TransportableProcedureCall.RemoteProcedure.ChooseCards, new Object[] { options });
-		ClientManager.getInstance().updateClients(chooseCards);
+		ClientManager.getInstance().updateCurrentClient(chooseCards);
 	}
 
 	/**

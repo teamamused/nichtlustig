@@ -188,6 +188,7 @@ public class ServerConnection extends Thread {
 		case ChangeActivePlayer:
 			if (params != null && params.length >= 1) {
 				if (params[0] instanceof IPlayer && params[1] instanceof Integer) {
+					Client.getInstance().setActivePlayer((IPlayer)params[0]);
 					this.notifyGui.playerIsActivedChanged(((IPlayer) params[0]).getPlayerName().equals(Client.getInstance()
 							.getPlayer().getPlayerName()));
 					this.notifyGui.numberOfRemeiningDicingChanged((Integer)params[1]);
