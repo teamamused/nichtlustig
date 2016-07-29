@@ -271,6 +271,7 @@ public class ClientConnection extends Thread {
 				if (p != null) {
 					this.player = p;
 					this.username = username;
+					ServiceLocator.getInstance().getDBContext().saveContext();
 					return new TransportableAnswer(rpc, true, p);
 				}
 			} catch (Exception e) {
