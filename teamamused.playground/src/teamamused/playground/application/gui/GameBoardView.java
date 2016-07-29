@@ -1,5 +1,7 @@
 package teamamused.playground.application.gui;
 
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -17,6 +19,7 @@ import javafx.stage.Stage;
 import teamamused.common.gui.AbstractView;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IGameCard;
+import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.server.TextAreaHandler;
 
@@ -31,6 +34,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	TextField txtChatNewMsg;
 
 	HBox wuerfel;
+	VBox player;
 	Button btnDiceRoll;
 	Button btnDiceFix;
 	Button btnStartGame;
@@ -38,6 +42,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	CheckBox[] cbsCubesFixed = new CheckBox[7];
 	Button[] btnsCubesFixed = new Button[7];
+	ArrayList<Button> playerButtons;
 
 	/**
 	 * Konstruktor
@@ -97,7 +102,12 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		Label lLogging = new Label("Loging (nur Test):");
 		TextArea loggingTxtArea = TextAreaHandler.getInstance().getTextArea();
 		loggingTxtArea.setEditable(false);
-		right.getChildren().addAll(lSpielzuege, txtGameMoves, lChat, txtChat, bottomBox, lLogging, loggingTxtArea);
+		// Players
+		this.player = new VBox();
+		this.playerButtons = new ArrayList<Button>();
+		this.drawPlayers();
+		right.getChildren().addAll(lSpielzuege, txtGameMoves, lChat, txtChat, bottomBox, lLogging, loggingTxtArea,
+				this.player);
 		// Alle Elemente im Gui anordnen
 		root.setTop(topBox);
 		karten.getChildren().addAll(todKartenPane, spielKartenPane, spezialKartenPane);
@@ -218,6 +228,31 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		VBox wuerfelButtons = new VBox();
 		wuerfelButtons.getChildren().addAll(btnDiceRoll, btnDiceFix);
 		wuerfel.getChildren().add(wuerfelButtons);
+	}
+
+	protected void drawPlayers() {
+		for (Button oldButton : this.playerButtons) {
+			this.player.getChildren().remove(oldButton);
+			oldButton = null;
+		}
+		this.playerButtons = new ArrayList<Button>();
+		if (model.spielbrett != null) {
+			for (IPlayer p : model.spielbrett.getPlayers()) {
+				Button btn = new Button(p.getPlayerNumber() + " - " + p.getPlayerName());
+				btn.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						Stage playerStage = new Stage();
+						ShowPlayerModel model = new ShowPlayerModel(p);
+						ShowPlayerView view = new ShowPlayerView(playerStage, model);
+						new ShowPlayerController(model, view);
+						view.start();
+					}
+				});
+				this.playerButtons.add(btn);
+				this.player.getChildren().add(btn);
+			}
+		}
 	}
 
 	/**

@@ -72,7 +72,7 @@ public class ChatClient extends Application implements IClientListener {
 		btnStartChat.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				boolean erfolgreich = Client.getInstance().ConnectToServer(txtServer.getText(), txtUser.getText(), Integer.parseInt(txtPort.getText()));
+				boolean erfolgreich = Client.getInstance().connectToServer(txtServer.getText(), txtUser.getText(), Integer.parseInt(txtPort.getText()));
 				if (erfolgreich) {
 					ServiceLocator.getInstance().getLogger().info("Erfolgreich zum Server verbunden");
 					txtNewMsg.setDisable(false);
