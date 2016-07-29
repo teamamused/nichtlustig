@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import teamamused.client.Main;
+import teamamused.client.gui.LogInModel;
 import teamamused.client.gui.cardPopup.CardPopupController;
 import teamamused.client.gui.cardPopup.CardPopupView;
 import teamamused.client.libs.Client;
@@ -15,9 +16,11 @@ import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.gui.AbstractController;
+import teamamused.common.interfaces.IPlayer;
 
 /**
- * Diese Controller-Klasse nimmt die Benutzerinteraktionen des GameBoard entgegen.
+ * Diese Controller-Klasse nimmt die Benutzerinteraktionen des GameBoard
+ * entgegen.
  * 
  * @author Michelle
  *
@@ -82,7 +85,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 						}
 					}
 				}
-//				Client.getInstance().rollDices(); TODO
+				// Client.getInstance().rollDices(); TODO
 			}
 		});
 
@@ -94,32 +97,34 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				@Override
 				public void handle(MouseEvent event) {
 					Button b = (Button) event.getSource();
-					model.setBtnPlayerClicked(view.btnArray.indexOf(b)+1);
+					model.setBtnPlayerClicked(view.btnArray.indexOf(b) + 1);
 					showCardPopup();
 				}
 			});
 		}
-		
+
 		// Sendet die gewürfelten Würfelwerte an den Server
 		view.btnUebernehmen.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-//				Client.getInstance().setFixedCubes(cubeFixed); TODO
+				// Client.getInstance().setFixedCubes(cubeFixed); TODO
 				view.btnBestaetigen.setDisable(false);
 			}
-			
+
 		});
-		
+
 		// Sendet die eingegebene Nachricht an den Server
-		try {
 		view.btnSenden.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Client.getInstance().sendChatMessage(new TransportableChatMessage(model.player.getPlayerName(), view.txtChatInput.getText()));
+				try {
+					Client.getInstance().sendChatMessage(
+							new TransportableChatMessage(LogInModel.loggedInPlayer.getPlayerName(), view.txtChatInput.getText()));
+				} catch (Exception e) {
+					LogHelper.LogException(e);
+				}
 			}
-		});} catch (Exception e) {
-			LogHelper.LogException(e);
-		}
+		});
 	}
 
 	/**
@@ -129,7 +134,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	public void showCardPopup() {
 		Stage popupStage = new Stage();
-//		CardPopupModel model = new CardPopupModel();
+		// CardPopupModel model = new CardPopupModel();
 		CardPopupView cardPopupView = new CardPopupView(popupStage, model);
 		new CardPopupController(model, cardPopupView);
 		cardPopupView.start();

@@ -19,7 +19,6 @@ import teamamused.common.models.Player;
  *
  */
 public class GameBoardModel extends AbstractModel implements IClientListener {
-	public Player player = (Player) Client.getInstance().getPlayer();
 
 	// In der ObserverList werden Nachrichten gespeichert
 	protected ObservableList<String> chatMessages = FXCollections.observableArrayList();

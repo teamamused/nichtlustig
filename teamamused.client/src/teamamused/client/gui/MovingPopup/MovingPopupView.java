@@ -14,11 +14,13 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import teamamused.client.gui.LogInModel;
 import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.client.libs.Client;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.interfaces.IPlayer;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für die Benachrichtigung über
@@ -63,6 +65,8 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 		labelQueue.setId("subtitle");
 		titlePane.getChildren().add(labelQueue);
 		titlePane.setPrefWidth(1000);
+		
+		IPlayer loggedInPlayer = LogInModel.loggedInPlayer;
 
 		// Definition der Pane für den Text zu den Würfeln inkl.
 		// Instanziierung und Zuweisung der Controlls

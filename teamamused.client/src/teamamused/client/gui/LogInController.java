@@ -50,6 +50,7 @@ public class LogInController extends AbstractController<LogInModel, LogInView>  
 		Platform.runLater(() -> {
 			Main.getInstance().startWelcome();
 		});
+		LogInModel.loggedInPlayer = player;
 	}
 	@Override
 	public void onLoginFailed(String msg) {
