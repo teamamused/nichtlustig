@@ -73,6 +73,6 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 	public void onLoginFailed(String msg) {
 		ServiceLocator.getInstance().getLogger().info("Login gescheitert: " + msg);
 		// Irgend es Label ihblände mit em Text "Fehler beim anmelden: "+ msg
-	}
+	}	
 
 }
