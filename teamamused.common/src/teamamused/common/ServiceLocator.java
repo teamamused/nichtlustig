@@ -1,9 +1,11 @@
 package teamamused.common;
 
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import javafx.application.HostServices;
 import teamamused.common.db.XmlDataBaseContext;
+import teamamused.common.gui.Translator;
 import teamamused.common.interfaces.IDataBaseContext;
 
 /**
@@ -20,9 +22,11 @@ public class ServiceLocator {
 	private Settings settings;
 	private IDataBaseContext dbContext;
 	private HostServices hostServices;
+	private Translator translator;
 
 	/**
 	 * Getter der Instanz vom ServiceLocater
+	 * 
 	 * @return Instanz zum Service Locator
 	 */
 	public static ServiceLocator getInstance() {
@@ -62,8 +66,8 @@ public class ServiceLocator {
 	}
 
 	/**
-	 * Gibt den aktuell gesetzten Datenbankkontext zurück, falls keiner gesetzt wurde wird
-	 * ein standard DB Context erstellt.
+	 * Gibt den aktuell gesetzten Datenbankkontext zurück, falls keiner gesetzt
+	 * wurde wird ein standard DB Context erstellt.
 	 * 
 	 * @return DatenbankKontext
 	 */
@@ -100,7 +104,8 @@ public class ServiceLocator {
 	/**
 	 * Setzt die Referenz zu den Einstellungen
 	 * 
-	 * @param settings Einstellungsobjet Referenz
+	 * @param settings
+	 *            Einstellungsobjet Referenz
 	 */
 	public void setSettings(Settings settings) {
 		this.settings = settings;
@@ -118,10 +123,44 @@ public class ServiceLocator {
 	/**
 	 * Setzt die JavaFX-HostServices
 	 * 
-	 * @param hostServices {@link HostServices}
+	 * @param hostServices
+	 *            {@link HostServices}
 	 */
 	public void setHostServices(HostServices hostServices) {
 		this.hostServices = hostServices;
 	}
+
+	/**
+	 * Gibt die Referenz auf den Translator zurück, welcher als Singleton
+	 * implementiert ist
+	 * 
+	 * @return Referenz auf Translator-Singleton
+	 */
+	public Translator getTranslator() {
+		return translator;
+	}
+
+	/**
+	 * Setzt den Translator
+	 * 
+	 * @param translator
+	 */
+	public void setTranslator(Translator translator) {
+		this.translator = translator;
+	}
+
+	/**
+	 * Gibt ein Array mit Locales zurück
+	 * 
+	 * @return Locale-Array
+	 */
+	public Locale[] getLocales() {
+		return new Locale[]{
+				Locale.GERMAN,
+				new Locale("ch"),
+		};
+	}
+	
+	
 
 }

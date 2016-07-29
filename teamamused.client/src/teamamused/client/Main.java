@@ -1,5 +1,7 @@
 package teamamused.client;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
 import teamamused.client.gui.ByeController;
 import teamamused.client.gui.ByeModel;
 import teamamused.client.gui.ByeView;
@@ -16,6 +18,9 @@ import teamamused.client.gui.WelcomeController;
 import teamamused.client.gui.WelcomeModel;
 import teamamused.client.gui.WelcomeView;
 import teamamused.client.gui.GameOver.GameOverView;
+import teamamused.client.gui.gameboard.GameBoardController;
+import teamamused.client.gui.gameboard.GameBoardModel;
+import teamamused.client.gui.gameboard.GameBoardView;
 import teamamused.client.gui.splashscreen.Splash_Controller;
 import teamamused.client.gui.splashscreen.Splash_Model;
 import teamamused.client.gui.splashscreen.Splash_View;
@@ -23,11 +28,7 @@ import teamamused.client.gui.waitingroom.WaitingRoomController;
 import teamamused.client.gui.waitingroom.WaitingRoomModel;
 import teamamused.client.gui.waitingroom.WaitingRoomView;
 import teamamused.common.ServiceLocator;
-import javafx.application.Application;
-import javafx.stage.Stage;
-import teamamused.client.gui.gameboard.GameBoardController;
-import teamamused.client.gui.gameboard.GameBoardModel;
-import teamamused.client.gui.gameboard.GameBoardView;
+import teamamused.common.gui.Translator;
 
 public class Main extends Application {
 
@@ -47,6 +48,7 @@ public class Main extends Application {
 		Main.instance = this;
 		// Setzt dem ServiceLocator die JavaFX-HostServices
 		ServiceLocator.getInstance().setHostServices(getHostServices());
+		ServiceLocator.getInstance().setTranslator(new Translator(null));
 		// Create and display the splash screen and model
 		Splash_Model splashModel = new Splash_Model();
 		splashView = new Splash_View(primaryStage, splashModel);

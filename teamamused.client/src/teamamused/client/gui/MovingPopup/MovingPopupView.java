@@ -66,8 +66,6 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 		titlePane.getChildren().add(labelQueue);
 		titlePane.setPrefWidth(1000);
 		
-		IPlayer loggedInPlayer = LogInModel.loggedInPlayer;
-
 		// Definition der Pane für den Text zu den Würfeln inkl.
 		// Instanziierung und Zuweisung der Controlls
 		diceTxtPane = new HBox();

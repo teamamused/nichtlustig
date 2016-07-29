@@ -1,6 +1,8 @@
 package teamamused.client.gui;
 
 import java.io.FileNotFoundException;
+import java.util.Locale;
+
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,8 +19,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
-import teamamused.common.gui.AbstractView;
 import teamamused.common.ServiceLocator;
+import teamamused.common.gui.AbstractView;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für das Log-In dar.
@@ -36,6 +38,7 @@ public class LogInView extends AbstractView<LogInModel> {
 	protected TextField textUser;
 	protected TextField textPassword;
 	protected Hyperlink linkReg;
+	protected ChoiceBox<Locale> cbLang;
 
 	public LogInView(Stage stage, LogInModel model) {
 		super(stage, model);
@@ -73,9 +76,9 @@ public class LogInView extends AbstractView<LogInModel> {
 		linkReg = new Hyperlink();
 		linkReg.setText("Registrieren");
 
-		// ChoiceBox erstellen und Auswahlmöglichkeiten festlegen
-		ChoiceBox cbLang = new ChoiceBox();
-		cbLang.setItems(FXCollections.observableArrayList("Deutsch", "English"));
+		// ChoiceBox erstellen und Auswahlmöglichkeiten aus dem ServiceLocator holen
+		cbLang = new ChoiceBox<>();
+		cbLang.setItems(FXCollections.observableArrayList(ServiceLocator.getInstance().getLocales()));
 		cbLang.getSelectionModel().selectFirst();
 		
 		ImageView iview = null;

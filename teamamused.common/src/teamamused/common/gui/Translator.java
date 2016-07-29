@@ -3,38 +3,63 @@ package teamamused.common.gui;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
-//Gemäss Unterlagen aus dem Modul Software Engineering 2 von Bradley Richards
+import teamamused.common.LogHelper;
+import teamamused.common.ServiceLocator;
+
+/**
+ * Gemäss Unterlagen und Codebeispielen aus dem Modul Software Engineering 2 von
+ * Bradley Richards
+ * 
+ * @author Michelle
+ *
+ */
+// Gemäss Unterlagen aus dem Modul Software Engineering 2 von Bradley Richards
 public class Translator {
-	private static Translator instance = null;
-	private Locale locale;
-	private ResourceBundle resourceBundle;
-	
-	//Konstruktor
-	private Translator(){
-	}
-	
-	// Singleton-Pattern, damit nur eine Translator-Instanz existiert
-	public static Translator getInstance(){
-		if (instance == null){
-			return instance = new Translator();
-		} else {
-			return instance;
+	protected Locale currentLocale;
+	protected ResourceBundle resourceBundle;
+	protected ServiceLocator serviceLocator = ServiceLocator.getInstance();
+	protected Logger logger = LogHelper.getDefaultLogger();
+
+	// Konstruktor
+	public Translator(String localeString) {
+		// Can we find the language in our supported locales?
+		// If not, use VM default locale
+		Locale locale = Locale.getDefault();
+		if (localeString != null) {
+			Locale[] availableLocales = serviceLocator.getLocales();
+			for (int i = 0; i < availableLocales.length; i++) {
+				String tmpLang = availableLocales[i].getLanguage();
+				if (localeString.substring(0, tmpLang.length()).equals(tmpLang)) {
+					locale = availableLocales[i];
+					break;
+				}
+			}
 		}
+
+		// Load the resource strings
+		// TODO
+		// resourceBundle =
+		// ResourceBundle.getBundle(serviceLocator.getAPP_CLASS().getName(),
+		// locale);
+		Locale.setDefault(locale); // Change VM default (for dialogs, etc.)
+		currentLocale = locale;
+
+		logger.info("Loaded resources for " + locale.getLanguage());
 	}
-	
-	public Locale getCurrentLocale(){
-		return locale;
+
+	public Locale getCurrentLocale() {
+		return currentLocale;
 	}
-	
-	public String getString(String key){
+
+	public String getString(String key) {
 		try {
 			return resourceBundle.getString(key);
-		} catch (MissingResourceException e){
+		} catch (MissingResourceException e) {
 			System.out.println("Wert fehlt zu: " + key);
 			return "";
 		}
 	}
-	
-	
+
 }
