@@ -119,7 +119,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			public void handle(MouseEvent event) {
 				try {
 					Client.getInstance().sendChatMessage(
-							new TransportableChatMessage(LogInModel.loggedInPlayer.getPlayerName(), view.txtChatInput.getText()));
+							new TransportableChatMessage(model.player.getPlayerName(), view.txtChatInput.getText()));
 				} catch (Exception e) {
 					LogHelper.LogException(e);
 				}

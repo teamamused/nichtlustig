@@ -17,17 +17,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import teamamused.client.gui.LogInModel;
-import teamamused.client.libs.Client;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
 import teamamused.common.interfaces.ICube;
-import teamamused.common.interfaces.IPlayer;
 import teamamused.common.models.Player;
 
 /**
@@ -51,8 +47,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected String url;
 	protected DiceControl[] diceControlArray;
 	protected List<Button> btnArray;
-	protected IPlayer loggedInPlayer = LogInModel.loggedInPlayer;
-	protected IPlayer currentPlayer = Client.getInstance().getPlayer();
 
 	public GameBoardView(Stage stage, GameBoardModel model) {
 		super(stage, model);
@@ -191,9 +185,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		btnWuerfeln = GameBoardView.initializeButton("würfeln");
 		// TODO: setDisable vom Server steuern lassen
-		if (loggedInPlayer.getPlayerNumber() == currentPlayer.getPlayerNumber()) {
-			btnWuerfeln.setDisable(false);
-		}
+		btnWuerfeln.setDisable(false);
 		btnUebernehmen = GameBoardView.initializeButton("übernehmen");
 		btnBestaetigen = GameBoardView.initializeButton("bestätigen");
 

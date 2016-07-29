@@ -10,6 +10,7 @@ import teamamused.client.libs.IClientListener;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.gui.AbstractModel;
 import teamamused.common.interfaces.ICube;
+import teamamused.common.interfaces.IPlayer;
 import teamamused.common.models.GameBoard;
 import teamamused.common.models.Player;
 
@@ -19,7 +20,8 @@ import teamamused.common.models.Player;
  *
  */
 public class GameBoardModel extends AbstractModel implements IClientListener {
-
+	IPlayer player = Client.getInstance().getPlayer();
+	
 	// Registriert das GUI
 	public GameBoardModel() {
 		Client.getInstance().registerGui(this);

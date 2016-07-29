@@ -67,7 +67,6 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 		Platform.runLater(() -> {
 			Main.getInstance().startWelcome();
 		});
-		LogInModel.loggedInPlayer = player;
 	}
 
 	@Override
