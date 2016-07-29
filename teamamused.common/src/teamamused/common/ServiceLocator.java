@@ -23,6 +23,7 @@ public class ServiceLocator {
 	private IDataBaseContext dbContext;
 	private HostServices hostServices;
 	private Translator translator;
+	final private Locale[] locales = new Locale[] { new Locale("de"), new Locale("ch") };
 
 	/**
 	 * Getter der Instanz vom ServiceLocater
@@ -155,12 +156,7 @@ public class ServiceLocator {
 	 * @return Locale-Array
 	 */
 	public Locale[] getLocales() {
-		return new Locale[]{
-				Locale.GERMAN,
-				new Locale("ch"),
-		};
+		return locales;
 	}
 	
-	
-
 }

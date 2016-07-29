@@ -38,13 +38,13 @@ public class Translator {
 			}
 		}
 
-		// Load the resource strings
-		// TODO
-		// resourceBundle =
-		// ResourceBundle.getBundle(serviceLocator.getAPP_CLASS().getName(),
-		// locale);
 		Locale.setDefault(locale); // Change VM default (for dialogs, etc.)
 		currentLocale = locale;
+		
+		// Load the resource strings
+		// TODO
+//		 resourceBundle = ResourceBundle.getBundle(Main.getClass().getName(),currentLocale);
+
 
 		logger.info("Loaded resources for " + locale.getLanguage());
 	}

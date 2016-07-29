@@ -84,11 +84,12 @@ public class GameBoardModel extends AbstractModel implements IClientListener {
 		return playerList;
 	}
 
-	// Methode von IClientListener wird hier überschrieben und so die
-	// empfangenen Nachrichten in die ObserverList geschrieben
+	/**
+	 * Methode von IClientListener wird hier überschrieben und so die
+	 * empfangenen Nachrichten in die ObserverList geschrieben
+	 */
 	@Override
 	public void onChatMessageRecieved(TransportableChatMessage message) {
 		chatMessages.add(message.getSender() + " : " + message.getMessage());
 	}
-
 }
