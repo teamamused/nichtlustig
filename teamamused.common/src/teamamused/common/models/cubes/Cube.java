@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.ISpecialCard;
+import teamamused.common.models.cards.GameCard;
 
 /**
  * Hauptklasse welche die Grundfunktionalität der Würfel implementiert
@@ -29,18 +30,18 @@ class Cube implements ICube, Serializable {
 	 *            Interne Nummer des Würfels
 	 * @param color
 	 *            Würfelfarbe
-	 * @param card
-	 *            Spezialkarte
+	 * @param specialCard
+	 *            Spezialkarten
 	 */
-	Cube(int cubeNumber, CubeColor color, ISpecialCard card) {
+	Cube(int cubeNumber, CubeColor color, GameCard specialCard) {
 		super();
 		this.cubeNumber = cubeNumber;
 		this.cubeValues = new CubeValue[6];
 		this.color = color;
-		for (int i = 0; i < 6; i++) {
+		this.cubeValues[0] = new CubeValue(color, 0, specialCard);
+		for (int i = 1; i < 6; i++) {
 			this.cubeValues[i] = new CubeValue(color, i);
 		}
-		this.cubeValues[0].SpecialCard = card;
 		this.faceValue = 1;
 	}
 
@@ -110,7 +111,7 @@ class Cube implements ICube, Serializable {
 	 */
 	@Override
 	public ISpecialCard getSpecialCard() {
-		return this.cubeValues[0].SpecialCard;
+		return this.cubeValues[0].getSpecialCard();
 	}
 
 	/**

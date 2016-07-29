@@ -4,13 +4,13 @@ import javafx.scene.image.Image;
 
 /**
  * Interface für die Spezialkarten welche im Spiel vorhanden sind.
- * Durch die hier default definierten Methoden k�nnen alle Spezialfunktionen der Sonderkarten abgedeckt werden.
+ * Durch die hier default definierten Methoden können alle Spezialfunktionen der Sonderkarten abgedeckt werden.
  * 
  * @author Daniel Hirsbrunner
  */
 public interface ISpecialCard extends IGameCard {
 	/**
-	 * Gibt die Anzahl zus�tzlicher Würfelw�rfe zurück (positiv oder negativ)
+	 * Gibt die Anzahl zusätzlicher Würfelwürfe zurück (positiv oder negativ)
 	 * Bei Ente + 1, bei Roboter - 1
 	 * @return +/- Zusatz W�rfe
 	 */

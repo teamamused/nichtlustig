@@ -183,8 +183,8 @@ public class BoardManager {
 		// Erreichte Würfelwerte werden geprüft
 		for (ICube cube : CubeManager.getInstance().getCubes()) {
 			sumOfCubes += cube.getCurrentValue().FaceValue;
-			if (cube.getCurrentValue().SpecialCard != null) {
-				specialCardsToDeploy.add(cube.getCurrentValue().SpecialCard);
+			if (cube.getCurrentValue().getSpecialCard() != null) {
+				specialCardsToDeploy.add(cube.getCurrentValue().getSpecialCard());
 			} else {
 				cubeValues.add(cube.getCurrentValue());
 			}

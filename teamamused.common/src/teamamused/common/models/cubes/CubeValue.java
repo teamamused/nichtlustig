@@ -9,6 +9,8 @@ import javafx.scene.image.Image;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ISpecialCard;
+import teamamused.common.models.cards.CardFactory;
+import teamamused.common.models.cards.GameCard;
 
 /**
  * 
@@ -26,6 +28,12 @@ public class CubeValue implements Serializable {
 
 	/** Versionsnummer des Transport Objektes */
 	private static final long serialVersionUID = 1;
+
+	/**
+	 * Anzeigewert des Würfels
+	 */
+	private GameCard specialCard;
+	
 	/**
 	 * Konstruktor zur direkten initialisierung
 	 * 
@@ -35,8 +43,24 @@ public class CubeValue implements Serializable {
 	 *            FaceValue
 	 */
 	public CubeValue(CubeColor color, int faceValue) {
+		super();
 		this.Color = color;
 		this.FaceValue = faceValue;
+	}
+
+	/**
+	 * Konstruktor zur direkten initialisierung
+	 * 
+	 * @param color
+	 *            Color
+	 * @param faceValue
+	 *            FaceValue
+	 * @param specialCardNumber
+	 * 			Nummer der zugewiesenen Spezialkarte
+	 */
+	public CubeValue(CubeColor color, int faceValue, GameCard specialCard) {
+		this(color,  faceValue);
+		this.specialCard = specialCard;
 	}
 
 	/**
@@ -51,7 +75,12 @@ public class CubeValue implements Serializable {
 	/**
 	 * Spezialkarte (gesetzt bei FaceValue 0)
 	 */
-	public ISpecialCard SpecialCard;
+	public ISpecialCard getSpecialCard() {
+		if (this.specialCard != null) {
+			return CardFactory.getSpecialCards().get(this.specialCard);
+		}
+		return null;
+	};
 
 	/**
 	 * Vergleichs Methode, prüft die Farbe und den Anzeigewert der CubeValues
@@ -112,8 +141,8 @@ public class CubeValue implements Serializable {
 		// Bei Wert 0 Das Spezialkartenlogo zurückgeben
 		if (this.FaceValue == 0) {
 			Image bild = null;
-			if (this.SpecialCard != null && this.SpecialCard.getCubeSymbol() != null) {
-				bild = this.SpecialCard.getCubeSymbol();
+			if (this.getSpecialCard() != null && this.getSpecialCard().getCubeSymbol() != null) {
+				bild = this.getSpecialCard().getCubeSymbol();
 			} else {
 				// Wenn Wert 0 und keine Spezialkarte hinterlegt ist, is es der Würfel des Todes
 				try {

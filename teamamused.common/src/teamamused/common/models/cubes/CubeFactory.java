@@ -38,12 +38,12 @@ public class CubeFactory {
 	 * @return Array mit den Würfeln
 	 */
 	public static ICube[] getCubes(Hashtable<GameCard, ISpecialCard> htSpecialCards, int[] values, boolean[] fixed) {
-		Cube white1 = new Cube(0, CubeColor.White, htSpecialCards.get(GameCard.SK_Zeitmaschine));
-		Cube white2 = new Cube(1, CubeColor.White, htSpecialCards.get(GameCard.SK_KillerVirus));
-		Cube red1 = new Cube(2, CubeColor.Red, htSpecialCards.get(GameCard.SK_Clown));
-		Cube red2 = new Cube(3, CubeColor.Red, htSpecialCards.get(GameCard.SK_RoboterNF700));
-		Cube black1 = new Cube(4, CubeColor.Black, htSpecialCards.get(GameCard.SK_Ente));
-		Cube black2 = new Cube(5, CubeColor.Black, htSpecialCards.get(GameCard.SK_UFO));
+		Cube white1 = new Cube(0, CubeColor.White, GameCard.SK_Zeitmaschine);
+		Cube white2 = new Cube(1, CubeColor.White, GameCard.SK_KillerVirus);
+		Cube red1 = new Cube(2, CubeColor.Red, GameCard.SK_Clown);
+		Cube red2 = new Cube(3, CubeColor.Red, GameCard.SK_RoboterNF700);
+		Cube black1 = new Cube(4, CubeColor.Black, GameCard.SK_Ente);
+		Cube black2 = new Cube(5, CubeColor.Black, GameCard.SK_UFO);
 		Cube dead = new Cube(6, CubeColor.Pink, null);
 
 		if (values != null) {
