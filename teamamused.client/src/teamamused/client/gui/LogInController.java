@@ -1,7 +1,6 @@
 package teamamused.client.gui;
 
 import java.util.Locale;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,13 +19,13 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 	public LogInController(LogInModel model, LogInView view) {
 		super(model, view);
 
-		// Beim Client registrieren
+		// Beim Client registrieren (s. Observer Pattern)
 		Client.getInstance().registerGui(this);
 
 		view.btnLogin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Client.getInstance().logIn(view.textUser.getText(), view.textPassword.getText());
+				Client.getInstance().logIn(view.textUser.getText(), view.password.getText());
 			}
 		});
 
@@ -44,10 +43,6 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 			}
 		});
 
-		view.linkReg.setOnAction((ActionEvent e) -> {
-			Main.getInstance().startRegister();
-		});
-
 		// Sobald sich die Auswahl der ChoiceBox für die Sprache ändert, wird
 		// der Wert im ServiceLocator gesetzt.
 		view.cbLang.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Locale>() {
@@ -55,6 +50,10 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 			public void changed(ObservableValue<? extends Locale> observable, Locale oldValue, Locale newValue) {
 				ServiceLocator.getInstance().setTranslator(new Translator(newValue.getLanguage()));
 			}
+		});
+
+		view.linkReg.setOnAction((ActionEvent e) -> {
+			Main.getInstance().startRegister();
 		});
 
 	}
