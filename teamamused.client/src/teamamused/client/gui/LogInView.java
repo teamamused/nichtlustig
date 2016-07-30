@@ -2,7 +2,6 @@ package teamamused.client.gui;
 
 import java.io.FileNotFoundException;
 import java.util.Locale;
-
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -36,7 +36,7 @@ public class LogInView extends AbstractView<LogInModel> {
 	protected TextField textServer;
 	protected TextField textPort;
 	protected TextField textUser;
-	protected TextField textPassword;
+	protected PasswordField password;
 	protected Hyperlink linkReg;
 	protected ChoiceBox<Locale> cbLang;
 
@@ -59,11 +59,15 @@ public class LogInView extends AbstractView<LogInModel> {
 		// Textfelder erstellen
 		textServer = new TextField();
 		textServer.setPrefWidth(140);
+		textServer.setText("localhost");
 		textPort = new TextField();
 		textPort.setPrefWidth(100);
+		textPort.setText("9636");
 		textUser = new TextField();
-		textPassword = new TextField();
-		
+		textUser.setPromptText("Dein Benutzername");
+		password = new PasswordField();
+		password.setPromptText("Dein Passwort");
+
 		// Login-Button erstellen
 		btnConnectServer = new Button();
 		btnConnectServer.setText("Server verbinden");
@@ -119,9 +123,9 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(labelUser, 2, 0);
 		grid.add(textUser, 2, 1);
 		grid.add(labelPassword, 2, 2);
-		grid.add(textPassword, 2, 3);
+		grid.add(password, 2, 3);
 		grid.add(btnLogin, 2, 5);
-		grid.add(labelFail, 2, 7);
+		//grid.add(labelFail, 2, 7);
 		grid.add(labelNeu, 2, 8);
 		grid.add(linkReg, 2, 9);
 		grid.add(iview2, 1, 11);

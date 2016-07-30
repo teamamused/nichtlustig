@@ -1,6 +1,7 @@
 package teamamused.client.gui;
 
 import java.io.FileNotFoundException;
+import java.util.Locale;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -30,8 +32,9 @@ public class RegisterView extends AbstractView<RegisterModel> {
 	
 	protected Button btnRegister;
 	protected TextField textRegUser;
-	protected TextField textRegPassword;
-	protected TextField textRegPassword2;
+	protected PasswordField password;
+	protected PasswordField password2;
+	protected ChoiceBox<Locale> cbLang;
 
 	public RegisterView(Stage stage, RegisterModel model) {
 		super(stage, model);
@@ -53,16 +56,24 @@ public class RegisterView extends AbstractView<RegisterModel> {
 
 		// Textfelder erstellen
 		textRegUser = new TextField();
-		textRegPassword = new TextField();
-		textRegPassword2 = new TextField();
+		textRegUser.setPromptText("Dein Benutzername");
+		
+		//Passwortfelder erstellen
+		password = new PasswordField();
+		password.setPromptText("Dein Passwort");
+		
+		//Passwortfelder erstellen
+		password2 = new PasswordField();
+		password2.setPromptText("Dein Passwort bestätigen");
+
 
 		// Registrierungs-Button erstellen
 		btnRegister = new Button();
 		btnRegister.setText("Registrieren");
-
-		// ChoiceBox erstellen und Auswahlmöglichkeiten festlegen
-		ChoiceBox cbLang = new ChoiceBox();
-		cbLang.setItems(FXCollections.observableArrayList("Deutsch", "English"));
+		
+		// ChoiceBox erstellen und Auswahlmöglichkeiten aus dem ServiceLocator holen
+		cbLang = new ChoiceBox<>();
+		cbLang.setItems(FXCollections.observableArrayList(ServiceLocator.getInstance().getLocales()));
 		cbLang.getSelectionModel().selectFirst();
 
 		ImageView iview = null;
@@ -96,9 +107,9 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		grid.add(labelRegUser, 0, 5);
 		grid.add(textRegUser, 0, 6);
 		grid.add(labelRegPassword, 0, 7);
-		grid.add(textRegPassword, 0, 8);
+		grid.add(password, 0, 8);
 		grid.add(labelRegPassword2, 0, 9);
-		grid.add(textRegPassword2, 0, 10);
+		grid.add(password2, 0, 10);
 		
 		HBox hbox = new HBox();
 		hbox.setPadding(new Insets(0, 50, 50, 50));
