@@ -13,6 +13,7 @@ import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.GameBoard;
+import teamamused.common.models.cards.GameCard;
 import teamamused.common.models.cubes.CubeValue;
 
 /**
@@ -232,6 +233,15 @@ public class BoardManager {
 				this.targetCards.put(card, newOwner);
 				ClientNotificator.notifyGameMove("Zielkarte " + card + " wurde von Spieler " + currentOwner
 						+ " zu Spieler " + newOwner + " verschoben.");
+				
+				if(card.getGameCard().isDino()){
+					//Entfernt die Sonderkarte SK_Zeitmaschine vom Spieler, wenn die Dino-Karte verteilt wird
+					for(ISpecialCard specialCard : currentOwner.getSpecialCards()){
+						if(specialCard.getGameCard().getCardNumber() == GameCard.SK_Zeitmaschine.getCardNumber()){
+							this.switchSpecialcardOwner(specialCard, null);
+						}
+					}
+				}
 			}
 		}
 
