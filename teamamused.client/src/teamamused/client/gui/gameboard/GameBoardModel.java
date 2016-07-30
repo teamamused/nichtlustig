@@ -6,8 +6,6 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import teamamused.client.libs.Client;
-import teamamused.client.libs.IClientListener;
-import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.gui.AbstractModel;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IPlayer;
@@ -19,14 +17,14 @@ import teamamused.common.models.Player;
  * @author Michelle
  *
  */
-public class GameBoardModel extends AbstractModel implements IClientListener {
-	IPlayer player = Client.getInstance().getPlayer();
+public class GameBoardModel extends AbstractModel {
+	IPlayer player;
 	
-	// Registriert das GUI
-	public GameBoardModel() {
-		Client.getInstance().registerGui(this);
-	}
+	boolean specialCardsNeedsUpdate = true, targetCardsNeedsUpdate = true, deadCardsNeedsUpdate =true;
 	
+    // Wenn der Spieler am würfeln ist, wievielmal er noch darf
+    int remainingDices = 3;
+
 	// In der ObserverList werden Nachrichten gespeichert
 	protected ObservableList<String> chatMessages = FXCollections.observableArrayList();
 
@@ -43,11 +41,11 @@ public class GameBoardModel extends AbstractModel implements IClientListener {
 		return btnPlayerClicked;
 	}
 
-	// FIXME: get gameBoard from server
-	private GameBoard gameBoard = new GameBoard();
+	public GameBoard gameBoard = new GameBoard();
 
 	{
 		gameBoard.init();
+		player = Client.getInstance().getPlayer();
 	}
 
 	/**
@@ -56,7 +54,11 @@ public class GameBoardModel extends AbstractModel implements IClientListener {
 	 * @return Gibt die aktuellen Würfelwerte zurück
 	 */
 	public ICube[] getCubes() {
-		return gameBoard.getCubes();
+		if (gameBoard != null) {
+			return gameBoard.getCubes();
+		} else {
+			return new ICube[0];
+		}
 	}
 
 	/**
@@ -64,11 +66,7 @@ public class GameBoardModel extends AbstractModel implements IClientListener {
 	 * 
 	 */
 	public void dice() {
-		for (ICube cube : getCubes()) {
-			if (!cube.getIsFixed()) {
-				cube.dice();
-			}
-		}
+		Client.getInstance().rollDices();
 	}
 
 	/**
@@ -77,19 +75,8 @@ public class GameBoardModel extends AbstractModel implements IClientListener {
 	 * @return Gibt eine ArrayList mit Player-Objekten zurück.
 	 */
 	public List<Player> getPlayerList() {
-		// BeanGameBoard tgb =
-		// BeanGameBoard.getTransportObjectFromGameBoard(gameBoard);
-		// ArrayList<Player> playerList = tgb.players;
 		ArrayList<Player> playerList = new ArrayList<Player>();
 		return playerList;
 	}
 
-	/**
-	 * Methode von IClientListener wird hier überschrieben und so die
-	 * empfangenen Nachrichten in die ObserverList geschrieben
-	 */
-	@Override
-	public void onChatMessageRecieved(TransportableChatMessage message) {
-		chatMessages.add(message.getSender() + " : " + message.getMessage());
-	}
 }

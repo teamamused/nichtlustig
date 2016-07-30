@@ -38,7 +38,6 @@ public class BoardManager {
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose = new Hashtable<Integer, List<ITargetCard>>();
 	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
 	private List<ITargetCard> playerTargetCardsToValuate;
-	private boolean removeTimeMachineSpecialCard = false;
 	
 	// Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett
 	// oder bei Spieler
@@ -312,9 +311,13 @@ public class BoardManager {
 			newOwner = this.board;
 		}
 		ICardHolder oldOwner = this.specialCards.get(sc);
-		this.specialCards.put(sc, newOwner);
+		this.specialCards.replace(sc,  newOwner);
 		oldOwner.removeSpecialCard(sc);
 		newOwner.addSpecialCard(sc);
+		
+		ClientNotificator.notifyGameMove("Sonderkarte " + sc + " wurde von " + oldOwner
+				+ " zu Spieler " + newOwner + " verschoben.");
+		
 	}
 
 	private void checkDead(){
@@ -330,7 +333,7 @@ public class BoardManager {
 				playerIsBewaredOfDead = card;
 			}
 		}
-		if (this.cardsToPropose.isEmpty()) {
+		if (this.targetCardsToDeploy.isEmpty()) {
 			// Spezialkarte Killervirus wieder entfernen
 			if (playerIsForcedToDead != null) {
 				ClientNotificator.notifyGameMove("Der Spieler " + player.getPlayerName()
@@ -342,7 +345,7 @@ public class BoardManager {
 			if (playerIsBewaredOfDead != null) {
 				ClientNotificator.notifyGameMove("Der Spieler " + player.getPlayerName()
 						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!");
-				BoardManager.getInstance().switchSpecialcardOwner(playerIsForcedToDead, null);
+				BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
 			} else {
 				for (IDeadCard deadCard : deadCards.keySet()) {
 					if (deadCard.getCardCalue() == CubeManager.getInstance().getCurrentPinkCube().FaceValue) {
@@ -373,6 +376,9 @@ public class BoardManager {
 		}
 		if (!dinoCard.isEmpty()) {
 			this.log.info("Vorschlag: " + this.cardsToPropose.size() + 1 + dinoCard);
+			for(ITargetCard targetCard : dinoCard){
+				targetCardsToDeploy.add(targetCard);
+			}
 			this.cardsToPropose.put(this.cardsToPropose.size() + 1, dinoCard);
 		}
 	}
@@ -396,6 +402,9 @@ public class BoardManager {
 		}
 		if (proffessors.size() > 0) {
 			this.log.info("Vorschlag: " + cardsToPropose.size() + 1 + " Proffessoren Karten " + proffessors);
+			for(ITargetCard targetCard : proffessors){
+				targetCardsToDeploy.add(targetCard);
+			}
 			cardsToPropose.put(cardsToPropose.size() + 1, proffessors);
 		}
 	}
@@ -420,6 +429,9 @@ public class BoardManager {
 		}
 		if (restliche.size() > 0) {
 			this.log.info("Vorschlag: " + cardsToPropose.size() + 1 + " - " + restliche);
+			for(ITargetCard targetCard : restliche){
+				targetCardsToDeploy.add(targetCard);
+			}
 			cardsToPropose.put(cardsToPropose.size() + 1, restliche);
 		}
 	}

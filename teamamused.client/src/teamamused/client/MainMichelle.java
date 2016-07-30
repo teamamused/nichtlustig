@@ -47,22 +47,35 @@ public class MainMichelle extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		instance = this;
-		
-		ServiceLocator.getInstance().setHostServices(getHostServices());
+
 		
 		// der server sollte schon verbunden sein
 		Client.getInstance().connectToServer("localhost", "michelle", 9636);
 		// spieler sollte schon registriert sein
-		Client.getInstance().setPlayer(new Player("michelle"));
+		Client.getInstance().logIn("Michelle", "1234");
 		
+//      // Initialisierung des GameBoard-GUI
+      GameBoardModel model = new GameBoardModel();
+      gameBoardView = new GameBoardView(primaryStage, model);
+      new GameBoardController(model, gameBoardView);
+		ServiceLocator.getInstance().setHostServices(getHostServices());
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Client.getInstance().joinGame();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Spiel starten
 //		Client.getInstance().startGame();
         ServiceLocator.getInstance().getLogger().info("Gehe zu GUI");
-		
-//        // Initialisierung des GameBoard-GUI
-        GameBoardModel model = new GameBoardModel();
-        gameBoardView = new GameBoardView(primaryStage, model);
-        new GameBoardController(model, gameBoardView);
+		Client.getInstance().startGame();
         
         // Initialisierung des MovingPopups
 //        movingPopupView = new MovingPopupView(primaryStage, model);
