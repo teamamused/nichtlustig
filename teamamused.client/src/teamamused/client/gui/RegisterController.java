@@ -17,13 +17,17 @@ import teamamused.common.gui.AbstractController;
 import teamamused.common.gui.Translator;
 import teamamused.common.interfaces.IPlayer;
 
-public class RegisterController extends AbstractController<RegisterModel, RegisterView>implements IClientListener {
+public class RegisterController extends AbstractController<RegisterModel, RegisterView> implements IClientListener {
 
 	public RegisterController(RegisterModel model, RegisterView view) {
 		super(model, view);
 
 		// Beim Client registrieren
 		Client.getInstance().registerGui(this);
+		
+		view.btnExit.setOnAction((ActionEvent e) -> {
+			Main.getInstance().startLogIn2();
+		});
 
 		// Sobald sich die Auswahl der ChoiceBox für die Sprache ändert, wird
 		// der Wert im ServiceLocator gesetzt.

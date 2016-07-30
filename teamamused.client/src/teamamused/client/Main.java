@@ -28,6 +28,7 @@ import teamamused.client.gui.waitingroom.WaitingRoomController;
 import teamamused.client.gui.waitingroom.WaitingRoomModel;
 import teamamused.client.gui.waitingroom.WaitingRoomView;
 import teamamused.common.ServiceLocator;
+import teamamused.common.db.Ranking;
 import teamamused.common.gui.Translator;
 
 public class Main extends Application {
@@ -70,6 +71,28 @@ public class Main extends Application {
 		splashView = null;
 		logInView.start();
 	}
+	
+	public void startLogIn2() {
+
+		Stage logInStage = new Stage();
+		LogInModel model = new LogInModel();
+		logInView = new LogInView(logInStage, model);
+		new LogInController(model, logInView);
+		registerView.stop();
+		registerView = null;
+		logInView.start();
+	}
+	
+	public void startRegister() {
+
+		Stage RegisterStage = new Stage();
+		RegisterModel model = new RegisterModel();
+		registerView = new RegisterView(RegisterStage, model);
+		new RegisterController(model, registerView);
+		logInView.stop();
+		logInView = null;
+		registerView.start();
+	}
 
 	public void startWelcome() {
 
@@ -104,21 +127,10 @@ public class Main extends Application {
 		welcomeView.start();
 	}
 	
-	public void startRegister() {
-
-		Stage RegisterStage = new Stage();
-		RegisterModel model = new RegisterModel();
-		registerView = new RegisterView(RegisterStage, model);
-		new RegisterController(model, registerView);
-		logInView.stop();
-		logInView = null;
-		registerView.start();
-	}
-	
-	public void startRanking() {
+	public void startRanking(Ranking[] ranking) {
 
 		Stage RankingStage = new Stage();
-		RankingModel model = new RankingModel();
+		RankingModel model = new RankingModel(ranking);
 		rankingView = new RankingView(RankingStage, model);
 		new RankingController(model, rankingView);
 		welcomeView.stop();
@@ -126,10 +138,10 @@ public class Main extends Application {
 		rankingView.start();
 	}
 	
-	public void startRanking2() {
+	public void startRanking2(Ranking[] ranking) {
 
 		Stage RankingStage = new Stage();
-		RankingModel model = new RankingModel();
+		RankingModel model = new RankingModel(ranking);
 		rankingView = new RankingView(RankingStage, model);
 		new RankingController(model, rankingView);
 		gameOverView.stop();

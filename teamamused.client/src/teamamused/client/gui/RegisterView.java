@@ -31,6 +31,7 @@ import teamamused.common.gui.AbstractView;
 public class RegisterView extends AbstractView<RegisterModel> {
 	
 	protected Button btnRegister;
+	protected Button btnExit;
 	protected TextField textRegUser;
 	protected PasswordField password;
 	protected PasswordField password2;
@@ -96,6 +97,21 @@ public class RegisterView extends AbstractView<RegisterModel> {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
 		}
 		
+		ImageView iview3 = null;
+		try {
+			iview3 = new ImageView(ResourceLoader.getImage("Back.png"));
+			iview3.setFitWidth(30);
+			iview3.setFitWidth(30);
+			iview3.setPreserveRatio(true);
+		} catch (FileNotFoundException e1) {
+			ServiceLocator.getInstance().getLogger().severe(e1.toString());
+		}
+		
+		// Exit-Button mit Bild erstellen
+		btnExit = new Button();
+		btnExit.setGraphic(iview3);
+		btnExit.setId("btnTransparent");
+		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
@@ -117,11 +133,18 @@ public class RegisterView extends AbstractView<RegisterModel> {
 	    hbox.setSpacing(15);
 	    hbox.getChildren().addAll(iview2, cbLang);
 	    hbox.getChildren().addAll(btnRegister);
+	    
+		HBox hbox2 = new HBox();
+		hbox2.setPadding(new Insets(0, 0, 0, 0));
+		hbox2.setAlignment(Pos.TOP_RIGHT);
+	    hbox2.setSpacing(15);
+	    hbox2.getChildren().addAll(btnExit);
 		
 		VBox vbox = new VBox();
-		vbox.setPadding(new Insets(80, 80, 0, 50));
+		vbox.setPadding(new Insets(50, 80, 0, 50));
 		vbox.setAlignment(Pos.TOP_CENTER);
-		vbox.setSpacing(10);
+		vbox.setSpacing(20);
+		vbox.getChildren().addAll(hbox2);
 		vbox.getChildren().addAll(iview);
 		vbox.getChildren().addAll(labelCopyright);
 	    
