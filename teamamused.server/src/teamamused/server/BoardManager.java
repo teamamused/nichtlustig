@@ -13,6 +13,7 @@ import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.GameBoard;
+import teamamused.common.models.cards.GameCard;
 import teamamused.common.models.cubes.CubeValue;
 
 /**
@@ -34,10 +35,11 @@ public class BoardManager {
 	private List<ITargetCard> targetCardsToDeploy = new ArrayList<ITargetCard>();
 	private List<ISpecialCard> specialCardsToDeploy = new ArrayList<ISpecialCard>();
 	private List<IDeadCard> deadCardsToDeploy = new ArrayList<IDeadCard>();
-	private Hashtable<Integer, List<ITargetCard>> cardsToPropose;
+	private Hashtable<Integer, List<ITargetCard>> cardsToPropose = new Hashtable<Integer, List<ITargetCard>>();
 	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
 	private List<ITargetCard> playerTargetCardsToValuate;
-
+	private boolean removeTimeMachineSpecialCard = false;
+	
 	// Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett
 	// oder bei Spieler
 	private Hashtable<IDeadCard, ICardHolder> deadCards = new Hashtable<IDeadCard, ICardHolder>();
@@ -162,27 +164,30 @@ public class BoardManager {
 	 * abgeschlossen hat.
 	 */
 	public void valuatePlayerDice() {
-		// Initialisierung der Variablen
+		// Initialisierung / Zürücksetzen der Variablen
 		int sumOfCubes = 0;
-		this.cardsToPropose = new Hashtable<Integer, List<ITargetCard>>();
+		this.cardsToPropose.clear();
+		this.specialCardsToDeploy.clear();
+		this.targetCardsToDeploy.clear();
+		this.deadCardsToDeploy.clear();
 		ArrayList<CubeValue> cubeValues = new ArrayList<CubeValue>();
-		this.specialCardsToDeploy = new ArrayList<ISpecialCard>();
-		this.targetCardsToDeploy = new ArrayList<ITargetCard>();
-		this.deadCardsToDeploy = new ArrayList<IDeadCard>();
 
 		// Prüfen Spezialkarten prüfen des Spielers prüfen
 		// Dazu Spezialkarten prüfen
 		for (ISpecialCard card : Game.getInstance().getActivePlayer().getSpecialCards()) {
 			if (card.getAdditionalPoints() != 0) {
-				// TODO: falls der Spieler dank der Spezialkarte Zeitreise einen Dino bekommt,
-				// muss diese ihm wieder entfernt werden
+				//Wenn der Spieler die Spezialkarte Zeitmaschine hat, bekommt er zusätzlich zwei Würfelaugen
+				//TODO: Spezialkarte entfernen
 				sumOfCubes += card.getAdditionalPoints();
 			}
 		}
 
 		// Erreichte Würfelwerte werden geprüft
 		for (ICube cube : CubeManager.getInstance().getCubes()) {
-			sumOfCubes += cube.getCurrentValue().FaceValue;
+			//der Wert des pinken Würfels wird nicht zur Summe gezählt
+			if(cube.getCubeColor() != CubeManager.getInstance().getCurrentPinkCube().Color){
+				sumOfCubes += cube.getCurrentValue().FaceValue;
+			}
 			if (cube.getCurrentValue().getSpecialCard() != null) {
 				specialCardsToDeploy.add(cube.getCurrentValue().getSpecialCard());
 			} else {
@@ -231,6 +236,15 @@ public class BoardManager {
 				this.targetCards.put(card, newOwner);
 				ClientNotificator.notifyGameMove("Zielkarte " + card + " wurde von Spieler " + currentOwner
 						+ " zu Spieler " + newOwner + " verschoben.");
+				
+				if(card.getGameCard().isDino()){
+					//Entfernt die Sonderkarte SK_Zeitmaschine vom Spieler, wenn die Dino-Karte verteilt wird
+					for(ISpecialCard specialCard : currentOwner.getSpecialCards()){
+						if(specialCard.getGameCard().getCardNumber() == GameCard.SK_Zeitmaschine.getCardNumber()){
+							this.switchSpecialcardOwner(specialCard, null);
+						}
+					}
+				}
 			}
 		}
 
@@ -341,20 +355,25 @@ public class BoardManager {
 	
 	private void checkDinoCards(int sumOfCubes) {
 		// Summe für die Dinos prüfen, höchste mögliche Dinokarte merken
-		ITargetCard dinoCard = null;
+		
+		ArrayList <ITargetCard> dinoCard = new ArrayList <ITargetCard>();
 		for (ITargetCard targetCard : targetCards.keySet()) {
 			if (targetCard.getGameCard().isDino() && targetCard.getRequiredPoints() <= sumOfCubes) {
 				// Prüfen ob der Dino besser ist als der bereits vorhandene
-				if (dinoCard == null || dinoCard.getRequiredPoints() < targetCard.getRequiredPoints()) {
-					dinoCard = targetCard;
+				if (dinoCard.isEmpty()){
+					dinoCard.clear();
+					dinoCard.add(targetCard);
+				}else{
+					if(dinoCard.get(0).getRequiredPoints() < targetCard.getRequiredPoints()){
+						dinoCard.clear();
+						dinoCard.add(targetCard);
+					}
 				}
 			}
 		}
-		if (dinoCard != null) {
+		if (!dinoCard.isEmpty()) {
 			this.log.info("Vorschlag: " + this.cardsToPropose.size() + 1 + dinoCard);
-			ArrayList<ITargetCard> dinos = new ArrayList<ITargetCard>();
-			dinos.add(dinoCard);
-			this.cardsToPropose.put(this.cardsToPropose.size() + 1, dinos);
+			this.cardsToPropose.put(this.cardsToPropose.size() + 1, dinoCard);
 		}
 	}
 
