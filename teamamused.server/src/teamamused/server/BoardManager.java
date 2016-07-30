@@ -34,7 +34,7 @@ public class BoardManager {
 	private List<ITargetCard> targetCardsToDeploy = new ArrayList<ITargetCard>();
 	private List<ISpecialCard> specialCardsToDeploy = new ArrayList<ISpecialCard>();
 	private List<IDeadCard> deadCardsToDeploy = new ArrayList<IDeadCard>();
-	private Hashtable<Integer, List<ITargetCard>> cardsToPropose;
+	private Hashtable<Integer, List<ITargetCard>> cardsToPropose = new Hashtable<Integer, List<ITargetCard>>();
 	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
 	private List<ITargetCard> playerTargetCardsToValuate;
 
@@ -162,13 +162,13 @@ public class BoardManager {
 	 * abgeschlossen hat.
 	 */
 	public void valuatePlayerDice() {
-		// Initialisierung der Variablen
+		// Initialisierung / Zürücksetzen der Variablen
 		int sumOfCubes = 0;
-		this.cardsToPropose = new Hashtable<Integer, List<ITargetCard>>();
+		this.cardsToPropose.clear();
+		this.specialCardsToDeploy.clear();
+		this.targetCardsToDeploy.clear();
+		this.deadCardsToDeploy.clear();
 		ArrayList<CubeValue> cubeValues = new ArrayList<CubeValue>();
-		this.specialCardsToDeploy = new ArrayList<ISpecialCard>();
-		this.targetCardsToDeploy = new ArrayList<ITargetCard>();
-		this.deadCardsToDeploy = new ArrayList<IDeadCard>();
 
 		// Prüfen Spezialkarten prüfen des Spielers prüfen
 		// Dazu Spezialkarten prüfen
