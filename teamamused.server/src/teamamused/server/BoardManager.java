@@ -184,7 +184,10 @@ public class BoardManager {
 
 		// Erreichte Würfelwerte werden geprüft
 		for (ICube cube : CubeManager.getInstance().getCubes()) {
-			sumOfCubes += cube.getCurrentValue().FaceValue;
+			//der Wert des pinken Würfels wird nicht zur Summe gezählt
+			if(cube.getCubeColor() != CubeManager.getInstance().getCurrentPinkCube().Color){
+				sumOfCubes += cube.getCurrentValue().FaceValue;
+			}
 			if (cube.getCurrentValue().getSpecialCard() != null) {
 				specialCardsToDeploy.add(cube.getCurrentValue().getSpecialCard());
 			} else {
