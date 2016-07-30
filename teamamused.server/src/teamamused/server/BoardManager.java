@@ -37,7 +37,8 @@ public class BoardManager {
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose = new Hashtable<Integer, List<ITargetCard>>();
 	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
 	private List<ITargetCard> playerTargetCardsToValuate;
-
+	private boolean removeTimeMachineSpecialCard = false;
+	
 	// Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett
 	// oder bei Spieler
 	private Hashtable<IDeadCard, ICardHolder> deadCards = new Hashtable<IDeadCard, ICardHolder>();
@@ -174,8 +175,8 @@ public class BoardManager {
 		// Dazu Spezialkarten prüfen
 		for (ISpecialCard card : Game.getInstance().getActivePlayer().getSpecialCards()) {
 			if (card.getAdditionalPoints() != 0) {
-				// TODO: falls der Spieler dank der Spezialkarte Zeitreise einen Dino bekommt,
-				// muss diese ihm wieder entfernt werden
+				//Wenn der Spieler die Spezialkarte Zeitmaschine hat, bekommt er zusätzlich zwei Würfelaugen
+				//TODO: Spezialkarte entfernen
 				sumOfCubes += card.getAdditionalPoints();
 			}
 		}
@@ -341,20 +342,25 @@ public class BoardManager {
 	
 	private void checkDinoCards(int sumOfCubes) {
 		// Summe für die Dinos prüfen, höchste mögliche Dinokarte merken
-		ITargetCard dinoCard = null;
+		
+		ArrayList <ITargetCard> dinoCard = new ArrayList <ITargetCard>();
 		for (ITargetCard targetCard : targetCards.keySet()) {
 			if (targetCard.getGameCard().isDino() && targetCard.getRequiredPoints() <= sumOfCubes) {
 				// Prüfen ob der Dino besser ist als der bereits vorhandene
-				if (dinoCard == null || dinoCard.getRequiredPoints() < targetCard.getRequiredPoints()) {
-					dinoCard = targetCard;
+				if (dinoCard.isEmpty()){
+					dinoCard.clear();
+					dinoCard.add(targetCard);
+				}else{
+					if(dinoCard.get(0).getRequiredPoints() < targetCard.getRequiredPoints()){
+						dinoCard.clear();
+						dinoCard.add(targetCard);
+					}
 				}
 			}
 		}
-		if (dinoCard != null) {
+		if (!dinoCard.isEmpty()) {
 			this.log.info("Vorschlag: " + this.cardsToPropose.size() + 1 + dinoCard);
-			ArrayList<ITargetCard> dinos = new ArrayList<ITargetCard>();
-			dinos.add(dinoCard);
-			this.cardsToPropose.put(this.cardsToPropose.size() + 1, dinos);
+			this.cardsToPropose.put(this.cardsToPropose.size() + 1, dinoCard);
 		}
 	}
 
