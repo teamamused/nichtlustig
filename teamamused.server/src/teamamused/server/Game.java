@@ -221,7 +221,9 @@ public class Game implements Serializable {
 				if (card.getHasToSkip()) {
 					playerHasToSkip = true;
 					ClientNotificator.notifyGameMove("Der Spieler " + this.activePlayer.getPlayerName()
-							+ " wurde von einem UFO entführt und muss diese Runde aussetzen");
+							+ " wurde von einem UFO entführt und muss diese Runde aussetzen! " + 
+							"Die Sonderkarte UFO wurde vom Spieler " + this.activePlayer.getPlayerName() +
+							" auf das Spielbrett verschoben.");
 					BoardManager.getInstance().switchSpecialcardOwner(card, null);
 
 				} else if (card.getAdditionalDicing() != 0) {
