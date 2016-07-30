@@ -26,6 +26,7 @@ import teamamused.client.gui.waitingroom.WaitingRoomModel;
 import teamamused.client.gui.waitingroom.WaitingRoomView;
 import teamamused.client.libs.Client;
 import teamamused.common.ServiceLocator;
+import teamamused.common.db.Ranking;
 import teamamused.common.models.Player;
 
 /*
@@ -136,14 +137,14 @@ public class MainMichelle extends Application {
 		waitingRoomView.start();
 	}
 	
-	public void startRanking2() {
+	public void startRanking2(Ranking[] ranking) {
 
 		Stage RankingStage = new Stage();
-		RankingModel model = new RankingModel();
+		RankingModel model = new RankingModel(ranking);
 		rankingView = new RankingView(RankingStage, model);
 		new RankingController(model, rankingView);
-		gameOverView.stop();
-		gameOverView = null;
+		welcomeView.stop();
+		welcomeView = null;
 		rankingView.start();
 	}
 	

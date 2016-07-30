@@ -37,7 +37,7 @@ public class GameOverController extends AbstractController<GameOverModel, GameOv
 		view.btnTrophy.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Main.getInstance().startRanking2();
+//				Main.getInstance().startRanking2();
 			}
 		});
 		
