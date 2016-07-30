@@ -24,6 +24,9 @@ import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
 import teamamused.common.interfaces.ICube;
+import teamamused.common.interfaces.IDeadCard;
+import teamamused.common.interfaces.ISpecialCard;
+import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.Player;
 
 /**
@@ -34,7 +37,7 @@ import teamamused.common.models.Player;
  */
 public class GameBoardView extends AbstractView<GameBoardModel> {
 
-	protected GridPane root, cardPane, dicePane;
+	protected GridPane root, cardPane, dicePane, targetCardsPane, specialCardsPane, deadCardsPane;
 	protected VBox navigation;
 	protected ImageView logo, linkIcon, exitIcon;
 	protected Image linkImage, exitImage;
@@ -133,47 +136,15 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 				txtChatInput, btnSenden);
 
 		// Definition der Pane für die Spielkarten
+		targetCardsPane = GameBoardView.initializeGridPane();
+		deadCardsPane = GameBoardView.initializeGridPane();
+		specialCardsPane = GameBoardView.initializeGridPane();
 		cardPane = GameBoardView.initializeGridPane();
-
-		// Instanziierung und Zuordnung der Images zur "cardPane"
-		cardPane.add(getImageView("Riebmann1Vorne.png"), 2, 0);
-		cardPane.add(getImageView("Riebmann2Vorne.png"), 3, 0);
-		cardPane.add(getImageView("Riebmann3Vorne.png"), 4, 0);
-		cardPane.add(getImageView("Riebmann4Vorne.png"), 5, 0);
-		cardPane.add(getImageView("Riebmann5Vorne.png"), 6, 0);
-		cardPane.add(getImageView("Yeti1Vorne.png"), 2, 1);
-		cardPane.add(getImageView("Yeti2Vorne.png"), 3, 1);
-		cardPane.add(getImageView("Yeti3Vorne.png"), 4, 1);
-		cardPane.add(getImageView("Yeti4Vorne.png"), 5, 1);
-		cardPane.add(getImageView("Yeti5Vorne.png"), 6, 1);
-		cardPane.add(getImageView("Lemming1Vorne.png"), 2, 2);
-		cardPane.add(getImageView("Lemming2Vorne.png"), 3, 2);
-		cardPane.add(getImageView("Lemming3Vorne.png"), 4, 2);
-		cardPane.add(getImageView("Lemming4Vorne.png"), 5, 2);
-		cardPane.add(getImageView("Lemming5Vorne.png"), 6, 2);
-		cardPane.add(getImageView("Professoren1Vorne.png"), 2, 3);
-		cardPane.add(getImageView("Professoren2Vorne.png"), 3, 3);
-		cardPane.add(getImageView("Professoren3Vorne.png"), 4, 3);
-		cardPane.add(getImageView("Professoren4Vorne.png"), 5, 3);
-		cardPane.add(getImageView("Professoren5Vorne.png"), 6, 3);
-		cardPane.add(getImageView("Dino1Vorne.png"), 2, 4);
-		cardPane.add(getImageView("Dino2Vorne.png"), 3, 4);
-		cardPane.add(getImageView("Dino3Vorne.png"), 4, 4);
-		cardPane.add(getImageView("Dino4Vorne.png"), 5, 4);
-		cardPane.add(getImageView("Dino5Vorne.png"), 6, 4);
-		cardPane.add(getImageView("Tod0Vorne.png"), 7, 1);
-		cardPane.add(getImageView("Tod2Vorne.png"), 7, 2);
-		cardPane.add(getImageView("Tod4Vorne.png"), 7, 3);
-		cardPane.add(getImageView("Tod1Vorne.png"), 8, 1);
-		cardPane.add(getImageView("Tod3Vorne.png"), 8, 2);
-		cardPane.add(getImageView("Tod5Vorne.png"), 8, 3);
-		cardPane.add(getImageView("Ente.png"), 0, 1);
-		cardPane.add(getImageView("Clown.png"), 0, 2);
-		cardPane.add(getImageView("Zeitmaschine.png"), 0, 3);
-		cardPane.add(getImageView("Ufo.png"), 1, 1);
-		cardPane.add(getImageView("Roboter.png"), 1, 2);
-		cardPane.add(getImageView("Killervirus.png"), 1, 3);
-
+		cardPane.add(specialCardsPane, 0, 0);
+		cardPane.add(targetCardsPane, 1, 0);
+		cardPane.add(deadCardsPane, 2, 0);
+		buildCards();
+		
 		// Definition der Pane für den Würfel-Bereich
 		dicePane = GameBoardView.initializeGridPane();
 
@@ -191,13 +162,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		dicePane.add(labelRollDices, 0, 0, 9, 1);
 
-		diceControlArray = new DiceControl[7];
-		ICube[] cubes = model.getCubes();
-		for (int i = 0; i < 7; i++) {
-			DiceControl diceControl = new DiceControl(cubes[i]);
-			diceControlArray[i] = diceControl;
-			dicePane.add(diceControl, i, 1);
-		}
+		buildDices();
 
 		dicePane.add(btnWuerfeln, 10, 1);
 		dicePane.add(labelSelectedDices, 0, 3, 9, 1);
@@ -228,7 +193,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 				}
 			}
 		});
-		
+
 		return scene;
 	}
 
@@ -275,13 +240,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 *            Methode nimmt den Bildnamen (inkl. Endung) als String entgegen
 	 * @return Methode gibt eine ImageView des gewünschten Bildes zurück
 	 */
-	private ImageView getImageView(String imageName) {
-		Image image = null;
-		try {
-			image = ResourceLoader.getImage(imageName);
-		} catch (FileNotFoundException e) {
-			LogHelper.LogException(e);
-		}
+	private ImageView getImageView(Image image) {
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(100);
 		imageView.setPreserveRatio(true);
@@ -317,5 +276,120 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		btn.setAlignment(Pos.CENTER);
 		btn.setDisable(true);
 		return btn;
+	}
+
+	protected void buildCards() {
+		System.out.println("Zeichne Karten"+ model.targetCardsNeedsUpdate);
+		int zeileTarget = 0;
+		if (model.targetCardsNeedsUpdate) {
+			if (this.targetCardsPane.getChildren() != null) {
+				this.targetCardsPane.getChildren().clear();
+			}
+			System.out.println("mir si do :-)");
+			for (ITargetCard targetCards : model.gameBoard.getTargetCards()) {
+				if (targetCards.getGameCard().isRiebmann()){
+					zeileTarget = 0;
+				} else if (targetCards.getGameCard().isYeti()) {
+					zeileTarget = 1;
+				} else if (targetCards.getGameCard().isLemming()) {
+					zeileTarget = 2;
+				} else if (targetCards.getGameCard().isProffessoren()) {
+					zeileTarget = 3;
+				} else if (targetCards.getGameCard().isDino()) {
+					zeileTarget = 4;
+				}
+				targetCardsPane.add(getImageView(targetCards.getForegroundImage()), (targetCards.getGameCard().getCardNumber()-1)%5, zeileTarget);
+			}
+		}
+		int spalteDead = 7;
+		int zeileDead = 1;
+		int iteratorDead = 1;
+		if (model.deadCardsNeedsUpdate) {
+			if (this.deadCardsPane.getChildren() != null) {
+				this.deadCardsPane.getChildren().clear();
+			}
+			for (IDeadCard deadCards : model.gameBoard.getDeadCards()) {
+				iteratorDead++;
+				deadCardsPane.add(getImageView(deadCards.getForegroundImage()), spalteDead, zeileDead++);
+				if (iteratorDead == 4) {
+					spalteDead = 8;
+					zeileDead = 1;
+				}
+			}
+		}
+		
+		int spalteSpecial = 7;
+		int zeileSpecial = 1;
+		int iteratorSpecial = 1;
+		if (model.specialCardsNeedsUpdate) {
+			if (this.specialCardsPane.getChildren() != null) {
+				this.specialCardsPane.getChildren().clear();
+			}
+			for (ISpecialCard specialCards : model.gameBoard.getSpecialCards()) {
+				iteratorSpecial++;
+				specialCardsPane.add(getImageView(specialCards.getForegroundImage()), spalteSpecial, zeileSpecial++);
+				if (iteratorSpecial == 4) {
+					spalteDead = 8;
+					zeileDead = 1;
+				}
+			}
+		}
+
+		// cardPane.add(getImageView("Riebmann1Vorne.png"), 2, 0);
+		// cardPane.add(getImageView("Riebmann2Vorne.png"), 3, 0);
+		// cardPane.add(getImageView("Riebmann3Vorne.png"), 4, 0);
+		// cardPane.add(getImageView("Riebmann4Vorne.png"), 5, 0);
+		// cardPane.add(getImageView("Riebmann5Vorne.png"), 6, 0);
+		// cardPane.add(getImageView("Yeti1Vorne.png"), 2, 1);
+		// cardPane.add(getImageView("Yeti2Vorne.png"), 3, 1);
+		// cardPane.add(getImageView("Yeti3Vorne.png"), 4, 1);
+		// cardPane.add(getImageView("Yeti4Vorne.png"), 5, 1);
+		// cardPane.add(getImageView("Yeti5Vorne.png"), 6, 1);
+		// cardPane.add(getImageView("Lemming1Vorne.png"), 2, 2);
+		// cardPane.add(getImageView("Lemming2Vorne.png"), 3, 2);
+		// cardPane.add(getImageView("Lemming3Vorne.png"), 4, 2);
+		// cardPane.add(getImageView("Lemming4Vorne.png"), 5, 2);
+		// cardPane.add(getImageView("Lemming5Vorne.png"), 6, 2);
+		// cardPane.add(getImageView("Professoren1Vorne.png"), 2, 3);
+		// cardPane.add(getImageView("Professoren2Vorne.png"), 3, 3);
+		// cardPane.add(getImageView("Professoren3Vorne.png"), 4, 3);
+		// cardPane.add(getImageView("Professoren4Vorne.png"), 5, 3);
+		// cardPane.add(getImageView("Professoren5Vorne.png"), 6, 3);
+		// cardPane.add(getImageView("Dino1Vorne.png"), 2, 4);
+		// cardPane.add(getImageView("Dino2Vorne.png"), 3, 4);
+		// cardPane.add(getImageView("Dino3Vorne.png"), 4, 4);
+		// cardPane.add(getImageView("Dino4Vorne.png"), 5, 4);
+		// cardPane.add(getImageView("Dino5Vorne.png"), 6, 4);
+		// cardPane.add(getImageView("Tod0Vorne.png"), 7, 1);
+		// cardPane.add(getImageView("Tod2Vorne.png"), 7, 2);
+		// cardPane.add(getImageView("Tod4Vorne.png"), 7, 3);
+		// cardPane.add(getImageView("Tod1Vorne.png"), 8, 1);
+		// cardPane.add(getImageView("Tod3Vorne.png"), 8, 2);
+		// cardPane.add(getImageView("Tod5Vorne.png"), 8, 3);
+		// cardPane.add(getImageView("Ente.png"), 0, 1);
+		// cardPane.add(getImageView("Clown.png"), 0, 2);
+		// cardPane.add(getImageView("Zeitmaschine.png"), 0, 3);
+		// cardPane.add(getImageView("Ufo.png"), 1, 1);
+		// cardPane.add(getImageView("Roboter.png"), 1, 2);
+		// cardPane.add(getImageView("Killervirus.png"), 1, 3);
+	}
+
+	protected void buildPlayer() {
+
+	}
+
+	protected void buildDices() {
+		diceControlArray = new DiceControl[7];
+		ICube[] cubes = model.getCubes();
+		for (int i = 0; i < cubes.length; i++) {
+			DiceControl diceControl = new DiceControl(cubes[i]);
+			diceControlArray[i] = diceControl;
+			if (cubes[i].getIsFixed()) {
+				dicePane.add(diceControl, cubes[i].getCubeNumber(), 4);
+			} else {
+				dicePane.add(diceControl, cubes[i].getCubeNumber(), 1);
+			}
+			diceControl.showDice();
+		}
 	}
 }
