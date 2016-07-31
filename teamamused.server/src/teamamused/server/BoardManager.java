@@ -133,11 +133,10 @@ public class BoardManager {
 	 */
 	public void valuatePlayerCards(int pinkCube) {
 		if (!notValuatedCardsFromPlayers.isEmpty()) {
-			playerTargetCardsToValuate = notValuatedCardsFromPlayers;
 
-			for (ITargetCard card : playerTargetCardsToValuate) {
+			for (ITargetCard card : notValuatedCardsFromPlayers) {
 				if (card.getCardValue() != pinkCube) {
-					playerTargetCardsToValuate.remove(card);
+					playerTargetCardsToValuate.add(card);
 				}
 			}
 		}
