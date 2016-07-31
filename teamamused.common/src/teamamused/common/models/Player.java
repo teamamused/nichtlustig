@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Hashtable;
 
 import teamamused.common.dtos.BeanPlayer;
+import teamamused.common.dtos.BeanTargetCard;
 import teamamused.common.interfaces.IDeadCard;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ISpecialCard;
@@ -80,8 +81,12 @@ public class Player implements IPlayer, Serializable {
 			this.htSpecialCards.put(card, allSpecialCards.get(card));
 		}
 		Hashtable<GameCard, ITargetCard> allTargetCards = CardFactory.getTargetCards();
-		for (GameCard card : transportablePlayer.targetCards) {
-			this.htTargetCards.put(card, allTargetCards.get(card));
+
+		for (BeanTargetCard card : transportablePlayer.targetCards) {
+			ITargetCard tg = allTargetCards.get(card.gamecard);
+			tg.setIsCoveredByDead(card.isCoveredByDead);
+			tg.setIsValuated(card.isValuated);
+			this.htTargetCards.put(card.gamecard, tg);
 		}
 	}
 	/**

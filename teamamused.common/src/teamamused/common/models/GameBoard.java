@@ -13,6 +13,7 @@ import java.util.List;
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.BeanGameBoard;
 import teamamused.common.dtos.BeanPlayer;
+import teamamused.common.dtos.BeanTargetCard;
 import teamamused.common.interfaces.ICardHolder;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IDeadCard;
@@ -93,8 +94,11 @@ public class GameBoard implements ICardHolder, Serializable {
 			this.htSpecialCards.put(card, allSpecialCards.get(card));
 		}
 		Hashtable<GameCard, ITargetCard> allTargetCards = CardFactory.getTargetCards();
-		for (GameCard card : tgb.targetCards) {
-			this.htTargetCards.put(card, allTargetCards.get(card));
+		for (BeanTargetCard card : tgb.targetCards) {
+			ITargetCard tg = allTargetCards.get(card.gamecard);
+			tg.setIsCoveredByDead(card.isCoveredByDead);
+			tg.setIsValuated(card.isValuated);
+			this.htTargetCards.put(card.gamecard, tg);
 		}
 		// Würfel initialisieren
 		this.cubes = CubeFactory.getCubes(htSpecialCards, tgb.cubeValues, tgb.cubeFixed);

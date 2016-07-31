@@ -14,7 +14,7 @@ import teamamused.common.interfaces.ITargetCard;
 
 public class ShowPlayerView extends AbstractView<ShowPlayerModel> {
 
-	private final double BUTTON_WIDTH = 110;
+	private final double BUTTON_WIDTH = 200;
 
 	/**
 	 * Konstruktor
@@ -31,7 +31,7 @@ public class ShowPlayerView extends AbstractView<ShowPlayerModel> {
 	@Override
 	protected Scene createGUI() {
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, 540, 450);
+		Scene scene = new Scene(root, 600, 800);
 		// Titel label
 		Label lTitel = new Label();
 		lTitel.setText("Der spieler " + model.player.getPlayerName() + " hat folgende Karten");
@@ -42,7 +42,15 @@ public class ShowPlayerView extends AbstractView<ShowPlayerModel> {
 			Label lbl1 = new Label("Zielkarten:");
 			TilePane box1 = new TilePane();
 			for (ITargetCard card : model.player.getTargetCards()) {
-				ImageView iv = new ImageView(card.getForegroundImage());
+				ImageView iv;
+				if (card.getIsValuated()) {
+					System.out.println("gewertete Karte: " + card); 
+					iv = new ImageView(card.getBackgroundImage());
+					
+				} else {
+					System.out.println("nicht gewertete Karte: " + card); 
+					iv = new ImageView(card.getForegroundImage());
+				}
 				iv.setFitHeight(BUTTON_WIDTH - 5);
 				iv.setFitWidth(BUTTON_WIDTH - 5);
 				box1.getChildren().add(iv);

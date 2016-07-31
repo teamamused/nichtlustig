@@ -121,7 +121,11 @@ public class GameOverView extends AbstractView<GameOverModel> {
 		Scene scene = new Scene(root, 900, 600);
 
 		// Zuweisung des Stylesheets
-		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
+		try {
+			scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return scene;
 	}
