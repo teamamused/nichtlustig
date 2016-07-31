@@ -99,7 +99,7 @@ public class BoardManager {
 	 * 
 	 * @return Karten, welche dem Spieler zur Auswahl vorgeschlagt werden
 	 */
-	public Hashtable<Integer, List<ITargetCard>> getCardsToPropose() {
+	public synchronized Hashtable<Integer, List<ITargetCard>> getCardsToPropose() {
 		return cardsToPropose;
 	}
 
