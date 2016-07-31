@@ -75,10 +75,14 @@ public class BeanHelper {
 		return cardList;
 	}
 	
-	private static ArrayList<GameCard> getCardListFromTargetCardArray(ITargetCard[] cards) {
-		ArrayList<GameCard> cardList = new ArrayList<GameCard>();
+	private static ArrayList<BeanTargetCard> getCardListFromTargetCardArray(ITargetCard[] cards) {
+		ArrayList<BeanTargetCard> cardList = new ArrayList<BeanTargetCard>();
 		for (ITargetCard card : cards) {
-			cardList.add(card.getGameCard());
+			BeanTargetCard bean = new BeanTargetCard();
+			bean.gamecard = card.getGameCard();
+			bean.isCoveredByDead = card.getIsCoveredByDead();
+			bean.isValuated = card.getIsValuated();
+			cardList.add(bean);
 		}
 		return cardList;
 	}

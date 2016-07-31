@@ -37,7 +37,7 @@ public class BoardManager {
 	private List<IDeadCard> deadCardsToDeploy = new ArrayList<IDeadCard>();
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose = new Hashtable<Integer, List<ITargetCard>>();
 	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
-	private List<ITargetCard> playerTargetCardsToValuate;
+	private List<ITargetCard> playerTargetCardsToValuate = new ArrayList<ITargetCard>();
 	
 	// Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett
 	// oder bei Spieler
@@ -99,7 +99,7 @@ public class BoardManager {
 	 * 
 	 * @return Karten, welche dem Spieler zur Auswahl vorgeschlagt werden
 	 */
-	public Hashtable<Integer, List<ITargetCard>> getCardsToPropose() {
+	public synchronized Hashtable<Integer, List<ITargetCard>> getCardsToPropose() {
 		return cardsToPropose;
 	}
 
@@ -109,7 +109,6 @@ public class BoardManager {
 	 * @return nicht gewertete Spieler-Karten
 	 */
 	public List<ITargetCard> getNotValuatedCardsFromPlayer() {
-
 		for (IPlayer player : this.board.getPlayers()) {
 			for (ITargetCard targetCard : player.getTargetCards()) {
 				if (!targetCard.getIsValuated()) {
@@ -131,12 +130,10 @@ public class BoardManager {
 	 *            Wert von pinkem Würfel zur Wertung
 	 */
 	public void valuatePlayerCards(int pinkCube) {
-		if (notValuatedCardsFromPlayers != null) {
-			playerTargetCardsToValuate = notValuatedCardsFromPlayers;
-
-			for (ITargetCard card : playerTargetCardsToValuate) {
-				if (card.getCardValue() != pinkCube) {
-					playerTargetCardsToValuate.remove(card);
+		if (!notValuatedCardsFromPlayers.isEmpty()) {
+			for (ITargetCard card : notValuatedCardsFromPlayers) {
+				if (card.getCardValue() == pinkCube) {
+					playerTargetCardsToValuate.add(card);
 				}
 			}
 		}
@@ -146,15 +143,17 @@ public class BoardManager {
 	 * Wertet die Karten der Spieler nach einem abgeschlossenen Spielzug.
 	 */
 	public void valuePlayerCards() {
-		if (playerTargetCardsToValuate != null) {
+		if (!playerTargetCardsToValuate.isEmpty()) {
 			for (ITargetCard card : playerTargetCardsToValuate) {
 				card.setIsValuated(true);
 				notValuatedCardsFromPlayers.remove(card);
 				ClientNotificator.notifyGameMove("Karte " + card.toString() + " von Spieler " + targetCards.get(card)
 						+ " wurde gewertet.");
 			}
+			
+			playerTargetCardsToValuate.clear();
 		}
-		playerTargetCardsToValuate = null;
+		
 		ClientNotificator.notifyUpdateGameBoard(board);
 	}
 
@@ -389,9 +388,9 @@ public class BoardManager {
 	private void checkProffessorenCards(ArrayList<CubeValue> cubeValues) {
 		ArrayList<ITargetCard> proffessors = new ArrayList<ITargetCard>();
 		for (ITargetCard targetCard : targetCards.keySet()) {
-			// Prüft die Summe der Würfel, und vergleicht diese mit der
-			// Nicht Dino-Karten
-			if (targetCard.getGameCard().isProffessoren() && !targetCard.getIsValuated()) {
+			// Prüft die Summe der Würfel, und vergleicht diese mit den
+			// Professorenkarten, welche nicht gewertet oder von einer Todeskarte verdeckt sind
+			if (targetCard.getGameCard().isProffessoren() && !targetCard.getIsValuated() && !targetCard.getIsCoveredByDead()) {
 				boolean match = true;
 				for (CubeValue val : targetCard.getRequiredCubeValues()) {
 					if (!cubeValues.contains(val)) {
@@ -404,7 +403,7 @@ public class BoardManager {
 			}
 		}
 		if (proffessors.size() > 0) {
-			this.log.info("Vorschlag: " + cardsToPropose.size() + 1 + " Proffessoren Karten " + proffessors);
+			this.log.info("Vorschlag: " + (cardsToPropose.size() + 1) + " Proffessoren Karten " + proffessors);
 			for(ITargetCard targetCard : proffessors){
 				targetCardsToDeploy.add(targetCard);
 			}
@@ -413,29 +412,35 @@ public class BoardManager {
 	}
 
 	private void checkRiebmannYetiLemmingeCards(ArrayList<CubeValue> cubeValues) {
-		ArrayList<ITargetCard> restliche = new ArrayList<ITargetCard>();
+		ArrayList<CubeValue> cubeValuesTemp = new ArrayList<CubeValue>();
+		
+		for(CubeValue cv : cubeValues){
+			cubeValuesTemp.add(cv);
+		}
+		
+		ArrayList<ITargetCard> riebYetiLemming = new ArrayList<ITargetCard>();
 		for (ITargetCard targetCard : targetCards.keySet()) {
 			if ((targetCard.getGameCard().isLemming() || targetCard.getGameCard().isRiebmann() || targetCard
-					.getGameCard().isYeti()) && !targetCard.getIsValuated()) {
+					.getGameCard().isYeti()) && !targetCard.getIsValuated() && !targetCard.getIsCoveredByDead()) {
 				boolean match = true;
 				for (CubeValue val : targetCard.getRequiredCubeValues()) {
-					if (!cubeValues.contains(val)) {
+					if (!cubeValuesTemp.contains(val)) {
 						match = false;
-					} else {
-						cubeValues.remove(val);
+					}else{
+						cubeValuesTemp.remove(val);
 					}
 				}
 				if (match) {
-					restliche.add(targetCard);
+					riebYetiLemming.add(targetCard);
 				}
 			}
 		}
-		if (restliche.size() > 0) {
-			this.log.info("Vorschlag: " + cardsToPropose.size() + 1 + " - " + restliche);
-			for(ITargetCard targetCard : restliche){
+		if (riebYetiLemming.size() > 0) {
+			this.log.info("Vorschlag: " + cardsToPropose.size() + 1 + " - " + riebYetiLemming);
+			for(ITargetCard targetCard : riebYetiLemming){
 				targetCardsToDeploy.add(targetCard);
 			}
-			cardsToPropose.put(cardsToPropose.size() + 1, restliche);
+			cardsToPropose.put(cardsToPropose.size() + 1, riebYetiLemming);
 		}
 	}
 

@@ -20,7 +20,7 @@ public class BeanPlayer implements Serializable {
 	public int playerNumber = 0;
 	
 	public ArrayList<GameCard> specialCards = new ArrayList<GameCard>();
-	public ArrayList<GameCard> targetCards = new ArrayList<GameCard>();
+	public ArrayList<BeanTargetCard> targetCards = new ArrayList<BeanTargetCard>();
 	public ArrayList<GameCard> deadCards = new ArrayList<GameCard>();
 	
 	

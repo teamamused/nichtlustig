@@ -43,7 +43,7 @@ public class Game implements Serializable {
 	private Logger log;
 
 	private IPlayer activePlayer;
-
+	
 	private Game() {
 		super();
 		this.log = ServiceLocator.getInstance().getLogger();
