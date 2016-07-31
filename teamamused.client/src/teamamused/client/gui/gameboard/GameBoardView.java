@@ -22,11 +22,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import teamamused.client.libs.Client;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IDeadCard;
+import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.Player;
@@ -40,16 +42,16 @@ import teamamused.common.models.Player;
 public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	protected GridPane root, cardPane, dicePane, targetCardsPane, specialCardsPane, deadCardsPane;
-	protected VBox navigation;
+	protected VBox navigation, playerPane;
 	protected HBox titlePane;
 	protected ImageView logo, linkIcon, exitIcon;
 	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
-	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnUebernehmen, btnBestaetigen,
-			btnLink, btnExit, btnSenden;
+	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnBestaetigen, btnLink, btnExit,
+			btnSenden;
 	protected TextArea txtChatInput, txtChatScreen;
 	protected ScrollPane scrollTxt, scrollPane;
-	protected Label labelSpielfeld, labelRollDices, labelSelectedDices, labelSelectCards;
+	protected Label labelSpielfeld, labelRollDices, labelSelectedDices, labelBestaetigen;
 	protected String url;
 	protected DiceControl[] diceControlArray;
 	protected List<Button> btnArray;
@@ -99,7 +101,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		titlePane.getChildren().addAll(labelSpielfeld, btnLink);
 		titlePane.setSpacing(940);
 		titlePane.setPadding(new Insets(10, 10, 10, 10));
-		
+
 		root.add(titlePane, 1, 0);
 		root.add(btnExit, 2, 0);
 
@@ -115,15 +117,26 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		}
 		logo.setFitWidth(200);
 		logo.setPreserveRatio(true);
-		btnPlayer1 = GameBoardView.initializeButton("Spieler 1");
-		btnPlayer2 = GameBoardView.initializeButton("Spieler 2");
-		btnPlayer3 = GameBoardView.initializeButton("Spieler 3");
-		btnPlayer4 = GameBoardView.initializeButton("Spieler 4");
-		btnArray = new ArrayList<>();
-		btnArray.add(btnPlayer1);
-		btnArray.add(btnPlayer2);
-		btnArray.add(btnPlayer3);
-		btnArray.add(btnPlayer4);
+		
+		
+		
+//		btnPlayer1 = GameBoardView.initializeButton("Spieler 1");
+//		btnPlayer2 = GameBoardView.initializeButton("Spieler 2");
+//		btnPlayer3 = GameBoardView.initializeButton("Spieler 3");
+//		btnPlayer4 = GameBoardView.initializeButton("Spieler 4");
+		
+		playerPane = new VBox();
+		btnArray = new ArrayList<Button>();
+		buildPlayer();
+		
+
+//		btnArray.add(btnPlayer1);
+//		btnArray.add(btnPlayer2);
+//		btnArray.add(btnPlayer3);
+//		btnArray.add(btnPlayer4);
+		
+		
+		
 		txtChatScreen = new TextArea();
 		txtChatScreen.setPrefSize(200, 400);
 		txtChatScreen.setEditable(false);
@@ -138,7 +151,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		scrollTxt.setContent(txtChatScreen);
 		Tooltip chatInputTool = new Tooltip("Hier kannst du deine Chatnachrichten eingeben");
 		Tooltip.install(txtChatInput, chatInputTool);
-		navigation.getChildren().addAll(logo, btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, txtChatScreen,
+		navigation.getChildren().addAll(logo, playerPane, txtChatScreen,
 				txtChatInput, btnSenden);
 
 		// Definition der Pane für die Spielkarten
@@ -150,7 +163,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		cardPane.add(targetCardsPane, 1, 0);
 		cardPane.add(deadCardsPane, 2, 0);
 		buildCards();
-		
+
 		// Definition der Pane für den Würfel-Bereich
 		dicePane = GameBoardView.initializeGridPane();
 
@@ -158,12 +171,9 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		labelRollDices = new Label(
 				"Du darfst insgesamt dreimal würfeln. Wähle die Würfel an, welche du setzen möchtest.");
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
-		labelSelectCards = new Label("Wähle deine Karten und schliesse deinen Zug mit \"bestätigen\" ab.");
+		labelBestaetigen = new Label("Schliesse deinen Zug mit \"bestätigen\" ab.");
 
 		btnWuerfeln = GameBoardView.initializeButton("würfeln");
-		// TODO: setDisable vom Server steuern lassen
-		btnWuerfeln.setDisable(false);
-		btnUebernehmen = GameBoardView.initializeButton("übernehmen");
 		btnBestaetigen = GameBoardView.initializeButton("bestätigen");
 
 		dicePane.add(labelRollDices, 0, 0, 9, 1);
@@ -172,16 +182,13 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		dicePane.add(btnWuerfeln, 10, 1);
 		dicePane.add(labelSelectedDices, 0, 3, 9, 1);
-		dicePane.add(btnUebernehmen, 10, 4);
-		dicePane.add(labelSelectCards, 0, 6, 9, 1);
-		dicePane.add(btnBestaetigen, 10, 6);
-		
+		dicePane.add(labelBestaetigen, 0, 14, 9, 1);
+		dicePane.add(btnBestaetigen, 10, 14);
+
 		// Zuordnung der Sub-Panes zur Haupt-Pane "root"
 		root.add(navigation, 0, 0, 1, 10);
 		root.add(cardPane, 1, 1);
 		root.add(dicePane, 1, 2);
-
-		disablePlayer();
 
 		// Auf der ObserverList wird ein ListChangeListener registriert, welcher
 		// immer, wenn etwas der Liste hinzugefügt wird, dieses auf dem Screen
@@ -196,7 +203,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 				}
 			}
 		});
-		
+
 		// Zuweisung des Stylesheets
 		try {
 			scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
@@ -208,35 +215,22 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	}
 
 //	/**
-//	 * Blendet die Würfel oben aus.
-//	 * 
-//	 * @param diceControl
-//	 * @return
+//	 * TODO: Überarbeiten -> Vom Server Diese Support-Methode deaktiviert anhand
+//	 * der Anzahl Spieler die nicht verwendeten Button-Objekte.
 //	 */
-//	public int displayDice(DiceControl diceControl) {
-//		int index = diceControlArray.length % 7;
-//		diceControlArray[index] = diceControl;
-//		dicePane.add(diceControl, index, 5);
-//		return index;
+//	public void disablePlayer() {
+//		List<Player> playerList = model.getPlayerList();
+//		for (Button btn : btnArray) {
+//			btn.setDisable(true);
+//		}
+//		for (int index = 0; index < playerList.size(); index++) {
+//			// ACHTUNG: Unterer Teil nur für Testing! Wieder auskommentieren...
+//			// for (int index = 0; index < 3; index++) {
+//			Button btn = btnArray.get(index);
+//			btn.setDisable(false);
+//		}
+//
 //	}
-
-	/**
-	 * Diese Support-Methode deaktiviert anhand der Anzahl Spieler die nicht
-	 * verwendeten Button-Objekte.
-	 */
-	public void disablePlayer() {
-		List<Player> playerList = model.getPlayerList();
-		for (Button btn : btnArray) {
-			btn.setDisable(true);
-		}
-		for (int index = 0; index < playerList.size(); index++) {
-			// ACHTUNG: Unterer Teil nur für Testing! Wieder auskommentieren...
-			// for (int index = 0; index < 3; index++) {
-			Button btn = btnArray.get(index);
-			btn.setDisable(false);
-		}
-
-	}
 
 	/**
 	 * Nur für Bilder der Spielfeldkarten verwenden!
@@ -284,19 +278,22 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		Button btn = new Button(buttonText);
 		btn.setPrefSize(200, 40);
 		btn.setAlignment(Pos.CENTER);
-		btn.setDisable(true);
 		return btn;
 	}
 
+	/**
+	 * Diese Methode zeichnet die Karten auf dem GameBoard neu, wenn sich eine
+	 * Änderung ergeben hat.
+	 */
 	protected void buildCards() {
+		// Zielkarten werden gezeichnet
 		int zeileTarget = 0;
 		if (model.targetCardsNeedsUpdate) {
 			if (this.targetCardsPane.getChildren() != null) {
 				this.targetCardsPane.getChildren().clear();
 			}
-			System.out.println("mir si do :-)");
 			for (ITargetCard targetCards : model.gameBoard.getTargetCards()) {
-				if (targetCards.getGameCard().isRiebmann()){
+				if (targetCards.getGameCard().isRiebmann()) {
 					zeileTarget = 0;
 				} else if (targetCards.getGameCard().isYeti()) {
 					zeileTarget = 1;
@@ -307,9 +304,11 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 				} else if (targetCards.getGameCard().isDino()) {
 					zeileTarget = 4;
 				}
-				targetCardsPane.add(getImageView(targetCards.getForegroundImage()), (targetCards.getGameCard().getCardNumber()-1)%5, zeileTarget);
+				targetCardsPane.add(getImageView(targetCards.getForegroundImage()),
+						(targetCards.getGameCard().getCardNumber() - 1) % 5, zeileTarget);
 			}
 		}
+		// Todeskarten werden gezeichnet
 		int spalteDead = 0;
 		int zeileDead = 1;
 		int iteratorDead = 1;
@@ -326,7 +325,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 				}
 			}
 		}
-		
+		// Spezialkarten werden gezeichnet
 		int spalteSpecial = 0;
 		int zeileSpecial = 1;
 		int iteratorSpecial = 1;
@@ -346,15 +345,49 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	}
 
+	/**
+	 * 
+	 */
 	protected void buildPlayer() {
-//	TODO
+		for (Button oldButton : this.btnArray) {
+			this.playerPane.getChildren().remove(oldButton);
+			oldButton = null;
+		}
+		if (model.gameBoard != null) {
+			for (IPlayer player : model.gameBoard.getPlayers()) {
+				Button btnPlayer = GameBoardView.initializeButton(player.getPlayerNumber() + ". " + player.getPlayerName());
+				// Hebt den aktiven Spieler hervor
+				if (Client.getInstance().getActivePlayer() != null
+						&& player.getPlayerNumber() == Client.getInstance().getActivePlayer().getPlayerNumber()) {
+					btnPlayer.setStyle("-fx-font: Tempus Sans ITC; -fx-font-size: 15pt; -fx-base: #b6e7c9;");
+				}
+				//TODO: in Controller mit Methode auslagern
+//				btnPlayer.setOnAction(new EventHandler<ActionEvent>() {
+//					@Override
+//					public void handle(ActionEvent event) {
+//						Stage playerStage = new Stage();
+//						ShowPlayerModel model = new ShowPlayerModel(player);
+//						ShowPlayerView view = new ShowPlayerView(playerStage, model);
+//						new ShowPlayerController(model, view);
+//						view.start();
+//					}
+//				});
+				this.btnArray.add(btnPlayer);
+				this.playerPane.getChildren().add(btnPlayer);
+			}
+		}
 	}
 
+	/**
+	 * Diese Methode zeichnet die Würfel neu, wenn sich eine Änderung eregeben
+	 * hat.
+	 */
 	protected void buildDices() {
-		// Entfernt jedes Mal die Nodes von der Pane
+		// Entfernt jedes Mal die Nodes von der Pane - ansonsten würden sie
+		// immer darüber gelegt werden wegen add()
 		Iterator<Node> iterator = dicePane.getChildren().iterator();
-		while(iterator.hasNext()) {
-			if(iterator.next() instanceof DiceControl) {
+		while (iterator.hasNext()) {
+			if (iterator.next() instanceof DiceControl) {
 				iterator.remove();
 			}
 		}

@@ -68,7 +68,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		view.btnWuerfeln.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				model.dice();
+					model.dice();
 			}
 		});
 
@@ -87,10 +87,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		}
 
 		// Sendet die gewürfelten Würfelwerte an den Server
-		view.btnUebernehmen.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		view.btnBestaetigen.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				view.btnBestaetigen.setDisable(false);
+				// TODO
 			}
 
 		});
@@ -133,7 +133,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		for (DiceControl diceContr : view.diceControlArray) {
 			fixedDices[diceContr.getCube().getCubeNumber()] = diceContr.getCube().getIsFixed();
 		}
-		view.btnUebernehmen.setDisable(false);	
 		Client.getInstance().setFixedCubes(fixedDices);
 	}
 
@@ -184,7 +183,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	public void setEventsOnDices() {
 		for (DiceControl diceControl : view.diceControlArray) {
-			if(!diceControl.getCube().getIsFixed()) {
+			if (!diceControl.getCube().getIsFixed()) {
 				diceControl.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
@@ -224,6 +223,26 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onNumberOfRemeiningDicingChanged(int remDices) {
 		model.remainingDices = remDices;
+		if(remDices <= 0) {
+			view.btnWuerfeln.setDisable(true);
+			view.btnBestaetigen.setDisable(false);
+		}
+	}
+
+	/**
+	 * Die Methode teilt mit, ob der Spieler an der Reihe ist oder nicht. Wenn
+	 * der Spieler am Zug ist, wird der Button zum Würfeln freigeschalten.
+	 * 
+	 * @param isActive
+	 *            Spieler aktiv Ja / Nein
+	 */
+	@Override
+	public void onPlayerIsActivedChanged(boolean isActive) {
+		if(isActive && model.remainingDices > 0) {
+			view.btnWuerfeln.setDisable(false);
+		} else {
+			view.btnWuerfeln.setDisable(true);
+		}
 	}
 
 }
