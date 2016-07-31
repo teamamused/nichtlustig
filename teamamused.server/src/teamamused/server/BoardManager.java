@@ -146,15 +146,14 @@ public class BoardManager {
 	 * Wertet die Karten der Spieler nach einem abgeschlossenen Spielzug.
 	 */
 	public void valuePlayerCards() {
-		if (playerTargetCardsToValuate != null) {
+		if (!playerTargetCardsToValuate.isEmpty()) {
 			for (ITargetCard card : playerTargetCardsToValuate) {
 				card.setIsValuated(true);
-				notValuatedCardsFromPlayers.remove(card);
 				ClientNotificator.notifyGameMove("Karte " + card.toString() + " von Spieler " + targetCards.get(card)
 						+ " wurde gewertet.");
 			}
 		}
-		playerTargetCardsToValuate = null;
+		playerTargetCardsToValuate.clear();
 		ClientNotificator.notifyUpdateGameBoard(board);
 	}
 
