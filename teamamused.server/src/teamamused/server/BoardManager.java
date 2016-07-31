@@ -37,7 +37,7 @@ public class BoardManager {
 	private List<IDeadCard> deadCardsToDeploy = new ArrayList<IDeadCard>();
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose = new Hashtable<Integer, List<ITargetCard>>();
 	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
-	private List<ITargetCard> playerTargetCardsToValuate;
+	private List<ITargetCard> playerTargetCardsToValuate = new ArrayList<ITargetCard>();
 	
 	// Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett
 	// oder bei Spieler
@@ -131,9 +131,8 @@ public class BoardManager {
 	 */
 	public void valuatePlayerCards(int pinkCube) {
 		if (!notValuatedCardsFromPlayers.isEmpty()) {
-
 			for (ITargetCard card : notValuatedCardsFromPlayers) {
-				if (card.getCardValue() != pinkCube) {
+				if (card.getCardValue() == pinkCube) {
 					playerTargetCardsToValuate.add(card);
 				}
 			}
@@ -151,8 +150,10 @@ public class BoardManager {
 				ClientNotificator.notifyGameMove("Karte " + card.toString() + " von Spieler " + targetCards.get(card)
 						+ " wurde gewertet.");
 			}
+			
+			playerTargetCardsToValuate.clear();
 		}
-		playerTargetCardsToValuate.clear();
+		
 		ClientNotificator.notifyUpdateGameBoard(board);
 	}
 
