@@ -109,7 +109,8 @@ public class BoardManager {
 	 * @return nicht gewertete Spieler-Karten
 	 */
 	public List<ITargetCard> getNotValuatedCardsFromPlayer() {
-
+		notValuatedCardsFromPlayers.clear();
+		
 		for (IPlayer player : this.board.getPlayers()) {
 			for (ITargetCard targetCard : player.getTargetCards()) {
 				if (!targetCard.getIsValuated()) {
@@ -131,7 +132,7 @@ public class BoardManager {
 	 *            Wert von pinkem Würfel zur Wertung
 	 */
 	public void valuatePlayerCards(int pinkCube) {
-		if (notValuatedCardsFromPlayers != null) {
+		if (!notValuatedCardsFromPlayers.isEmpty()) {
 			playerTargetCardsToValuate = notValuatedCardsFromPlayers;
 
 			for (ITargetCard card : playerTargetCardsToValuate) {
