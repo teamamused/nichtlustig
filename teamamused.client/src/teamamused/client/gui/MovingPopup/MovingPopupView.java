@@ -117,7 +117,11 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 		root.add(nextPlayerPane, 0, 10);
 
 		// Zuweisung des Stylesheets
-		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
+		try {
+			scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return scene;
 

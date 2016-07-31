@@ -180,9 +180,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		root.add(cardPane, 1, 1);
 		root.add(dicePane, 1, 2);
 
-		// Zuweisung des Stylesheets
-		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
-
 		disablePlayer();
 
 		// Auf der ObserverList wird ein ListChangeListener registriert, welcher
@@ -198,6 +195,13 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 				}
 			}
 		});
+		
+		// Zuweisung des Stylesheets
+		try {
+			scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return scene;
 	}
