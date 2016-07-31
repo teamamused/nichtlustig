@@ -23,6 +23,7 @@ public class DiceControl extends Region {
 	 */
 	public DiceControl(ICube cube) {
 		this.cube = cube;
+		getChildren().add(cube.getCurrentValue().toCanvas(50, 1));
 	}
 
 	public int getIndex() {
@@ -31,15 +32,6 @@ public class DiceControl extends Region {
 
 	public ICube getCube() {
 		return cube;
-	}
-	
-	public void showDice() {
-		hideDice();
-		getChildren().add(cube.getCurrentValue().toCanvas(50, 1));
-	}
-	
-	public void hideDice() {
-		getChildren().clear();
 	}
 
 }

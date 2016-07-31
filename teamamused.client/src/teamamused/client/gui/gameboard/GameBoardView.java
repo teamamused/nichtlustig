@@ -2,12 +2,13 @@ package teamamused.client.gui.gameboard;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javafx.collections.ListChangeListener;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -206,18 +207,18 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		return scene;
 	}
 
-	/**
-	 * TODO
-	 * 
-	 * @param diceControl
-	 * @return
-	 */
-	public int displayDice(DiceControl diceControl) {
-		int index = diceControlArray.length % 7;
-		diceControlArray[index] = diceControl;
-		dicePane.add(diceControl, index, 5);
-		return index;
-	}
+//	/**
+//	 * Blendet die Würfel oben aus.
+//	 * 
+//	 * @param diceControl
+//	 * @return
+//	 */
+//	public int displayDice(DiceControl diceControl) {
+//		int index = diceControlArray.length % 7;
+//		diceControlArray[index] = diceControl;
+//		dicePane.add(diceControl, index, 5);
+//		return index;
+//	}
 
 	/**
 	 * Diese Support-Methode deaktiviert anhand der Anzahl Spieler die nicht
@@ -350,6 +351,13 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	}
 
 	protected void buildDices() {
+		// Entfernt jedes Mal die Nodes von der Pane
+		Iterator<Node> iterator = dicePane.getChildren().iterator();
+		while(iterator.hasNext()) {
+			if(iterator.next() instanceof DiceControl) {
+				iterator.remove();
+			}
+		}
 		diceControlArray = new DiceControl[7];
 		ICube[] cubes = model.getCubes();
 		for (int i = 0; i < cubes.length; i++) {
@@ -360,7 +368,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			} else {
 				dicePane.add(diceControl, cubes[i].getCubeNumber(), 1);
 			}
-			diceControl.showDice();
 		}
 	}
 }
