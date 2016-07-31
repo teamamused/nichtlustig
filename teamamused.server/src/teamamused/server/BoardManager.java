@@ -109,8 +109,6 @@ public class BoardManager {
 	 * @return nicht gewertete Spieler-Karten
 	 */
 	public List<ITargetCard> getNotValuatedCardsFromPlayer() {
-		notValuatedCardsFromPlayers.clear();
-		
 		for (IPlayer player : this.board.getPlayers()) {
 			for (ITargetCard targetCard : player.getTargetCards()) {
 				if (!targetCard.getIsValuated()) {
@@ -149,6 +147,7 @@ public class BoardManager {
 		if (!playerTargetCardsToValuate.isEmpty()) {
 			for (ITargetCard card : playerTargetCardsToValuate) {
 				card.setIsValuated(true);
+				notValuatedCardsFromPlayers.remove(card);
 				ClientNotificator.notifyGameMove("Karte " + card.toString() + " von Spieler " + targetCards.get(card)
 						+ " wurde gewertet.");
 			}
