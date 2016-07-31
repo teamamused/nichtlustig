@@ -37,7 +37,7 @@ public class ServerView extends AbstractView<ServerModel> {
 	protected Image logo;
 	protected ImageView spracheImageView;
 	protected ScrollPane scrollTxt;
-	protected ChoiceBox<String> language;
+//	protected ChoiceBox<String> language;
 	protected TextArea loggingTxtArea;
 	
 	public ServerView(Stage stage, ServerModel model){
@@ -75,24 +75,24 @@ public class ServerView extends AbstractView<ServerModel> {
 		labelTeam = new Label("Team Amused: IT-Projekt an der FHNW, 2016");
 		restartButton = new Button("Server neustarten");
 		scrollTxt = new ScrollPane();
-		language = new ChoiceBox<String>();
-		language.getItems().add("Deutsch");
-		language.getItems().add("Englisch");
-		//Setzt den ersten Wert der Auswahlliste als Default
-		language.getSelectionModel().selectFirst();
+//		language = new ChoiceBox<String>();
+//		language.getItems().add("Deutsch");
+//		language.getItems().add("Englisch");
+//		//Setzt den ersten Wert der Auswahlliste als Default
+//		language.getSelectionModel().selectFirst();
 		// holt das TextArea aus dem TextAreaHandler
 		loggingTxtArea = TextAreaHandler.getInstance().getTextArea();
 		loggingTxtArea.setEditable(false);
 		loggingTxtArea.setId("loggingArea");
 		scrollTxt.setContent(loggingTxtArea);
-		try {
-			spracheImageView = new ImageView(ResourceLoader.getImage("Sprache.png"));
-			spracheImageView.setFitWidth(30);
-			spracheImageView.setFitWidth(30);
-			spracheImageView.setPreserveRatio(true);
-		} catch (FileNotFoundException e) {
-			ServiceLocator.getInstance().getLogger().severe(e.toString());
-		}
+//		try {
+//			spracheImageView = new ImageView(ResourceLoader.getImage("Sprache.png"));
+//			spracheImageView.setFitWidth(30);
+//			spracheImageView.setFitWidth(30);
+//			spracheImageView.setPreserveRatio(true);
+//		} catch (FileNotFoundException e) {
+//			ServiceLocator.getInstance().getLogger().severe(e.toString());
+//		}
 
 		//Hinzufügen der Controlls der Pane
 		root.add(restartButton, 0, 0);
@@ -102,8 +102,8 @@ public class ServerView extends AbstractView<ServerModel> {
 		root.add(labelPort, 1, 2);
 		root.add(labelIP, 1, 3, 2, 1);
 		root.add(labelProtocol, 0, 5);
-		root.add(language, 2, 6);
-		root.add(spracheImageView, 2, 6);
+//		root.add(language, 2, 6);
+//		root.add(spracheImageView, 2, 6);
 		root.add(labelTeam, 0, 6);
 		root.add(loggingTxtArea, 0, 5, 3, 1);
 		
@@ -112,10 +112,10 @@ public class ServerView extends AbstractView<ServerModel> {
 		GridPane.setValignment(restartButton, VPos.CENTER);
 		GridPane.setHalignment(labelLogo, HPos.RIGHT);
 		GridPane.setValignment(labelLogo, VPos.TOP);
-		GridPane.setHalignment(language, HPos.RIGHT);
-		GridPane.setValignment(language, VPos.BOTTOM);
-		GridPane.setHalignment(spracheImageView, HPos.LEFT);
-		GridPane.setValignment(spracheImageView, VPos.CENTER);
+//		GridPane.setHalignment(language, HPos.RIGHT);
+//		GridPane.setValignment(language, VPos.BOTTOM);
+//		GridPane.setHalignment(spracheImageView, HPos.LEFT);
+//		GridPane.setValignment(spracheImageView, VPos.CENTER);
 
 		// Prozentualle Grösse wird definiert für das Verhalten beim Maximieren
 	     ColumnConstraints col1 = new ColumnConstraints();
