@@ -337,14 +337,17 @@ public class BoardManager {
 			// Spezialkarte Killervirus wieder entfernen
 			if (playerIsForcedToDead != null) {
 				ClientNotificator.notifyGameMove("Der Spieler " + player.getPlayerName()
-						+ " starb durch einen Killervirus");
+						+ " starb durch einen Killervirus! Die Sonderkarte Killervirus wurde "
+						+ "von Spieler " + player.getPlayerName() + "auf das Spielbrett verschoben.");
 				BoardManager.getInstance().switchSpecialcardOwner(playerIsForcedToDead, null);
 			}
 			// Falls der Spieler die Spezialkarte IsBewaredOfDead hat diese
 			// entfernen und keinen Tod zuteilen
 			if (playerIsBewaredOfDead != null) {
 				ClientNotificator.notifyGameMove("Der Spieler " + player.getPlayerName()
-						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!");
+						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!" + 
+						" Die Sonderkarte Clown wurde vom Spieler " + player.getPlayerName() +
+						" auf das Spieltbrett verschoben.");
 				BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
 			} else {
 				for (IDeadCard deadCard : deadCards.keySet()) {
