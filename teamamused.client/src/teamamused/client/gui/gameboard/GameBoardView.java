@@ -160,9 +160,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		btnBestaetigen = GameBoardView.initializeButton("bestätigen");
 
 		dicePane.add(labelRollDices, 0, 0, 9, 1);
-
-		buildDices();
-
 		dicePane.add(btnWuerfeln, 10, 1);
 		dicePane.add(labelSelectedDices, 0, 3, 9, 1);
 		dicePane.add(labelBestaetigen, 0, 14, 9, 1);

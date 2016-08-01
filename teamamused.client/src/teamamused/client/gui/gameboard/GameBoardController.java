@@ -69,34 +69,36 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		view.btnWuerfeln.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-					model.dice();
+				model.dice();
 			}
 		});
 
-		// Auf den Spieler-Buttons wird ein Handler registriert, um das CardPopup
+		// Auf den Spieler-Buttons wird ein Handler registriert, um das
+		// CardPopup mit den Karten des jeweiligen Spielers
 		// aufzurufen. Damit man weiss, welcher Spieler-Button geklickt wurde,
 		// wird diese Information in das GameBoardModel geschrieben.
-		for (Button btnPlayer : view.btnArray) {
-			btnPlayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					Button b = (Button) event.getSource();
-					model.setBtnPlayerClicked(view.btnArray.indexOf(b) + 1);
-					Stage playerStage = new Stage();
-					// getUserData() holt den Player, welcher an den Button gebunden ist
-					GameBoardModel gameBoardModel = new GameBoardModel((IPlayer) btnPlayer.getUserData());
-					CardPopupView cardPopupView = new CardPopupView(playerStage, gameBoardModel);
-					new CardPopupController(gameBoardModel, cardPopupView);
-					cardPopupView.start();
-				}
-			});
-		}
+//		for (Button btnPlayer : view.btnArray) {
+//			btnPlayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//				@Override
+//				public void handle(MouseEvent event) {
+//					Button b = (Button) event.getSource();
+//					model.setBtnPlayerClicked(view.btnArray.indexOf(b) + 1);
+//					Stage playerStage = new Stage();
+//					// getUserData() holt den Player, welcher an den Button
+//					// gebunden ist
+//					GameBoardModel gameBoardModel = new GameBoardModel((IPlayer) btnPlayer.getUserData());
+//					CardPopupView cardPopupView = new CardPopupView(playerStage, gameBoardModel);
+//					new CardPopupController(gameBoardModel, cardPopupView);
+//					cardPopupView.start();
+//				}
+//			});
+//		}
 
 		// Sendet die gewürfelten Würfelwerte an den Server
 		view.btnBestaetigen.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO
+				// TODO Senden der Werte an Server
 			}
 
 		});
@@ -116,17 +118,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		});
 	}
 
-	/**
-	 * Die Methode ruft das Fenster mit den Karten des jeweiligen Spielers auf.
-	 * 
-	 * @throws Exception
-	 */
-	public void showCardPopup() {
-		Stage popupStage = new Stage();
-		CardPopupView cardPopupView = new CardPopupView(popupStage, model);
-		new CardPopupController(model, cardPopupView);
-		cardPopupView.start();
-	}
 
 	/**
 	 * Diese Methode verschiebt die Würfel nach unten zu den gesetzten Würfeln.
@@ -177,6 +168,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			view.buildDices();
 			setEventsOnDices();
 			view.buildPlayer();
+			setEventsOnPlayerButton();
 		});
 	}
 
@@ -195,6 +187,27 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 					public void handle(MouseEvent event) {
 						DiceControl diceControl = (DiceControl) event.getSource();
 						moveDownSelectedDice(diceControl);
+					}
+				});
+			}
+		}
+	}
+	
+	public void setEventsOnPlayerButton() {
+		for (Button btnPlayer : view.btnArray) {
+			if(btnPlayer.getOnMouseClicked() == null) {
+				btnPlayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						Button b = (Button) event.getSource();
+						model.setBtnPlayerClicked(view.btnArray.indexOf(b) + 1);
+						Stage playerStage = new Stage();
+						// getUserData() holt den Player, welcher an den Button
+						// gebunden ist
+						GameBoardModel gameBoardModel = new GameBoardModel((IPlayer) btnPlayer.getUserData());
+						CardPopupView cardPopupView = new CardPopupView(playerStage, gameBoardModel);
+						new CardPopupController(gameBoardModel, cardPopupView);
+						cardPopupView.start();
 					}
 				});
 			}
@@ -229,7 +242,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onNumberOfRemeiningDicingChanged(int remDices) {
 		model.remainingDices = remDices;
-		if(remDices <= 0) {
+		if (remDices <= 0) {
 			view.btnWuerfeln.setDisable(true);
 			view.btnBestaetigen.setDisable(false);
 		}
@@ -244,7 +257,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	@Override
 	public void onPlayerIsActivedChanged(boolean isActive) {
-		if(isActive && model.remainingDices > 0) {
+		if (isActive && model.remainingDices > 0) {
 			view.btnWuerfeln.setDisable(false);
 		} else {
 			view.btnWuerfeln.setDisable(true);
