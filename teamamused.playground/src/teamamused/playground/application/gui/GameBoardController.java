@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import java.util.List;
 
 
+
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import teamamused.client.libs.IClientListener;
 import teamamused.common.LogHelper;
+import teamamused.common.db.Ranking;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.gui.AbstractController;
 import teamamused.common.interfaces.ITargetCard;
@@ -168,6 +171,23 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	public void onNewGameMove(String move) {
 		Platform.runLater(() -> {
 			view.txtGameMoves.appendText(move + "\n");
+		});
+	}
+
+	/**
+	 * Der Server hat das Spiel für beendet erklärt.
+	 * Dem Spieler muss angezeigt werden das das Spiel vorbei ist und das Ranking eingeblendet werden
+	 *  
+	 * @param rankings Platzierungen der Spielrunde
+	 */
+	@Override
+	public void onGameFinished(Ranking[] rankings) {
+		Platform.runLater(() -> {
+			Stage rs = new Stage();
+			RankingModel model = new RankingModel(rankings);
+			RankingView rv = new RankingView(rs, model);
+			new RankingController (model, rv);
+			rv.start();
 		});
 	}
 

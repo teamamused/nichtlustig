@@ -125,7 +125,13 @@ public class Ranking implements Serializable, Comparable<Ranking> {
 	public int compareTo(Ranking rank2) {
 		// wenn Total Ranks noch 0 sind ist es ein in Game Ranking
 		if (this.totalRank == 0 && rank2.totalRank == 0) {
-			return this.gameRank - rank2.gameRank;
+			// Wenn noch gar kein Ranking nach Punkten
+			if (this.gameRank == 0 && rank2.gameRank == 0) {
+				// Hier ist mehr  besser :)
+				return rank2.points - this.points;
+			} else {
+				return this.gameRank - rank2.gameRank;
+			}
 		}
 		// Sortieren anhand der Rangierungen
 		return this.totalRank - rank2.totalRank;

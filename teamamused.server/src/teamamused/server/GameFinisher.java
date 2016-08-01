@@ -27,7 +27,6 @@ import teamamused.common.interfaces.ITargetCard;
 
 public class GameFinisher {
 	private static GameFinisher instance;
-	private int playerPrePoints = 0;
 	private Hashtable<IPlayer, Integer> ranking = new Hashtable<IPlayer, Integer>();
 	private List <IDeadCard> deadCards = new ArrayList<IDeadCard>();
 	private List<ISpecialCard> specialCards = new ArrayList<ISpecialCard>();
@@ -36,6 +35,7 @@ public class GameFinisher {
 	private int valuatedLemmingCards = 0;
 	private int valuatedYetiCards = 0;
 	private int valuatedRiebmannCards = 0;
+	private int valuatedProfessorenCards = 0;
 	private int dinoCardValue = 0;
 	private int notValuatedCards = 0;
 	private int singleDeadCards = 0;
@@ -106,7 +106,7 @@ public class GameFinisher {
 					* für die Karte, welche der Spieler erhält
 					*/	
 					else if(targetCard.getGameCard().isProffessoren()){
-						playerPrePoints = (int) Math.random() * 6;
+						valuatedProfessorenCards++;
 					}
 				}
 				//Todes-Karten, welche auf keinen Zielkarten liegen
@@ -115,7 +115,7 @@ public class GameFinisher {
 				}else{}
 			}
 			
-			calcPoints(player, playerPrePoints);
+			calcPoints(player);
 			resetCounters();
 
 		}
@@ -167,8 +167,8 @@ public class GameFinisher {
 	 * @param player Spieler
 	 * @param playerPrePoints Vorpunkte von Professoren-Karte
 	 */
-	private void calcPoints(IPlayer player, int playerPrePoints){
-		playerPoints += playerPrePoints; //für Riebmann-Karten
+	private void calcPoints(IPlayer player){
+		playerPoints += valuatedProfessorenCards * (int)(Math.random() * 6.0); //für Professoren-Karten
 		playerPoints += valuatedLemmingCards * 4;
 		
 		if(valuatedYetiCards > 0){
@@ -195,10 +195,10 @@ public class GameFinisher {
 		deadCards.clear();
 		specialCards.clear();
 		targetCards.clear();
-		playerPrePoints = 0;
 		valuatedLemmingCards = 0;
 		valuatedYetiCards = 0;
 		valuatedRiebmannCards = 0;
+		valuatedProfessorenCards = 0;
 		dinoCardValue = 0;
 		notValuatedCards = 0;
 		singleDeadCards = 0;

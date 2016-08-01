@@ -49,6 +49,11 @@ public class RankingView extends AbstractView<RankingModel> {
         rank.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("TotalRank"));
 		rank.prefWidthProperty().bind(table.widthProperty().divide(8));
 		rank.setStyle("-fx-alignment: CENTER-RIGHT;");
+		 
+        TableColumn<Ranking, Integer> rankInGame = new TableColumn<Ranking, Integer>("im Spiel");
+        rankInGame.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("GameRank"));
+        rankInGame.prefWidthProperty().bind(table.widthProperty().divide(8));
+        rankInGame.setStyle("-fx-alignment: CENTER-RIGHT;");
 
         TableColumn<Ranking, String> name = new TableColumn<Ranking, String>("Name");
         name.setCellValueFactory(new PropertyValueFactory<Ranking, String>("Username"));
@@ -61,11 +66,12 @@ public class RankingView extends AbstractView<RankingModel> {
 
         TableColumn<Ranking, LocalDate> date = new TableColumn<Ranking, LocalDate>("Datum");
         //date.setCellValueFactory(new PropertyValueFactory<Ranking, LocalDate>("Points"));
-        date.prefWidthProperty().bind(table.widthProperty().divide(4));
+        date.prefWidthProperty().bind(table.widthProperty().divide(8));
         date.setStyle("-fx-alignment: CENTER-RIGHT;");
         
         table.getColumns().addAll(
         		rank, 
+        		rankInGame,
         		name, 
         		points, 
         		date);

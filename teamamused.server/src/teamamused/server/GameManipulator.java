@@ -30,8 +30,11 @@ public class GameManipulator {
 				int randCard = (int)(Math.random() * (double)cards.length);
 				if (!deployedCards.contains(randCard) && deployCardsHasToGoOn(cards, deployedCards)) {
 					deployedCards.add(randCard);
+					// ca 80% der Karten sollten gewertet sein plus alle Dinos
+					cards[randCard].setIsValuated((Math.random() < 0.8) || cards[randCard].getGameCard().isDino());
 					board.removeTargetCard(cards[randCard]);
 					player.addTargetCard(cards[randCard]);
+					
 				}
 			}
 		}

@@ -154,15 +154,15 @@ public class CardFactory {
 						new CubeValue(CubeColor.Red, 5) }));
 		// Dinosauriers
 		htTargetCards.put(GameCard.ZK_Dinosaurier1, new TargetCard(
-				GameCard.ZK_Dinosaurier1, 0, 24, new CubeValue[0]));
+				GameCard.ZK_Dinosaurier1, 1, 24, new CubeValue[0]));
 		htTargetCards.put(GameCard.ZK_Dinosaurier2, new TargetCard(
-				GameCard.ZK_Dinosaurier2, 0, 25, new CubeValue[0]));
+				GameCard.ZK_Dinosaurier2, 2, 25, new CubeValue[0]));
 		htTargetCards.put(GameCard.ZK_Dinosaurier3, new TargetCard(
-				GameCard.ZK_Dinosaurier3, 0, 26, new CubeValue[0]));
+				GameCard.ZK_Dinosaurier3, 3, 26, new CubeValue[0]));
 		htTargetCards.put(GameCard.ZK_Dinosaurier4, new TargetCard(
-				GameCard.ZK_Dinosaurier4, 0, 27, new CubeValue[0]));
+				GameCard.ZK_Dinosaurier4, 4, 27, new CubeValue[0]));
 		htTargetCards.put(GameCard.ZK_Dinosaurier5, new TargetCard(
-				GameCard.ZK_Dinosaurier5, 0, 28, new CubeValue[0]));
+				GameCard.ZK_Dinosaurier5, 5, 28, new CubeValue[0]));
 
 		return htTargetCards;
 	}
