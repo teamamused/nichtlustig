@@ -31,7 +31,6 @@ import teamamused.common.interfaces.IDeadCard;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
-import teamamused.common.models.Player;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für das Spielfeld dar.
@@ -47,7 +46,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected ImageView logo, linkIcon, exitIcon;
 	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
-	protected Button btnPlayer1, btnPlayer2, btnPlayer3, btnPlayer4, btnWuerfeln, btnBestaetigen, btnLink, btnExit,
+	protected Button btnWuerfeln, btnBestaetigen, btnLink, btnExit,
 			btnSenden;
 	protected TextArea txtChatInput, txtChatScreen;
 	protected ScrollPane scrollTxt, scrollPane;
@@ -117,26 +116,11 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		}
 		logo.setFitWidth(200);
 		logo.setPreserveRatio(true);
-		
-		
-		
-//		btnPlayer1 = GameBoardView.initializeButton("Spieler 1");
-//		btnPlayer2 = GameBoardView.initializeButton("Spieler 2");
-//		btnPlayer3 = GameBoardView.initializeButton("Spieler 3");
-//		btnPlayer4 = GameBoardView.initializeButton("Spieler 4");
-		
-		playerPane = new VBox();
+
+		playerPane = new VBox(5);
 		btnArray = new ArrayList<Button>();
 		buildPlayer();
-		
 
-//		btnArray.add(btnPlayer1);
-//		btnArray.add(btnPlayer2);
-//		btnArray.add(btnPlayer3);
-//		btnArray.add(btnPlayer4);
-		
-		
-		
 		txtChatScreen = new TextArea();
 		txtChatScreen.setPrefSize(200, 400);
 		txtChatScreen.setEditable(false);
@@ -151,8 +135,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		scrollTxt.setContent(txtChatScreen);
 		Tooltip chatInputTool = new Tooltip("Hier kannst du deine Chatnachrichten eingeben");
 		Tooltip.install(txtChatInput, chatInputTool);
-		navigation.getChildren().addAll(logo, playerPane, txtChatScreen,
-				txtChatInput, btnSenden);
+		navigation.getChildren().addAll(logo, playerPane, txtChatScreen, txtChatInput, btnSenden);
 
 		// Definition der Pane für die Spielkarten
 		targetCardsPane = GameBoardView.initializeGridPane();
@@ -213,24 +196,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		return scene;
 	}
-
-//	/**
-//	 * TODO: Überarbeiten -> Vom Server Diese Support-Methode deaktiviert anhand
-//	 * der Anzahl Spieler die nicht verwendeten Button-Objekte.
-//	 */
-//	public void disablePlayer() {
-//		List<Player> playerList = model.getPlayerList();
-//		for (Button btn : btnArray) {
-//			btn.setDisable(true);
-//		}
-//		for (int index = 0; index < playerList.size(); index++) {
-//			// ACHTUNG: Unterer Teil nur für Testing! Wieder auskommentieren...
-//			// for (int index = 0; index < 3; index++) {
-//			Button btn = btnArray.get(index);
-//			btn.setDisable(false);
-//		}
-//
-//	}
 
 	/**
 	 * Nur für Bilder der Spielfeldkarten verwenden!
@@ -347,6 +312,9 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	/**
 	 * 
+	 * Diese Methode zeichnet die PlayerButtons - je nach Anzahl Mitspieler. Der
+	 * aktive Spieler wird farblich hervorgehoben.
+	 * 
 	 */
 	protected void buildPlayer() {
 		for (Button oldButton : this.btnArray) {
@@ -355,23 +323,16 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		}
 		if (model.gameBoard != null) {
 			for (IPlayer player : model.gameBoard.getPlayers()) {
-				Button btnPlayer = GameBoardView.initializeButton(player.getPlayerNumber() + ". " + player.getPlayerName());
+				Button btnPlayer = GameBoardView
+						.initializeButton(player.getPlayerNumber() + ". " + player.getPlayerName());
+				// Player wird an Button "gebunden", um diesen im Controller
+				// auszulesen
+				btnPlayer.setUserData(player);
 				// Hebt den aktiven Spieler hervor
 				if (Client.getInstance().getActivePlayer() != null
 						&& player.getPlayerNumber() == Client.getInstance().getActivePlayer().getPlayerNumber()) {
-					btnPlayer.setStyle("-fx-font: Tempus Sans ITC; -fx-font-size: 15pt; -fx-base: #b6e7c9;");
+					btnPlayer.setId("btnActivePlayer");
 				}
-				//TODO: in Controller mit Methode auslagern
-//				btnPlayer.setOnAction(new EventHandler<ActionEvent>() {
-//					@Override
-//					public void handle(ActionEvent event) {
-//						Stage playerStage = new Stage();
-//						ShowPlayerModel model = new ShowPlayerModel(player);
-//						ShowPlayerView view = new ShowPlayerView(playerStage, model);
-//						new ShowPlayerController(model, view);
-//						view.start();
-//					}
-//				});
 				this.btnArray.add(btnPlayer);
 				this.playerPane.getChildren().add(btnPlayer);
 			}

@@ -20,6 +20,22 @@ import teamamused.common.models.Player;
 public class GameBoardModel extends AbstractModel {
 	IPlayer player;
 	
+    /**
+     * Konstruktor, der einen übergebenen Player setzt (für buildPlayer)
+     */
+    public GameBoardModel(IPlayer player) {
+    	super();
+    	this.player = player;
+    }
+    
+    /**
+     * Konstruktor, der den currentPlayer setzt
+     */
+	public GameBoardModel() {
+		gameBoard.init();
+		this.player = Client.getInstance().getPlayer();
+	}
+    
 	boolean specialCardsNeedsUpdate = true, targetCardsNeedsUpdate = true, deadCardsNeedsUpdate =true;
 	
 	// Gibt an, wie oft der Spieler noch würfeln darf
@@ -42,11 +58,6 @@ public class GameBoardModel extends AbstractModel {
 	}
 
 	public GameBoard gameBoard = new GameBoard();
-
-	{
-		gameBoard.init();
-		player = Client.getInstance().getPlayer();
-	}
 
 	/**
 	 * Methode für die aktuellen Werte der Würfel

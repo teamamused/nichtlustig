@@ -21,6 +21,7 @@ import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.gui.AbstractController;
+import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.GameBoard;
 
@@ -72,7 +73,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 		});
 
-		// Auf den Spieler-Buttons wird ein Handler registriert, um das Popup
+		// Auf den Spieler-Buttons wird ein Handler registriert, um das CardPopup
 		// aufzurufen. Damit man weiss, welcher Spieler-Button geklickt wurde,
 		// wird diese Information in das GameBoardModel geschrieben.
 		for (Button btnPlayer : view.btnArray) {
@@ -81,7 +82,12 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				public void handle(MouseEvent event) {
 					Button b = (Button) event.getSource();
 					model.setBtnPlayerClicked(view.btnArray.indexOf(b) + 1);
-					showCardPopup();
+					Stage playerStage = new Stage();
+					// getUserData() holt den Player, welcher an den Button gebunden ist
+					GameBoardModel gameBoardModel = new GameBoardModel((IPlayer) btnPlayer.getUserData());
+					CardPopupView cardPopupView = new CardPopupView(playerStage, gameBoardModel);
+					new CardPopupController(gameBoardModel, cardPopupView);
+					cardPopupView.start();
 				}
 			});
 		}
