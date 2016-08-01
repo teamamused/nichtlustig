@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.common.LogHelper;
@@ -29,10 +30,11 @@ import teamamused.common.gui.AbstractView;
 public class CardPopupView extends AbstractView<GameBoardModel> {
 
 	protected GridPane root;
-	protected HBox titlePane, cardTxtPane, specialCardTxtPane, buttonPane;
+	protected VBox titlePane;
+	protected HBox cardTxtPane, specialCardTxtPane, buttonPane;
 	protected FlowPane cardsFlowPane, specialCardsFlowPane;
-	protected Label labelText, cardsRival, specialCardsRival;
-	protected Button btnTakeCard, btnClose;
+	protected Label labelTitle, labelText, cardsRival, specialCardsRival;
+	protected Button btnClose;
 	protected ScrollPane scrollPane;
 
 	public CardPopupView(Stage stage, GameBoardModel model) {
@@ -44,7 +46,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 
 		// Definition der Haupt-Pane
 		root = new GridPane();
-		root.setPadding(new Insets(50, 50, 50, 50));
+		root.setPadding(new Insets(20, 20, 20, 20));
 		root.setHgap(10);
 		root.setVgap(10);
 		root.setAlignment(Pos.TOP_LEFT);
@@ -56,17 +58,19 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 
 		// Definition der Titel-Pane inkl. Instanziierung und Zuweisung der
 		// Controlls
-		titlePane = new HBox();
-		labelText = new Label(
-				"Hier siehst du die Karten deines Gegners und kannst ihm allenfalls seine Karten \"stibitzen\":");
+		titlePane = new VBox();
+		labelTitle = new Label("Karten von Spieler " + this.model.getPlayer().getPlayerNumber() + ": "
+				+ this.model.getPlayer().getPlayerName());
+		labelText = new Label("Hier siehst du die Karten deines Gegners:");
+		labelTitle.setId("labelTitle");
 		labelText.setId("subtitle");
-		titlePane.getChildren().add(labelText);
+		titlePane.getChildren().addAll(labelTitle, labelText);
 		titlePane.setPrefWidth(1000);
 
 		// Definition der Pane für den Text zu den Zielkarten inkl.
 		// Instanziierung und Zuweisung der Controlls
 		cardTxtPane = new HBox();
-		cardsRival = new Label("Karten von Spieler " + model.getBtnPlayerClicked());
+		cardsRival = new Label("Zielkarten");
 		cardTxtPane.getChildren().add(cardsRival);
 
 		// TODO: Muss dynamisch gestalten sein
@@ -83,7 +87,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		// Definition der Pane für den Text zu den Spezialkarten inkl.
 		// Instanziierung und Zuweisung der Controlls
 		specialCardTxtPane = new HBox();
-		specialCardsRival = new Label("Spezialkarten von Spieler " + model.getBtnPlayerClicked());
+		specialCardsRival = new Label("Spezialkarten");
 		specialCardTxtPane.getChildren().add(specialCardsRival);
 
 		// TODO: Muss dynamisch gestalten sein
@@ -98,19 +102,18 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 				getImageView("Killervirus.png"), getImageView("Ente.png"));
 
 		// Definition der Pane für die Buttons inkl.
-		// Instanziierung und Zuweisung der Controlls
+		// Instanziierung und Zuweisung des Controlls
 		buttonPane = new HBox();
-		btnTakeCard = CardPopupView.initializeButton("Karte(n) nehmen");
 		btnClose = CardPopupView.initializeButton("schliessen");
-		buttonPane.getChildren().addAll(btnTakeCard, btnClose);
+		buttonPane.getChildren().add(btnClose);
 		buttonPane.setSpacing(10);
 		buttonPane.setAlignment(Pos.BASELINE_RIGHT);
 
 		root.add(titlePane, 0, 0);
-		root.add(cardTxtPane, 0, 2);
-		root.add(cardsFlowPane, 0, 4);
-		root.add(specialCardTxtPane, 0, 6);
-		root.add(specialCardsFlowPane, 0, 8);
+		root.add(cardTxtPane, 0, 1);
+		root.add(cardsFlowPane, 0, 2, 1, 3);
+		root.add(specialCardTxtPane, 0, 5);
+		root.add(specialCardsFlowPane, 0, 6, 1, 3);
 		root.add(buttonPane, 0, 10);
 
 		// Zuweisung des Stylesheets
