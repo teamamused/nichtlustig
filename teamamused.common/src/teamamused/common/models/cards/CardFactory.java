@@ -1,12 +1,14 @@
 package teamamused.common.models.cards;
 
 import java.util.Hashtable;
+import java.util.ArrayList;
 
 import teamamused.common.interfaces.IDeadCard;
 import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.cubes.CubeColor;
 import teamamused.common.models.cubes.CubeValue;
+import teamamused.common.dtos.BeanTargetCard;
 
 /**
  * Diese Klasse hat eine Fabrik funktion und ist für das erstellen der Karten
@@ -163,6 +165,22 @@ public class CardFactory {
 				GameCard.ZK_Dinosaurier5, 0, 28, new CubeValue[0]));
 
 		return htTargetCards;
+	}
+	
+	/**
+	 * Erzeugt Targetcards für den Client anhand der übergebenen Beans
+	 * Dabei wird die Logik für die Wertung ausgelassen
+	 * 
+	 * @param beans Transportoptimierte Objekte
+	 * @return Liste mit den ITargetCards
+	 */
+	public static ArrayList<ITargetCard> getClientTargetCardsByBeans(BeanTargetCard[] beans) {
+		ArrayList<ITargetCard> retval = new ArrayList<ITargetCard>();
+		for (BeanTargetCard bean : beans) {
+			ITargetCard card = new TargetCard(bean.gamecard, 0, 0, new CubeValue[0]);
+			retval.add(card);
+		}
+		return retval;
 	}
 
 }

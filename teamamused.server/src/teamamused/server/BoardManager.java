@@ -1,6 +1,7 @@
 package teamamused.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Logger;
@@ -38,7 +39,7 @@ public class BoardManager {
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose = new Hashtable<Integer, List<ITargetCard>>();
 	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
 	private List<ITargetCard> playerTargetCardsToValuate = new ArrayList<ITargetCard>();
-	
+
 	// Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett
 	// oder bei Spieler
 	private Hashtable<IDeadCard, ICardHolder> deadCards = new Hashtable<IDeadCard, ICardHolder>();
@@ -104,17 +105,16 @@ public class BoardManager {
 	}
 
 	/**
-	 * Gibt eine Liste mit noch nicht gewerteten Karten der Spieler zurück.
+	 * Gibt eine Liste mit noch nicht gewerteten Karten der Mitspieler zurück.
 	 * 
 	 * @return nicht gewertete Spieler-Karten
 	 */
 	public List<ITargetCard> getNotValuatedCardsFromPlayer() {
+		notValuatedCardsFromPlayers.clear();
 		for (IPlayer player : this.board.getPlayers()) {
 			for (ITargetCard targetCard : player.getTargetCards()) {
-				if (!targetCard.getIsValuated()) {
-					if (!targetCard.getIsCoveredByDead()) {
-						notValuatedCardsFromPlayers.add(targetCard);
-					}
+				if (!targetCard.getIsValuated() && !targetCard.getIsCoveredByDead()) {
+					notValuatedCardsFromPlayers.add(targetCard);
 				}
 			}
 		}
@@ -150,10 +150,10 @@ public class BoardManager {
 				ClientNotificator.notifyGameMove("Karte " + card.toString() + " von Spieler " + targetCards.get(card)
 						+ " wurde gewertet.");
 			}
-			
+
 			playerTargetCardsToValuate.clear();
 		}
-		
+
 		ClientNotificator.notifyUpdateGameBoard(board);
 	}
 
@@ -174,16 +174,17 @@ public class BoardManager {
 		// Dazu Spezialkarten prüfen
 		for (ISpecialCard card : Game.getInstance().getActivePlayer().getSpecialCards()) {
 			if (card.getAdditionalPoints() != 0) {
-				//Wenn der Spieler die Spezialkarte Zeitmaschine hat, bekommt er zusätzlich zwei Würfelaugen
-				//TODO: Spezialkarte entfernen
+				// Wenn der Spieler die Spezialkarte Zeitmaschine hat, bekommt
+				// er zusätzlich zwei Würfelaugen
+				// TODO: Spezialkarte entfernen
 				sumOfCubes += card.getAdditionalPoints();
 			}
 		}
 
 		// Erreichte Würfelwerte werden geprüft
 		for (ICube cube : CubeManager.getInstance().getCubes()) {
-			//der Wert des pinken Würfels wird nicht zur Summe gezählt
-			if(cube.getCubeColor() != CubeManager.getInstance().getCurrentPinkCube().Color){
+			// der Wert des pinken Würfels wird nicht zur Summe gezählt
+			if (cube.getCubeColor() != CubeManager.getInstance().getCurrentPinkCube().Color) {
 				sumOfCubes += cube.getCurrentValue().FaceValue;
 			}
 			if (cube.getCurrentValue().getSpecialCard() != null) {
@@ -207,6 +208,7 @@ public class BoardManager {
 		// Verteilung von Todeskarten wird geprüft
 		this.checkDead();
 	}
+
 	/**
 	 * Hat der Spieler mehrere Karten zur Auswahl, wird über das GUI mit dieser
 	 * Methode aufgerufen, für welche Zielkarten sich der Spieler entschieden
@@ -234,11 +236,14 @@ public class BoardManager {
 				this.targetCards.put(card, newOwner);
 				ClientNotificator.notifyGameMove("Zielkarte " + card + " wurde von Spieler " + currentOwner
 						+ " zu Spieler " + newOwner + " verschoben.");
-				
-				if(card.getGameCard().isDino()){
-					//Entfernt die Sonderkarte SK_Zeitmaschine vom Spieler, wenn die Dino-Karte verteilt wird
-					for(ISpecialCard specialCard : currentOwner.getSpecialCards()){
-						if(specialCard.getGameCard().getCardNumber() == GameCard.SK_Zeitmaschine.getCardNumber()){
+
+				if (card.getGameCard().isDino()) {
+					// Dinos sind sofort gewertet
+					card.setIsValuated(true);
+					// Entfernt die Sonderkarte SK_Zeitmaschine vom Spieler,
+					// wenn die Dino-Karte verteilt wird
+					for (ISpecialCard specialCard : currentOwner.getSpecialCards()) {
+						if (specialCard.getGameCard().getCardNumber() == GameCard.SK_Zeitmaschine.getCardNumber()) {
 							this.switchSpecialcardOwner(specialCard, null);
 						}
 					}
@@ -295,7 +300,7 @@ public class BoardManager {
 		Valuation valuateFunction = new Valuation();
 		valuateFunction.valuate(instance);
 	}
-	
+
 	/**
 	 * Spezial Kartenhalter wechseln.
 	 * 
@@ -310,16 +315,16 @@ public class BoardManager {
 			newOwner = this.board;
 		}
 		ICardHolder oldOwner = this.specialCards.get(sc);
-		this.specialCards.replace(sc,  newOwner);
+		this.specialCards.replace(sc, newOwner);
 		oldOwner.removeSpecialCard(sc);
 		newOwner.addSpecialCard(sc);
-		
-		ClientNotificator.notifyGameMove("Sonderkarte " + sc + " wurde von " + oldOwner
-				+ " zu Spieler " + newOwner + " verschoben.");
-		
+
+		ClientNotificator.notifyGameMove("Sonderkarte " + sc + " wurde von " + oldOwner + " zu Spieler " + newOwner
+				+ " verschoben.");
+
 	}
 
-	private void checkDead(){
+	private void checkDead() {
 		// Tod relevante Spezialkarten prüfen
 		IPlayer player = Game.getInstance().getActivePlayer();
 		ISpecialCard playerIsForcedToDead = null;
@@ -336,17 +341,17 @@ public class BoardManager {
 			// Spezialkarte Killervirus wieder entfernen
 			if (playerIsForcedToDead != null) {
 				ClientNotificator.notifyGameMove("Der Spieler " + player.getPlayerName()
-						+ " starb durch einen Killervirus! Die Sonderkarte Killervirus wurde "
-						+ "von Spieler " + player.getPlayerName() + "auf das Spielbrett verschoben.");
+						+ " starb durch einen Killervirus! Die Sonderkarte Killervirus wurde " + "von Spieler "
+						+ player.getPlayerName() + "auf das Spielbrett verschoben.");
 				BoardManager.getInstance().switchSpecialcardOwner(playerIsForcedToDead, null);
 			}
 			// Falls der Spieler die Spezialkarte IsBewaredOfDead hat diese
 			// entfernen und keinen Tod zuteilen
 			if (playerIsBewaredOfDead != null) {
 				ClientNotificator.notifyGameMove("Der Spieler " + player.getPlayerName()
-						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!" + 
-						" Die Sonderkarte Clown wurde vom Spieler " + player.getPlayerName() +
-						" auf das Spieltbrett verschoben.");
+						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!"
+						+ " Die Sonderkarte Clown wurde vom Spieler " + player.getPlayerName()
+						+ " auf das Spieltbrett verschoben.");
 				BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
 			} else {
 				for (IDeadCard deadCard : deadCards.keySet()) {
@@ -357,19 +362,26 @@ public class BoardManager {
 			}
 		}
 	}
-	
+
 	private void checkDinoCards(int sumOfCubes) {
 		// Summe für die Dinos prüfen, höchste mögliche Dinokarte merken
-		
-		ArrayList <ITargetCard> dinoCard = new ArrayList <ITargetCard>();
-		for (ITargetCard targetCard : targetCards.keySet()) {
-			if (targetCard.getGameCard().isDino() && targetCard.getRequiredPoints() <= sumOfCubes) {
+		ArrayList<ITargetCard> dinoCard = new ArrayList<ITargetCard>();
+		// Zu prüfen sind alle Karten auf dem Spielbrett und die nicht
+		// gewerteten Karten der Mitspieler
+		ArrayList<ITargetCard> cardsToCheck = new ArrayList<ITargetCard>(Arrays.asList(this.board.getTargetCards()));
+		cardsToCheck.addAll(this.notValuatedCardsFromPlayers);
+
+		for (ITargetCard targetCard : cardsToCheck) {
+			// Voraussetzungen für Karte vorhanden und Karte nicht bereits beim
+			// aktuellen Spieler
+			if (targetCard.getGameCard().isDino() && targetCard.getRequiredPoints() <= sumOfCubes
+					&& !this.targetCards.get(targetCard).equals(Game.getInstance().getActivePlayer())) {
 				// Prüfen ob der Dino besser ist als der bereits vorhandene
-				if (dinoCard.isEmpty()){
+				if (dinoCard.isEmpty()) {
 					dinoCard.clear();
 					dinoCard.add(targetCard);
-				}else{
-					if(dinoCard.get(0).getRequiredPoints() < targetCard.getRequiredPoints()){
+				} else {
+					if (dinoCard.get(0).getRequiredPoints() < targetCard.getRequiredPoints()) {
 						dinoCard.clear();
 						dinoCard.add(targetCard);
 					}
@@ -377,8 +389,8 @@ public class BoardManager {
 			}
 		}
 		if (!dinoCard.isEmpty()) {
-			this.log.info("Vorschlag: " + this.cardsToPropose.size() + 1 + dinoCard);
-			for(ITargetCard targetCard : dinoCard){
+			this.log.info("Vorschlag: " + (this.cardsToPropose.size() + 1) + dinoCard);
+			for (ITargetCard targetCard : dinoCard) {
 				targetCardsToDeploy.add(targetCard);
 			}
 			this.cardsToPropose.put(this.cardsToPropose.size() + 1, dinoCard);
@@ -387,10 +399,18 @@ public class BoardManager {
 
 	private void checkProffessorenCards(ArrayList<CubeValue> cubeValues) {
 		ArrayList<ITargetCard> proffessors = new ArrayList<ITargetCard>();
-		for (ITargetCard targetCard : targetCards.keySet()) {
+		// Zu prüfen sind alle Karten auf dem Spielbrett und die nicht
+		// gewerteten Karten der Mitspieler
+		ArrayList<ITargetCard> cardsToCheck = new ArrayList<ITargetCard>(Arrays.asList(this.board.getTargetCards()));
+		cardsToCheck.addAll(this.notValuatedCardsFromPlayers);
+
+		for (ITargetCard targetCard : cardsToCheck) {
 			// Prüft die Summe der Würfel, und vergleicht diese mit den
-			// Professorenkarten, welche nicht gewertet oder von einer Todeskarte verdeckt sind
-			if (targetCard.getGameCard().isProffessoren() && !targetCard.getIsValuated() && !targetCard.getIsCoveredByDead()) {
+			// Professorenkarten, welche nicht gewertet oder von einer
+			// Todeskarte verdeckt sind
+			if (targetCard.getGameCard().isProffessoren() && !targetCard.getIsValuated()
+					&& !targetCard.getIsCoveredByDead()
+					&& !this.targetCards.get(targetCard).equals(Game.getInstance().getActivePlayer())) {
 				boolean match = true;
 				for (CubeValue val : targetCard.getRequiredCubeValues()) {
 					if (!cubeValues.contains(val)) {
@@ -404,7 +424,7 @@ public class BoardManager {
 		}
 		if (proffessors.size() > 0) {
 			this.log.info("Vorschlag: " + (cardsToPropose.size() + 1) + " Proffessoren Karten " + proffessors);
-			for(ITargetCard targetCard : proffessors){
+			for (ITargetCard targetCard : proffessors) {
 				targetCardsToDeploy.add(targetCard);
 			}
 			cardsToPropose.put(cardsToPropose.size() + 1, proffessors);
@@ -413,20 +433,27 @@ public class BoardManager {
 
 	private void checkRiebmannYetiLemmingeCards(ArrayList<CubeValue> cubeValues) {
 		ArrayList<CubeValue> cubeValuesTemp = new ArrayList<CubeValue>();
-		
-		for(CubeValue cv : cubeValues){
+		for (CubeValue cv : cubeValues) {
 			cubeValuesTemp.add(cv);
 		}
-		
+
 		ArrayList<ITargetCard> riebYetiLemming = new ArrayList<ITargetCard>();
-		for (ITargetCard targetCard : targetCards.keySet()) {
+		// Zu prüfen sind alle Karten auf dem Spielbrett und die nicht
+		// gewerteten Karten der Mitspieler
+		ArrayList<ITargetCard> cardsToCheck = new ArrayList<ITargetCard>(Arrays.asList(this.board.getTargetCards()));
+		cardsToCheck.addAll(this.notValuatedCardsFromPlayers);
+
+		for (ITargetCard targetCard : cardsToCheck) {
 			if ((targetCard.getGameCard().isLemming() || targetCard.getGameCard().isRiebmann() || targetCard
-					.getGameCard().isYeti()) && !targetCard.getIsValuated() && !targetCard.getIsCoveredByDead()) {
+					.getGameCard().isYeti())
+					&& !targetCard.getIsValuated()
+					&& !targetCard.getIsCoveredByDead()
+					&& !this.targetCards.get(targetCard).equals(Game.getInstance().getActivePlayer())) {
 				boolean match = true;
 				for (CubeValue val : targetCard.getRequiredCubeValues()) {
 					if (!cubeValuesTemp.contains(val)) {
 						match = false;
-					}else{
+					} else {
 						cubeValuesTemp.remove(val);
 					}
 				}
@@ -436,8 +463,8 @@ public class BoardManager {
 			}
 		}
 		if (riebYetiLemming.size() > 0) {
-			this.log.info("Vorschlag: " + cardsToPropose.size() + 1 + " - " + riebYetiLemming);
-			for(ITargetCard targetCard : riebYetiLemming){
+			this.log.info("Vorschlag: " + (cardsToPropose.size() + 1) + " - " + riebYetiLemming);
+			for (ITargetCard targetCard : riebYetiLemming) {
 				targetCardsToDeploy.add(targetCard);
 			}
 			cardsToPropose.put(cardsToPropose.size() + 1, riebYetiLemming);

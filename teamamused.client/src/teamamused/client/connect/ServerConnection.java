@@ -1,5 +1,6 @@
 package teamamused.client.connect;
 
+import java.io.EOFException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -12,6 +13,8 @@ import teamamused.client.libs.GuiNotificator;
 import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
+import teamamused.common.dtos.BeanHelper;
+import teamamused.common.dtos.BeanTargetCard;
 import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableAnswer;
 import teamamused.common.dtos.TransportableChatMessage;
@@ -74,25 +77,35 @@ public class ServerConnection extends Thread {
 		try {
 			while (this.holdConnection) {
 				// Auf Nachricht von Server warten
-				Object obj = in.readObject();
-				if (obj instanceof TransportObject) {
-					TransportObject dtoIn = (TransportObject) obj;
-					// Wenn es ein status ist nicht antworten
-					// Ev einführen das die letzte Nachricht gechaed wird und
-					// falls
-					// der Status NOK ist diese nochmals senden. Noch schauen
-					// wie es
-					// sich in der Praxis verhält.
-					if (dtoIn.getTransportType() != TransportType.State) {
-						// Nachricht verarbeiten
-						TransportObject answer = this.processRequest(dtoIn);
-						if (answer != null) {
-							// status zurückmelden
-							this.sendTransportObject(answer);
+				try {
+					Object obj = in.readObject();
+					if (obj instanceof TransportObject) {
+						TransportObject dtoIn = (TransportObject) obj;
+						// Wenn es ein status ist nicht antworten
+						// Ev einführen das die letzte Nachricht gecached wird
+						// und falls der Status NOK ist diese nochmals senden.
+						// Noch schauen wie es sich in der Praxis verhält.
+						if (dtoIn.getTransportType() != TransportType.State) {
+							// Nachricht verarbeiten
+							TransportObject answer = this.processRequest(dtoIn);
+							if (answer != null) {
+								// status zurückmelden
+								this.sendTransportObject(answer);
+							}
+							dtoIn = null;
 						}
-						dtoIn = null;
 					}
-				} 
+				} catch (EOFException eof) {
+					LogHelper.LogException(eof);
+					this.log.info("End of Stream Exception, socket info: " + this.socket + " - "
+							+ this.socket.isInputShutdown());
+					if (this.socket != null && !this.socket.isInputShutdown()) {
+						this.in = new ObjectInputStream(socket.getInputStream());
+					} else {
+						this.log.info("Schliesse Verbindung");
+						this.holdConnection = false;
+					}
+				}
 			}
 
 		} catch (Exception e) {
@@ -179,7 +192,6 @@ public class ServerConnection extends Thread {
 		return dtoOut;
 	}
 
-	@SuppressWarnings("unchecked")
 	private TransportObject executeRemoteCall(TransportableProcedureCall rpc) {
 		Object[] params = rpc.getArguments();
 		switch (rpc.getProcedure()) {
@@ -225,8 +237,9 @@ public class ServerConnection extends Thread {
 		case ChooseCards:
 			// Karten kommen als Hashtable of int und List of ITargetCard
 			if (params != null && params.length >= 1) {
-				if (params[0] instanceof Hashtable<?, ?>) {
-					this.notifyGui.playerHasToCooseCards((Hashtable<Integer, List<ITargetCard>>) params[0]);
+				if (params[0] instanceof BeanTargetCard[]) {
+					Hashtable<Integer, List<ITargetCard>> options = BeanHelper.getChooseCardOptionsFromBean(params);
+					this.notifyGui.playerHasToCooseCards(options);
 					return new TransportableState(true, "Client updated");
 				}
 			}

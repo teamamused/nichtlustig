@@ -156,19 +156,10 @@ public class Game implements Serializable {
 		this.log.info("Beende aktuelle Spielrunde");
 		// Wertung anhand des Pinken Würfels durchführen
 		this.log.info("Wertung wird durchgeführt");
-		try {
-			BoardManager.getInstance().valuate();
-		} catch (Exception ex) {
-			this.log.info("Schade wars...");
-			LogHelper.LogException(ex);
-		}
+		BoardManager.getInstance().valuate();
 		// Prüfen welche Karten der Spieler erhalten darf
 		this.log.info("Holle Karten zum vorschlagen");
-		try {
-			BoardManager.getInstance().valuatePlayerDice();
-		} catch (Exception ex) {
-			LogHelper.LogException(ex);
-		}
+		BoardManager.getInstance().valuatePlayerDice();
 		Hashtable<Integer, List<ITargetCard>> cardsToPropose = BoardManager.getInstance().getCardsToPropose();
 		int optionCount = cardsToPropose.size();
 
