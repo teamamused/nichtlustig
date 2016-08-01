@@ -6,7 +6,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Logger;
 
-import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.GameInfoRepository;
 import teamamused.common.interfaces.IPlayer;
