@@ -7,7 +7,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -15,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
@@ -32,7 +32,7 @@ import teamamused.server.connect.ClientAwaiter;
 public class ServerView extends AbstractView<ServerModel> {
 	
 	protected GridPane root;
-	protected Button restartButton;
+	protected Button restartButton, deployCardsButton;
 	protected Label labelServer, labelLogo, labelConnect, labelPort, labelIP, labelProtocol, labelTeam;
 	protected Image logo;
 	protected ImageView spracheImageView;
@@ -73,7 +73,10 @@ public class ServerView extends AbstractView<ServerModel> {
 		labelIP = new Label("\u2022" + "  IP " + ClientAwaiter.IP_ADDRESS);
 		labelProtocol = new Label("Protokoll:");
 		labelTeam = new Label("Team Amused: IT-Projekt an der FHNW, 2016");
+		VBox buttons = new VBox(5);
 		restartButton = new Button("Server neustarten");
+		deployCardsButton = new Button("Spiel vorantreiben");
+		buttons.getChildren().addAll(restartButton, deployCardsButton);
 		scrollTxt = new ScrollPane();
 //		language = new ChoiceBox<String>();
 //		language.getItems().add("Deutsch");
@@ -95,7 +98,7 @@ public class ServerView extends AbstractView<ServerModel> {
 //		}
 
 		//Hinzufügen der Controlls der Pane
-		root.add(restartButton, 0, 0);
+		root.add(buttons, 0, 0);
 		root.add(labelServer, 0, 1);
 		root.add(labelLogo, 2, 0);
 		root.add(labelConnect, 0, 2);
