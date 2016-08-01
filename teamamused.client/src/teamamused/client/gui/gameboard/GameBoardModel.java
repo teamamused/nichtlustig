@@ -20,7 +20,15 @@ import teamamused.common.models.Player;
 public class GameBoardModel extends AbstractModel {
 	IPlayer player;
 	
-    /**
+    public IPlayer getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(IPlayer player) {
+		this.player = player;
+	}
+
+	/**
      * Konstruktor, der einen übergebenen Player setzt (für buildPlayer)
      */
     public GameBoardModel(IPlayer player) {
@@ -43,19 +51,6 @@ public class GameBoardModel extends AbstractModel {
 
 	// In der ObserverList werden Nachrichten gespeichert
 	protected ObservableList<String> chatMessages = FXCollections.observableArrayList();
-
-	// Speichert die Spieler-Nr. des Buttons, welcher geklickt wurde
-	protected int btnPlayerClicked;
-
-	// Wird vom Handler der Player-Buttons im Controller aufgerufen
-	public void setBtnPlayerClicked(int btnNumber) {
-		this.btnPlayerClicked = btnNumber;
-	}
-
-	// Gibt die Nummer des Spielers, wessen Button geklickt wurde, zurück
-	public int getBtnPlayerClicked() {
-		return btnPlayerClicked;
-	}
 
 	public GameBoard gameBoard = new GameBoard();
 

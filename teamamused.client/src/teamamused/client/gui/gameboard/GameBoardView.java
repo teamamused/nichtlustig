@@ -46,8 +46,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected ImageView logo, linkIcon, exitIcon;
 	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
-	protected Button btnWuerfeln, btnBestaetigen, btnLink, btnExit,
-			btnSenden;
+	protected Button btnPlayer, btnWuerfeln, btnBestaetigen, btnLink, btnExit, btnSenden;
 	protected TextArea txtChatInput, txtChatScreen;
 	protected ScrollPane scrollTxt, scrollPane;
 	protected Label labelSpielfeld, labelRollDices, labelSelectedDices, labelBestaetigen;
@@ -320,10 +319,10 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		}
 		if (model.gameBoard != null) {
 			for (IPlayer player : model.gameBoard.getPlayers()) {
-				Button btnPlayer = GameBoardView
+				btnPlayer = GameBoardView
 						.initializeButton(player.getPlayerNumber() + ". " + player.getPlayerName());
-				// Player wird an Button "gebunden", um diesen im Controller
-				// auszulesen
+				// Player wird mit setUserData() an Button "gebunden", um diesen
+				// im Controller auszulesen
 				btnPlayer.setUserData(player);
 				// Hebt den aktiven Spieler hervor
 				if (Client.getInstance().getActivePlayer() != null

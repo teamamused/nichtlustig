@@ -199,8 +199,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				btnPlayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
-						Button b = (Button) event.getSource();
-						model.setBtnPlayerClicked(view.btnArray.indexOf(b) + 1);
 						Stage playerStage = new Stage();
 						// getUserData() holt den Player, welcher an den Button
 						// gebunden ist
