@@ -64,3 +64,9 @@
 #chatArea{
 	-fx-font-size: 12pt;
 }
+
+#btnActivePlayer {
+	-fx-font-size: 15pt;
+	-fx-font-family: "Tempus Sans ITC";
+	-fx-background-color: rgb(232, 174, 30);
+}
