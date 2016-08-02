@@ -375,7 +375,7 @@ public class BoardManager {
 			BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
 		}
 		
-		if (this.targetCardsToDeploy.isEmpty()) {
+		if (this.targetCardsToDeploy.isEmpty() || playerIsForcedToDead != null) {
 			for (IDeadCard deadCard : deadCards.keySet()) {
 				allDeadCards.add(deadCard);
 				if (deadCard.getCardCalue() == CubeManager.getInstance().getCurrentPinkCube().FaceValue) {
