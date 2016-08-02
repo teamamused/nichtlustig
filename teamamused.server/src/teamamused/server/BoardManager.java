@@ -257,6 +257,7 @@ public class BoardManager {
 		}
 
 		// Verteilen der Todeskarten
+		boolean matchDeadCardOnTarget = false;
 		if (deadCardsToDeploy != null) {
 			for (IDeadCard card : deadCardsToDeploy) {
 				ICardHolder currentOwner = deadCards.get(card);
@@ -270,19 +271,22 @@ public class BoardManager {
 					if(targetCardsOfNewOwner.length > 0)
 					{
 						for (ITargetCard targetCard : targetCardsOfNewOwner) {
-							if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino()) {
-								// Todeskarte wird umgedreht auf gewertete Karte
-								// gelegt
-								newOwner.addDeadCard(card, targetCard);
-								targetCard.setIsCoveredByDead(true);
-								ClientNotificator.notifyGameMove("Todeskarte " + card + "wurde auf Zielkarte " +
-										targetCard + " gelegt.");
-							} else {
-								// Todeskarte wird normal neben Zielkarten
-								// hingelegt
-								newOwner.addDeadCard(card, null);
-								targetCard.setIsValuated(false);
+							if(!matchDeadCardOnTarget){
+								if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino()) {
+									// Todeskarte wird umgedreht auf gewertete Karte
+									// gelegt
+									newOwner.addDeadCard(card, targetCard);
+									targetCard.setIsCoveredByDead(true);
+									ClientNotificator.notifyGameMove("Todeskarte " + card + " wurde auf Zielkarte " +
+											targetCard + " gelegt.");
+									matchDeadCardOnTarget = true;
+								} else {
+									// Todeskarte wird normal neben Zielkarten
+									// hingelegt
+									newOwner.addDeadCard(card, null);
+								}
 							}
+
 						}
 					}else{
 						newOwner.addDeadCard(card, null);
@@ -353,43 +357,44 @@ public class BoardManager {
 				playerIsBewaredOfDead = card;
 			}
 		}
+		
+		// Spezialkarte Killervirus wieder entfernen
+		if (playerIsForcedToDead != null) {
+			ClientNotificator.notifyGameMove("Der Spieler " + activePlayer.getPlayerName()
+					+ " wurde vom Killervirus befallen! Die Sonderkarte Killervirus wurde " + "von Spieler "
+					+ activePlayer.getPlayerName() + "auf das Spielbrett verschoben.");
+			BoardManager.getInstance().switchSpecialcardOwner(playerIsForcedToDead, null);
+		}
+		// Falls der Spieler die Spezialkarte Clown hat diese
+		// entfernen und keinen Tod zuteilen
+		if (playerIsBewaredOfDead != null) {
+			ClientNotificator.notifyGameMove("Der Spieler " + activePlayer.getPlayerName()
+					+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!"
+					+ " Die Sonderkarte Clown wurde vom Spieler " + activePlayer.getPlayerName()
+					+ " auf das Spieltbrett verschoben.");
+			BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
+		}
+		
 		if (this.targetCardsToDeploy.isEmpty()) {
-			// Spezialkarte Killervirus wieder entfernen
-			if (playerIsForcedToDead != null) {
-				ClientNotificator.notifyGameMove("Der Spieler " + activePlayer.getPlayerName()
-						+ " wurde vom Killervirus befallen! Die Sonderkarte Killervirus wurde " + "von Spieler "
-						+ activePlayer.getPlayerName() + "auf das Spielbrett verschoben.");
-				BoardManager.getInstance().switchSpecialcardOwner(playerIsForcedToDead, null);
-			}
-			// Falls der Spieler die Spezialkarte Clown hat diese
-			// entfernen und keinen Tod zuteilen
-			if (playerIsBewaredOfDead != null) {
-				ClientNotificator.notifyGameMove("Der Spieler " + activePlayer.getPlayerName()
-						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!"
-						+ " Die Sonderkarte Clown wurde vom Spieler " + activePlayer.getPlayerName()
-						+ " auf das Spieltbrett verschoben.");
-				BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
-			} else {
-				for (IDeadCard deadCard : deadCards.keySet()) {
-					allDeadCards.add(deadCard);
-					if (deadCard.getCardCalue() == CubeManager.getInstance().getCurrentPinkCube().FaceValue) {
-						if(!deadCardsOfPlayer.isEmpty()){
-							for(IDeadCard deadCardsOfActivePlayer : deadCardsOfPlayer){
-								allDeadCards.remove(deadCard);
-								hasDeadCardsAlready = true;
-							}
-						}else{
-							deadCardsToDeploy.add(deadCard);
-						}					
-					}
-				}
-				
-				if(hasDeadCardsAlready){
-					for(IDeadCard deadCard : allDeadCards){
-						if(hasDeadCardsAlready){
-							deadCardsToDeploy.add(deadCard);
-							hasDeadCardsAlready = false;
+			for (IDeadCard deadCard : deadCards.keySet()) {
+				allDeadCards.add(deadCard);
+				if (deadCard.getCardCalue() == CubeManager.getInstance().getCurrentPinkCube().FaceValue) {
+					if(!deadCardsOfPlayer.isEmpty()){
+						for(IDeadCard deadCardsOfActivePlayer : deadCardsOfPlayer){
+							allDeadCards.remove(deadCard);
+							hasDeadCardsAlready = true;
 						}
+					}else{
+						deadCardsToDeploy.add(deadCard);
+					}					
+				}
+			}
+			
+			if(hasDeadCardsAlready){
+				for(IDeadCard deadCard : allDeadCards){
+					if(hasDeadCardsAlready){
+						deadCardsToDeploy.add(deadCard);
+						hasDeadCardsAlready = false;
 					}
 				}
 			}
