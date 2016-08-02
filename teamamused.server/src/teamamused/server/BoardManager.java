@@ -262,27 +262,32 @@ public class BoardManager {
 				ICardHolder currentOwner = deadCards.get(card);
 				if (deadCards.get(card) == currentOwner && newOwner != board) {
 					currentOwner.removeDeadCard(card);
-					//TODO: Todeskarte auf Zielkarte legen, wenn gewertete Karten vorhanden!
-					newOwner.addDeadCard(card, null);
 					ITargetCard[] targetCardsOfNewOwner = newOwner.getTargetCards();
 
 					// Prüft, ob die Todeskarte auf eine andere Karte
 					// umgedreht
 					// gelegt werden muss
-					for (ITargetCard targetCard : targetCardsOfNewOwner) {
-						if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino()) {
-							// Todeskarte wird umgedreht auf gewertete Karte
-							// gelegt
-							newOwner.addDeadCard(card, targetCard);
-							targetCard.setIsCoveredByDead(true);
-						} else {
-							// Todeskarte wird normal neben Zielkarten
-							// hingelegt
-							newOwner.addDeadCard(card, null);
-							targetCard.setIsValuated(false);
+					if(targetCardsOfNewOwner.length > 0)
+					{
+						for (ITargetCard targetCard : targetCardsOfNewOwner) {
+							if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino()) {
+								// Todeskarte wird umgedreht auf gewertete Karte
+								// gelegt
+								newOwner.addDeadCard(card, targetCard);
+								targetCard.setIsCoveredByDead(true);
+								ClientNotificator.notifyGameMove("Todeskarte " + card + "wurde auf Zielkarte " +
+										targetCard + " gelegt.");
+							} else {
+								// Todeskarte wird normal neben Zielkarten
+								// hingelegt
+								newOwner.addDeadCard(card, null);
+								targetCard.setIsValuated(false);
+							}
 						}
+					}else{
+						newOwner.addDeadCard(card, null);
 					}
-
+					
 					this.deadCards.remove(card, currentOwner);
 					this.deadCards.put(card, newOwner);
 
