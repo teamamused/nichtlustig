@@ -92,6 +92,7 @@ public enum GameCard {
 	 * Gibt den Namen der Karte zurück
 	 * @return Kartenbezeichnung
 	 */
+	@Override
 	public String toString() {
 		return this.cardName;
 	}
