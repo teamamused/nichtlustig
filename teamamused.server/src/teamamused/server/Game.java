@@ -195,6 +195,7 @@ public class Game implements Serializable {
 		if (this.gameStatus != GameState.finished) {
 			// Nächsten Spieler aktivieren
 			this.changeActivePlayer();
+			ClientNotificator.notifyGameMove("Die Spielrunde wurde für Spieler " + activePlayer + " aktiviert.");
 			// Prüfen ob der Spieler Spezialkarten hat welche er spielen muss
 			ISpecialCard[] specialCardByCurrentPlayer = this.activePlayer.getSpecialCards();
 			boolean playerHasToSkip = false;
