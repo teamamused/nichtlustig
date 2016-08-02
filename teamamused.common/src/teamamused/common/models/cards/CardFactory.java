@@ -175,9 +175,10 @@ public class CardFactory {
 	 * @return Liste mit den ITargetCards
 	 */
 	public static ArrayList<ITargetCard> getClientTargetCardsByBeans(BeanTargetCard[] beans) {
+		Hashtable<GameCard, ITargetCard> allCards = getTargetCards();
 		ArrayList<ITargetCard> retval = new ArrayList<ITargetCard>();
 		for (BeanTargetCard bean : beans) {
-			ITargetCard card = new TargetCard(bean.gamecard, 0, 0, new CubeValue[0]);
+			ITargetCard card = allCards.get(bean.gamecard);
 			retval.add(card);
 		}
 		return retval;

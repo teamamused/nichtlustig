@@ -1,5 +1,6 @@
 package teamamused.common.interfaces;
 
+import javafx.scene.canvas.Canvas;
 import teamamused.common.models.cubes.CubeValue;
 /**
  * 
@@ -51,4 +52,11 @@ public interface ITargetCard extends IGameCard {
 	 * @return Punktzahl (int zwischen 0 und 28)
 	 */
 	CubeValue[] getRequiredCubeValues();
+	
+	/**
+	 * Gibt das Bild der entsprechenden Karte je nach Gewertet und gestorben status als Canvas zurück
+	 * @param size Auflösung des Canvas
+	 * @return Kartenbild
+	 */
+	Canvas toCanvas(int size);
 }

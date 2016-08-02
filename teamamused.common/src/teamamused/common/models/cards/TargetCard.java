@@ -1,5 +1,12 @@
 package teamamused.common.models.cards;
 
+import java.util.logging.Level;
+
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import teamamused.common.ResourceLoader;
+import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.cubes.CubeValue;
 
@@ -108,6 +115,52 @@ class TargetCard extends AbstractCard implements ITargetCard {
 	@Override
 	public void setIsCoveredByDead(boolean isCovered) {
 		this.isCoveredByDead = isCovered;
+	}
+
+	/**
+	 * Methode um superdynamisch abhängig von der Grösse einen Würfel zu
+	 * zeichnen mit dem aktuellen Cube Value
+	 * 
+	 * @param size
+	 *            höhe und Breite des Würfels
+	 * @param borderWitdh
+	 *            Rahmen grösse um den Würfel herum
+	 * @return ein Canvas welches die Höhe und Breite size + 2 mal border hat
+	 */
+	public Canvas toCanvas(int size) {
+		Canvas canvas = new Canvas(size, size);
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		drawCanvas(gc, size);
+		return canvas;
+	}
+
+	/**
+	 * Hilfsmethode für toCanvas
+	 * 
+	 * @param g
+	 *            Der Grafikcontext
+	 * @param size
+	 *            höhe und Breite des Würfels
+	 * @param borderWitdh
+	 *            Rahmen grösse um den Würfel herum
+	 */
+	private void drawCanvas(GraphicsContext g, int size) {
+		// Wenn die Karte gewertet ist die Rückseite anzeigen
+		if (this.isValuated) {
+			g.drawImage(this.getBackgroundImage(), 0, 0, size, size);
+		} else {
+			// wenn karte noch nicht gewertet die Vordergrundseite anzeigen
+			g.drawImage(this.getBackgroundImage(), 0, 0, size, size);
+		}
+		// Wenn Spielkarte gestorben ist kommt der Tod darüber (whoohooo)
+		if (this.isCoveredByDead) {
+			try {
+				Image tod = ResourceLoader.getImage("Tod.png");
+				g.drawImage(tod, 0, 0, size, size);
+			} catch (Exception ex) {
+				ServiceLocator.getInstance().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
+			}
+		}
 	}
 
 }
