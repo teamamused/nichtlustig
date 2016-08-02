@@ -176,7 +176,6 @@ public class BoardManager {
 			if (card.getAdditionalPoints() != 0) {
 				// Wenn der Spieler die Spezialkarte Zeitmaschine hat, bekommt
 				// er zusätzlich zwei Würfelaugen
-				// TODO: Spezialkarte entfernen
 				sumOfCubes += card.getAdditionalPoints();
 			}
 		}
@@ -230,24 +229,25 @@ public class BoardManager {
 		// Verteilen der Zielkarten
 		for (ITargetCard card : targetCardsToDeploy) {
 			ICardHolder currentOwner = targetCards.get(card);
+			
+			if (card.getGameCard().isDino() && !currentOwner.equals(newOwner)) {
+				// Dinos sind sofort gewertet
+				card.setIsValuated(true);
+				// Entfernt die Sonderkarte SK_Zeitmaschine vom Spieler,
+				// wenn die Dino-Karte verteilt wird
+				for (ISpecialCard specialCard : newOwner.getSpecialCards()) {
+					if (specialCard.getGameCard() == GameCard.SK_Zeitmaschine) {
+						this.switchSpecialcardOwner(specialCard, null);		
+					}
+				}
+			}
+			
 			if (!currentOwner.equals(newOwner)) {
 				currentOwner.removeTargetCard(card);
 				newOwner.addTargetCard(card);
 				this.targetCards.put(card, newOwner);
 				ClientNotificator.notifyGameMove("Zielkarte " + card + " wurde von Spieler " + currentOwner
 						+ " zu Spieler " + newOwner + " verschoben.");
-
-				if (card.getGameCard().isDino()) {
-					// Dinos sind sofort gewertet
-					card.setIsValuated(true);
-					// Entfernt die Sonderkarte SK_Zeitmaschine vom Spieler,
-					// wenn die Dino-Karte verteilt wird
-					for (ISpecialCard specialCard : currentOwner.getSpecialCards()) {
-						if (specialCard.getGameCard().getCardNumber() == GameCard.SK_Zeitmaschine.getCardNumber()) {
-							this.switchSpecialcardOwner(specialCard, null);
-						}
-					}
-				}
 			}
 		}
 
@@ -416,6 +416,7 @@ public class BoardManager {
 			// aktuellen Spieler
 			if (targetCard.getGameCard().isDino() && targetCard.getRequiredPoints() <= sumOfCubes
 					&& !this.targetCards.get(targetCard).equals(Game.getInstance().getActivePlayer())) {
+				
 				// Prüfen ob der Dino besser ist als der bereits vorhandene
 				if (dinoCard.isEmpty()) {
 					dinoCard.clear();
