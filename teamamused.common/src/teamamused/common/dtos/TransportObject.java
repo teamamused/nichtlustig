@@ -97,7 +97,10 @@ public class TransportObject implements Serializable{
     public static TransportObject receive(ObjectInputStream in) {
     	TransportObject dto = null;
 		try {
-			dto = (TransportObject) in.readObject();
+			Object obj = in.readObject();
+			if (obj instanceof TransportObject) {
+				dto = (TransportObject) obj;
+			}
 		} catch (Exception e) {
         	LogHelper.LogException(e);
 		}

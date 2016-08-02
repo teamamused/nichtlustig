@@ -2,11 +2,13 @@ package teamamused.client.gui.ChooseCards;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -14,54 +16,83 @@ import teamamused.client.libs.Client;
 import teamamused.common.gui.AbstractView;
 import teamamused.common.interfaces.ITargetCard;
 
+/**
+ * 
+ * Sobald ein Spieler Augenzahlen würfelt, bei welchen ihm mehrere Möglichkeiten
+ * der Kartenauswahl zur Verfügung stehen, erscheint ihm ein Fenster, aus
+ * welchem er eine Kombination auswählen kann. Diese Klasse stellt dazu die
+ * grafische Oberfläche dar.
+ * 
+ * @author Dani und Michelle
+ *
+ */
 public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
+
+	protected GridPane root;
+	protected HBox titlePane;
+	protected VBox txtPane;
+	protected FlowPane optionPane;
+	protected Label titleLabel, explainLabel, choiceLabel;
 
 	private final double BUTTON_WIDTH = 110;
 
-	/**
-	 * Konstruktor
-	 * 
-	 * @param stage
-	 *            Stage in welcher die Scene angezeigt wird
-	 * @param model
-	 *            Model für die Datenhaltung
-	 */
 	public ChooseCardsView(Stage stage, ChooseCardsModel model) {
 		super(stage, model);
 	}
 
 	@Override
 	protected Scene createGUI() {
-		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, 320, 350);
-		// Oberer Teil
-		HBox topBox = new HBox();
-		// Titel label
-		Label lTitel = new Label();
-		lTitel.setText("Du hast folgende Karten Kombinationen zur Auswahl:");
-		// Button zum starten
-		topBox.getChildren().addAll(lTitel);
-		// Für alle Optionen eine VBox
-		VBox options = new VBox();
+
+		// Definition der Haupt-Pane
+		root = new GridPane();
+		root.setPadding(new Insets(20, 20, 20, 20));
+		root.setHgap(20);
+		root.setVgap(20);
+		root.setGridLinesVisible(false);
+
+		Scene scene = new Scene(root, 700, 500);
+
+		// Definition der Pane für die Texte inkl. Instanziierung und Zuweisung
+		// der Controlls
+		titlePane = new HBox();
+		titleLabel = new Label("Karten-Kombinationen");
+		titleLabel.setId("labelTitle");
+		titlePane.getChildren().add(titleLabel);
+
+		// Definition der Pane für die Texte inkl. Instanziierung und Zuweisung
+		// der Controlls
+		txtPane = new VBox();
+		explainLabel = new Label("Deine gewürfelten Zahlen erlauben mehrere Möglichkeiten.");
+		choiceLabel = new Label("Du kannst aus folgenden Karten-Kombinationen wählen:");
+		txtPane.getChildren().addAll(explainLabel, choiceLabel);
+
+		// Definition der option-Pane inkl. Instanziierung und Zuweisung der
+		// Controlls
+		optionPane = new FlowPane();
 		for (int i : model.cardsToChooseOptions.keySet()) {
-			// Pro Option Karten laden
-			options.getChildren().add(drawCards(i));
+			// Lädt pro Option die Karten
+			optionPane.getChildren().add(drawCards(i));
 		}
-		// Alle Elemente im Gui anordnen
-		root.setTop(topBox);
-		root.setCenter(options);
+
+		// Zuweisung der Elemente zur Haupt-Pane
+		root.add(titlePane, 0, 0);
+		root.add(txtPane, 0, 1);
+		root.add(optionPane, 0, 2);
+
+		// Zuweisung des Stylesheets
 		try {
-			// CSS Gestaltungs File laden
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		// anzeigen
+
 		return scene;
 	}
 
 	/**
-	 * Karten pro Option zeichnen
+	 * 
+	 * Diese Support-Methode zeichnet die Karten pro Möglichkeit.
+	 * 
 	 */
 	protected Button drawCards(int optionNr) {
 		Button btn = new Button();

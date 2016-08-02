@@ -42,8 +42,9 @@ public class ClientNotificator {
 	 * @param options Auswahlmöglichkeiten für den Spieler
 	 */
 	public static void notifyCardsToChoose(Hashtable<Integer, List<ITargetCard>> options) {
+		Object[] params = BeanHelper.getChooseCardOptionsAsBean(options);
 		TransportableProcedureCall chooseCards = new TransportableProcedureCall(
-				TransportableProcedureCall.RemoteProcedure.ChooseCards, new Object[] { options });
+				TransportableProcedureCall.RemoteProcedure.ChooseCards, params);
 		ClientManager.getInstance().updateCurrentClient(chooseCards);
 	}
 

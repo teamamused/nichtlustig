@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractController;
+import teamamused.server.GameManipulator;
 import teamamused.server.Server;
 
 public class ServerController extends AbstractController<ServerModel, ServerView> {
@@ -21,6 +22,13 @@ public class ServerController extends AbstractController<ServerModel, ServerView
 				view.loggingTxtArea.clear();
 				LOG.info("Server wird neu gestartet");
 				Server.resetServer();
+			}
+    	});
+    	
+    	view.deployCardsButton.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				GameManipulator.deployCardsRandomly();
 			}
     	});
     	

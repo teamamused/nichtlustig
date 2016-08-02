@@ -5,6 +5,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import teamamused.common.dtos.BeanGameBoard;
+
 public class LogHelper {
 
 	/**
@@ -52,5 +54,19 @@ public class LogHelper {
 	public static void LogException(Exception ex) {
 		ex.printStackTrace();
 	    ServiceLocator.getInstance().getLogger().log(Level.SEVERE, ex.toString(), ex);
+	}
+	
+	/**
+	 * Logt alle wichtigen Eigenschaften des Spielbrettes als info
+	 * @param board Spielbread
+	 */
+	public static void LogGameBoard(String kennung, BeanGameBoard board) {
+		Logger log = ServiceLocator.getInstance().getLogger();
+		log.info("Spielbrett " + kennung + " " + board.toString());
+		log.info("Anzahl Zielkarten " + board.targetCards.size());
+		log.info("Anzahl Spezialkarten " + board.specialCards.size());
+		log.info("Anzahl Todeskarten " + board.deadCards.size());
+		log.info("Anzahl Würfel " + board.cubeValues.length);
+		
 	}
 }

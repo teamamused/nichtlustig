@@ -22,8 +22,8 @@ public class GameBoardModel extends AbstractModel {
 	
 	boolean specialCardsNeedsUpdate = true, targetCardsNeedsUpdate = true, deadCardsNeedsUpdate =true;
 	
-    // Wenn der Spieler am würfeln ist, wievielmal er noch darf
-    int remainingDices = 3;
+	// Gibt an, wie oft der Spieler noch würfeln darf
+    int remainingDices;
 
 	// In der ObserverList werden Nachrichten gespeichert
 	protected ObservableList<String> chatMessages = FXCollections.observableArrayList();

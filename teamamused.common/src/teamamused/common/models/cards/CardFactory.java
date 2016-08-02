@@ -1,12 +1,14 @@
 package teamamused.common.models.cards;
 
 import java.util.Hashtable;
+import java.util.ArrayList;
 
 import teamamused.common.interfaces.IDeadCard;
 import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.cubes.CubeColor;
 import teamamused.common.models.cubes.CubeValue;
+import teamamused.common.dtos.BeanTargetCard;
 
 /**
  * Diese Klasse hat eine Fabrik funktion und ist für das erstellen der Karten
@@ -152,17 +154,33 @@ public class CardFactory {
 						new CubeValue(CubeColor.Red, 5) }));
 		// Dinosauriers
 		htTargetCards.put(GameCard.ZK_Dinosaurier1, new TargetCard(
-				GameCard.ZK_Dinosaurier1, 0, 24, new CubeValue[0]));
+				GameCard.ZK_Dinosaurier1, 1, 24, new CubeValue[0]));
 		htTargetCards.put(GameCard.ZK_Dinosaurier2, new TargetCard(
-				GameCard.ZK_Dinosaurier2, 0, 25, new CubeValue[0]));
+				GameCard.ZK_Dinosaurier2, 2, 25, new CubeValue[0]));
 		htTargetCards.put(GameCard.ZK_Dinosaurier3, new TargetCard(
-				GameCard.ZK_Dinosaurier3, 0, 26, new CubeValue[0]));
+				GameCard.ZK_Dinosaurier3, 3, 26, new CubeValue[0]));
 		htTargetCards.put(GameCard.ZK_Dinosaurier4, new TargetCard(
-				GameCard.ZK_Dinosaurier4, 0, 27, new CubeValue[0]));
+				GameCard.ZK_Dinosaurier4, 4, 27, new CubeValue[0]));
 		htTargetCards.put(GameCard.ZK_Dinosaurier5, new TargetCard(
-				GameCard.ZK_Dinosaurier5, 0, 28, new CubeValue[0]));
+				GameCard.ZK_Dinosaurier5, 5, 28, new CubeValue[0]));
 
 		return htTargetCards;
+	}
+	
+	/**
+	 * Erzeugt Targetcards für den Client anhand der übergebenen Beans
+	 * Dabei wird die Logik für die Wertung ausgelassen
+	 * 
+	 * @param beans Transportoptimierte Objekte
+	 * @return Liste mit den ITargetCards
+	 */
+	public static ArrayList<ITargetCard> getClientTargetCardsByBeans(BeanTargetCard[] beans) {
+		ArrayList<ITargetCard> retval = new ArrayList<ITargetCard>();
+		for (BeanTargetCard bean : beans) {
+			ITargetCard card = new TargetCard(bean.gamecard, 0, 0, new CubeValue[0]);
+			retval.add(card);
+		}
+		return retval;
 	}
 
 }

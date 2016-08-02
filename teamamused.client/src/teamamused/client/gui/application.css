@@ -33,6 +33,10 @@
 	-fx-font-weight: bold;
 }
 
+#subtitle{
+	-fx-font-size: 17pt;
+}
+
 #labelRanking{
 	-fx-font-size: 30pt;
 	-fx-font-weight: bold;
@@ -55,10 +59,6 @@
 
 #btnTransparent{
 	-fx-background-color: transparent;
-}
-
-#subtitle{
-	-fx-font-size: 17pt;
 }
 
 #chatArea{
