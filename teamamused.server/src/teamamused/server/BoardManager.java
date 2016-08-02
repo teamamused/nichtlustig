@@ -375,6 +375,8 @@ public class BoardManager {
 			BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
 		}
 		
+		ClientNotificator.notifyUpdateGameBoard(board);
+		
 		if (this.targetCardsToDeploy.isEmpty() || playerIsForcedToDead != null) {
 			for (IDeadCard deadCard : deadCards.keySet()) {
 				allDeadCards.add(deadCard);
