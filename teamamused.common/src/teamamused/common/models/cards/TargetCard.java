@@ -23,8 +23,8 @@ class TargetCard extends AbstractCard implements ITargetCard {
 
 	private int cardValue;
 	private int requiredPoints;
-	private boolean isValuated;
-	private boolean isCoveredByDead;
+	private boolean isValuated = false;
+	private boolean isCoveredByDead = false;
 	CubeValue[] requiredCubeValues;
 
 	/**
@@ -150,7 +150,7 @@ class TargetCard extends AbstractCard implements ITargetCard {
 			g.drawImage(this.getBackgroundImage(), 0, 0, size, size);
 		} else {
 			// wenn karte noch nicht gewertet die Vordergrundseite anzeigen
-			g.drawImage(this.getBackgroundImage(), 0, 0, size, size);
+			g.drawImage(this.getForegroundImage(), 0, 0, size, size);
 		}
 		// Wenn Spielkarte gestorben ist kommt der Tod darüber (whoohooo)
 		if (this.isCoveredByDead) {
