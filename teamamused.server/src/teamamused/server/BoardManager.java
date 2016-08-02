@@ -299,8 +299,8 @@ public class BoardManager {
 							+ " zu Spieler " + newOwner + " verschoben.");
 				}
 			}
-			ClientNotificator.notifyUpdateGameBoard(board);
 		}
+		ClientNotificator.notifyUpdateGameBoard(board);
 	}
 
 	/**
