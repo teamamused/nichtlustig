@@ -195,6 +195,7 @@ public class Game implements Serializable {
 		if (this.gameStatus != GameState.finished) {
 			// Nächsten Spieler aktivieren
 			this.changeActivePlayer();
+			ClientNotificator.notifyGameMove("Die Spielrunde wurde für Spieler " + activePlayer + " aktiviert.");
 			// Prüfen ob der Spieler Spezialkarten hat welche er spielen muss
 			ISpecialCard[] specialCardByCurrentPlayer = this.activePlayer.getSpecialCards();
 			boolean playerHasToSkip = false;
@@ -202,7 +203,7 @@ public class Game implements Serializable {
 			// beeinflussen könnten, daher eine List
 			List<ISpecialCard> additionalDicingCards = new ArrayList<ISpecialCard>();
 			for (ISpecialCard card : specialCardByCurrentPlayer) {
-				// Wenn der Spieler aussetzen muss ist fertig
+				// Wenn der Spieler aussetzen (Spezialkarte UFO) ist er mit der Spielrunde fertig
 				if (card.getHasToSkip()) {
 					playerHasToSkip = true;
 					ClientNotificator.notifyGameMove("Der Spieler " + this.activePlayer.getPlayerName()
@@ -211,7 +212,9 @@ public class Game implements Serializable {
 							" auf das Spielbrett verschoben.");
 					BoardManager.getInstance().switchSpecialcardOwner(card, null);
 
-				} else if (card.getAdditionalDicing() != 0) {
+				}
+				//Wenn Spezialkarte Ente (+1 Wurf) oder Roboter (-1 Wurf) bei Spieler vorhanden
+				else if (card.getAdditionalDicing() != 0) {
 					additionalDicingCards.add(card);
 				}
 			}
