@@ -1,7 +1,5 @@
 package teamamused.client.gui.cardPopup;
 
-import java.io.FileNotFoundException;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,9 +14,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.client.gui.gameboard.GameBoardModel;
-import teamamused.common.LogHelper;
-import teamamused.common.ResourceLoader;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.interfaces.IDeadCard;
+import teamamused.common.interfaces.ISpecialCard;
+import teamamused.common.interfaces.ITargetCard;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für die Anzeige der Gegnerkarten
@@ -31,10 +30,11 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 
 	protected GridPane root;
 	protected VBox titlePane;
-	protected HBox cardTxtPane, specialCardTxtPane, buttonPane;
-	protected FlowPane cardsFlowPane, specialCardsFlowPane;
-	protected Label labelTitle, labelText, cardsRival, specialCardsRival;
+	protected HBox cardTxtPane, specialCardTxtPane, deathCardTxtPane, buttonPane;
+	protected FlowPane cardFlowPane, specialCardFlowPane, deathCardFlowPane;
+	protected Label labelTitle, labelText, cardsRival, specialCardsRival, deathCardsRival;
 	protected Button btnClose;
+	protected ImageView playerTargetCardView, playerSpecialCardView, playerDeathCardView;
 	protected ScrollPane scrollPane;
 
 	public CardPopupView(Stage stage, GameBoardModel model) {
@@ -61,7 +61,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		titlePane = new VBox();
 		labelTitle = new Label("Karten von Spieler " + this.model.getPlayer().getPlayerNumber() + ": "
 				+ this.model.getPlayer().getPlayerName());
-		labelText = new Label("Hier siehst du die Karten deines Gegners:");
+		labelText = new Label("Bereits gewertete Karten sind umgedreht.");
 		labelTitle.setId("labelTitle");
 		labelText.setId("subtitle");
 		titlePane.getChildren().addAll(labelTitle, labelText);
@@ -71,36 +71,75 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		// Instanziierung und Zuweisung der Controlls
 		cardTxtPane = new HBox();
 		cardsRival = new Label("Zielkarten");
+		cardsRival.setId("labelUnderline");
 		cardTxtPane.getChildren().add(cardsRival);
 
-		// TODO: Muss dynamisch gestalten sein
 		// Definition der Pane für die Zielkarten inkl. Instanziierung und
 		// Zuweisung der Controlls
-		cardsFlowPane = new FlowPane();
-		cardsFlowPane.setHgap(10);
-		cardsFlowPane.setVgap(10);
-		cardsFlowPane.getChildren().addAll(getImageView("Dino1Vorne.png"), getImageView("Lemming1Vorne.png"),
-				getImageView("Dino1Vorne.png"), getImageView("Lemming1Vorne.png"), getImageView("Dino1Vorne.png"),
-				getImageView("Lemming1Vorne.png"), getImageView("Dino1Vorne.png"), getImageView("Lemming1Vorne.png"),
-				getImageView("Lemming1Vorne.png"));
+		cardFlowPane = new FlowPane();
+		cardFlowPane.setHgap(10);
+		cardFlowPane.setVgap(10);
+
+		if (this.model.getPlayer() != null) {
+			for (ITargetCard card : model.getPlayer().getTargetCards()) {
+				if (card.getIsValuated()) {
+					playerTargetCardView = getImageView(card.getBackgroundImage());
+				} else {
+					playerTargetCardView = getImageView(card.getForegroundImage());
+				}
+				cardFlowPane.getChildren().add(playerTargetCardView);
+			}
+			if (cardFlowPane.getChildren().size() == 0) {
+				cardFlowPane.getChildren().add(new Label("Der Spieler hat keine Zielkarten"));
+			}
+		}
 
 		// Definition der Pane für den Text zu den Spezialkarten inkl.
 		// Instanziierung und Zuweisung der Controlls
 		specialCardTxtPane = new HBox();
 		specialCardsRival = new Label("Spezialkarten");
+		specialCardsRival.setId("labelUnderline");
 		specialCardTxtPane.getChildren().add(specialCardsRival);
 
-		// TODO: Muss dynamisch gestalten sein
-		// Definition der Pane für die Spezialkarten inkl. Instanziierung und
-		// Zuweisung der Controlls
-		specialCardsFlowPane = new FlowPane();
-		specialCardsFlowPane.setHgap(10);
-		specialCardsFlowPane.setVgap(10);
-		specialCardsFlowPane.getChildren().addAll(getImageView("Killervirus.png"), getImageView("Ente.png"),
-				getImageView("Killervirus.png"), getImageView("Ente.png"), getImageView("Killervirus.png"),
-				getImageView("Ente.png"), getImageView("Killervirus.png"), getImageView("Ente.png"),
-				getImageView("Killervirus.png"), getImageView("Ente.png"));
+		// Definition der Pane für die Spezialkarten inkl. Instanziierung
+		// und Zuweisung der Controlls
+		specialCardFlowPane = new FlowPane();
+		specialCardFlowPane.setHgap(10);
+		specialCardFlowPane.setVgap(10);
+		
+		if (this.model.getPlayer() != null) {
+			for (ISpecialCard card : model.getPlayer().getSpecialCards()) {
+				playerSpecialCardView = getImageView(card.getForegroundImage());
+				specialCardFlowPane.getChildren().add(playerSpecialCardView);
+			}
+			if (specialCardFlowPane.getChildren().size() == 0) {
+				specialCardFlowPane.getChildren().add(new Label("Der Spieler hat keine Spezialkarten"));
+			}
+		}
+		
+		// Definition der Pane für den Text zu den Spezialkarten inkl.
+		// Instanziierung und Zuweisung der Controlls
+		deathCardTxtPane = new HBox();
+		deathCardsRival = new Label("Todeskarten");
+		deathCardsRival.setId("labelUnderline");
+		deathCardTxtPane.getChildren().add(deathCardsRival);
 
+		// Definition der Pane für die Todeskarten inkl. Instanziierung
+		// und Zuweisung der Controlls
+		deathCardFlowPane = new FlowPane();
+		deathCardFlowPane.setHgap(10);
+		deathCardFlowPane.setVgap(10);
+		
+		if (this.model.getPlayer() != null) {
+			for (IDeadCard card : model.getPlayer().getDeadCards()) {
+				playerDeathCardView = getImageView(card.getForegroundImage());
+				deathCardFlowPane.getChildren().add(playerDeathCardView);
+			}
+			if (deathCardFlowPane.getChildren().size() == 0) {
+				deathCardFlowPane.getChildren().add(new Label("Der Spieler hat keine Todeskarten"));
+			}
+		}
+		
 		// Definition der Pane für die Buttons inkl.
 		// Instanziierung und Zuweisung des Controlls
 		buttonPane = new HBox();
@@ -111,10 +150,12 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 
 		root.add(titlePane, 0, 0);
 		root.add(cardTxtPane, 0, 1);
-		root.add(cardsFlowPane, 0, 2, 1, 3);
+		root.add(cardFlowPane, 0, 2, 1, 3);
 		root.add(specialCardTxtPane, 0, 5);
-		root.add(specialCardsFlowPane, 0, 6, 1, 3);
-		root.add(buttonPane, 0, 10);
+		root.add(specialCardFlowPane, 0, 6, 1, 3);
+		root.add(deathCardTxtPane, 0, 10);
+		root.add(deathCardFlowPane, 0, 11, 1, 3);
+		root.add(buttonPane, 0, 15);
 
 		// Zuweisung des Stylesheets
 		try {
@@ -122,9 +163,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return scene;
-
 	}
 
 	/**
@@ -153,13 +192,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 	 *            Methode nimmt den Bildnamen (inkl. Endung) als String entgegen
 	 * @return Methode gibt eine ImageView des gewünschten Bildes zurück
 	 */
-	private ImageView getImageView(String imageName) {
-		Image image = null;
-		try {
-			image = ResourceLoader.getImage(imageName);
-		} catch (FileNotFoundException e) {
-			LogHelper.LogException(e);
-		}
+	private ImageView getImageView(Image image) {
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(100);
 		imageView.setPreserveRatio(true);

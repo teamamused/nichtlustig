@@ -37,6 +37,10 @@
 	-fx-font-size: 17pt;
 }
 
+#labelUnderline{
+	-fx-underline: true;
+}
+
 #labelRanking{
 	-fx-font-size: 30pt;
 	-fx-font-weight: bold;
