@@ -262,7 +262,8 @@ public class BoardManager {
 				ICardHolder currentOwner = deadCards.get(card);
 				if (deadCards.get(card) == currentOwner && newOwner != board) {
 					currentOwner.removeDeadCard(card);
-
+					//TODO: Todeskarte auf Zielkarte legen, wenn gewertete Karten vorhanden!
+					newOwner.addDeadCard(card, null);
 					ITargetCard[] targetCardsOfNewOwner = newOwner.getTargetCards();
 
 					// Prüft, ob die Todeskarte auf eine andere Karte
@@ -326,13 +327,23 @@ public class BoardManager {
 
 	private void checkDead() {
 		// Tod relevante Spezialkarten prüfen
-		IPlayer player = Game.getInstance().getActivePlayer();
+		IPlayer activePlayer = Game.getInstance().getActivePlayer();
 		ISpecialCard playerIsForcedToDead = null;
 		ISpecialCard playerIsBewaredOfDead = null;
-		for (ISpecialCard card : player.getSpecialCards()) {
+		ArrayList<IDeadCard> allDeadCards = new ArrayList<IDeadCard>();
+		ArrayList<IDeadCard> deadCardsOfPlayer = new ArrayList<IDeadCard>();
+		boolean hasDeadCardsAlready = false;
+		
+		for (IDeadCard card : activePlayer.getDeadCards()){
+			deadCardsOfPlayer.add(card);
+		}
+		
+		for (ISpecialCard card : activePlayer.getSpecialCards()) {
+			//Wenn Killervirus Spezialkarte bei Spieler
 			if (card.getIsForcedOfDead()) {
 				playerIsForcedToDead = card;
 			}
+			//Wenn Clown Spezialkarte bei Spieler
 			if (card.getIsBewaredOfDead()) {
 				playerIsBewaredOfDead = card;
 			}
@@ -340,23 +351,40 @@ public class BoardManager {
 		if (this.targetCardsToDeploy.isEmpty()) {
 			// Spezialkarte Killervirus wieder entfernen
 			if (playerIsForcedToDead != null) {
-				ClientNotificator.notifyGameMove("Der Spieler " + player.getPlayerName()
-						+ " starb durch einen Killervirus! Die Sonderkarte Killervirus wurde " + "von Spieler "
-						+ player.getPlayerName() + "auf das Spielbrett verschoben.");
+				ClientNotificator.notifyGameMove("Der Spieler " + activePlayer.getPlayerName()
+						+ " wurde vom Killervirus befallen! Die Sonderkarte Killervirus wurde " + "von Spieler "
+						+ activePlayer.getPlayerName() + "auf das Spielbrett verschoben.");
 				BoardManager.getInstance().switchSpecialcardOwner(playerIsForcedToDead, null);
 			}
-			// Falls der Spieler die Spezialkarte IsBewaredOfDead hat diese
+			// Falls der Spieler die Spezialkarte Clown hat diese
 			// entfernen und keinen Tod zuteilen
 			if (playerIsBewaredOfDead != null) {
-				ClientNotificator.notifyGameMove("Der Spieler " + player.getPlayerName()
+				ClientNotificator.notifyGameMove("Der Spieler " + activePlayer.getPlayerName()
 						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!"
-						+ " Die Sonderkarte Clown wurde vom Spieler " + player.getPlayerName()
+						+ " Die Sonderkarte Clown wurde vom Spieler " + activePlayer.getPlayerName()
 						+ " auf das Spieltbrett verschoben.");
 				BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
 			} else {
 				for (IDeadCard deadCard : deadCards.keySet()) {
+					allDeadCards.add(deadCard);
 					if (deadCard.getCardCalue() == CubeManager.getInstance().getCurrentPinkCube().FaceValue) {
-						deadCardsToDeploy.add(deadCard);
+						if(!deadCardsOfPlayer.isEmpty()){
+							for(IDeadCard deadCardsOfActivePlayer : deadCardsOfPlayer){
+								allDeadCards.remove(deadCard);
+								hasDeadCardsAlready = true;
+							}
+						}else{
+							deadCardsToDeploy.add(deadCard);
+						}					
+					}
+				}
+				
+				if(hasDeadCardsAlready){
+					for(IDeadCard deadCard : allDeadCards){
+						if(hasDeadCardsAlready){
+							deadCardsToDeploy.add(deadCard);
+							hasDeadCardsAlready = false;
+						}
 					}
 				}
 			}
