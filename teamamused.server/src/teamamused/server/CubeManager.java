@@ -114,6 +114,10 @@ public class CubeManager{
 				counterFixedCubes++;
 			}
 		}
+		
+		if(getAllCubesFixed()){
+			Game.getInstance().finishRound();
+		}
 	}
 	
 	/**
