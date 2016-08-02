@@ -105,7 +105,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(50, 50, 50, 50));
+		grid.setPadding(new Insets(30, 50, 50, 50));
 
 		grid.add(labelWelcome, 0, 0, 20, 1);
 		grid.add(labelPlay, 0, 2);
@@ -113,7 +113,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		grid.add(btnMulti, 14, 4);
 		grid.add(iview, 0, 8);
 		grid.add(iview2, 14, 8);
-		grid.add(btnTrophy, 24, 9);
+		grid.add(btnTrophy, 24, 11);
 		grid.add(btnExit, 24, 0);
 		
 		// Das Layout Pane einer Scene hinzufügen

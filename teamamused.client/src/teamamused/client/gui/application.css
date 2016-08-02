@@ -18,6 +18,15 @@
 	-fx-font-size: 11pt;
 	}
 
+
+#labelConnect{
+	-fx-font-size: 12pt;
+	}
+	
+#hboxConnect{
+	-fx-font-size: 12pt;
+	}
+
 #labelSpielfeld{
 	-fx-font-size: 30pt;
 	-fx-font-weight: bold;

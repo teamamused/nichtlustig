@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
@@ -46,11 +47,11 @@ public class RegisterView extends AbstractView<RegisterModel> {
 	protected Scene createGUI() {
 		
 		// Labels erstellen
-		Label labelTitle = new Label("Hallo Neuling!");
-		labelTitle.setId("labelTitle");
+		Label labelRegister = new Label("Hallo Neuling!");
+		labelRegister.setId("labelTitle");
 		Label labelCopyright = new Label("Copyright © 2016, Team amused (FHNW)");
 		labelCopyright.setId("labelCopyright");
-		Label labelRegister = new Label("Hier kannst du dich registrieren:");
+		Label labelRegisterHere = new Label("Hier kannst du dich registrieren:");
 		Label labelRegUser = new Label("Benutzername");
 		Label labelRegPassword = new Label("Passwort");
 		Label labelRegPassword2 = new Label("Passwort bestätigen");
@@ -116,42 +117,62 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(30, 50, 30, 50));
+		grid.setPadding(new Insets(0, 0, 0, 0));
 
-		grid.add(labelTitle, 0, 1);
-		grid.add(labelRegister, 0, 3);
-		grid.add(labelRegUser, 0, 5);
-		grid.add(textRegUser, 0, 6);
-		grid.add(labelRegPassword, 0, 7);
-		grid.add(password, 0, 8);
-		grid.add(labelRegPassword2, 0, 9);
-		grid.add(password2, 0, 10);
+		grid.add(labelRegister, 0, 1);
+		grid.add(labelRegisterHere, 0, 3);
+		grid.add(labelRegUser, 0, 4);
+		grid.add(textRegUser, 0, 5);
+		grid.add(labelRegPassword, 0, 6);
+		grid.add(password, 0, 7);
+		grid.add(labelRegPassword2, 0, 8);
+		grid.add(password2, 0, 9);
 		
-		HBox hbox = new HBox();
-		hbox.setPadding(new Insets(0, 50, 50, 50));
-		hbox.setAlignment(Pos.CENTER_LEFT);
-	    hbox.setSpacing(15);
-	    hbox.getChildren().addAll(iview2, cbLang);
-	    hbox.getChildren().addAll(btnRegister);
+		HBox hboxLang = new HBox();
+		hboxLang.setPadding(new Insets(0, 0, 0, 0));
+		hboxLang.setAlignment(Pos.TOP_LEFT);
+		hboxLang.setSpacing(15);
+		hboxLang.getChildren().addAll(iview2, cbLang);
 	    
-		HBox hbox2 = new HBox();
-		hbox2.setPadding(new Insets(0, 0, 0, 0));
-		hbox2.setAlignment(Pos.TOP_RIGHT);
-	    hbox2.setSpacing(15);
-	    hbox2.getChildren().addAll(btnExit);
+	    StackPane stackRegister = new StackPane();
+	    stackRegister.setPadding(new Insets(0, 0, 0, 0));
+	    stackRegister.setAlignment(Pos.TOP_LEFT);
+	    stackRegister.getChildren().addAll(btnRegister);
 		
-		VBox vbox = new VBox();
-		vbox.setPadding(new Insets(50, 80, 0, 50));
-		vbox.setAlignment(Pos.TOP_CENTER);
-		vbox.setSpacing(20);
-		vbox.getChildren().addAll(hbox2);
-		vbox.getChildren().addAll(iview);
-		vbox.getChildren().addAll(labelCopyright);
+	    VBox vboxLeft = new VBox();
+	    vboxLeft.setPadding(new Insets(30, 0, 0, 50));
+	    vboxLeft.setAlignment(Pos.TOP_CENTER);
+	    vboxLeft.setSpacing(20);
+	    vboxLeft.getChildren().addAll(grid);
+	    vboxLeft.getChildren().addAll(hboxLang);
+	    vboxLeft.getChildren().addAll(stackRegister);
 	    
+	    StackPane stackExit = new StackPane();
+	    stackExit.setPadding(new Insets(0, 50, 0, 0));
+	    stackExit.setAlignment(Pos.TOP_RIGHT);
+	    stackExit.getChildren().addAll(btnExit);
+	    
+	    StackPane stackImage = new StackPane();
+	    stackImage.setPadding(new Insets(20, 90, 0, 0));
+	    stackImage.setAlignment(Pos.TOP_CENTER);
+	    stackImage.getChildren().addAll(iview);
+	    
+	    StackPane stackCopyright = new StackPane();
+	    stackCopyright.setPadding(new Insets(0, 90, 0, 0));
+	    stackCopyright.setAlignment(Pos.TOP_CENTER);
+	    stackCopyright.getChildren().addAll(labelCopyright);
+	    
+		VBox vboxRight = new VBox();
+		vboxRight.setPadding(new Insets(30, 0, 0, 0));
+		vboxRight.setAlignment(Pos.TOP_CENTER);
+		vboxRight.setSpacing(20);
+		vboxRight.getChildren().addAll(stackExit);
+		vboxRight.getChildren().addAll(stackImage);
+		vboxRight.getChildren().addAll(stackCopyright);
+		
 		BorderPane border = new BorderPane();
-		border.setLeft(grid);
-		border.setRight(vbox);
-		border.setBottom(hbox);
+		border.setLeft(vboxLeft);
+		border.setRight(vboxRight);
 
 		// Das Layout Pane einer Scene hinzufügen
 		Scene scene = new Scene(border, 900, 600);

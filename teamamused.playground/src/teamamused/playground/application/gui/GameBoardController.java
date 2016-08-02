@@ -4,6 +4,9 @@ import java.text.DateFormat;
 import java.util.Hashtable;
 import java.util.List;
 
+
+
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,6 +14,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import teamamused.client.libs.IClientListener;
+import teamamused.common.LogHelper;
+import teamamused.common.db.Ranking;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.gui.AbstractController;
 import teamamused.common.interfaces.ITargetCard;
@@ -131,9 +136,13 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		model.spielbrett = newGameBoard;
 		
 		Platform.runLater(() -> {
-			view.drawCards();
-			view.drawCubes();
-			view.drawPlayers();
+			try {
+				view.drawCards();
+				view.drawCubes();
+				view.drawPlayers();
+			} catch (Exception ex) {
+				LogHelper.LogException(ex);
+			}
 		});
 	}
 
@@ -150,15 +159,36 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 
 	@Override
 	public void onChatMessageRecieved(TransportableChatMessage message) {
+		Platform.runLater(() -> {
 		DateFormat df = DateFormat.getTimeInstance();
 		view.txtChat.appendText(df.format(message.getTime()) + " - " + message.getSender() + ": "
 				+ message.getMessage());
 		view.txtChat.appendText("\n");
+		});
 	}
 
 	@Override
 	public void onNewGameMove(String move) {
-		view.txtGameMoves.appendText(move + "\n");
+		Platform.runLater(() -> {
+			view.txtGameMoves.appendText(move + "\n");
+		});
+	}
+
+	/**
+	 * Der Server hat das Spiel für beendet erklärt.
+	 * Dem Spieler muss angezeigt werden das das Spiel vorbei ist und das Ranking eingeblendet werden
+	 *  
+	 * @param rankings Platzierungen der Spielrunde
+	 */
+	@Override
+	public void onGameFinished(Ranking[] rankings) {
+		Platform.runLater(() -> {
+			Stage rs = new Stage();
+			RankingModel model = new RankingModel(rankings);
+			RankingView rv = new RankingView(rs, model);
+			new RankingController (model, rv);
+			rv.start();
+		});
 	}
 
 	private void sendMessage() {
@@ -168,6 +198,8 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		}
 		TransportableChatMessage message = new TransportableChatMessage(name, view.txtChatNewMsg.getText());
 		Client.getInstance().sendChatMessage(message);
-		view.txtChatNewMsg.setText("");
+		Platform.runLater(() -> {
+			view.txtChatNewMsg.setText("");
+		});
 	}
 }

@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
@@ -49,19 +50,20 @@ public class LogInView extends AbstractView<LogInModel> {
 		// Labels erstellen
 		Label labelCopyright = new Label("Copyright © 2016, Team amused (FHNW)");
 		labelCopyright.setId("labelCopyright");
+		Label labelConnect = new Label ("Bitte verbinden Sie sich als erstes mit dem Server:");
+		labelConnect.setId("labelConnect");
 		Label labelServer = new Label("Server:");
 		Label labelPort = new Label("Port:");
 		Label labelUser = new Label("Benutzername");
 		Label labelPassword = new Label("Passwort");
 		Label labelNeu = new Label("Neu bei uns?");
-		Label labelFail = new Label("Log-In fehlgeschlagen");
 
 		// Textfelder erstellen
 		textServer = new TextField();
 		textServer.setPrefWidth(140);
 		textServer.setText("localhost");
 		textPort = new TextField();
-		textPort.setPrefWidth(100);
+		textPort.setPrefWidth(80);
 		textPort.setText("9636");
 		textUser = new TextField();
 		textUser.setPromptText("Dein Benutzername");
@@ -88,8 +90,8 @@ public class LogInView extends AbstractView<LogInModel> {
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("NichtLustig.png"));
-			iview.setFitWidth(380);
-			iview.setFitWidth(380);
+			iview.setFitWidth(360);
+			iview.setFitWidth(360);
 			iview.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
@@ -119,40 +121,49 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.setAlignment(Pos.CENTER_RIGHT);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(0, 50, 50, 50));
+		grid.setPadding(new Insets(10, 50, 50, 0));
 		grid.add(labelUser, 2, 0);
 		grid.add(textUser, 2, 1);
 		grid.add(labelPassword, 2, 2);
 		grid.add(password, 2, 3);
 		grid.add(btnLogin, 2, 5);
-		//grid.add(labelFail, 2, 7);
 		grid.add(labelNeu, 2, 8);
 		grid.add(linkReg, 2, 9);
 		grid.add(iview2, 1, 11);
 		grid.add(cbLang, 2, 11);
 		
-		HBox hbox = new HBox();
-		hbox.setPadding(new Insets(30, 50, 0, 50));
-		hbox.setAlignment(Pos.CENTER);
-	    hbox.setSpacing(15);
-	    hbox.getChildren().addAll(labelServer, textServer, labelPort, textPort, btnConnectServer);
+		StackPane stackConnect = new StackPane();
+		stackConnect.setPadding(new Insets(30, 0, 10, 50));
+		stackConnect.setAlignment(Pos.TOP_LEFT);
+		stackConnect.getChildren().addAll(labelConnect);
+		
+		HBox hboxConnect = new HBox();
+		hboxConnect.setPadding(new Insets(0, 50, 0, 50));
+		hboxConnect.setAlignment(Pos.TOP_LEFT);
+		hboxConnect.setSpacing(15);
+		hboxConnect.getChildren().addAll(labelServer, textServer, labelPort, textPort, btnConnectServer);
+		hboxConnect.setId("hboxConnect");
 	    
-	    HBox hbox2 = new HBox();
-		hbox2.setPadding(new Insets(30, 50, 0, 0));
-		hbox2.setAlignment(Pos.TOP_RIGHT);
-	    hbox2.setSpacing(15);
-	    hbox2.getChildren().addAll(iview3);
-	    
-		BorderPane border = new BorderPane();
-		border.setLeft(hbox);
-		border.setRight(hbox2);
+	    HBox hboxLogo = new HBox();
+	    hboxLogo.setPadding(new Insets(30, 50, 0, 0));
+	    hboxLogo.setAlignment(Pos.TOP_RIGHT);
+	    hboxLogo.setSpacing(15);
+	    hboxLogo.getChildren().addAll(iview3);
 	    
 		VBox vbox = new VBox();
-		vbox.setPadding(new Insets(30, 0, 0, 70));
+		vbox.setPadding(new Insets(40, 0, 0, 90));
 		vbox.setAlignment(Pos.TOP_CENTER);
 		vbox.setSpacing(10);
 		vbox.getChildren().addAll(iview);
 		vbox.getChildren().addAll(labelCopyright);
+
+		BorderPane borderConnect = new BorderPane();
+		borderConnect.setTop(stackConnect);
+		borderConnect.setLeft(hboxConnect);
+		
+		BorderPane border = new BorderPane();
+		border.setLeft(borderConnect);
+		border.setRight(hboxLogo);
 	    
 		BorderPane border2 = new BorderPane();
 		border2.setTop(border);

@@ -22,7 +22,6 @@ import teamamused.common.dtos.BeanGameBoard;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableState;
 import teamamused.common.dtos.TransportObject.TransportType;
-import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.GameBoard;
@@ -222,15 +221,7 @@ public class ServerConnection extends Thread {
 					gb.initFromTransportObject((BeanGameBoard) params[0]);
 					this.notifyGui.gameBoardChanged(gb);
 					return new TransportableState(true, "Client updated");
-
-				} else if (params[0] instanceof GameBoard) {
-
-					for (ICube cube : ((GameBoard) params[0]).getCubes()) {
-						System.out.println("ServerConnection: " + cube.getCurrentValue().FaceValue);
-					}
-					this.notifyGui.gameBoardChanged((GameBoard) params[0]);
-					return new TransportableState(true, "Client updated");
-				}
+				} 
 			}
 			break;
 

@@ -1,12 +1,12 @@
 package teamamused.server;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Logger;
 
-import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.GameInfoRepository;
 import teamamused.common.interfaces.IPlayer;
@@ -39,6 +39,7 @@ public class Game implements Serializable {
 
 	// gameStatus: 0 = nicht gestartet, 1 = gestartet, 2 = beendet
 	private GameState gameStatus = GameState.notStarted;
+	private LocalDateTime gameStart;
 	private int gameId;
 	private Logger log;
 
@@ -91,16 +92,6 @@ public class Game implements Serializable {
 	}
 
 	/**
-	 * Legt fest, welcher Spieler mit dem Spiel starten darf.
-	 */
-	public void defineStartPlayer() {
-		this.log.info("Bestimme Startspieler");
-		List<IPlayer> players = this.getPlayersFromGameboard();
-		this.activePlayer = players.get((int) (Math.random() * players.size()));
-		ClientNotificator.notifyGameMove("Spieler " + this.activePlayer.getPlayerName() + " fängt mit dem Spiel an");
-	}
-
-	/**
 	 * Der aktive Spieler wird geändert, sobald ein Spieler seinen Spielzug
 	 * abgeschlossen und die Wertung inkl. Kartenausteilung beendet wurde.
 	 */
@@ -122,14 +113,6 @@ public class Game implements Serializable {
 	}
 
 	/**
-	 * Game-Status auf "beendet" ändern.
-	 */
-	public void setGameIsFinished() {
-		this.log.info("Setze Spiel beendet");
-		gameStatus = GameState.finished;
-	}
-
-	/**
 	 * Gibt den aktiven Spieler zurück, welcher am Würfeln ist.
 	 * 
 	 * @return aktiver Spieler
@@ -147,6 +130,15 @@ public class Game implements Serializable {
 		return this.gameId;
 	}
 
+	/**
+	 * Gibt den Startzeitpunkt des Spiels zurück.
+	 * 
+	 * @return Startzeitpunkt als LocalDateTime
+	 */
+	public LocalDateTime getGameStart() {
+		return this.gameStart;
+	}
+	
 	/**
 	 * TODO: Dani an Maja: Mal so eingeführt um Server fertig zu stellen, Maja
 	 * bitte sagen ob ok und anpassen / ergänzen Diverse Unklarheiten / Fragen
@@ -197,6 +189,8 @@ public class Game implements Serializable {
 	 * 
 	 */
 	public void startNextRound() {
+		this.log.info("Prüfe Spielstatus");
+		this.checkGameState();
 		this.log.info("Starte nächse Spielrunde");
 		if (this.gameStatus != GameState.finished) {
 			// Nächsten Spieler aktivieren
@@ -234,7 +228,6 @@ public class Game implements Serializable {
 				BoardManager.getInstance().switchSpecialcardOwner(dicingCard, null);
 			}
 			CubeManager.getInstance().initForNextRound(additionalDicings);
-			
 		}
 	}
 
@@ -252,8 +245,40 @@ public class Game implements Serializable {
 	private void startGame() {
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spiel");
 		gameId = GameInfoRepository.getNextGameId();
+		gameStart = LocalDateTime.now();
 		// Spielstatus auf "gestartet" setzen
 		gameStatus = GameState.running;
 	}
 
+	/**
+	 * Prüft das Spiel ob es beendet werden soll und beendet es falls es soweit ist
+	 */
+	private void checkGameState() {
+		if (this.gameStatus == GameState.running) {
+			// Das Spiel ist beendet wenn noch maximal 5 Zielkarten auf dem Tisch liegen
+			if (BoardManager.getInstance().getGameBoard().getTargetCards().length <= 5) {
+				GameFinisher.getInstance().finishGame();
+				GameFinisher.getInstance().closeGame();
+				this.setGameIsFinished();
+			}
+		}
+	}
+
+	/**
+	 * Game-Status auf "beendet" ändern.
+	 */
+	private void setGameIsFinished() {
+		this.log.info("Setze Spiel beendet");
+		gameStatus = GameState.finished;
+	}
+
+	/**
+	 * Legt fest, welcher Spieler mit dem Spiel starten darf.
+	 */
+	private void defineStartPlayer() {
+		this.log.info("Bestimme Startspieler");
+		List<IPlayer> players = this.getPlayersFromGameboard();
+		this.activePlayer = players.get((int) (Math.random() * players.size()));
+		ClientNotificator.notifyGameMove("Spieler " + this.activePlayer.getPlayerName() + " fängt mit dem Spiel an");
+	}
 }
