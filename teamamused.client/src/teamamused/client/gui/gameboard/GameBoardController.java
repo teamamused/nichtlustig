@@ -37,6 +37,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	protected int countDice = 0;
 	protected GameBoardModel model;
 	protected boolean[] fixedDices;
+	protected boolean allowedToMoveDown = false;
 
 	public GameBoardController(GameBoardModel model, GameBoardView view) {
 		super(model, view);
@@ -72,27 +73,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				model.dice();
 			}
 		});
-
-		// Auf den Spieler-Buttons wird ein Handler registriert, um das
-		// CardPopup mit den Karten des jeweiligen Spielers
-		// aufzurufen. Damit man weiss, welcher Spieler-Button geklickt wurde,
-		// wird diese Information in das GameBoardModel geschrieben.
-//		for (Button btnPlayer : view.btnArray) {
-//			btnPlayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//				@Override
-//				public void handle(MouseEvent event) {
-//					Button b = (Button) event.getSource();
-//					model.setBtnPlayerClicked(view.btnArray.indexOf(b) + 1);
-//					Stage playerStage = new Stage();
-//					// getUserData() holt den Player, welcher an den Button
-//					// gebunden ist
-//					GameBoardModel gameBoardModel = new GameBoardModel((IPlayer) btnPlayer.getUserData());
-//					CardPopupView cardPopupView = new CardPopupView(playerStage, gameBoardModel);
-//					new CardPopupController(gameBoardModel, cardPopupView);
-//					cardPopupView.start();
-//				}
-//			});
-//		}
 
 		// Sendet die gewürfelten Würfelwerte an den Server
 		view.btnBestaetigen.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -166,7 +146,9 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		Platform.runLater(() -> {
 			view.buildCards();
 			view.buildDices();
-			setEventsOnDices();
+			if (allowedToMoveDown) {
+				setEventOnDices();	
+			}
 			view.buildPlayer();
 			setEventsOnPlayerButton();
 		});
@@ -179,7 +161,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 * gesetzten Würfeln.
 	 * 
 	 */
-	public void setEventsOnDices() {
+	public void setEventOnDices() {
 		for (DiceControl diceControl : view.diceControlArray) {
 			if (!diceControl.getCube().getIsFixed()) {
 				diceControl.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -257,8 +239,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	public void onPlayerIsActivedChanged(boolean isActive) {
 		if (isActive && model.remainingDices > 0) {
 			view.btnWuerfeln.setDisable(false);
+			allowedToMoveDown = true;
 		} else {
 			view.btnWuerfeln.setDisable(true);
+			allowedToMoveDown = false;
 		}
 	}
 
