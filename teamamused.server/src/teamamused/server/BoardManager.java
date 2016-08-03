@@ -365,18 +365,7 @@ public class BoardManager {
 					+ activePlayer.getPlayerName() + "auf das Spielbrett verschoben.");
 			BoardManager.getInstance().switchSpecialcardOwner(playerIsForcedToDead, null);
 		}
-		// Falls der Spieler die Spezialkarte Clown hat diese
-		// entfernen und keinen Tod zuteilen
-		if (playerIsBewaredOfDead != null) {
-			ClientNotificator.notifyGameMove("Der Spieler " + activePlayer.getPlayerName()
-					+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!"
-					+ " Die Sonderkarte Clown wurde vom Spieler " + activePlayer.getPlayerName()
-					+ " auf das Spieltbrett verschoben.");
-			BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
-		}
-		
-		ClientNotificator.notifyUpdateGameBoard(board);
-		
+				
 		if (this.targetCardsToDeploy.isEmpty() || playerIsForcedToDead != null) {
 			for (IDeadCard deadCard : deadCards.keySet()) {
 				allDeadCards.add(deadCard);
@@ -401,6 +390,21 @@ public class BoardManager {
 				}
 			}
 		}
+		
+		if(!deadCardsToDeploy.isEmpty()){
+			// Falls der Spieler die Spezialkarte Clown hat diese
+			// entfernen und keinen Tod zuteilen
+			if (playerIsBewaredOfDead != null) {
+				ClientNotificator.notifyGameMove("Der Spieler " + activePlayer.getPlayerName()
+						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!"
+						+ " Die Sonderkarte Clown wurde vom Spieler " + activePlayer.getPlayerName()
+						+ " auf das Spieltbrett verschoben.");
+				deadCardsToDeploy.clear();
+				BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
+			}
+		}
+		
+		ClientNotificator.notifyUpdateGameBoard(board);
 	}
 
 	private void checkDinoCards(int sumOfCubes) {
