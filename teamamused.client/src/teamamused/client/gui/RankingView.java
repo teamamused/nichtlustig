@@ -1,9 +1,6 @@
 package teamamused.client.gui;
 
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,10 +8,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
-import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
 import teamamused.common.gui.AbstractView;
 
@@ -34,38 +32,47 @@ public class RankingView extends AbstractView<RankingModel> {
 		super(stage, model);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Scene createGUI() {
 
 		// Label erstellen
-		Label labelRanking = new Label("Unsere Besten:");
+		Label labelRanking = new Label("Unsere Besten");
 		labelRanking.setId("labelRanking");
 
 		// Tabelle erstellen
 		TableView<Ranking> table = new TableView<Ranking>();
-		table.setMinWidth(650);
-		table.setEditable(false);
+		table.maxWidthProperty().bind(stage.widthProperty().multiply(0.9));
 		table.setId("tableRanking");
 
 		// Spaltentitel festlegen
 		TableColumn<Ranking, Integer> rank = new TableColumn<Ranking, Integer>("Rang");
 		rank.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("TotalRank"));
-		rank.setMinWidth(100);
+		// Relative breiten angaben für dynamisches Layout
+		rank.prefWidthProperty().bind(table.widthProperty().divide(6));
+		rank.getStyleClass().add("tblViewRightCol");
+
+		TableColumn<Ranking, Integer> rankInGame = new TableColumn<Ranking, Integer>("im Spiel");
+		rankInGame.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("TotalRank"));
+		rankInGame.prefWidthProperty().bind(table.widthProperty().divide(6));
+		rankInGame.getStyleClass().add("tblViewRightCol");
 
 		TableColumn<Ranking, String> name = new TableColumn<Ranking, String>("Name");
 		name.setCellValueFactory(new PropertyValueFactory<Ranking, String>("Username"));
-		name.setMinWidth(300);
+		name.prefWidthProperty().bind(table.widthProperty().divide(2.1));
 
 		TableColumn<Ranking, Integer> points = new TableColumn<Ranking, Integer>("Punkte");
 		points.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("Points"));
-		points.setMinWidth(100);
+		points.prefWidthProperty().bind(table.widthProperty().divide(6));
+		points.getStyleClass().add("tblViewRightCol");
 
-		TableColumn<Ranking, LocalDate> date = new TableColumn<Ranking, LocalDate>("Datum");
+		// Datum gibts noch nicht, kommt ev auch nicht mehr (trurigs smilie)
+		/*TableColumn<Ranking, LocalDate> date = new TableColumn<Ranking, LocalDate>("Datum");
 		date.setCellValueFactory(new PropertyValueFactory<Ranking,
 		LocalDate>("Points"));
-		date.setMinWidth(150);
+		date.setMinWidth(150);*/
 
-		table.getColumns().addAll(rank, name, points, date);
+		table.getColumns().addAll(rank, rankInGame, name, points);//, date);
 
 		table.setItems(this.model.ranking);
 
@@ -76,7 +83,7 @@ public class RankingView extends AbstractView<RankingModel> {
 			iview.setFitWidth(30);
 			iview.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
-			ServiceLocator.getInstance().getLogger().severe(e1.toString());
+			LogHelper.LogException(e1);
 		}
 
 		ImageView iview2 = null;
@@ -86,7 +93,7 @@ public class RankingView extends AbstractView<RankingModel> {
 			iview2.setFitWidth(30);
 			iview2.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
-			ServiceLocator.getInstance().getLogger().severe(e1.toString());
+			LogHelper.LogException(e1);
 		}
 
 		// Exit-Button mit Bild erstellen
@@ -99,19 +106,18 @@ public class RankingView extends AbstractView<RankingModel> {
 		btnBack.setGraphic(iview2);
 		btnBack.setId("btnTransparent");
 
-		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.TOP_LEFT);
-		grid.setHgap(10);
-		grid.setVgap(10);
-		grid.setPadding(new Insets(30, 50, 50, 50));
+		BorderPane root = new BorderPane();
+		BorderPane top = new BorderPane();
+		HBox buttons = new HBox(5);
 
-		grid.add(labelRanking, 0, 0, 20, 1);
-		grid.add(table, 0, 2);
-		grid.add(btnBack, 3, 0);
-		grid.add(btnExit, 4, 0);
+		buttons.getChildren().addAll(btnBack, btnExit);
+		top.setCenter(labelRanking);
+		top.setRight(buttons);
+		root.setTop(top);
+		root.setCenter(table);
 
 		// Das Layout Pane einer Scene hinzufügen
-		Scene scene = new Scene(grid, 900, 600);
+		Scene scene = new Scene(root, 900, 600);
 
 		// Fenstertitel setzen
 		stage.setTitle("Nicht Lustig: Ranking");

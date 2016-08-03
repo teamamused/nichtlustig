@@ -16,6 +16,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
@@ -137,4 +138,13 @@ public class ServerView extends AbstractView<ServerModel> {
 		return scene;
 	}
 
+	@Override
+    protected Image getStateImage() {
+		try {
+			return ResourceLoader.getImage("Server.png");
+		} catch (Exception ex) {
+			LogHelper.LogException(ex);
+		}
+		return null;
+    }
 }

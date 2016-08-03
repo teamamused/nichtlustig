@@ -1,6 +1,9 @@
 package teamamused.common.gui;
 
+import teamamused.common.LogHelper;
+import teamamused.common.ResourceLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -28,9 +31,23 @@ public abstract class AbstractView<M extends AbstractModel> {
         
         Scene scene = createGUI(); // Create all controls within "root"
         stage.setScene(scene);
+
+        Image icon = this.getStateImage();
+        if (icon != null) {
+        	stage.getIcons().add(icon);
+        }
     }
 
     protected void initView() {}
+    
+    protected Image getStateImage() {
+		try {
+			return ResourceLoader.getImage("Lemming.png");
+		} catch (Exception ex) {
+			LogHelper.LogException(ex);
+		}
+		return null;
+    }
 
     protected abstract Scene createGUI();
 
@@ -55,4 +72,5 @@ public abstract class AbstractView<M extends AbstractModel> {
     public Stage getStage() {
         return stage;
     }
+    
 }

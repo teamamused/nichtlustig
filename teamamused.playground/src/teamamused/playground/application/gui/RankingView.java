@@ -36,7 +36,7 @@ public class RankingView extends AbstractView<RankingModel> {
 	protected Scene createGUI() {
 
 		// Label erstellen
-		Label labelRanking = new Label("Unsere Besten:");
+		Label labelRanking = new Label("Unsere Besten");
 		labelRanking.setId("labelRanking");
 		
 		// Tabelle erstellen

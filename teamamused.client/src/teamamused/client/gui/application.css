@@ -4,6 +4,17 @@
 	-fx-base: white;
 	-fx-background: rgb(187, 14, 35);
 }
+
+.rootPane {
+  -fx-border-insets: 23;
+  -fx-background-insets: 23;
+  -fx-background-radius: 10;
+  -fx-border-radius: 10;
+  -fx-border-color: red;
+  -fx-border-style: solid;
+  -fx-border-width: 1;
+  -fx-effect: dropshadow(three-pass-box, rgba(100, 100, 100, 1), 24, 0.5, 0, 0);
+}
 .cardPane{
 	-fx-font-size: 16pt;
 	-fx-font-family: "Tempus Sans ITC";
@@ -98,4 +109,8 @@
 
 #progressbox  {
 	-fx-alignment: center;
+}
+
+.tblViewRightCol {
+	-fx-alignment: CENTER-RIGHT;
 }
