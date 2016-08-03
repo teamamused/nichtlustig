@@ -229,6 +229,7 @@ public class Game implements Serializable {
 				additionalDicings += dicingCard.getAdditionalDicing();
 				// Karte zurück aufs Gameboard legen
 				BoardManager.getInstance().switchSpecialcardOwner(dicingCard, null);
+				ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
 			}
 			CubeManager.getInstance().initForNextRound(additionalDicings);
 		}
