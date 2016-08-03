@@ -45,7 +45,7 @@ public class SplashScreen_Preloader extends Preloader {
         root.setId("splash");
         Scene scene = new Scene(root, 300, 300);
         scene.getStylesheets().addAll(
-                this.getClass().getResource("splash.css").toExternalForm());
+                this.getClass().getResource("..\\application.css").toExternalForm());
         stage.setScene(scene);
 
         root.setCenter(lblStatus);

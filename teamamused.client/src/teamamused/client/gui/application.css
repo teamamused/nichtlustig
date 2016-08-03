@@ -83,3 +83,19 @@
 	-fx-font-family: "Tempus Sans ITC";
 	-fx-background-color: rgb(232, 174, 30);
 }
+
+#splash{
+    -fx-background-image: url("/NichtLustig.png");
+    -fx-background-color: transparent;
+    -fx-background-repeat: stretch;   
+    -fx-background-size: 300 300;
+    -fx-background-position: center center;
+}
+
+.progress-bar > .bar {
+	-fx-background-color: green;
+}
+
+#progressbox  {
+	-fx-alignment: center;
+}
