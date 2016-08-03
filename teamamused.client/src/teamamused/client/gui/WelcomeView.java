@@ -41,6 +41,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		Label labelWelcome = new Label("Herzlich Willkommen " + Client.getInstance().getPlayer().getPlayerName());
 		labelWelcome.setId("labelWelcome");
 		Label labelPlay = new Label("Was möchtest du spielen?");
+		Label labelFun = new Label("Wir wünschen dir viel Spass!");
 		
 		// Single-Player-Button erstellen und auf disable stellen
 		btnSingle = new Button();
@@ -54,8 +55,8 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("Single-Player.jpg"));
-			iview.setFitWidth(250);
-			iview.setFitWidth(250);
+			iview.setFitWidth(260);
+			iview.setFitWidth(260);
 			iview.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
@@ -64,8 +65,8 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		ImageView iview2 = null;
 		try {
 			iview2 = new ImageView(ResourceLoader.getImage("Multi-Player.jpg"));
-			iview2.setFitWidth(250);
-			iview2.setFitWidth(250);
+			iview2.setFitWidth(260);
+			iview2.setFitWidth(260);
 			iview2.setPreserveRatio(true);
 		} catch (FileNotFoundException e1) {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
@@ -111,9 +112,10 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		grid.add(labelPlay, 0, 2);
 		grid.add(btnSingle, 0, 4);
 		grid.add(btnMulti, 14, 4);
-		grid.add(iview, 0, 8);
-		grid.add(iview2, 14, 8);
-		grid.add(btnTrophy, 24, 11);
+		grid.add(iview, 0, 7);
+		grid.add(iview2, 14, 7);
+		grid.add(btnTrophy, 24, 10);
+		grid.add(labelFun, 0, 10);
 		grid.add(btnExit, 24, 0);
 		
 		// Das Layout Pane einer Scene hinzufügen

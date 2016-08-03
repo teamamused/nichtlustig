@@ -43,29 +43,27 @@ public class RankingView extends AbstractView<RankingModel> {
 
 		// Tabelle erstellen
 		TableView<Ranking> table = new TableView<Ranking>();
+		table.setMinWidth(650);
 		table.setEditable(false);
 		table.setId("tableRanking");
 
 		// Spaltentitel festlegen
 		TableColumn<Ranking, Integer> rank = new TableColumn<Ranking, Integer>("Rang");
 		rank.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("TotalRank"));
-		rank.prefWidthProperty().bind(table.widthProperty().divide(8));
-		rank.setStyle("-fx-alignment: CENTER-RIGHT;");
+		rank.setMinWidth(100);
 
 		TableColumn<Ranking, String> name = new TableColumn<Ranking, String>("Name");
 		name.setCellValueFactory(new PropertyValueFactory<Ranking, String>("Username"));
-		name.prefWidthProperty().bind(table.widthProperty().divide(2));
+		name.setMinWidth(300);
 
 		TableColumn<Ranking, Integer> points = new TableColumn<Ranking, Integer>("Punkte");
 		points.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("Points"));
-		points.prefWidthProperty().bind(table.widthProperty().divide(8));
-		points.setStyle("-fx-alignment: CENTER-RIGHT;");
+		points.setMinWidth(100);
 
 		TableColumn<Ranking, LocalDate> date = new TableColumn<Ranking, LocalDate>("Datum");
-		// date.setCellValueFactory(new PropertyValueFactory<Ranking,
-		// LocalDate>("Points"));
-		date.prefWidthProperty().bind(table.widthProperty().divide(4));
-		date.setStyle("-fx-alignment: CENTER-RIGHT;");
+		date.setCellValueFactory(new PropertyValueFactory<Ranking,
+		LocalDate>("Points"));
+		date.setMinWidth(150);
 
 		table.getColumns().addAll(rank, name, points, date);
 
@@ -105,12 +103,12 @@ public class RankingView extends AbstractView<RankingModel> {
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(50, 50, 50, 50));
+		grid.setPadding(new Insets(30, 50, 50, 50));
 
 		grid.add(labelRanking, 0, 0, 20, 1);
 		grid.add(table, 0, 2);
-		grid.add(btnBack, 41, 0);
-		grid.add(btnExit, 43, 0);
+		grid.add(btnBack, 3, 0);
+		grid.add(btnExit, 4, 0);
 
 		// Das Layout Pane einer Scene hinzufügen
 		Scene scene = new Scene(grid, 900, 600);

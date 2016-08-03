@@ -136,7 +136,7 @@ public class RegisterView extends AbstractView<RegisterModel> {
 	    
 	    StackPane stackRegister = new StackPane();
 	    stackRegister.setPadding(new Insets(0, 0, 0, 0));
-	    stackRegister.setAlignment(Pos.TOP_LEFT);
+	    stackRegister.setAlignment(Pos.TOP_RIGHT);
 	    stackRegister.getChildren().addAll(btnRegister);
 		
 	    VBox vboxLeft = new VBox();

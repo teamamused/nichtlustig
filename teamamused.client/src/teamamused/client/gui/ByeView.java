@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
@@ -42,13 +43,18 @@ public class ByeView extends AbstractView<ByeModel> {
 			ServiceLocator.getInstance().getLogger().severe(e1.toString());
 		}
 		
+		StackPane stackTschuess = new StackPane();
+		stackTschuess.setPadding(new Insets(0, 0, 0, 0));
+		stackTschuess.setAlignment(Pos.TOP_CENTER);
+		stackTschuess.getChildren().addAll(labelTschuess);
+		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(50, 50, 50, 50));
+		grid.setPadding(new Insets(30, 50, 50, 50));
 
-		grid.add(labelTschuess, 0, 0);
+		grid.add(stackTschuess, 0, 0);
 		grid.add(iview, 0, 3);
 
 		// Das Layout Pane einer Scene hinzufügen
