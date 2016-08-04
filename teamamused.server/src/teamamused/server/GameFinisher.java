@@ -28,9 +28,6 @@ import teamamused.common.interfaces.ITargetCard;
 public class GameFinisher {
 	private static GameFinisher instance;
 	private Hashtable<IPlayer, Integer> ranking = new Hashtable<IPlayer, Integer>();
-	private List <IDeadCard> deadCards = new ArrayList<IDeadCard>();
-	private List<ISpecialCard> specialCards = new ArrayList<ISpecialCard>();
-	private List<ITargetCard> targetCards = new ArrayList<ITargetCard>();
 	private List<IPlayer> players;
 	private int valuatedLemmingCards = 0;
 	private int valuatedYetiCards = 0;
@@ -68,24 +65,26 @@ public class GameFinisher {
 		
 		//Liest die Karten der einzelnen Spieler aus
 		for(IPlayer player : players){
+			
+			// Todeskarten zählen, welche auf keiner Zielkarte liegen
 			for(IDeadCard deadCard : player.getDeadCards()){
 				if(!deadCard.getIsOnTargetCard()){
-					deadCards.add(deadCard);
 					singleDeadCards++;
-				}						
+				}					
 			}
-			for(ISpecialCard specialCard : player.getSpecialCards()){
-				specialCards.add(specialCard);
-			}
+			
+			// Karten zählen für Punktevergabe
 			for(ITargetCard targetCard : player.getTargetCards()){
-				targetCards.add(targetCard);
 				
 				//nicht gewertete Karten
 				if(!targetCard.getIsValuated()){
 					notValuatedCards++;
 				}
-				//Lemming-Karte
+				
+				// Zielkarten, welche nicht von einer Todeskarte verdeckt sind
 				else if(!targetCard.getIsCoveredByDead()){
+					
+					//Lemming-Karte
 					if(targetCard.getGameCard().isLemming()){
 						valuatedLemmingCards++;
 					}
@@ -101,18 +100,15 @@ public class GameFinisher {
 					else if(targetCard.getGameCard().isDino()){
 						dinoCardValue += targetCard.getCardValue();
 					}
-					/*Prüft ob ein Spieler eine Professoren-Karte hat{
-					* und erzeugt automatisch eine zufällige Punktzahl von 0-5
-					* für die Karte, welche der Spieler erhält
-					*/	
+					//Professoren-Karte
 					else if(targetCard.getGameCard().isProffessoren()){
 						valuatedProfessorenCards++;
 					}
 				}
-				//Todes-Karten, welche auf keinen Zielkarten liegen
+				// Todes-Karten, welche auf Zielkarten liegen
 				else if(targetCard.getIsCoveredByDead()){
-					//Nichts passiert, da keine Punkte verteilt werden in diesem Fall
-				}else{}
+					// Nichts passiert, da keine Punkte verteilt werden in diesem Fall
+				}
 			}
 			
 			calcPoints(player);
@@ -126,18 +122,6 @@ public class GameFinisher {
 	 * Schliesst das Spiel komplett ab und speichert das Ergebnis in der DB
 	 */
 	public void closeGame(){
-		//Maja: klären: Wie soll ich das Spiel genau abschliessen?
-
-		// Einführung in die Datenspeicherung für Maja, Ausschnit aus der Package-info vom teammamused.common.db:
-		// Es gibt 3 Hautpentitäten zum verwalten:
-		//	  - PlayerInfo
-		//	  - GameInfo
-		//	  - Ranking
-		// Zu jeder Entität wird ein Repository zur Verfügung gestelt. In diesem sind die zentralen Funktionen welche sich auf diese Entitäten beziehen.
-		//
-		// Du kannst in der Datei teamamused.common.teamamused.config den Pfad zur DB Datei festlegen.
-		
-		
 		// Spiel Speichern
 		int gameId = Game.getInstance().getGameID();
 		LocalDateTime spielStart = Game.getInstance().getGameStart();
@@ -145,20 +129,19 @@ public class GameFinisher {
 		// 1. Datenbank Context aus dem ServiceLocator holen
 		IDataBaseContext db = ServiceLocator.getInstance().getDBContext();
 		
-		// 2. GameInfo Objekt erstellen:
+		// GameInfo Objekt erstellen:
 		GameInfo gi = new GameInfo(gameId, spielStart, spielEnde);
 		// Spieler zum GameInfo Objekt hinzufügen
 		for (IPlayer player : this.players) {
 			gi.Players.add(player.getPlayerName());
 		}
-		// 4. in der Datenbank eine GameInfo hinzufügen:
+		// in der Datenbank eine GameInfo hinzufügen
 		db.addGame(gi);
 		
-		// 5. Ranking speichern und den Spielern anzeigen
+		// Ranking speichern und den Spielern anzeigen
 		this.setRanking();
 		
-		// 6. Alle Änderungen an der Datenbank sind bis jetzt nur im Memory
-		//    Um die Daten effektiv zu speichern machst du
+		// Daten effektiv speichern (sonst nur in Memory)
 		db.saveContext();
 	}
 	
@@ -168,9 +151,13 @@ public class GameFinisher {
 	 * @param playerPrePoints Vorpunkte von Professoren-Karte
 	 */
 	private void calcPoints(IPlayer player){
-		playerPoints += valuatedProfessorenCards * (int)(Math.random() * 6.0); //für Professoren-Karten
+		// automatische Punktermittlung für Professoren-Karten
+		int randomNumber = (int)(Math.random() * 6.0);
+		playerPoints += valuatedProfessorenCards * randomNumber;
+		
 		playerPoints += valuatedLemmingCards * 4;
 		
+		// 2 oder mehr Yeti-Karten geben 3 Punkte, sonst nur einen
 		if(valuatedYetiCards > 0){
 			if(valuatedYetiCards > 1){
 				playerPoints += valuatedYetiCards * 3;
@@ -192,9 +179,6 @@ public class GameFinisher {
 	 * Setzt die Zähler vom GameFinisher zurück.
 	 */
 	private void resetCounters(){
-		deadCards.clear();
-		specialCards.clear();
-		targetCards.clear();
 		valuatedLemmingCards = 0;
 		valuatedYetiCards = 0;
 		valuatedRiebmannCards = 0;

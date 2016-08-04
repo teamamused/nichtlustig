@@ -227,12 +227,12 @@ public class BoardManager {
 		ICardHolder newOwner = Game.getInstance().getActivePlayer();
 
 		// Verteilen der Zielkarten
-		for (ITargetCard card : targetCardsToDeploy) {
-			ICardHolder currentOwner = targetCards.get(card);
+		for (ITargetCard targetCard : targetCardsToDeploy) {
+			ICardHolder currentOwner = targetCards.get(targetCard);
 			
-			if (card.getGameCard().isDino() && !currentOwner.equals(newOwner)) {
+			if (targetCard.getGameCard().isDino() && !currentOwner.equals(newOwner)) {
 				// Dinos sind sofort gewertet
-				card.setIsValuated(true);
+				targetCard.setIsValuated(true);
 				// Entfernt die Sonderkarte SK_Zeitmaschine vom Spieler,
 				// wenn die Dino-Karte verteilt wird
 				for (ISpecialCard specialCard : newOwner.getSpecialCards()) {
@@ -243,60 +243,85 @@ public class BoardManager {
 			}
 			
 			if (!currentOwner.equals(newOwner)) {
-				currentOwner.removeTargetCard(card);
-				newOwner.addTargetCard(card);
-				this.targetCards.put(card, newOwner);
-				ClientNotificator.notifyGameMove("Zielkarte " + card + " wurde von Spieler " + currentOwner
+				currentOwner.removeTargetCard(targetCard);
+				newOwner.addTargetCard(targetCard);
+				this.targetCards.put(targetCard, newOwner);
+				ClientNotificator.notifyGameMove("Zielkarte " + targetCard + " wurde von Spieler " + currentOwner
 						+ " zu Spieler " + newOwner + " verschoben.");
 			}
 		}
 
 		// Verteilen der Spezialkarten
-		for (ISpecialCard card : specialCardsToDeploy) {
-			this.switchSpecialcardOwner(card, newOwner);
+		for (ISpecialCard specialCard : specialCardsToDeploy) {
+			this.switchSpecialcardOwner(specialCard, newOwner);
 		}
 
 		// Verteilen der Todeskarten
 		boolean matchDeadCardOnTarget = false;
+		
 		if (deadCardsToDeploy != null) {
-			for (IDeadCard card : deadCardsToDeploy) {
-				ICardHolder currentOwner = deadCards.get(card);
-				if (deadCards.get(card) == currentOwner && newOwner != board) {
-					currentOwner.removeDeadCard(card);
+			for (IDeadCard deathCard : deadCardsToDeploy) {
+				ICardHolder currentOwner = deadCards.get(deathCard);
+				
+				if (newOwner != board) {
+					// Wenn Todeskarte sich bei Mitspieler auf Zielkarte befindet
+					// Verknüpfungen zwischen Todeskarte und Zielkarte Todeskartenbesitzer entfernen
+					if(deathCard.getIsOnTargetCard()){
+						deathCard.setIsOnTargetCard(false);
+						
+						for(ITargetCard targetCardOfCurrentOwner : currentOwner.getTargetCards()){
+							if(targetCardOfCurrentOwner.getIsCoveredByDead()){
+								IPlayer currentPlayer = (IPlayer) currentOwner;
+								if(currentPlayer.getTargetCardUnderDeadCard(deathCard) == targetCardOfCurrentOwner){
+									targetCardOfCurrentOwner.setIsCoveredByDead(false);
+								}
+							}
+						}
+					}
+				
+				
+					currentOwner.removeDeadCard(deathCard);
 					ITargetCard[] targetCardsOfNewOwner = newOwner.getTargetCards();
-
-					// Prüft, ob die Todeskarte auf eine andere Karte
-					// umgedreht
-					// gelegt werden muss
+					
+					//Hashtable für Todeskarten aktualisieren, neuen Spieler zuweisen
+					this.deadCards.remove(deathCard, currentOwner);
+					this.deadCards.put(deathCard, newOwner);
+					
+					ClientNotificator.notifyGameMove("Todeskarte " + deathCard + " wurde von Spieler " + currentOwner
+						+ " zu Spieler " + newOwner + " verschoben.");
+					
+					// Prüft, ob die Todeskarte auf eine andere Karte umgedreht werden muss
+					
+					// Wenn Zielkarten bei aktivem Spieler vorhanden
 					if(targetCardsOfNewOwner.length > 0)
 					{
 						for (ITargetCard targetCard : targetCardsOfNewOwner) {
+							//Wenn keine Zielkarte gefunden, wo die Todeskarte darauf gelegt werden soll
 							if(!matchDeadCardOnTarget){
-								if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino()) {
-									// Todeskarte wird umgedreht auf gewertete Karte
-									// gelegt
-									newOwner.addDeadCard(card, targetCard);
+								if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino() && !targetCard.getIsCoveredByDead()) {
+									// Todeskarte wird umgedreht auf gewertete Karte gelegt
+									newOwner.addDeadCard(deathCard, targetCard);
 									targetCard.setIsCoveredByDead(true);
-									ClientNotificator.notifyGameMove("Todeskarte " + card + " wurde auf Zielkarte " +
+									deathCard.setIsOnTargetCard(true);
+									ClientNotificator.notifyGameMove("Todeskarte " + deathCard + " wurde auf Zielkarte " +
 											targetCard + " gelegt.");
 									matchDeadCardOnTarget = true;
 								} else {
-									// Todeskarte wird normal neben Zielkarten
-									// hingelegt
-									newOwner.addDeadCard(card, null);
+									// Todeskarte wird normal neben Zielkarten hingelegt
+									newOwner.addDeadCard(deathCard, null);
+									ClientNotificator.notifyGameMove("Todeskarte " + deathCard + " wurde neben Zielkarten" +
+									" gelegt.");
 								}
 							}
-
 						}
-					}else{
-						newOwner.addDeadCard(card, null);
 					}
-					
-					this.deadCards.remove(card, currentOwner);
-					this.deadCards.put(card, newOwner);
-
-					ClientNotificator.notifyGameMove("Todeskarte " + card + " wurde von Spieler " + currentOwner
-							+ " zu Spieler " + newOwner + " verschoben.");
+					// Wenn keine Zielkarten bei aktivem Spieler vorhanden
+					else{
+						//Todeskarte wird bei aktivem Spieler neben Zielkarten hingelegt
+						newOwner.addDeadCard(deathCard, null);
+						ClientNotificator.notifyGameMove("Todeskarte " + deathCard + " wurde neben Zielkarten" +
+								" gelegt.");
+					}
 				}
 			}
 		}
