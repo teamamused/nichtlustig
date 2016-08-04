@@ -28,7 +28,7 @@ public class Player implements IPlayer, Serializable {
 	private transient Hashtable<GameCard, ISpecialCard> htSpecialCards;
 	private transient Hashtable<GameCard, ITargetCard> htTargetCards;
 	private transient Hashtable<GameCard, IDeadCard> htDeadCards;
-	private transient Hashtable<IDeadCard, ITargetCard> htDeadOnTargetCards;
+	private transient Hashtable<GameCard, ITargetCard> htDeadOnTargetCards;
 
 	private String playername;
 	private Locale local;
@@ -102,7 +102,7 @@ public class Player implements IPlayer, Serializable {
 		this.htSpecialCards = new Hashtable<GameCard, ISpecialCard>();
 		this.htTargetCards = new Hashtable<GameCard, ITargetCard>();
 		this.htDeadCards = new Hashtable<GameCard, IDeadCard>();
-		this.htDeadOnTargetCards = new Hashtable<IDeadCard, ITargetCard>();
+		this.htDeadOnTargetCards = new Hashtable<GameCard, ITargetCard>();
 	}
 
 	/**
@@ -204,6 +204,11 @@ public class Player implements IPlayer, Serializable {
 	 *      deadCard)
 	 */
 	public IDeadCard removeDeadCard(IDeadCard deadCard) {
+		if (this.htDeadOnTargetCards.containsKey(deadCard.getGameCard())) {
+			ITargetCard toRelease = this.htDeadOnTargetCards.get(deadCard.getGameCard());
+			this.htTargetCards.get(toRelease.getGameCard()).setIsCoveredByDead(false);
+			this.htDeadOnTargetCards.remove(deadCard.getGameCard());
+		}
 		return this.htDeadCards.remove(deadCard.getGameCard());
 	}
 
@@ -216,7 +221,7 @@ public class Player implements IPlayer, Serializable {
 	public void addDeadCard(IDeadCard deadCard, ITargetCard targetCard) {
 		this.htDeadCards.put(deadCard.getGameCard(), deadCard);
 		if (deadCard != null && targetCard != null) {
-			this.htDeadOnTargetCards.put(deadCard, targetCard);
+			this.htDeadOnTargetCards.put(deadCard.getGameCard(), targetCard);
 		}
 	}
 
@@ -228,7 +233,7 @@ public class Player implements IPlayer, Serializable {
 	 */
 	@Override
 	public ITargetCard getTargetCardUnderDeadCard(IDeadCard deadCard) {
-		return this.htDeadOnTargetCards.get(deadCard);
+		return this.htDeadOnTargetCards.get(deadCard.getGameCard());
 	}
 
 	/**
