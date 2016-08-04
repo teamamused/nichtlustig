@@ -1,6 +1,7 @@
 package teamamused.client.libs;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import teamamused.client.connect.ServerConnector;
@@ -9,6 +10,7 @@ import teamamused.common.dtos.TransportObject;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.dtos.TransportableProcedureCall;
 import teamamused.common.dtos.TransportableProcedureCall.RemoteProcedure;
+import teamamused.common.gui.Translator;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.Player;
@@ -83,6 +85,18 @@ public class Client {
 	public void setPlayer(IPlayer player) {
 		this.currPlayer = (Player) player;
 	}
+
+	/**
+	 * setter für Player Sprach und Regions einstellungen
+	 * @param local 
+	 */
+	public void setLocale(Locale local) {
+		ServiceLocator.getInstance().setTranslator(new Translator(local.getLanguage()));
+		if (currPlayer != null) {
+			this.currPlayer.setLocal(local);
+		}
+	}
+
 
 	/**
 	 * getter für Player

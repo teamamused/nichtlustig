@@ -2,6 +2,7 @@ package teamamused.client.gui;
 
 import java.io.FileNotFoundException;
 import java.util.Locale;
+
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,6 +23,8 @@ import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.gui.LangText;
+import teamamused.common.gui.Translator;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für das Log-In dar.
@@ -40,24 +43,32 @@ public class LogInView extends AbstractView<LogInModel> {
 	protected PasswordField password;
 	protected Hyperlink linkReg;
 	protected ChoiceBox<Locale> cbLang;
+	
+	private Label labelCopyright;
+	private Label labelConnect;
+	private Label labelServer;
+	private Label labelPort;
+	private Label labelUser;
+	private Label labelPassword;
+	private Label labelNeu;
+
 
 	public LogInView(Stage stage, LogInModel model) {
 		super(stage, model);
 	}
 
 	protected Scene createGUI() {
-
 		// Labels erstellen
-		Label labelCopyright = new Label("Copyright © 2016, Team amused (FHNW)");
-		labelCopyright.setId("labelCopyright");
-		Label labelConnect = new Label ("Bitte verbinden Sie sich als erstes mit dem Server:");
-		labelConnect.setId("labelConnect");
-		Label labelServer = new Label("Server:");
-		Label labelPort = new Label("Port:");
-		Label labelUser = new Label("Benutzername");
-		Label labelPassword = new Label("Passwort");
-		Label labelNeu = new Label("Neu bei uns?");
+		this.labelCopyright = new Label("Copyright © 2016, Team amused (FHNW)");
+		this.labelConnect = new Label ("Bitte verbinden Sie sich als erstes mit dem Server:");
+		this.labelServer = new Label("Server:");
+		this.labelPort = new Label("Port:");
+		this.labelUser = new Label("Benutzername");
+		this.labelPassword = new Label("Passwort");
+		this.labelNeu = new Label("Neu bei uns?");
 
+		labelCopyright.setId("labelCopyright");
+		labelConnect.setId("labelConnect");
 		// Textfelder erstellen
 		textServer = new TextField();
 		textServer.setPrefWidth(140);
@@ -188,6 +199,18 @@ public class LogInView extends AbstractView<LogInModel> {
 
 	public void stop() {
 		stage.hide();
+	}
+
+	/**
+	 * Aktualisiert die Sprachtexte auf allen GUI elementen
+	 */
+	protected void updateTexts() {
+		// Translator holen
+		Translator tl = ServiceLocator.getInstance().getTranslator();
+		// Texte holen
+		stage.setTitle(tl.getString(LangText.LogInTitel));
+		this.labelCopyright.setText(tl.getString(LangText.LogInCopyright));
+		this.labelConnect.setText(tl.getString(LangText.LogInConnect));
 	}
 
 }

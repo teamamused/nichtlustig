@@ -3,6 +3,7 @@ package teamamused.common.models;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Locale;
 
 import teamamused.common.dtos.BeanPlayer;
 import teamamused.common.dtos.BeanTargetCard;
@@ -30,6 +31,7 @@ public class Player implements IPlayer, Serializable {
 	private transient Hashtable<IDeadCard, ITargetCard> htDeadOnTargetCards;
 
 	private String playername;
+	private Locale local;
 	private int playerNumber = 0;
 
 	public Player() {
@@ -250,6 +252,25 @@ public class Player implements IPlayer, Serializable {
 	}
 
 
+	/**
+	 * Implementierung von:
+	 * 
+	 * @see teamamused.common.interfaces.IPlayer#getLocal()
+	 */
+	@Override
+	public Locale getLocal() {
+		return local;
+	}
+
+	/**
+	 * Implementierung von:
+	 * 
+	 * @see teamamused.common.interfaces.IPlayer#setLocal(Locale local)
+	 */
+	@Override
+	public void setLocal(Locale local) {
+		this.local = local;
+	}
 	@Override
 	public String toString() {
 		return this.playername;

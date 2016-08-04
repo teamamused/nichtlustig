@@ -1,5 +1,7 @@
 package teamamused.common.interfaces;
 
+import java.util.Locale;
+
 /** 
  * Interface für einen Spieler Ein Spieler ist ein Kartenhalter und hat noch
  * zusätzliche Eigenschaften
@@ -37,4 +39,15 @@ public interface IPlayer extends ICardHolder {
 	 * @return Zielkarte oder NULL falls die Todeskarte auf keiner Zielkarte liegt
 	 */
 	ITargetCard getTargetCardUnderDeadCard(IDeadCard deadCard);
+	
+	/**
+	 * Gibt die Sprach und Regionseinstellung des Spielers
+	 * @return local
+	 */
+	Locale getLocal();
+	
+	/**
+	 * Setzt die Sprach und Regionseinstellung für den Spieler
+	 */
+	void setLocal(Locale local);
 }

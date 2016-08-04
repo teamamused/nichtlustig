@@ -17,13 +17,19 @@ import teamamused.common.ServiceLocator;
  */
 // Gemäss Unterlagen aus dem Modul Software Engineering 2 von Bradley Richards
 public class Translator {
+	private final static String CLIENT_RESOURCE = "teamamused.client/Client";
+	
 	protected Locale currentLocale;
 	protected ResourceBundle resourceBundle;
 	protected ServiceLocator serviceLocator = ServiceLocator.getInstance();
 	protected Logger logger = LogHelper.getDefaultLogger();
 
-	// Konstruktor
+	// Konstruktor default mässig für die Client Resourcen
 	public Translator(String localeString) {
+		this(localeString, CLIENT_RESOURCE);
+	}
+	
+	public Translator(String localeString, String resources) {
 		// Can we find the language in our supported locales?
 		// If not, use VM default locale
 		Locale locale = Locale.getDefault();
@@ -39,13 +45,10 @@ public class Translator {
 		}
 
 		Locale.setDefault(locale); // Change VM default (for dialogs, etc.)
-		currentLocale = locale;
+		currentLocale = locale;		
+		// Load the resource strings - Original
+		resourceBundle = ResourceBundle.getBundle(resources,currentLocale);
 		
-		// Load the resource strings
-		// TODO
-//		 resourceBundle = ResourceBundle.getBundle(Main.getClass().getName(),currentLocale);
-
-
 		logger.info("Loaded resources for " + locale.getLanguage());
 	}
 
@@ -53,12 +56,17 @@ public class Translator {
 		return currentLocale;
 	}
 
-	public String getString(String key) {
+	/**
+	 * Public method to get string resources, default to "--" *
+	 * @param text Enum eintrag für die Sprachkonstante
+	 * @return Sprachtext für das aktuelle Locale
+	 */
+	public String getString(LangText text) {
 		try {
-			return resourceBundle.getString(key);
+			return resourceBundle.getString(text.toString());
 		} catch (MissingResourceException e) {
-			System.out.println("Wert fehlt zu: " + key);
-			return "";
+			logger.warning("Missing string: " + text.toString());
+			return "--";
 		}
 	}
 
