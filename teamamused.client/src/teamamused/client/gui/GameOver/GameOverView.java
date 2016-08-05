@@ -130,6 +130,8 @@ public class GameOverView extends AbstractView<GameOverModel> {
 			e.printStackTrace();
 		}
 
+		updateTexts();
+		
 		return scene;
 	}
 

@@ -123,6 +123,8 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		updateTexts();
 
 		return scene;
 

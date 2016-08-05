@@ -89,6 +89,8 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 			e.printStackTrace();
 		}
 
+		updateTexts();
+		
 		return scene;
 	}
 

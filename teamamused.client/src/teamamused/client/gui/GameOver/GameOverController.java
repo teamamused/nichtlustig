@@ -1,8 +1,10 @@
 package teamamused.client.gui.GameOver;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import teamamused.client.Main;
+import teamamused.client.libs.Client;
 import teamamused.common.gui.AbstractController;
 
 /**
@@ -34,10 +36,10 @@ public class GameOverController extends AbstractController<GameOverModel, GameOv
 		});
 		
 		// Der Klick auf das Pokal-Icon führt zur Ranking-Seite
-		view.btnTrophy.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		view.btnTrophy.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(MouseEvent event) {
-//				Main.getInstance().startRanking2();
+			public void handle(ActionEvent event) {
+				Client.getInstance().getRanking();
 			}
 		});
 		

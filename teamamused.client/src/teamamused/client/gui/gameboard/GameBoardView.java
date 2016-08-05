@@ -195,6 +195,8 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			e.printStackTrace();
 		}
 
+		updateTexts();
+		
 		return scene;
 	}
 
@@ -371,8 +373,8 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 * 
 	 */
 	protected void updateTextOnLabelRollDices() {
-		Platform.runLater(() -> labelRollDices.setText("Du darfst noch " + model.remainingDices
-				+ "-mal würfeln. Wähle die Würfel an, welche du setzen möchtest."));
+		String text = ServiceLocator.getInstance().getTranslator().getString(LangText.GameBoardRollDices);
+		Platform.runLater(() -> labelRollDices.setText(String.format(text, model.remainingDices)));
 	}
 
 	/**
@@ -392,6 +394,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		this.labelBestaetigen.setText(tl.getString(LangText.GameBoardBestaetigen));
 		this.btnWuerfeln.setText(tl.getString(LangText.GameBoardBtnWuerfeln));
 		this.btnBestaetigen.setText(tl.getString(LangText.GameBoardBtnBestaetigen));
-		this.labelRollDices.setText(tl.getString(LangText.GameBoardRollDices));
+//		this.labelRollDices.setText(tl.getString(LangText.GameBoardRollDices));
 	}
 }
