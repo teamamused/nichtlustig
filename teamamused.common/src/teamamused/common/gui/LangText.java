@@ -1,7 +1,5 @@
 package teamamused.common.gui;
 
-import javafx.scene.control.Label;
-
 /**
  * Enumeration mit den Sprachresourcen
  * Um nicht überall die Schreibfehler anfälligen Einstellungs konstanten verwenden zu müssen, wurde diese Enumeratione eingefügt.
@@ -54,9 +52,7 @@ public enum LangText {
 	GameBoardBtnSenden ("gameBoard.btnSenden"),
 	GameBoardChatTooltip ("gameBoard.chatInputTool"),
 	GameBoardSelectedDices ("gameBoard.labelSelectedDices"),
-	GameBoardBestaetigen ("gameBoard.labelBestaetigen"),
 	GameBoardBtnWuerfeln ("gameBoard.btnWuerfeln"),
-	GameBoardBtnBestaetigen ("gameBoard.btnBestaetigen"),
 	GameBoardRollDices ("gameBoard.labelRollDices"),
 	
 	// CardPopup View
