@@ -74,7 +74,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		Scene scene = new Scene(root, 1500, 1000);
 
 		// Instanziierung und Zuweisung der Controlls zur Haupt-Pane
-		labelSpielfeld = new Label("Spielfeld von " + model.player.getPlayerName());
+		labelSpielfeld = new Label(String.format("Spielfeld von Spieler %s", model.player.getPlayerName()));
 		labelSpielfeld.setId("labelSpielfeld");
 		labelSpielfeld.setAlignment(Pos.CENTER_RIGHT);
 		url = "http://www.kosmos.de/_files_media/mediathek/downloads/anleitungen/1351/nicht_lustig.pdf";
@@ -101,7 +101,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		titlePane = new HBox();
 		titlePane.getChildren().addAll(labelSpielfeld, btnLink);
-		titlePane.setSpacing(700);
+		titlePane.setSpacing(600);
 		titlePane.setPadding(new Insets(10, 10, 10, 10));
 
 		root.add(titlePane, 1, 0);
@@ -369,7 +369,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	/**
 	 * Setzt dem Label den Text neu, damit die Anzahl übrige Würfelversuche
-	 * immer aktuell ist.
+	 * aktuell angezeigt wird.
 	 * 
 	 */
 	protected void updateTextOnLabelRollDices() {
@@ -387,7 +387,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		// Texte holen
 		stage.setTitle(tl.getString(LangText.GameBoardTitle));
-		this.labelSpielfeld.setText(tl.getString(LangText.GameBoardSpielfeld));
+		this.labelSpielfeld.setText(String.format(tl.getString(LangText.GameBoardSpielfeld), model.player.getPlayerName()));
 		this.btnSenden.setText(tl.getString(LangText.GameBoardBtnSenden));
 //		this.chatInputTool.setText(tl.getString(LangText.GameBoardChatTooltip));
 		this.labelSelectedDices.setText(tl.getString(LangText.GameBoardSelectedDices));

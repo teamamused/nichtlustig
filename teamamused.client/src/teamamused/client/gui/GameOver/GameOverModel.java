@@ -4,7 +4,8 @@ import teamamused.common.db.Ranking;
 import teamamused.common.gui.AbstractModel;
 
 public class GameOverModel extends AbstractModel {
-	Ranking[] ranking;
+	protected Ranking[] ranking;
+	protected Ranking winner;
     
     /**
      * Konstruktor, initial Daten von Client holen
@@ -12,5 +13,7 @@ public class GameOverModel extends AbstractModel {
     public GameOverModel(Ranking[] ranking) {
     	super();
     	this.ranking = ranking;
+    	
+    	winner = ranking[0];
     }
 }

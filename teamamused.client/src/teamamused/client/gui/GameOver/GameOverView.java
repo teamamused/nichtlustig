@@ -73,7 +73,7 @@ public class GameOverView extends AbstractView<GameOverModel> {
 		// Definition der Pane für den Text inkl. Instanziierung und Zuweisung
 		// des Controlls
 		txtPane = new HBox();
-		labelWinner = new Label("Herzliche Gratulation: Spieler " + "Nr" + " gewinnt!");
+		labelWinner = new Label(String.format("Herzliche Gratulation: Spieler %s gewinnt!", model.winner.getUsername()));
 		txtPane.getChildren().add(labelWinner);
 
 		// Definition der Button-Pane inkl. Instanziierung und Zuweisung der

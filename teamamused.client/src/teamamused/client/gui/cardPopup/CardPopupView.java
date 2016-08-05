@@ -35,7 +35,8 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 	protected VBox titlePane;
 	protected HBox cardTxtPane, specialCardTxtPane, deathCardTxtPane, buttonPane;
 	protected FlowPane cardFlowPane, specialCardFlowPane, deathCardFlowPane;
-	protected Label labelTitle, labelText, cardsRival, specialCardsRival, deathCardsRival, noCardsRival, noSpecialCardsRival, noDeathCardsRival;
+	protected Label labelTitle, labelText, cardsRival, specialCardsRival, deathCardsRival, noCardsRival,
+			noSpecialCardsRival, noDeathCardsRival;
 	protected Button btnClose;
 	protected ImageView playerTargetCardView, playerSpecialCardView, playerDeathCardView;
 	protected ScrollPane scrollPane;
@@ -62,8 +63,8 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		// Definition der Titel-Pane inkl. Instanziierung und Zuweisung der
 		// Controlls
 		titlePane = new VBox();
-		labelTitle = new Label("Karten von Spieler " + this.model.getPlayer().getPlayerNumber() + ": "
-				+ this.model.getPlayer().getPlayerName());
+		labelTitle = new Label(String.format("Karten von Spieler %d: %s", this.model.getPlayer().getPlayerNumber(),
+				this.model.getPlayer().getPlayerName()));
 		labelText = new Label("Bereits gewertete Karten sind umgedreht.");
 		labelTitle.setId("labelTitle");
 		labelText.setId("subtitle");
@@ -110,7 +111,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		specialCardFlowPane = new FlowPane();
 		specialCardFlowPane.setHgap(10);
 		specialCardFlowPane.setVgap(10);
-		
+
 		if (this.model.getPlayer() != null) {
 			for (ISpecialCard card : model.getPlayer().getSpecialCards()) {
 				playerSpecialCardView = getImageView(card.getForegroundImage());
@@ -121,7 +122,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 				specialCardFlowPane.getChildren().add(noSpecialCardsRival);
 			}
 		}
-		
+
 		// Definition der Pane für den Text zu den Spezialkarten inkl.
 		// Instanziierung und Zuweisung der Controlls
 		deathCardTxtPane = new HBox();
@@ -134,7 +135,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		deathCardFlowPane = new FlowPane();
 		deathCardFlowPane.setHgap(10);
 		deathCardFlowPane.setVgap(10);
-		
+
 		if (this.model.getPlayer() != null) {
 			for (IDeadCard card : model.getPlayer().getDeadCards()) {
 				playerDeathCardView = getImageView(card.getForegroundImage());
@@ -145,7 +146,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 				deathCardFlowPane.getChildren().add(noDeathCardsRival);
 			}
 		}
-		
+
 		// Definition der Pane für die Buttons inkl.
 		// Instanziierung und Zuweisung des Controlls
 		buttonPane = new HBox();
@@ -169,9 +170,9 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		updateTexts();
-		
+
 		return scene;
 	}
 
@@ -219,7 +220,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 	public void stop() {
 		stage.hide();
 	}
-	
+
 	protected void updateTexts() {
 
 		// Translator holen
