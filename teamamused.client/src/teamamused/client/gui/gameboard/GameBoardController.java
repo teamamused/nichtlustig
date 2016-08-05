@@ -78,15 +78,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 		});
 
-		// Sendet die gewürfelten Würfelwerte an den Server
-		view.btnBestaetigen.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Senden der Werte an Server
-			}
-
-		});
-
 		// Sendet die eingegebene Nachricht an den Server
 		view.btnSenden.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -248,15 +239,12 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	private void allowedToDice() {
 		if (model.playerIsActive && model.remainingDices > 0) {
 			view.btnWuerfeln.setDisable(false);
-			view.btnBestaetigen.setDisable(true);
 			allowedToMoveDown = true;
 		} else if (model.playerIsActive && model.remainingDices <= 0) {
 			view.btnWuerfeln.setDisable(true);
-			view.btnBestaetigen.setDisable(false);
 			allowedToMoveDown = true;
 		} else {
 			view.btnWuerfeln.setDisable(true);
-			view.btnBestaetigen.setDisable(true);
 			allowedToMoveDown = false;
 		}
 	}
@@ -279,11 +267,13 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 
 	}
 	
-	// TODO -> Lösen über MovingPopup oder über GameBoardView
+	/**
+	 * Gibt auf dem TextArea die Spielzüge aus.
+	 */
 	@Override
 	public void onNewGameMove(String move) {
-//		Platform.runLater(() -> {
-//			view.txtGameMove.appendText(move + "\n");
-//		});
+		Platform.runLater(() -> {
+			view.txtGameMove.appendText(move + "\n");
+		});
 	}
 }

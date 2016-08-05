@@ -45,15 +45,15 @@ import teamamused.common.interfaces.ITargetCard;
 public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	protected GridPane root, cardPane, dicePane, targetCardsPane, specialCardsPane, deadCardsPane;
-	protected VBox navigation, playerPane;
-	protected HBox titlePane;
+	protected VBox navigation, playerPane, movingPane;
+	protected HBox titlePane, containerPane;
 	protected ImageView logo, linkIcon, exitIcon;
 	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
-	protected Button btnPlayer, btnWuerfeln, btnBestaetigen, btnLink, btnExit, btnSenden;
+	protected Button btnPlayer, btnWuerfeln, btnLink, btnExit, btnSenden;
 	protected TextArea txtChatInput, txtChatScreen, txtGameMove;
-	protected ScrollPane scrollTxt, scrollPane;
-	protected Label labelSpielfeld, labelRollDices, labelSelectedDices, labelBestaetigen;
+	protected ScrollPane scrollTxt, scrollPane, scrollMoving;
+	protected Label labelSpielfeld, labelRollDices, labelSelectedDices;
 	protected String url;
 	protected DiceControl[] diceControlArray;
 	protected List<Button> btnArray;
@@ -149,7 +149,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		cardPane.add(targetCardsPane, 1, 0);
 		cardPane.add(deadCardsPane, 2, 0);
 		buildCards();
-
+		
 		// Definition der Pane für den Würfel-Bereich
 		dicePane = GameBoardView.initializeGridPane();
 
@@ -158,21 +158,30 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		updateTextOnLabelRollDices();
 
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
-		labelBestaetigen = new Label("Schliesse deinen Zug mit \"bestätigen\" ab.");
-
 		btnWuerfeln = GameBoardView.initializeButton("würfeln");
-		btnBestaetigen = GameBoardView.initializeButton("bestätigen");
+		btnWuerfeln.setPrefSize(100, 40);
 
-		dicePane.add(labelRollDices, 0, 0, 9, 1);
+		dicePane.add(labelRollDices, 0, 0, 10, 1);
 		dicePane.add(btnWuerfeln, 10, 1);
 		dicePane.add(labelSelectedDices, 0, 3, 9, 1);
-		dicePane.add(labelBestaetigen, 0, 14, 9, 1);
-		dicePane.add(btnBestaetigen, 10, 14);
-
+		
+		// Instanziierung und Zuordnung des Controlls zur "movingPane"
+		movingPane = new VBox();
+		txtGameMove = new TextArea();
+		txtGameMove.setEditable(false);
+		ScrollPane scrollMoving = new ScrollPane();
+		scrollMoving.setContent(txtGameMove);
+		movingPane.getChildren().add(txtGameMove);
+		txtGameMove.setPrefWidth(500);
+		
+		// Die Container-Pane dient als Behälter für ihre Sub-Panes
+		containerPane = new HBox();
+		containerPane.getChildren().addAll(movingPane, dicePane);
+		
 		// Zuordnung der Sub-Panes zur Haupt-Pane "root"
 		root.add(navigation, 0, 0, 1, 10);
 		root.add(cardPane, 1, 1);
-		root.add(dicePane, 1, 2);
+		root.add(containerPane, 1, 2);
 
 		// Auf der ObserverList wird ein ListChangeListener registriert, welcher
 		// immer, wenn etwas der Liste hinzugefügt wird, dieses auf dem Screen
@@ -391,9 +400,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		this.btnSenden.setText(tl.getString(LangText.GameBoardBtnSenden));
 //		this.chatInputTool.setText(tl.getString(LangText.GameBoardChatTooltip));
 		this.labelSelectedDices.setText(tl.getString(LangText.GameBoardSelectedDices));
-		this.labelBestaetigen.setText(tl.getString(LangText.GameBoardBestaetigen));
 		this.btnWuerfeln.setText(tl.getString(LangText.GameBoardBtnWuerfeln));
-		this.btnBestaetigen.setText(tl.getString(LangText.GameBoardBtnBestaetigen));
-//		this.labelRollDices.setText(tl.getString(LangText.GameBoardRollDices));
 	}
 }
