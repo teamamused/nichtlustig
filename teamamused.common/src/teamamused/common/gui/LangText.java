@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 /**
  * Enumeration mit den Sprachresourcen
  * Um nicht überall die Schreibfehler anfälligen Einstellungs konstanten verwenden zu müssen, wurde diese Enumeratione eingefügt.
- * Sie dient als Verzeich sämtlicher im Programm vorhanden Sprachtexte
+ * Sie dient als Verzeichnis sämtlicher im Programm vorhanden Sprachtexte
  * 
  * @author Daniel
  */
@@ -46,7 +46,18 @@ public enum LangText {
 	
 	// Bye View
 	ByeTitel ("bye.titel"),
-	ByeText ("bye.labelTschuess");
+	ByeText ("bye.labelTschuess"),
+	
+	// GameBoard View
+	GameBoardTitle ("gameBoard.title"),
+	GameBoardSpielfeld ("gameBoard.labelSpielfeld"),
+	GameBoardBtnSenden ("gameBoard.btnSenden"),
+	GameBoardChatTooltip ("gameBoard.chatInputTool"),
+	GameBoardSelectedDices ("gameBoard.labelSelectedDices"),
+	GameBoardBestaetigen ("gameBoard.labelBestaetigen"),
+	GameBoardBtnWuerfeln ("gameBoard.btnWuerfeln"),
+	GameBoardBtnBestaetigen ("gameBoard.btnBestaetigen"),
+	GameBoardRollDices ("gameBoard.labelRollDices");
 	
 	String resourceName;
 	

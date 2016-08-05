@@ -26,7 +26,10 @@ import javafx.stage.Stage;
 import teamamused.client.libs.Client;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
+import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.gui.LangText;
+import teamamused.common.gui.Translator;
 import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IDeadCard;
 import teamamused.common.interfaces.IPlayer;
@@ -153,7 +156,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		// Instanziierung und Zuordnung der Controlls zur "dicePane"
 		labelRollDices = new Label();
 		updateTextOnLabelRollDices();
-		
+
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
 		labelBestaetigen = new Label("Schliesse deinen Zug mit \"bestätigen\" ab.");
 
@@ -321,8 +324,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		}
 		if (model.gameBoard != null) {
 			for (IPlayer player : model.gameBoard.getPlayers()) {
-				btnPlayer = GameBoardView
-						.initializeButton(player.getPlayerNumber() + ". " + player.getPlayerName());
+				btnPlayer = GameBoardView.initializeButton(player.getPlayerNumber() + ". " + player.getPlayerName());
 				// Player wird mit setUserData() an Button "gebunden", um diesen
 				// im Controller auszulesen
 				btnPlayer.setUserData(player);
@@ -362,12 +364,34 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 			}
 		}
 	}
-	
+
 	/**
-	 * Setzt dem Label den Text neu, damit die Anzahl übrige Würfelversuche immer aktuell ist.
+	 * Setzt dem Label den Text neu, damit die Anzahl übrige Würfelversuche
+	 * immer aktuell ist.
 	 * 
 	 */
 	protected void updateTextOnLabelRollDices() {
-		Platform.runLater(() -> labelRollDices.setText("Du darfst noch " + model.remainingDices + "-mal würfeln. Wähle die Würfel an, welche du setzen möchtest."));
+		Platform.runLater(() -> labelRollDices.setText("Du darfst noch " + model.remainingDices
+				+ "-mal würfeln. Wähle die Würfel an, welche du setzen möchtest."));
+	}
+
+	/**
+	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
+	 */
+	protected void updateTexts() {
+
+		// Translator holen
+		Translator tl = ServiceLocator.getInstance().getTranslator();
+
+		// Texte holen
+		stage.setTitle(tl.getString(LangText.GameBoardTitle));
+		this.labelSpielfeld.setText(tl.getString(LangText.GameBoardSpielfeld));
+		this.btnSenden.setText(tl.getString(LangText.GameBoardBtnSenden));
+//		this.chatInputTool.setText(tl.getString(LangText.GameBoardChatTooltip));
+		this.labelSelectedDices.setText(tl.getString(LangText.GameBoardSelectedDices));
+		this.labelBestaetigen.setText(tl.getString(LangText.GameBoardBestaetigen));
+		this.btnWuerfeln.setText(tl.getString(LangText.GameBoardBtnWuerfeln));
+		this.btnBestaetigen.setText(tl.getString(LangText.GameBoardBtnBestaetigen));
+		this.labelRollDices.setText(tl.getString(LangText.GameBoardRollDices));
 	}
 }
