@@ -200,8 +200,10 @@ public class RegisterView extends AbstractView<RegisterModel> {
 	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
 	 */
 	protected void updateTexts() {
+		
 		// Translator holen
 		Translator tl = ServiceLocator.getInstance().getTranslator();
+		
 		// Texte holen
 		stage.setTitle(tl.getString(LangText.RegisterTitel));
 		this.labelRegister.setText(tl.getString(LangText.RegisterHello));

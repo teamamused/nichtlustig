@@ -70,6 +70,7 @@ public class LogInView extends AbstractView<LogInModel> {
 
 		labelCopyright.setId("labelCopyright");
 		labelConnect.setId("labelConnect");
+		
 		// Textfelder erstellen
 		textServer = new TextField();
 		textServer.setPrefWidth(140);
@@ -206,12 +207,19 @@ public class LogInView extends AbstractView<LogInModel> {
 	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
 	 */
 	protected void updateTexts() {
+		
 		// Translator holen
 		Translator tl = ServiceLocator.getInstance().getTranslator();
+		
 		// Texte holen
 		stage.setTitle(tl.getString(LangText.LogInTitel));
 		this.labelCopyright.setText(tl.getString(LangText.LogInCopyright));
 		this.labelConnect.setText(tl.getString(LangText.LogInConnect));
+		this.labelServer.setText(tl.getString(LangText.LogInServer));
+		this.labelPort.setText(tl.getString(LangText.LogInPort));
+		this.labelUser.setText(tl.getString(LangText.LogInUser));
+		this.labelPassword.setText(tl.getString(LangText.LogInPassword));
+		this.labelNeu.setText(tl.getString(LangText.LogInNeu));
 	}
 
 }

@@ -18,6 +18,11 @@ public enum LangText {
 	LogInTitel ("login.titel"),
 	LogInCopyright ("login.labelCopyright"),
 	LogInConnect ("login.labelConnect"),
+	LogInServer ("login.labelServer"),
+	LogInPort ("login.labelPort"),
+	LogInUser ("login.labelUser"),
+	LogInPassword ("login.labelPassword"),
+	LogInNeu ("login.labelNeu"),
 	
 	// Register View
 	RegisterTitel ("register.titel"),
