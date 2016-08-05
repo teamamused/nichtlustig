@@ -23,6 +23,7 @@ public enum LangText {
 	LogInUser ("login.labelUser"),
 	LogInPassword ("login.labelPassword"),
 	LogInNeu ("login.labelNeu"),
+	LogInButtonServer ("login.btnConnectServer"),
 	
 	// Register View
 	RegisterTitel ("register.titel"),
