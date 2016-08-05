@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -75,8 +76,8 @@ public class ServerView extends AbstractView<ServerModel> {
 		labelProtocol = new Label("Protokoll:");
 		labelTeam = new Label("Team Amused: IT-Projekt an der FHNW, 2016");
 		VBox buttons = new VBox(5);
-		restartButton = new Button("Server neustarten");
-		deployCardsButton = new Button("Spiel vorantreiben");
+		restartButton = initializeButton("Server neustarten");
+		deployCardsButton = initializeButton("Spiel vorantreiben");
 		buttons.getChildren().addAll(restartButton, deployCardsButton);
 		scrollTxt = new ScrollPane();
 //		language = new ChoiceBox<String>();
@@ -147,4 +148,19 @@ public class ServerView extends AbstractView<ServerModel> {
 		}
 		return null;
     }
+	
+	/**
+	 * Die Support-Methode instanziiert einen Button und gibt diesen formatiert
+	 * zurück (Wiederverwendbarkeit von Code)
+	 * 
+	 * @param buttonText
+	 *            Bezeichnung des Buttons als String
+	 * @return formatiertes Button-Objekt
+	 */
+	private static Button initializeButton(String buttonText) {
+		Button btn = new Button(buttonText);
+		btn.setPrefSize(200, 40);
+		btn.setAlignment(Pos.CENTER);
+		return btn;
+	}
 }
