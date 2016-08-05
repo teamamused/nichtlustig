@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -47,7 +48,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
 	protected Button btnPlayer, btnWuerfeln, btnBestaetigen, btnLink, btnExit, btnSenden;
-	protected TextArea txtChatInput, txtChatScreen;
+	protected TextArea txtChatInput, txtChatScreen, txtGameMove;
 	protected ScrollPane scrollTxt, scrollPane;
 	protected Label labelSpielfeld, labelRollDices, labelSelectedDices, labelBestaetigen;
 	protected String url;
@@ -150,8 +151,9 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		dicePane = GameBoardView.initializeGridPane();
 
 		// Instanziierung und Zuordnung der Controlls zur "dicePane"
-		labelRollDices = new Label(
-				"Du darfst noch " + model.remainingDices+ "mal würfeln. Wähle die Würfel an, welche du setzen möchtest.");
+		labelRollDices = new Label();
+		updateTextOnLabelRollDices();
+		
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
 		labelBestaetigen = new Label("Schliesse deinen Zug mit \"bestätigen\" ab.");
 
@@ -359,5 +361,13 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 				dicePane.add(diceControl, cubes[i].getCubeNumber(), 1);
 			}
 		}
+	}
+	
+	/**
+	 * Setzt dem Label den Text neu, damit die Anzahl übrige Würfelversuche immer aktuell ist.
+	 * 
+	 */
+	protected void updateTextOnLabelRollDices() {
+		Platform.runLater(() -> labelRollDices.setText("Du darfst noch " + model.remainingDices + "-mal würfeln. Wähle die Würfel an, welche du setzen möchtest."));
 	}
 }

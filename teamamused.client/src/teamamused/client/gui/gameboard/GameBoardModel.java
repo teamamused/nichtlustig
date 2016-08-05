@@ -47,7 +47,7 @@ public class GameBoardModel extends AbstractModel {
 	boolean specialCardsNeedsUpdate = true, targetCardsNeedsUpdate = true, deadCardsNeedsUpdate =true;
 	
 	// Gibt an, wie oft der Spieler noch würfeln darf
-    int remainingDices;
+    int remainingDices = 0;
     
     // Speichert, ob der Spieler aktiv ist oder nicht
     boolean playerIsActive;

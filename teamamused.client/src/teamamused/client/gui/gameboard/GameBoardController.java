@@ -224,6 +224,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onNumberOfRemeiningDicingChanged(int remDices) {
 		model.remainingDices = remDices;
+		view.updateTextOnLabelRollDices();
 		allowedToDice();
 	}
 
@@ -276,5 +277,13 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			gameOverView.start();
 		});
 
+	}
+	
+	// TODO -> Lösen über MovingPopup oder über GameBoardView
+	@Override
+	public void onNewGameMove(String move) {
+//		Platform.runLater(() -> {
+//			view.txtGameMove.appendText(move + "\n");
+//		});
 	}
 }
