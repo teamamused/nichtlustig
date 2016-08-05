@@ -57,7 +57,19 @@ public enum LangText {
 	GameBoardBestaetigen ("gameBoard.labelBestaetigen"),
 	GameBoardBtnWuerfeln ("gameBoard.btnWuerfeln"),
 	GameBoardBtnBestaetigen ("gameBoard.btnBestaetigen"),
-	GameBoardRollDices ("gameBoard.labelRollDices");
+	GameBoardRollDices ("gameBoard.labelRollDices"),
+	
+	// CardPopup View
+	CardPopupTitle ("cardPopup.title"),
+	CardPopupCardsOf ("gameBoard.labelTitle"),
+	CardPopupValued ("gameBoard.labelText"),
+	CardPopupTarget ("gameBoard.cardsRival"),
+	CardPopupNoTarget ("gameBoard.noCardsRival"),
+	CardPopupSpecial("gameBoard.specialCardsRival"),
+	CardPopupNoSpecial ("gameBoard.noSpecialCardsRival"),
+	CardPopupDeath ("gameBoard.deathCardsRival"),
+	CardPopupNoDeath ("gameBoard.noDeathCardsRival"),
+	CardPopupBtnClose ("gameBoard.btnClose");
 	
 	String resourceName;
 	

@@ -14,7 +14,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.client.gui.gameboard.GameBoardModel;
+import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.gui.LangText;
+import teamamused.common.gui.Translator;
 import teamamused.common.interfaces.IDeadCard;
 import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
@@ -32,7 +35,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 	protected VBox titlePane;
 	protected HBox cardTxtPane, specialCardTxtPane, deathCardTxtPane, buttonPane;
 	protected FlowPane cardFlowPane, specialCardFlowPane, deathCardFlowPane;
-	protected Label labelTitle, labelText, cardsRival, specialCardsRival, deathCardsRival;
+	protected Label labelTitle, labelText, cardsRival, specialCardsRival, deathCardsRival, noCardsRival, noSpecialCardsRival, noDeathCardsRival;
 	protected Button btnClose;
 	protected ImageView playerTargetCardView, playerSpecialCardView, playerDeathCardView;
 	protected ScrollPane scrollPane;
@@ -90,7 +93,8 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 				cardFlowPane.getChildren().add(playerTargetCardView);
 			}
 			if (cardFlowPane.getChildren().size() == 0) {
-				cardFlowPane.getChildren().add(new Label("Der Spieler hat keine Zielkarten"));
+				noCardsRival = new Label("Der Spieler hat keine Zielkarten");
+				cardFlowPane.getChildren().add(noCardsRival);
 			}
 		}
 
@@ -113,7 +117,8 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 				specialCardFlowPane.getChildren().add(playerSpecialCardView);
 			}
 			if (specialCardFlowPane.getChildren().size() == 0) {
-				specialCardFlowPane.getChildren().add(new Label("Der Spieler hat keine Spezialkarten"));
+				noSpecialCardsRival = new Label("Der Spieler hat keine Spezialkarten");
+				specialCardFlowPane.getChildren().add(noSpecialCardsRival);
 			}
 		}
 		
@@ -136,7 +141,8 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 				deathCardFlowPane.getChildren().add(playerDeathCardView);
 			}
 			if (deathCardFlowPane.getChildren().size() == 0) {
-				deathCardFlowPane.getChildren().add(new Label("Der Spieler hat keine Todeskarten"));
+				noDeathCardsRival = new Label("Der Spieler hat keine Todeskarten");
+				deathCardFlowPane.getChildren().add(noDeathCardsRival);
 			}
 		}
 		
@@ -209,6 +215,24 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 
 	public void stop() {
 		stage.hide();
+	}
+	
+	protected void updateTexts() {
+
+		// Translator holen
+		Translator tl = ServiceLocator.getInstance().getTranslator();
+
+		// Texte holen
+		stage.setTitle(tl.getString(LangText.CardPopupTitle));
+		this.labelTitle.setText(tl.getString(LangText.CardPopupCardsOf));
+		this.labelText.setText(tl.getString(LangText.CardPopupValued));
+		this.cardsRival.setText(tl.getString(LangText.CardPopupTarget));
+		this.noCardsRival.setText(tl.getString(LangText.CardPopupNoTarget));
+		this.specialCardsRival.setText(tl.getString(LangText.CardPopupSpecial));
+		this.noSpecialCardsRival.setText(tl.getString(LangText.CardPopupNoSpecial));
+		this.deathCardsRival.setText(tl.getString(LangText.CardPopupDeath));
+		this.noDeathCardsRival.setText(tl.getString(LangText.CardPopupNoDeath));
+		this.btnClose.setText(tl.getString(LangText.CardPopupBtnClose));
 	}
 
 }
