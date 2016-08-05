@@ -194,7 +194,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 	 */
 	private ImageView getImageView(Image image) {
 		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(100);
+		imageView.setFitHeight(120);
 		imageView.setPreserveRatio(true);
 		return imageView;
 	}
