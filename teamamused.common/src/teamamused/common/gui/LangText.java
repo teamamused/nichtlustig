@@ -33,9 +33,19 @@ public enum LangText {
 	RegisterPassword ("register.labelRegPassword"),
 	RegisterPassword2 ("register.labelRegPassword2"),
 	
+	// Welcome View
+	WelcomeTitel ("welcome.titel"),
+	WelcomeText ("welcome.labelWelcome"),
+	WelcomePlay ("welcome.labelPlay"),
+	WelcomeFun ("welcome.labelFun"),
+	
 	// Ranking View
 	RankingTitel ("ranking.titel"),
-	RankingText ("ranking.labelRanking");
+	RankingText ("ranking.labelRanking"),
+	
+	// Bye View
+	ByeTitel ("bye.titel"),
+	ByeText ("bye.labelTschuess");
 	
 	String resourceName;
 	

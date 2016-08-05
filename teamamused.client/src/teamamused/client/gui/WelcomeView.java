@@ -14,6 +14,8 @@ import teamamused.client.libs.Client;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.gui.LangText;
+import teamamused.common.gui.Translator;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für die Willkommensseite dar.
@@ -28,6 +30,10 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 	protected Button btnMulti;
 	protected Button btnTrophy;
 	protected Button btnExit;
+	
+	private Label labelWelcome;
+	private Label labelPlay;
+	private Label labelFun;
 
 	public WelcomeView(Stage stage, WelcomeModel model) {
 		super(stage, model);
@@ -38,10 +44,11 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 	protected Scene createGUI() {
 
 		// Labels erstellen
-		Label labelWelcome = new Label("Herzlich Willkommen " + Client.getInstance().getPlayer().getPlayerName());
+		this.labelWelcome = new Label("Herzlich Willkommen " + Client.getInstance().getPlayer().getPlayerName());
+		this.labelPlay = new Label("Was möchtest du spielen?");
+		this.labelFun = new Label("Wir wünschen dir viel Spass!");
+		
 		labelWelcome.setId("labelWelcome");
-		Label labelPlay = new Label("Was möchtest du spielen?");
-		Label labelFun = new Label("Wir wünschen dir viel Spass!");
 		
 		// Single-Player-Button erstellen und auf disable stellen
 		btnSingle = new Button();
@@ -128,6 +135,22 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		
 		return scene;
+	}
+	
+	/**
+	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
+	 */
+	protected void updateTexts() {
+		
+		// Translator holen
+		Translator tl = ServiceLocator.getInstance().getTranslator();
+		
+		// Texte holen
+		stage.setTitle(tl.getString(LangText.WelcomeTitel));
+		this.labelWelcome.setText(tl.getString(LangText.WelcomeText));
+		this.labelPlay.setText(tl.getString(LangText.WelcomePlay));
+		this.labelFun.setText(tl.getString(LangText.WelcomeFun));
+
 	}
 
 }

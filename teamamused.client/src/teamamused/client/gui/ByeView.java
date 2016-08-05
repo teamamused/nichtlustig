@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.gui.LangText;
+import teamamused.common.gui.Translator;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für die Tschüss-Seite dar.
@@ -22,6 +24,8 @@ import teamamused.common.gui.AbstractView;
  */
 
 public class ByeView extends AbstractView<ByeModel> {
+	
+	private Label labelTschuess;
 
 	public ByeView(Stage stage, ByeModel model) {
 		super(stage, model);
@@ -30,7 +34,8 @@ public class ByeView extends AbstractView<ByeModel> {
 	protected Scene createGUI() {
 
 		// Label erstellen
-		Label labelTschuess = new Label("Tschüss und auf Wiedersehen");
+		this.labelTschuess = new Label("Tschüss und auf Wiedersehen");
+		
 		labelTschuess.setId("labelTschuess");
 		
 		ImageView iview = null;
@@ -75,6 +80,20 @@ public class ByeView extends AbstractView<ByeModel> {
 
 	public void stop() {
 		stage.hide();
+	}
+	
+	/**
+	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
+	 */
+	protected void updateTexts() {
+		
+		// Translator holen
+		Translator tl = ServiceLocator.getInstance().getTranslator();
+		
+		// Texte holen
+		stage.setTitle(tl.getString(LangText.ByeTitel));
+		this.labelTschuess.setText(tl.getString(LangText.ByeText));
+
 	}
 
 }
