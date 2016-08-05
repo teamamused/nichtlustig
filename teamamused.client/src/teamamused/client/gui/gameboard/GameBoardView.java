@@ -151,7 +151,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		// Instanziierung und Zuordnung der Controlls zur "dicePane"
 		labelRollDices = new Label(
-				"Du darfst insgesamt dreimal würfeln. Wähle die Würfel an, welche du setzen möchtest.");
+				"Du darfst noch " + model.remainingDices+ "mal würfeln. Wähle die Würfel an, welche du setzen möchtest.");
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
 		labelBestaetigen = new Label("Schliesse deinen Zug mit \"bestätigen\" ab.");
 

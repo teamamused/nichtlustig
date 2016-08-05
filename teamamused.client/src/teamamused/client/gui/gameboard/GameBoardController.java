@@ -13,12 +13,16 @@ import teamamused.client.Main;
 import teamamused.client.gui.ChooseCards.ChooseCardsController;
 import teamamused.client.gui.ChooseCards.ChooseCardsModel;
 import teamamused.client.gui.ChooseCards.ChooseCardsView;
+import teamamused.client.gui.GameOver.GameOverController;
+import teamamused.client.gui.GameOver.GameOverModel;
+import teamamused.client.gui.GameOver.GameOverView;
 import teamamused.client.gui.cardPopup.CardPopupController;
 import teamamused.client.gui.cardPopup.CardPopupView;
 import teamamused.client.libs.Client;
 import teamamused.client.libs.IClientListener;
 import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
+import teamamused.common.db.Ranking;
 import teamamused.common.dtos.TransportableChatMessage;
 import teamamused.common.gui.AbstractController;
 import teamamused.common.interfaces.IPlayer;
@@ -129,7 +133,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	@Override
 	public void onGameBoardChanged(GameBoard newGameBoard) {
-		System.out.println("Aktualisiere Spielbrett");
 		if (model.gameBoard != null) {
 			model.specialCardsNeedsUpdate = newGameBoard.getSpecialCards().length != model.gameBoard
 					.getSpecialCards().length;
@@ -222,14 +225,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	public void onNumberOfRemeiningDicingChanged(int remDices) {
 		model.remainingDices = remDices;
 		allowedToDice();
-
-		// if (remDices <= 0) {
-		// view.btnWuerfeln.setDisable(true);
-		// view.btnBestaetigen.setDisable(false);
-		// } else {
-		// view.btnWuerfeln.setDisable(false);
-		// view.btnBestaetigen.setDisable(true);
-		// }
 	}
 
 	/**
@@ -265,4 +260,21 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		}
 	}
 
+	/**
+	 * Der Server hat das Spiel für beendet erklärt.
+	 * Dem Spieler wird angezeigt, dass das Spiel vorbei ist und der Sieger eingeblendet
+	 *  
+	 * @param rankings Platzierungen der Spielrunde
+	 */
+	@Override
+	public void onGameFinished(Ranking[] rankings) {
+		Platform.runLater(() -> {
+			Stage gameOverStage = new Stage();
+			GameOverModel gameOverModel = new GameOverModel(rankings);
+			GameOverView gameOverView = new GameOverView(gameOverStage, gameOverModel);
+			new GameOverController(gameOverModel, gameOverView);
+			gameOverView.start();
+		});
+
+	}
 }
