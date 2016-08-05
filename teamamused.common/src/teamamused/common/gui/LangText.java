@@ -74,7 +74,15 @@ public enum LangText {
 	// ChooseCards View
 	ChooseCardsTitle ("chooseCards.titleLabel"),
 	ChooseCardsExplain ("chooseCards.explainLabel"),
-	ChooseCardsChoice ("chooseCards.choiceLabel");
+	ChooseCardsChoice ("chooseCards.choiceLabel"),
+	
+	// Game Over View
+	GameOverTitle ("gameOver.title"),
+	GameOverTxt ("gameOver.labelTxt"),
+	GameOverWinner ("gameOver.labelWinner"),
+	GameOverBtnStart("gameOver.btnNewStart"),
+	GameOverBtnClose ("gameOver.btnClose");
+	
 	
 	String resourceName;
 	

@@ -15,7 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
+import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.gui.LangText;
+import teamamused.common.gui.Translator;
 
 /**
  * Die Klasse stellt die grafische Oberfläche für die Schlussseite dar.
@@ -143,6 +146,22 @@ public class GameOverView extends AbstractView<GameOverModel> {
 		btn.setPrefSize(200, 40);
 		btn.setAlignment(Pos.CENTER);
 		return btn;
+	}
+	
+	/**
+	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
+	 */
+	protected void updateTexts() {
+
+		// Translator holen
+		Translator tl = ServiceLocator.getInstance().getTranslator();
+
+		// Texte holen
+		stage.setTitle(tl.getString(LangText.GameOverTitle));
+		this.labelTxt.setText(tl.getString(LangText.GameOverTxt));
+		this.labelWinner.setText(tl.getString(LangText.GameOverWinner));
+		this.btnNewStart.setText(tl.getString(LangText.GameOverBtnStart));
+		this.btnClose.setText(tl.getString(LangText.GameOverBtnClose));
 	}
 
 }
