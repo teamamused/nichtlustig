@@ -70,7 +70,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		Scene scene = new Scene(root, 1500, 1000);
 
 		// Instanziierung und Zuweisung der Controlls zur Haupt-Pane
-		labelSpielfeld = new Label("Spielfeld");
+		labelSpielfeld = new Label("Spielfeld von " + model.player.getPlayerName());
 		labelSpielfeld.setId("labelSpielfeld");
 		labelSpielfeld.setAlignment(Pos.CENTER_RIGHT);
 		url = "http://www.kosmos.de/_files_media/mediathek/downloads/anleitungen/1351/nicht_lustig.pdf";
@@ -97,7 +97,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		titlePane = new HBox();
 		titlePane.getChildren().addAll(labelSpielfeld, btnLink);
-		titlePane.setSpacing(940);
+		titlePane.setSpacing(700);
 		titlePane.setPadding(new Insets(10, 10, 10, 10));
 
 		root.add(titlePane, 1, 0);
