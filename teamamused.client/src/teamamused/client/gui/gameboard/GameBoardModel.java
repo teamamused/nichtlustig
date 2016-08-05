@@ -48,6 +48,9 @@ public class GameBoardModel extends AbstractModel {
 	
 	// Gibt an, wie oft der Spieler noch würfeln darf
     int remainingDices;
+    
+    // Speichert, ob der Spieler aktiv ist oder nicht
+    boolean playerIsActive;
 
 	// In der ObserverList werden Nachrichten gespeichert
 	protected ObservableList<String> chatMessages = FXCollections.observableArrayList();

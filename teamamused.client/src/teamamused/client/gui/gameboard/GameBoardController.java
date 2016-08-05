@@ -34,7 +34,6 @@ import teamamused.common.models.GameBoard;
  */
 public class GameBoardController extends AbstractController<GameBoardModel, GameBoardView> implements IClientListener {
 
-	protected int countDice = 0;
 	protected GameBoardModel model;
 	protected boolean[] fixedDices;
 	protected boolean allowedToMoveDown = false;
@@ -71,6 +70,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			@Override
 			public void handle(ActionEvent event) {
 				model.dice();
+				allowedToMoveDown = true;
 			}
 		});
 
@@ -97,7 +97,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 		});
 	}
-
 
 	/**
 	 * Diese Methode verschiebt die Würfel nach unten zu den gesetzten Würfeln.
@@ -147,7 +146,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			view.buildCards();
 			view.buildDices();
 			if (allowedToMoveDown) {
-				setEventOnDices();	
+				setEventOnDices();
 			}
 			view.buildPlayer();
 			setEventsOnPlayerButton();
@@ -174,10 +173,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 		}
 	}
-	
+
 	public void setEventsOnPlayerButton() {
 		for (Button btnPlayer : view.btnArray) {
-			if(btnPlayer.getOnMouseClicked() == null) {
+			if (btnPlayer.getOnMouseClicked() == null) {
 				btnPlayer.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
@@ -222,10 +221,15 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onNumberOfRemeiningDicingChanged(int remDices) {
 		model.remainingDices = remDices;
-		if (remDices <= 0) {
-			view.btnWuerfeln.setDisable(true);
-			view.btnBestaetigen.setDisable(false);
-		}
+		allowedToDice();
+
+		// if (remDices <= 0) {
+		// view.btnWuerfeln.setDisable(true);
+		// view.btnBestaetigen.setDisable(false);
+		// } else {
+		// view.btnWuerfeln.setDisable(false);
+		// view.btnBestaetigen.setDisable(true);
+		// }
 	}
 
 	/**
@@ -237,11 +241,26 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	@Override
 	public void onPlayerIsActivedChanged(boolean isActive) {
-		if (isActive && model.remainingDices > 0) {
+		model.playerIsActive = isActive;
+		allowedToDice();
+	}
+
+	/**
+	 * Methode erhält vom Server die beiden Events und konsolidiert diese, um
+	 * die disabled Würfel zu steuern.
+	 */
+	private void allowedToDice() {
+		if (model.playerIsActive && model.remainingDices > 0) {
 			view.btnWuerfeln.setDisable(false);
+			view.btnBestaetigen.setDisable(true);
+			allowedToMoveDown = true;
+		} else if (model.playerIsActive && model.remainingDices <= 0) {
+			view.btnWuerfeln.setDisable(true);
+			view.btnBestaetigen.setDisable(false);
 			allowedToMoveDown = true;
 		} else {
 			view.btnWuerfeln.setDisable(true);
+			view.btnBestaetigen.setDisable(true);
 			allowedToMoveDown = false;
 		}
 	}
