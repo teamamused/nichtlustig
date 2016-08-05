@@ -69,7 +69,12 @@ public enum LangText {
 	CardPopupNoSpecial ("gameBoard.noSpecialCardsRival"),
 	CardPopupDeath ("gameBoard.deathCardsRival"),
 	CardPopupNoDeath ("gameBoard.noDeathCardsRival"),
-	CardPopupBtnClose ("gameBoard.btnClose");
+	CardPopupBtnClose ("gameBoard.btnClose"),
+	
+	// ChooseCards View
+	ChooseCardsTitle ("chooseCards.titleLabel"),
+	ChooseCardsExplain ("chooseCards.explainLabel"),
+	ChooseCardsChoice ("chooseCards.choiceLabel");
 	
 	String resourceName;
 	

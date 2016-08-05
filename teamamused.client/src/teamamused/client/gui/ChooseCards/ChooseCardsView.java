@@ -13,7 +13,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import teamamused.client.libs.Client;
+import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.gui.LangText;
+import teamamused.common.gui.Translator;
 import teamamused.common.interfaces.ITargetCard;
 
 /**
@@ -115,5 +118,19 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 			btn.setGraphic(box);
 		}
 		return btn;
+	}
+	
+	/**
+	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
+	 */
+	protected void updateTexts() {
+
+		// Translator holen
+		Translator tl = ServiceLocator.getInstance().getTranslator();
+
+		// Texte holen
+		this.titleLabel.setText(tl.getString(LangText.ChooseCardsTitle));
+		this.explainLabel.setText(tl.getString(LangText.ChooseCardsExplain));
+		this.choiceLabel.setText(tl.getString(LangText.ChooseCardsChoice));
 	}
 }
