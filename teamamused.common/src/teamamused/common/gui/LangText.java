@@ -81,8 +81,14 @@ public enum LangText {
 	GameOverTxt ("gameOver.labelTxt"),
 	GameOverWinner ("gameOver.labelWinner"),
 	GameOverBtnStart("gameOver.btnNewStart"),
-	GameOverBtnClose ("gameOver.btnClose");
+	GameOverBtnClose ("gameOver.btnClose"),
 	
+	// MovingPopup View
+	MovingPopupTitle ("movingPopup.title"),
+	MovingPopupQueue ("movingPopup.labelQueue"),
+	MovingPopupDice ("movingPopup.labelDice"),
+	MovingPopupCards ("movingPopup.labelCards"),
+	MovingPopupNext ("movingPopup.labelNext");
 	
 	String resourceName;
 	

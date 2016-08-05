@@ -14,13 +14,14 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import teamamused.client.gui.LogInModel;
 import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.client.libs.Client;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
+import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
-import teamamused.common.interfaces.IPlayer;
+import teamamused.common.gui.LangText;
+import teamamused.common.gui.Translator;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für die Benachrichtigung über
@@ -161,6 +162,22 @@ public class MovingPopupView extends AbstractView<GameBoardModel> {
 
 	public void stop() {
 		stage.hide();
+	}
+	
+	/**
+	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
+	 */
+	protected void updateTexts() {
+
+		// Translator holen
+		Translator tl = ServiceLocator.getInstance().getTranslator();
+
+		// Texte holen
+		stage.setTitle(tl.getString(LangText.MovingPopupTitle));
+		this.labelQueue.setText(tl.getString(LangText.MovingPopupQueue));
+		this.labelDice.setText(tl.getString(LangText.MovingPopupDice));
+		this.labelCards.setText(tl.getString(LangText.MovingPopupCards));
+		this.labelNext.setText(tl.getString(LangText.MovingPopupNext));
 	}
 
 }
