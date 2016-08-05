@@ -1,5 +1,7 @@
 package teamamused.common.gui;
 
+import javafx.scene.control.Label;
+
 /**
  * Enumeration mit den Sprachresourcen
  * Um nicht überall die Schreibfehler anfälligen Einstellungs konstanten verwenden zu müssen, wurde diese Enumeratione eingefügt.
@@ -8,14 +10,27 @@ package teamamused.common.gui;
  * @author Daniel
  */
 public enum LangText {
+	
 	// Generell gültige Texte
 	Sprache("sprache"),
 	
-	// Login View
+	// LogIn View
 	LogInTitel ("login.titel"),
 	LogInCopyright ("login.labelCopyright"),
-	LogInConnect ("login.labelConnect");
+	LogInConnect ("login.labelConnect"),
 	
+	// Register View
+	RegisterTitel ("register.titel"),
+	RegisterHello ("register.labelRegister"),
+	RegisterCopyright ("register.labelCopyright"),
+	RegisterHere ("register.labelRegisterHere"),
+	RegisterUser ("register.labelRegUser"),
+	RegisterPassword ("register.labelRegPassword"),
+	RegisterPassword2 ("register.labelRegPassword2"),
+	
+	// Ranking View
+	RankingTitel ("ranking.titel"),
+	RankingText ("ranking.labelRanking");
 	
 	String resourceName;
 	

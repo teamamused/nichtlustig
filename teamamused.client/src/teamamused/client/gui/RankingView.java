@@ -13,8 +13,11 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
+import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.gui.LangText;
+import teamamused.common.gui.Translator;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für die Ranking-Seite dar.
@@ -27,6 +30,8 @@ public class RankingView extends AbstractView<RankingModel> {
 
 	protected Button btnBack;
 	protected Button btnExit;
+	
+	private Label labelRanking;
 
 	public RankingView(Stage stage, RankingModel model) {
 		super(stage, model);
@@ -37,7 +42,7 @@ public class RankingView extends AbstractView<RankingModel> {
 	protected Scene createGUI() {
 
 		// Label erstellen
-		Label labelRanking = new Label("Unsere Besten");
+		this.labelRanking = new Label("Unsere Besten");
 		labelRanking.setId("labelRanking");
 
 		// Tabelle erstellen
@@ -126,6 +131,17 @@ public class RankingView extends AbstractView<RankingModel> {
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;
+	}
+	
+	/**
+	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
+	 */
+	protected void updateTexts() {
+		// Translator holen
+		Translator tl = ServiceLocator.getInstance().getTranslator();
+		// Texte holen
+		stage.setTitle(tl.getString(LangText.RankingTitel));
+		this.labelRanking.setText(tl.getString(LangText.RankingText));
 	}
 
 }

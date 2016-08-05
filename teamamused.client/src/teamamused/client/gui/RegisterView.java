@@ -21,6 +21,8 @@ import javafx.stage.Stage;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
+import teamamused.common.gui.LangText;
+import teamamused.common.gui.Translator;
 
 /**
  * Diese Klasse stellt die grafische Oberfläche für die Registrierungsseite dar.
@@ -37,6 +39,13 @@ public class RegisterView extends AbstractView<RegisterModel> {
 	protected PasswordField password;
 	protected PasswordField password2;
 	protected ChoiceBox<Locale> cbLang;
+	
+	private Label labelRegister;
+	private Label labelCopyright;
+	private Label labelRegisterHere;
+	private Label labelRegUser;
+	private Label labelRegPassword;
+	private Label labelRegPassword2;
 
 	public RegisterView(Stage stage, RegisterModel model) {
 		super(stage, model);
@@ -47,14 +56,15 @@ public class RegisterView extends AbstractView<RegisterModel> {
 	protected Scene createGUI() {
 		
 		// Labels erstellen
-		Label labelRegister = new Label("Hallo Neuling!");
+		this.labelRegister = new Label("Hallo Neuling!");
+		this.labelCopyright = new Label("Copyright © 2016, Team amused (FHNW)");
+		this.labelRegisterHere = new Label("Hier kannst du dich registrieren:");
+		this.labelRegUser = new Label("Benutzername");
+		this.labelRegPassword = new Label("Passwort");
+		this.labelRegPassword2 = new Label("Passwort bestätigen");
+		
 		labelRegister.setId("labelTitle");
-		Label labelCopyright = new Label("Copyright © 2016, Team amused (FHNW)");
 		labelCopyright.setId("labelCopyright");
-		Label labelRegisterHere = new Label("Hier kannst du dich registrieren:");
-		Label labelRegUser = new Label("Benutzername");
-		Label labelRegPassword = new Label("Passwort");
-		Label labelRegPassword2 = new Label("Passwort bestätigen");
 
 		// Textfelder erstellen
 		textRegUser = new TextField();
@@ -178,12 +188,29 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		Scene scene = new Scene(border, 900, 600);
 		
 		// Fenstertitel setzen
-		stage.setTitle("Nicht Lustig: Register");
+		stage.setTitle("Nicht Lustig: Registrieren");
 
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		return scene;
 	}
+	
+	/**
+	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
+	 */
+	protected void updateTexts() {
+		// Translator holen
+		Translator tl = ServiceLocator.getInstance().getTranslator();
+		// Texte holen
+		stage.setTitle(tl.getString(LangText.RegisterTitel));
+		this.labelRegister.setText(tl.getString(LangText.RegisterHello));
+		this.labelCopyright.setText(tl.getString(LangText.RegisterCopyright));
+		this.labelRegisterHere.setText(tl.getString(LangText.RegisterHere));
+		this.labelRegUser.setText(tl.getString(LangText.RegisterUser));
+		this.labelRegPassword.setText(tl.getString(LangText.RegisterPassword));
+		this.labelRegPassword2.setText(tl.getString(LangText.RegisterPassword2));
+	}
 
 }
+

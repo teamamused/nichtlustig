@@ -58,6 +58,7 @@ public class LogInView extends AbstractView<LogInModel> {
 	}
 
 	protected Scene createGUI() {
+		
 		// Labels erstellen
 		this.labelCopyright = new Label("Copyright © 2016, Team amused (FHNW)");
 		this.labelConnect = new Label ("Bitte verbinden Sie sich als erstes mit dem Server:");
@@ -202,7 +203,7 @@ public class LogInView extends AbstractView<LogInModel> {
 	}
 
 	/**
-	 * Aktualisiert die Sprachtexte auf allen GUI elementen
+	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
 	 */
 	protected void updateTexts() {
 		// Translator holen
