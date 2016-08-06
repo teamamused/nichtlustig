@@ -142,8 +142,6 @@ public class Main extends Application {
 		RankingModel model = new RankingModel(ranking);
 		rankingView = new RankingView(RankingStage, model);
 		new RankingController(model, rankingView);
-		gameOverView.stop();
-		gameOverView = null;
 		rankingView.start();
 	}
 	

@@ -1,10 +1,13 @@
 package teamamused.client.gui.GameOver;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import teamamused.client.Main;
 import teamamused.client.libs.Client;
+import teamamused.client.libs.IClientListener;
+import teamamused.common.db.Ranking;
 import teamamused.common.gui.AbstractController;
 
 /**
@@ -13,11 +16,14 @@ import teamamused.common.gui.AbstractController;
  * @author Michelle
  *
  */
-public class GameOverController extends AbstractController<GameOverModel, GameOverView>{
+public class GameOverController extends AbstractController<GameOverModel, GameOverView> implements IClientListener {
 	
 	public GameOverController(GameOverModel model, GameOverView view) {
 		super(model, view);
 		this.model = model;
+		
+		// Registriert das GUI
+		Client.getInstance().registerGui(this);
 	
 		// Der Klick auf den Schliessen-Button führt zur Tschüss-Seite
 		view.btnClose.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -27,15 +33,15 @@ public class GameOverController extends AbstractController<GameOverModel, GameOv
 			}
 		});
 		
-		// Der Klick auf den Button "Spiel erneut spielen" führt auf das GameBoard
-		view.btnNewStart.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		// Der Klick auf den Button "Spiel-Ranking" führt zum aktuellen Ranking
+		view.btnRanking.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Main.getInstance().startGameBoard2();;
+				Main.getInstance().startRanking2(model.ranking);
 			}
 		});
 		
-		// Der Klick auf das Pokal-Icon führt zur Ranking-Seite
+		// Der Klick auf das Pokal-Icon führt zur Gesamt-Ranking-Seite
 		view.btnTrophy.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -44,5 +50,14 @@ public class GameOverController extends AbstractController<GameOverModel, GameOv
 		});
 		
 	}
+	
+	@Override
+	public void onRankingRecieved(Ranking[] rankings) {
+		
+		Platform.runLater(() -> {
+			Main.getInstance().startRanking2(model.ranking);
+		});
+	}
+	
 
 }
