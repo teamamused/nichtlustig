@@ -78,7 +78,6 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		password2 = new PasswordField();
 		password2.setPromptText("Dein Passwort bestätigen");
 
-
 		// Registrierungs-Button erstellen
 		btnRegister = new Button();
 		btnRegister.setText("Registrieren");
