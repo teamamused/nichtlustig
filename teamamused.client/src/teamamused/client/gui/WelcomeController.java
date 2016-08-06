@@ -25,7 +25,7 @@ public class WelcomeController extends AbstractController<WelcomeModel, WelcomeV
 		});
 
 		view.btnMulti.setOnAction((ActionEvent e) -> {
-			Main.getInstance().startWaitingRoom();
+			Main.getInstance().startGameBoard();
 		});
 
 		view.btnExit.setOnAction((ActionEvent e) -> {

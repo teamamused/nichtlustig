@@ -199,32 +199,43 @@ public class Main extends Application {
 		GameBoardModel model = new GameBoardModel();
 		gameBoardView = new GameBoardView(gameBoardStage, model);
 		new GameBoardController (model, gameBoardView);
-		waitingRoomView.stop();
-		waitingRoomView = null;
+		welcomeView.stop();
+		welcomeView = null;
 		gameBoardView.start();
 	}
 	
-	public void startWaitingRoom() {
-
-		Stage waitingRoomStage = new Stage();
-		WaitingRoomModel model = new WaitingRoomModel();
-		waitingRoomView = new WaitingRoomView(waitingRoomStage, model);
-		new WaitingRoomController(model, waitingRoomView);
-		welcomeView.stop();
-		welcomeView = null;
-		waitingRoomView.start();
-	}
-	
-	public void startWaitingRoom2() {
-
-		Stage waitingRoomStage = new Stage();
-		WaitingRoomModel model = new WaitingRoomModel();
-		waitingRoomView = new WaitingRoomView(waitingRoomStage, model);
-		new WaitingRoomController(model, waitingRoomView);
+	public void startGameBoard2() {
+		
+		Stage gameBoardStage = new Stage();
+		GameBoardModel model = new GameBoardModel();
+		gameBoardView = new GameBoardView(gameBoardStage, model);
+		new GameBoardController (model, gameBoardView);
 		gameOverView.stop();
 		gameOverView = null;
-		waitingRoomView.start();
+		gameBoardView.start();
 	}
+	
+//	public void startWaitingRoom() {
+//
+//		Stage waitingRoomStage = new Stage();
+//		WaitingRoomModel model = new WaitingRoomModel();
+//		waitingRoomView = new WaitingRoomView(waitingRoomStage, model);
+//		new WaitingRoomController(model, waitingRoomView);
+//		welcomeView.stop();
+//		welcomeView = null;
+//		waitingRoomView.start();
+//	}
+//	
+//	public void startWaitingRoom2() {
+//
+//		Stage waitingRoomStage = new Stage();
+//		WaitingRoomModel model = new WaitingRoomModel();
+//		waitingRoomView = new WaitingRoomView(waitingRoomStage, model);
+//		new WaitingRoomController(model, waitingRoomView);
+//		gameOverView.stop();
+//		gameOverView = null;
+//		waitingRoomView.start();
+//	}
 
 	public static Main getInstance() {
 		return instance;

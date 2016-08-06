@@ -50,7 +50,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	protected ImageView logo, linkIcon, exitIcon;
 	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
-	protected Button btnPlayer, btnWuerfeln, btnLink, btnExit, btnSenden;
+	protected Button btnPlayer, btnWuerfeln, btnLink, btnExit, btnSenden, btnStart;
 	protected TextArea txtChatInput, txtChatScreen, txtGameMove;
 	protected ScrollPane scrollTxt, scrollPane, scrollMoving;
 	protected Label labelSpielfeld, labelRollDices, labelSelectedDices;
@@ -71,7 +71,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		scrollPane = new ScrollPane();
 		scrollPane.setContent(root);
 
-		Scene scene = new Scene(root, 1500, 1000);
+		Scene scene = new Scene(root, 1450, 1000);
 
 		// Instanziierung und Zuweisung der Controlls zur Haupt-Pane
 		labelSpielfeld = new Label(String.format("Spielfeld von Spieler %s", model.player.getPlayerName()));
@@ -101,7 +101,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		titlePane = new HBox();
 		titlePane.getChildren().addAll(labelSpielfeld, btnLink);
-		titlePane.setSpacing(600);
+		titlePane.setSpacing(560);
 		titlePane.setPadding(new Insets(10, 10, 10, 10));
 
 		root.add(titlePane, 1, 0);
@@ -124,6 +124,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		btnArray = new ArrayList<Button>();
 		buildPlayer();
 
+		btnStart = GameBoardView.initializeButton("Spiel starten");
 		txtChatScreen = new TextArea();
 		txtChatScreen.setPrefSize(200, 400);
 		txtChatScreen.setEditable(false);
@@ -138,7 +139,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		scrollTxt.setContent(txtChatScreen);
 		Tooltip chatInputTool = new Tooltip("Hier kannst du deine Chatnachrichten eingeben");
 		Tooltip.install(txtChatInput, chatInputTool);
-		navigation.getChildren().addAll(logo, playerPane, txtChatScreen, txtChatInput, btnSenden);
+		navigation.getChildren().addAll(logo, btnStart, playerPane, txtChatScreen, txtChatInput, btnSenden);
 
 		// Definition der Pane für die Spielkarten
 		targetCardsPane = GameBoardView.initializeGridPane();
@@ -162,7 +163,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
 		labelSelectedDices.getStyleClass().add("gameBoardContent");
 		btnWuerfeln = GameBoardView.initializeButton("würfeln");
-		btnWuerfeln.setPrefSize(100, 40);
 
 		dicePane.add(labelRollDices, 0, 0, 10, 1);
 		dicePane.add(btnWuerfeln, 10, 1);
@@ -176,16 +176,18 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		ScrollPane scrollMoving = new ScrollPane();
 		scrollMoving.setContent(txtGameMove);
 		movingPane.getChildren().add(txtGameMove);
-		txtGameMove.setPrefWidth(500);
+		txtGameMove.setPrefSize(400, 200);
 		
 		// Die Container-Pane dient als Behälter für ihre Sub-Panes
 		containerPane = new HBox();
+		containerPane.setPadding(new Insets(20, 20, 20, 20));
+		containerPane.setSpacing(10);
 		containerPane.getChildren().addAll(movingPane, dicePane);
 		
 		// Zuordnung der Sub-Panes zur Haupt-Pane "root"
 		root.add(navigation, 0, 0, 1, 10);
 		root.add(cardPane, 1, 1);
-		root.add(containerPane, 1, 2);
+		root.add(containerPane, 1, 3);
 
 		// Auf der ObserverList wird ein ListChangeListener registriert, welcher
 		// immer, wenn etwas der Liste hinzugefügt wird, dieses auf dem Screen

@@ -27,11 +27,11 @@ public class GameOverController extends AbstractController<GameOverModel, GameOv
 			}
 		});
 		
-		// Der Klick auf den Button "Spiel erneut spielen" führt in den WaitingRoom
+		// Der Klick auf den Button "Spiel erneut spielen" führt auf das GameBoard
 		view.btnNewStart.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Main.getInstance().startWaitingRoom2();;
+				Main.getInstance().startGameBoard2();;
 			}
 		});
 		
