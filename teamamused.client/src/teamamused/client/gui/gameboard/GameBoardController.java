@@ -148,6 +148,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		}
 		model.gameBoard = newGameBoard;
 		Platform.runLater(() -> {
+			view.btnStart.setDisable(model.gameBoard.getGameStartet());
 			view.buildCards();
 			view.buildDices();
 			if (allowedToMoveDown) {
