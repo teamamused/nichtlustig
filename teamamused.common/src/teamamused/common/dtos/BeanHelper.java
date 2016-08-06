@@ -41,6 +41,7 @@ public class BeanHelper {
 		for (IPlayer player : board.getPlayers()) {
 			tgb.players.add(getPlayerBeanFromObject(player));
 		}
+		tgb.isGameStarted = board.getGameStartet();
 		return tgb;
 	}
 	
