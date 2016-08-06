@@ -407,5 +407,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 //		this.chatInputTool.setText(tl.getString(LangText.GameBoardChatTooltip));
 		this.labelSelectedDices.setText(tl.getString(LangText.GameBoardSelectedDices));
 		this.btnWuerfeln.setText(tl.getString(LangText.GameBoardBtnWuerfeln));
+		this.btnStart.setText(tl.getString(LangText.GameBoardStart));
 	}
 }
