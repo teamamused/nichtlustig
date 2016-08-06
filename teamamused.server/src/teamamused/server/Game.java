@@ -48,7 +48,6 @@ public class Game implements Serializable {
 	private Game() {
 		super();
 		this.log = ServiceLocator.getInstance().getLogger();
-		this.startGame();
 	}
 
 	/**
@@ -246,12 +245,14 @@ public class Game implements Serializable {
 	/**
 	 * Initialisieren des Spiels (Game)
 	 */
-	private void startGame() {
+	public void startGame() {
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spiel");
 		gameId = GameInfoRepository.getNextGameId();
 		gameStart = LocalDateTime.now();
+		BoardManager.getInstance().getGameBoard().setGameStartet(true);
 		// Spielstatus auf "gestartet" setzen
 		gameStatus = GameState.running;
+		Game.getInstance().startNextRound();
 	}
 
 	/**
