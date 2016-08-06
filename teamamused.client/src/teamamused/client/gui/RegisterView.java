@@ -34,7 +34,7 @@ import teamamused.common.gui.Translator;
 public class RegisterView extends AbstractView<RegisterModel> {
 	
 	protected Button btnRegister;
-	protected Button btnExit;
+	protected Button btnBack;
 	protected TextField textRegUser;
 	protected PasswordField password;
 	protected PasswordField password2;
@@ -118,9 +118,9 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		}
 		
 		// Exit-Button mit Bild erstellen
-		btnExit = new Button();
-		btnExit.setGraphic(iview3);
-		btnExit.setId("btnTransparent");
+		btnBack = new Button();
+		btnBack.setGraphic(iview3);
+		btnBack.setId("btnTransparent");
 		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_LEFT);
@@ -159,7 +159,7 @@ public class RegisterView extends AbstractView<RegisterModel> {
 	    StackPane stackExit = new StackPane();
 	    stackExit.setPadding(new Insets(0, 50, 0, 0));
 	    stackExit.setAlignment(Pos.TOP_RIGHT);
-	    stackExit.getChildren().addAll(btnExit);
+	    stackExit.getChildren().addAll(btnBack);
 	    
 	    StackPane stackImage = new StackPane();
 	    stackImage.setPadding(new Insets(20, 90, 0, 0));

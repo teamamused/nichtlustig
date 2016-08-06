@@ -71,6 +71,8 @@ public class ByeView extends AbstractView<ByeModel> {
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
+		updateTexts();
+		
 		return scene;
 	}
 
@@ -95,5 +97,5 @@ public class ByeView extends AbstractView<ByeModel> {
 		this.labelTschuess.setText(tl.getString(LangText.ByeText));
 
 	}
-
+	
 }

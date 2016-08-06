@@ -25,7 +25,7 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 		// Beim Client registrieren
 		Client.getInstance().registerGui(this);
 		
-		view.btnExit.setOnAction((ActionEvent e) -> {
+		view.btnBack.setOnAction((ActionEvent e) -> {
 			Main.getInstance().startLogIn2();
 		});
 

@@ -24,9 +24,6 @@ import teamamused.client.gui.gameboard.GameBoardView;
 import teamamused.client.gui.splashscreen.Splash_Controller;
 import teamamused.client.gui.splashscreen.Splash_Model;
 import teamamused.client.gui.splashscreen.Splash_View;
-import teamamused.client.gui.waitingroom.WaitingRoomController;
-import teamamused.client.gui.waitingroom.WaitingRoomModel;
-import teamamused.client.gui.waitingroom.WaitingRoomView;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
 import teamamused.common.gui.Translator;
@@ -40,7 +37,6 @@ public class Main extends Application {
 	private RankingView rankingView;
 	private ByeView byeView;
 	private GameBoardView gameBoardView;
-	private WaitingRoomView waitingRoomView;
 	private GameOverView gameOverView;
 	private static Main instance = null;
 
@@ -157,17 +153,6 @@ public class Main extends Application {
 		new ByeController(model, byeView);
 		welcomeView.stop();
 		welcomeView = null;
-		byeView.start();
-	}
-	
-	public void startBye2() {
-
-		Stage ByeStage = new Stage();
-		ByeModel model = new ByeModel();
-		byeView = new ByeView(ByeStage, model);
-		new ByeController(model, byeView);
-		rankingView.stop();
-		rankingView = null;
 		byeView.start();
 	}
 	
