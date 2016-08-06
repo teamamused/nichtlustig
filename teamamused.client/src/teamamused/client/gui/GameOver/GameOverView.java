@@ -161,7 +161,7 @@ public class GameOverView extends AbstractView<GameOverModel> {
 		// Texte holen
 		stage.setTitle(tl.getString(LangText.GameOverTitle));
 		this.labelTxt.setText(tl.getString(LangText.GameOverTxt));
-		this.labelWinner.setText(tl.getString(LangText.GameOverWinner));
+		this.labelWinner.setText(String.format(tl.getString(LangText.GameOverWinner), model.winner.getUsername()));
 		this.btnNewStart.setText(tl.getString(LangText.GameOverBtnStart));
 		this.btnClose.setText(tl.getString(LangText.GameOverBtnClose));
 	}
