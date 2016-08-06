@@ -147,7 +147,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		
 		// Texte holen
 		stage.setTitle(tl.getString(LangText.WelcomeTitel));
-		this.labelWelcome.setText(tl.getString(LangText.WelcomeText));
+		this.labelWelcome.setText(String.format(tl.getString(LangText.WelcomeText), model.player.getPlayerName()));
 		this.labelPlay.setText(tl.getString(LangText.WelcomePlay));
 		this.labelFun.setText(tl.getString(LangText.WelcomeFun));
 

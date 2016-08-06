@@ -193,6 +193,8 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
+		updateTexts();
+		
 		return scene;
 	}
 	
