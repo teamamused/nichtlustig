@@ -39,6 +39,7 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 					ServiceLocator.getInstance().getLogger()
 							.info("Verbindung zum Server konnte nicht hergestellt werden.");
 				}
+				view.btnLogin.setDisable(false);
 			}
 		});
 
