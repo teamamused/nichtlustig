@@ -91,6 +91,9 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				view.txtChatInput.clear();
 			}
 		});
+		// Spiel beitreten
+		Client.getInstance().joinGame();
+		Client.getInstance().startGame();
 	}
 
 	/**

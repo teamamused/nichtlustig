@@ -129,8 +129,8 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		txtChatScreen.setEditable(false);
 		txtChatInput = new TextArea();
 		txtChatInput.setPrefSize(200, 150);
-		txtChatScreen.setId("chatArea");
-		txtChatInput.setId("chatArea");
+		txtChatScreen.getStyleClass().add("gameBoardContent");
+		txtChatInput.getStyleClass().add("gameBoardContent");
 		btnSenden = new Button("Nachricht senden");
 		btnSenden.setPrefSize(200, 40);
 		btnSenden.setAlignment(Pos.CENTER);
@@ -145,6 +145,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		deadCardsPane = GameBoardView.initializeGridPane();
 		specialCardsPane = GameBoardView.initializeGridPane();
 		cardPane = GameBoardView.initializeGridPane();
+		cardPane.setPadding(new Insets(0,0,0,0));
 		cardPane.add(specialCardsPane, 0, 0);
 		cardPane.add(targetCardsPane, 1, 0);
 		cardPane.add(deadCardsPane, 2, 0);
@@ -155,9 +156,11 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		// Instanziierung und Zuordnung der Controlls zur "dicePane"
 		labelRollDices = new Label();
+		labelRollDices.getStyleClass().add("gameBoardContent");
 		updateTextOnLabelRollDices();
 
 		labelSelectedDices = new Label("Deine gesetzten Würfel:");
+		labelSelectedDices.getStyleClass().add("gameBoardContent");
 		btnWuerfeln = GameBoardView.initializeButton("würfeln");
 		btnWuerfeln.setPrefSize(100, 40);
 
@@ -169,6 +172,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		movingPane = new VBox();
 		txtGameMove = new TextArea();
 		txtGameMove.setEditable(false);
+		txtGameMove.getStyleClass().add("gameBoardContent");
 		ScrollPane scrollMoving = new ScrollPane();
 		scrollMoving.setContent(txtGameMove);
 		movingPane.getChildren().add(txtGameMove);
@@ -236,10 +240,10 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 */
 	private static GridPane initializeGridPane() {
 		GridPane pane = new GridPane();
-		pane.setPadding(new Insets(15, 15, 15, 15));
+		pane.setPadding(new Insets(5, 5, 5, 5));
 		pane.setHgap(5);
 		pane.setVgap(5);
-		pane.setGridLinesVisible(false);
+		pane.setGridLinesVisible(true);
 		return pane;
 	}
 

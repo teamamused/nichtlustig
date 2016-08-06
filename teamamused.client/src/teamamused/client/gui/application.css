@@ -85,7 +85,7 @@
 	-fx-background-color: transparent;
 }
 
-#chatArea{
+.gameBoardContent{
 	-fx-font-size: 12pt;
 }
 

@@ -63,8 +63,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		// Definition der Titel-Pane inkl. Instanziierung und Zuweisung der
 		// Controlls
 		titlePane = new VBox();
-		labelTitle = new Label(String.format("Karten von Spieler %d: %s", this.model.getPlayer().getPlayerNumber(),
-				this.model.getPlayer().getPlayerName()));
+		labelTitle = new Label(String.format("Karten von Spieler %s", this.model.getPlayer().getPlayerName()));
 		labelText = new Label("Bereits gewertete Karten sind umgedreht.");
 		labelTitle.setId("labelTitle");
 		labelText.setId("subtitle");

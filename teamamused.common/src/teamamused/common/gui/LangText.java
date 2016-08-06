@@ -63,15 +63,15 @@ public enum LangText {
 	
 	// CardPopup View
 	CardPopupTitle ("cardPopup.title"),
-	CardPopupCardsOf ("gameBoard.labelTitle"),
-	CardPopupValued ("gameBoard.labelText"),
-	CardPopupTarget ("gameBoard.cardsRival"),
-	CardPopupNoTarget ("gameBoard.noCardsRival"),
-	CardPopupSpecial("gameBoard.specialCardsRival"),
-	CardPopupNoSpecial ("gameBoard.noSpecialCardsRival"),
-	CardPopupDeath ("gameBoard.deathCardsRival"),
-	CardPopupNoDeath ("gameBoard.noDeathCardsRival"),
-	CardPopupBtnClose ("gameBoard.btnClose"),
+	CardPopupCardsOf ("cardPopup.labelTitle"),
+	CardPopupValued ("cardPopup.labelText"),
+	CardPopupTarget ("cardPopup.cardsRival"),
+	CardPopupNoTarget ("cardPopup.noCardsRival"),
+	CardPopupSpecial("cardPopup.specialCardsRival"),
+	CardPopupNoSpecial ("cardPopup.noSpecialCardsRival"),
+	CardPopupDeath ("cardPopup.deathCardsRival"),
+	CardPopupNoDeath ("cardPopup.noDeathCardsRival"),
+	CardPopupBtnClose ("cardPopup.btnClose"),
 	
 	// ChooseCards View
 	ChooseCardsTitle ("chooseCards.titleLabel"),
