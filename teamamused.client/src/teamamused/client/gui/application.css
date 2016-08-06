@@ -27,16 +27,22 @@
 
 #labelCopyright{
 	-fx-font-size: 11pt;
-	}
+}
 
 
 #labelConnect{
 	-fx-font-size: 12pt;
-	}
+}
+	
+#labelFailLogIn{
+	-fx-font-size: 16pt;
+	-fx-base: yellow;
+	-fx-font-weight: bold;
+}
 	
 #hboxConnect{
 	-fx-font-size: 12pt;
-	}
+}
 
 #labelSpielfeld{
 	-fx-font-size: 30pt;

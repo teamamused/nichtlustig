@@ -72,6 +72,8 @@ public class LogInView extends AbstractView<LogInModel> {
 
 		labelCopyright.setId("labelCopyright");
 		labelConnect.setId("labelConnect");
+		labelFailLogIn.setId("labelFailLogIn");
+
 		
 		// Textfelder erstellen
 		textServer = new TextField();
@@ -144,10 +146,10 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(password, 2, 3);
 		grid.add(btnLogin, 2, 5);
 		grid.add(labelFailLogIn, 2, 6);
-		grid.add(labelNeu, 2, 8);
-		grid.add(linkReg, 2, 9);
-		grid.add(iview2, 1, 11);
-		grid.add(cbLang, 2, 11);
+		grid.add(labelNeu, 2, 7);
+		grid.add(linkReg, 2, 8);
+		grid.add(iview2, 1, 10);
+		grid.add(cbLang, 2, 10);
 		
 		StackPane stackConnect = new StackPane();
 		stackConnect.setPadding(new Insets(30, 0, 10, 50));
