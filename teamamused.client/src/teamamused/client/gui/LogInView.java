@@ -92,6 +92,7 @@ public class LogInView extends AbstractView<LogInModel> {
 		// Login-Button erstellen
 		btnLogin = new Button();
 		btnLogin.setText("Login");
+		btnLogin.setDisable(true);
 
 		// Hyperlink für Registrierung erstellen
 		linkReg = new Hyperlink();
