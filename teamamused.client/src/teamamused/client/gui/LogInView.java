@@ -218,9 +218,12 @@ public class LogInView extends AbstractView<LogInModel> {
 		this.labelServer.setText(tl.getString(LangText.LogInServer));
 		this.labelPort.setText(tl.getString(LangText.LogInPort));
 		this.labelUser.setText(tl.getString(LangText.LogInUser));
-		this.labelPassword.setText(tl.getString(LangText.LogInPassword));
+		this.textUser.setPromptText(tl.getString(LangText.LogInTextUser));
+		this.labelPassword.setText(tl.getString(LangText.LogInLabelPassword));
+		this.password.setPromptText(tl.getString(LangText.LogInPassword));
 		this.labelNeu.setText(tl.getString(LangText.LogInNeu));
-		//this.btnConnectServer.setText(t1.getString(LangText.LogInButtonServer));
+		this.btnConnectServer.setText(tl.getString(LangText.LogInButtonServer));
+		this.linkReg.setText(tl.getString(LangText.LogInLinkReg));
 	}
 
 }
