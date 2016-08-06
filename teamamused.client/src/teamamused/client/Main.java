@@ -17,6 +17,8 @@ import teamamused.client.gui.RegisterView;
 import teamamused.client.gui.WelcomeController;
 import teamamused.client.gui.WelcomeModel;
 import teamamused.client.gui.WelcomeView;
+import teamamused.client.gui.GameOver.GameOverController;
+import teamamused.client.gui.GameOver.GameOverModel;
 import teamamused.client.gui.GameOver.GameOverView;
 import teamamused.client.gui.gameboard.GameBoardController;
 import teamamused.client.gui.gameboard.GameBoardModel;
@@ -199,28 +201,17 @@ public class Main extends Application {
 		gameOverView = null;
 		gameBoardView.start();
 	}
-	
-//	public void startWaitingRoom() {
-//
-//		Stage waitingRoomStage = new Stage();
-//		WaitingRoomModel model = new WaitingRoomModel();
-//		waitingRoomView = new WaitingRoomView(waitingRoomStage, model);
-//		new WaitingRoomController(model, waitingRoomView);
-//		welcomeView.stop();
-//		welcomeView = null;
-//		waitingRoomView.start();
-//	}
-//	
-//	public void startWaitingRoom2() {
-//
-//		Stage waitingRoomStage = new Stage();
-//		WaitingRoomModel model = new WaitingRoomModel();
-//		waitingRoomView = new WaitingRoomView(waitingRoomStage, model);
-//		new WaitingRoomController(model, waitingRoomView);
-//		gameOverView.stop();
-//		gameOverView = null;
-//		waitingRoomView.start();
-//	}
+
+	public void startGameOver(Ranking[] ranking) {
+		
+		Stage gameOverStage = new Stage();
+		GameOverModel gameOverModel = new GameOverModel(ranking);
+		gameOverView = new GameOverView(gameOverStage, gameOverModel);
+		new GameOverController(gameOverModel, gameOverView);
+		gameBoardView.stop();
+		gameBoardView = null;
+		gameOverView.start();
+	}
 
 	public static Main getInstance() {
 		return instance;

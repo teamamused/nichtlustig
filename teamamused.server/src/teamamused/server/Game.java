@@ -91,27 +91,6 @@ public class Game implements Serializable {
 	}
 
 	/**
-	 * Der aktive Spieler wird geändert, sobald ein Spieler seinen Spielzug
-	 * abgeschlossen und die Wertung inkl. Kartenausteilung beendet wurde.
-	 */
-	public void changeActivePlayer() {
-		this.log.info("Wechsle den aktiven Spieler");
-		List<IPlayer> players = this.getPlayersFromGameboard();
-		// Wenn noch kein Spieler aktiv, einen Startspieler bestimmen
-		if (this.activePlayer == null) {
-			this.defineStartPlayer();
-		} else {
-			// Wenn bereits ein Spieler aktiv ist, den nächsten aktivieren
-			if (this.activePlayer.getPlayerNumber() < players.size()) {
-				this.activePlayer = players.get(this.activePlayer.getPlayerNumber());
-			} else {
-				this.activePlayer = players.get(0);
-			}
-		}
-		ClientNotificator.notifyPlayerChanged(this.activePlayer);
-	}
-
-	/**
 	 * Gibt den aktiven Spieler zurück, welcher am Würfeln ist.
 	 * 
 	 * @return aktiver Spieler
@@ -231,6 +210,7 @@ public class Game implements Serializable {
 				ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
 			}
 			CubeManager.getInstance().initForNextRound(additionalDicings);
+			ClientNotificator.notifyPlayerChanged(this.activePlayer);
 		}
 	}
 
@@ -285,5 +265,25 @@ public class Game implements Serializable {
 		List<IPlayer> players = this.getPlayersFromGameboard();
 		this.activePlayer = players.get((int) (Math.random() * players.size()));
 		ClientNotificator.notifyGameMove("Spieler " + this.activePlayer.getPlayerName() + " fängt mit dem Spiel an");
+	}
+
+	/**
+	 * Der aktive Spieler wird geändert, sobald ein Spieler seinen Spielzug
+	 * abgeschlossen und die Wertung inkl. Kartenausteilung beendet wurde.
+	 */
+	private void changeActivePlayer() {
+		this.log.info("Wechsle den aktiven Spieler");
+		List<IPlayer> players = this.getPlayersFromGameboard();
+		// Wenn noch kein Spieler aktiv, einen Startspieler bestimmen
+		if (this.activePlayer == null) {
+			this.defineStartPlayer();
+		} else {
+			// Wenn bereits ein Spieler aktiv ist, den nächsten aktivieren
+			if (this.activePlayer.getPlayerNumber() < players.size()) {
+				this.activePlayer = players.get(this.activePlayer.getPlayerNumber());
+			} else {
+				this.activePlayer = players.get(0);
+			}
+		}
 	}
 }

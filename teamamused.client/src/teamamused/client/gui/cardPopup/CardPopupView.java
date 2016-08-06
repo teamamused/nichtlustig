@@ -35,6 +35,7 @@ import teamamused.common.interfaces.ITargetCard;
 public class CardPopupView extends AbstractView<GameBoardModel> {
 
 	private final int IMAGE_HEIGHT = 120;
+	private final int POPUP_SIZE = 240;
 	protected GridPane root;
 	protected VBox titlePane;
 	protected HBox cardTxtPane, specialCardTxtPane, deathCardTxtPane, buttonPane;
@@ -80,13 +81,14 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		cardsRival = new Label("Zielkarten");
 		cardsRival.setId("labelUnderline");
 		cardTxtPane.getChildren().add(cardsRival);
-
+		noCardsRival = new Label("Der Spieler hat keine Zielkarten");
+		
 		// Definition der Pane für die Zielkarten inkl. Instanziierung und
 		// Zuweisung der Controlls
 		cardFlowPane = new FlowPane();
 		cardFlowPane.setHgap(10);
 		cardFlowPane.setVgap(10);
-
+		
 		if (this.model.getPlayer() != null) {
 			for (ITargetCard card : model.getPlayer().getTargetCards()) {
 				Button btnTargetCard = new Button();
@@ -104,14 +106,14 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 							}
 						});
 						VBox box = new VBox(5);
-						box.getChildren().addAll(card.toCanvas(IMAGE_HEIGHT * 2), btnSchliessen);
+						box.getChildren().addAll(card.toCanvas(POPUP_SIZE), btnSchliessen);
 						popup.getContent().addAll(box);
 						popup.show(stage);
 					}
 				});
 				cardFlowPane.getChildren().add(btnTargetCard);
 			}
-			noCardsRival = new Label("Der Spieler hat keine Zielkarten");
+
 			if (cardFlowPane.getChildren().size() == 0) {
 				cardFlowPane.getChildren().add(noCardsRival);
 			}
@@ -123,6 +125,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		specialCardsRival = new Label("Spezialkarten");
 		specialCardsRival.setId("labelUnderline");
 		specialCardTxtPane.getChildren().add(specialCardsRival);
+		noSpecialCardsRival = new Label("Der Spieler hat keine Spezialkarten");
 
 		// Definition der Pane für die Spezialkarten inkl. Instanziierung
 		// und Zuweisung der Controlls
@@ -130,12 +133,33 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		specialCardFlowPane.setHgap(10);
 		specialCardFlowPane.setVgap(10);
 
-		noSpecialCardsRival = new Label("Der Spieler hat keine Spezialkarten");
 		if (this.model.getPlayer() != null) {
 			for (ISpecialCard card : model.getPlayer().getSpecialCards()) {
-				playerSpecialCardView = getImageView(card.getForegroundImage());
-				specialCardFlowPane.getChildren().add(playerSpecialCardView);
+				Button btnSpecialCard = new Button();
+				btnSpecialCard.setGraphic(getImageView(card.getForegroundImage()));
+				btnSpecialCard.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						Popup popup = new Popup();
+						popup.hideOnEscapeProperty().set(true);
+						Button btnSchliessen = new Button("schliessen");
+						btnSchliessen.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								popup.hide();
+							}
+						});
+						VBox box = new VBox(5);
+						ImageView view = getImageView(card.getForegroundImage());
+						box.getChildren().addAll(view, btnSchliessen);
+						view.setFitHeight(POPUP_SIZE);
+						popup.getContent().addAll(box);
+						popup.show(stage);
+					}
+				});
+				specialCardFlowPane.getChildren().add(btnSpecialCard);
 			}
+
 			if (specialCardFlowPane.getChildren().size() == 0) {
 				specialCardFlowPane.getChildren().add(noSpecialCardsRival);
 			}
@@ -147,6 +171,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		deathCardsRival = new Label("Todeskarten");
 		deathCardsRival.setId("labelUnderline");
 		deathCardTxtPane.getChildren().add(deathCardsRival);
+		noDeathCardsRival = new Label("Der Spieler hat keine Todeskarten");
 
 		// Definition der Pane für die Todeskarten inkl. Instanziierung
 		// und Zuweisung der Controlls
@@ -155,11 +180,32 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		deathCardFlowPane.setVgap(10);
 
 		if (this.model.getPlayer() != null) {
-			noDeathCardsRival = new Label("Der Spieler hat keine Todeskarten");
 			for (IDeadCard card : model.getPlayer().getDeadCards()) {
-				playerDeathCardView = getImageView(card.getForegroundImage());
-				deathCardFlowPane.getChildren().add(playerDeathCardView);
+				Button btnDeathCard = new Button();
+				btnDeathCard.setGraphic(getImageView(card.getForegroundImage()));
+				btnDeathCard.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						Popup popup = new Popup();
+						popup.hideOnEscapeProperty().set(true);
+						Button btnSchliessen = new Button("schliessen");
+						btnSchliessen.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								popup.hide();
+							}
+						});
+						VBox box = new VBox(5);
+						ImageView view = getImageView(card.getForegroundImage());
+						box.getChildren().addAll(view, btnSchliessen);
+						view.setFitHeight(POPUP_SIZE);
+						popup.getContent().addAll(box);
+						popup.show(stage);
+					}
+				});
+				deathCardFlowPane.getChildren().add(btnDeathCard);
 			}
+			
 			if (deathCardFlowPane.getChildren().size() == 0) {
 				deathCardFlowPane.getChildren().add(noDeathCardsRival);
 			}
@@ -222,7 +268,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 	 */
 	private ImageView getImageView(Image image) {
 		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(120);
+		imageView.setFitHeight(IMAGE_HEIGHT);
 		imageView.setPreserveRatio(true);
 		return imageView;
 	}
