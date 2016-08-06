@@ -13,9 +13,6 @@ import teamamused.client.Main;
 import teamamused.client.gui.ChooseCards.ChooseCardsController;
 import teamamused.client.gui.ChooseCards.ChooseCardsModel;
 import teamamused.client.gui.ChooseCards.ChooseCardsView;
-import teamamused.client.gui.GameOver.GameOverController;
-import teamamused.client.gui.GameOver.GameOverModel;
-import teamamused.client.gui.GameOver.GameOverView;
 import teamamused.client.gui.cardPopup.CardPopupController;
 import teamamused.client.gui.cardPopup.CardPopupView;
 import teamamused.client.libs.Client;
@@ -226,7 +223,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	@Override
 	public void onNumberOfRemeiningDicingChanged(int remDices) {
-		System.out.println("RemDice"+model.playerIsActive+model.remainingDices);
 		model.remainingDices = remDices;
 		Platform.runLater(() -> {
 			view.updateTextOnLabelRollDices();
@@ -243,7 +239,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	@Override
 	public void onPlayerIsActivedChanged(boolean isActive) {
-		System.out.println("Aktiv"+this.model.getPlayer().getPlayerName()+isActive);
 		model.playerIsActive = isActive;
 		Platform.runLater(() -> {
 			allowedToDice();
@@ -255,7 +250,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 * die disabled Würfel zu steuern.
 	 */
 	private void allowedToDice() {
-		System.out.println("Hier"+model.playerIsActive+model.remainingDices);
 		if (model.playerIsActive && model.remainingDices > 0) {
 			view.btnWuerfeln.setDisable(false);
 			allowedToMoveDown = true;
