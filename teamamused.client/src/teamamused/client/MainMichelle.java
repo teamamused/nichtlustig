@@ -14,8 +14,9 @@ import teamamused.client.gui.RankingView;
 import teamamused.client.gui.WelcomeController;
 import teamamused.client.gui.WelcomeModel;
 import teamamused.client.gui.WelcomeView;
+import teamamused.client.gui.GameOver.GameOverController;
+import teamamused.client.gui.GameOver.GameOverModel;
 import teamamused.client.gui.GameOver.GameOverView;
-import teamamused.client.gui.MovingPopup.MovingPopupController;
 import teamamused.client.gui.MovingPopup.MovingPopupView;
 import teamamused.client.gui.gameboard.GameBoardController;
 import teamamused.client.gui.gameboard.GameBoardModel;
@@ -27,7 +28,6 @@ import teamamused.client.gui.waitingroom.WaitingRoomView;
 import teamamused.client.libs.Client;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
-import teamamused.common.models.Player;
 
 /*
  * TODO: NICHT EINCHECKEN!!!!
@@ -54,6 +54,12 @@ public class MainMichelle extends Application {
 		Client.getInstance().connectToServer("localhost", "michelle", 9636);
 		// spieler sollte schon registriert sein
 		Client.getInstance().logIn("Michelle", "1234");
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		
 //      // Initialisierung des GameBoard-GUI
       GameBoardModel model = new GameBoardModel();
@@ -82,8 +88,8 @@ public class MainMichelle extends Application {
 //        movingPopupView = new MovingPopupView(primaryStage, model);
 //        new MovingPopupController(model, movingPopupView);
 //        
-        // Initialisierung der GameOver-GUI
-//        GameOverModel model2 = new GameOverModel();
+//        // Initialisierung der GameOver-GUI
+//        GameOverModel model2 = new GameOverModel(Ranking[] ranking);
 //        gameOverView = new GameOverView(primaryStage, model2);
 //        new GameOverController(model2, gameOverView);
         
