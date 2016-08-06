@@ -226,6 +226,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	@Override
 	public void onNumberOfRemeiningDicingChanged(int remDices) {
+		System.out.println("RemDice"+model.playerIsActive+model.remainingDices);
 		model.remainingDices = remDices;
 		Platform.runLater(() -> {
 			view.updateTextOnLabelRollDices();
@@ -242,6 +243,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	@Override
 	public void onPlayerIsActivedChanged(boolean isActive) {
+		System.out.println("Aktiv"+this.model.getPlayer().getPlayerName()+isActive);
 		model.playerIsActive = isActive;
 		Platform.runLater(() -> {
 			allowedToDice();
@@ -253,6 +255,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 * die disabled Würfel zu steuern.
 	 */
 	private void allowedToDice() {
+		System.out.println("Hier"+model.playerIsActive+model.remainingDices);
 		if (model.playerIsActive && model.remainingDices > 0) {
 			view.btnWuerfeln.setDisable(false);
 			allowedToMoveDown = true;
@@ -274,11 +277,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onGameFinished(Ranking[] rankings) {
 		Platform.runLater(() -> {
-			Stage gameOverStage = new Stage();
-			GameOverModel gameOverModel = new GameOverModel(rankings);
-			GameOverView gameOverView = new GameOverView(gameOverStage, gameOverModel);
-			new GameOverController(gameOverModel, gameOverView);
-			gameOverView.start();
+			Main.getInstance().startGameOver(rankings);
 		});
 
 	}
