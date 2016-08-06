@@ -99,7 +99,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			public void handle(MouseEvent event) {
 				Client.getInstance().startGame();
 				view.btnStart.setDisable(true);
-				
 			}
 			
 		});
