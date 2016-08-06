@@ -196,10 +196,6 @@ public class Game implements Serializable {
 					additionalDicingCards.add(card);
 				}
 			}
-			if (playerHasToSkip) {
-				this.startNextRound();
-				return;
-			}
 			// Würfel zurücksetzen und zusätzliche Würfeln übergeben
 			int additionalDicings = 0;
 			for (ISpecialCard dicingCard : additionalDicingCards) {
@@ -211,6 +207,12 @@ public class Game implements Serializable {
 			}
 			CubeManager.getInstance().initForNextRound(additionalDicings);
 			ClientNotificator.notifyPlayerChanged(this.activePlayer);
+			// Falls der Spieler überspringen muss, nächste Runde direkt wieder starten
+			// (Muss am schluss sein damit alle notificationen sauber durchlaufen)
+			if (playerHasToSkip) {
+				this.startNextRound();
+				return;
+			}
 		}
 	}
 

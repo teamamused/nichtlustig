@@ -111,18 +111,18 @@ public class Server {
 		if (rpc != null && rpc.getArguments() != null && rpc.getArguments().length >= 7
 				&& rpc.getArguments()[0] instanceof Boolean) {
 			try {
+				// Clients informieren
+				ClientNotificator.notifyGameMove("Der Spieler " + rpc.getClient() + " hat würfel fixiert.");
 				// Würfel fixieren
 				boolean[] cubesFixed = new boolean[7];
 				for (int i = 0; i< 7; i++) {
 					cubesFixed[i] = (boolean)rpc.getArguments()[i];
 				}
 				CubeManager.getInstance().saveFixedDices(cubesFixed);
-				// Clients informieren
-				ClientNotificator.notifyGameMove("Der Spieler " + rpc.getClient() + " hat würfel fixiert.");
-				ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
-				// falls alle Würfel fixiert sind kann die Runde beendet werden
-				if (CubeManager.getInstance().getAllCubesFixed()) {
-					Game.getInstance().finishRound();
+				// falls nicht alle Würfel fixiert sind clients informieren, ansonsten wurde die Runde beendet.
+				if (!CubeManager.getInstance().getAllCubesFixed()) {
+					// Clients informieren
+					ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
 				}
 				return new TransportableState(true, "Die fixierten Würfel würden gespeichert");
 			} catch (Exception ex) {

@@ -1,10 +1,8 @@
 package teamamused.playground.application.gui;
 
-import teamamused.client.libs.IClientListener;
 import teamamused.common.gui.AbstractController;
-import teamamused.client.libs.Client;
 
-public class ChooseCardsController extends AbstractController<ChooseCardsModel, ChooseCardsView> implements IClientListener {
+public class ChooseCardsController extends AbstractController<ChooseCardsModel, ChooseCardsView> {
 	/**
 	 * Konstruktor des GameboardControllers
 	 * 
@@ -15,9 +13,6 @@ public class ChooseCardsController extends AbstractController<ChooseCardsModel, 
 	 */
 	public ChooseCardsController(ChooseCardsModel model, ChooseCardsView view) {
 		super(model, view);
-		// Dem Client Mitteilen dass man über aktualisierungen informiert werden
-		// will
-		Client.getInstance().registerGui(this);
 	}
 
 }

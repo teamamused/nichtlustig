@@ -306,17 +306,12 @@ public class BoardManager {
 									ClientNotificator.notifyGameMove("Todeskarte " + deathCard + " wurde auf Zielkarte " +
 											targetCard + " gelegt.");
 									matchDeadCardOnTarget = true;
-								} else {
-									// Todeskarte wird normal neben Zielkarten hingelegt
-									newOwner.addDeadCard(deathCard, null);
-									ClientNotificator.notifyGameMove("Todeskarte " + deathCard + " wurde neben Zielkarten" +
-									" gelegt.");
-								}
+								} 
 							}
 						}
 					}
 					// Wenn keine Zielkarten bei aktivem Spieler vorhanden
-					else{
+					if (!matchDeadCardOnTarget)	{
 						//Todeskarte wird bei aktivem Spieler neben Zielkarten hingelegt
 						newOwner.addDeadCard(deathCard, null);
 						ClientNotificator.notifyGameMove("Todeskarte " + deathCard + " wurde neben Zielkarten" +

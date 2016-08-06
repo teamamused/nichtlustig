@@ -84,6 +84,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 */
 	@Override
 	public void onPlayerHasToCooseCards(Hashtable<Integer, List<ITargetCard>> options) {
+		System.out.println("GameBoard Choose Cards");
 		Platform.runLater(() -> {
 				Stage chooseStage = new Stage();
 				ChooseCardsModel model = new ChooseCardsModel(options);

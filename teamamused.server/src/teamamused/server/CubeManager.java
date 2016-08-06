@@ -79,11 +79,12 @@ public class CubeManager{
 		    	cube.dice();
 		    }
 		}
-		ClientNotificator.notifyGameMove("Folgende Würfel wurden gewürfelt: ");
+		// Dani auskommentiert, wird im GUI angezeigt
+		/*ClientNotificator.notifyGameMove("Folgende Würfel wurden gewürfelt: ");
 		for(ICube cube : getCubes()){
 			ClientNotificator.notifyGameMove("Würfel " + (cube.getCubeNumber()+1)  +
 					", Farbe " + cube.getCubeColor() + ", Augenzahl " + cube.getCurrentValue().FaceValue);
-		}
+		}*/
 		return this.allowedDicings - this.diceCounter;
 	}
 	
