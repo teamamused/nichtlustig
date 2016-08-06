@@ -215,8 +215,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onNumberOfRemeiningDicingChanged(int remDices) {
 		model.remainingDices = remDices;
-		view.updateTextOnLabelRollDices();
-		allowedToDice();
+		Platform.runLater(() -> {
+			allowedToDice();
+			view.updateTextOnLabelRollDices();
+		});
 	}
 
 	/**
@@ -229,7 +231,9 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onPlayerIsActivedChanged(boolean isActive) {
 		model.playerIsActive = isActive;
-		allowedToDice();
+		Platform.runLater(() -> {
+			allowedToDice();
+		});
 	}
 
 	/**
