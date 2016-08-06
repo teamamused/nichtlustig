@@ -62,7 +62,8 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 	@Override
 	public void onLoginSuccessful(IPlayer player) {
 		ServiceLocator.getInstance().getLogger().info("Login für Spieler " + player.getPlayerName() + " erfolgreich");
-		// wenn öbis vom Server ufgruefe wird, wo im Gui gmacht sell werte, muess
+		// wenn öbis vom Server ufgruefe wird, wo im Gui gmacht sell werte,
+		// muess
 		// es immer mit dem Platform.runLater ufgruefe werde
 		Platform.runLater(() -> {
 			Main.getInstance().startWelcome();
@@ -72,7 +73,9 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 	@Override
 	public void onLoginFailed(String msg) {
 		ServiceLocator.getInstance().getLogger().info("Login gescheitert: " + msg);
-		// Irgend es Label ihblände mit em Text "Fehler beim anmelden: "+ msg
-	}	
+		Platform.runLater(() -> {
+			view.labelFailLogIn.setText(msg);
+		});
+	}
 
 }

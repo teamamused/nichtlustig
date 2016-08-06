@@ -68,7 +68,7 @@ public class LogInView extends AbstractView<LogInModel> {
 		this.labelUser = new Label("Benutzername");
 		this.labelPassword = new Label("Passwort");
 		this.labelNeu = new Label("Neu bei uns?");
-		//Label labelFailLogIn = new Label();
+		this.labelFailLogIn = new Label();
 
 		labelCopyright.setId("labelCopyright");
 		labelConnect.setId("labelConnect");
@@ -143,7 +143,7 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(labelPassword, 2, 2);
 		grid.add(password, 2, 3);
 		grid.add(btnLogin, 2, 5);
-		//grid.add(labelFailLogIn, 2, 6);
+		grid.add(labelFailLogIn, 2, 6);
 		grid.add(labelNeu, 2, 8);
 		grid.add(linkReg, 2, 9);
 		grid.add(iview2, 1, 11);
