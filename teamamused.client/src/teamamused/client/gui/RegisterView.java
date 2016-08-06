@@ -216,6 +216,7 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		this.password.setPromptText(tl.getString(LangText.RegisterPassword));
 		this.labelRegPassword2.setText(tl.getString(LangText.RegisterLabelPassword2));
 		this.password2.setPromptText(tl.getString(LangText.RegisterPassword2));
+		this.btnRegister.setText(tl.getString(LangText.RegisterBtnRegister));
 	}
 
 }
