@@ -28,7 +28,9 @@ import teamamused.client.gui.splashscreen.Splash_Model;
 import teamamused.client.gui.splashscreen.Splash_View;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
+import teamamused.common.gui.AbstractView;
 import teamamused.common.gui.Translator;
+import teamamused.common.interfaces.IUserView;
 
 public class Main extends Application {
 
@@ -91,37 +93,18 @@ public class Main extends Application {
 		logInView = null;
 		registerView.start();
 	}
-
-	public void startWelcome() {
-
-		Stage welcomeStage = new Stage();
-		WelcomeModel model = new WelcomeModel();
-		welcomeView = new WelcomeView(welcomeStage, model);
-		new WelcomeController(model, welcomeView);
-		logInView.stop();
-		logInView = null;
-		welcomeView.start();
-	}
 	
-	public void startWelcome2() {
-
+	public void startWelcome(IUserView toClose) {
+		
 		Stage welcomeStage = new Stage();
 		WelcomeModel model = new WelcomeModel();
 		welcomeView = new WelcomeView(welcomeStage, model);
 		new WelcomeController(model, welcomeView);
-		registerView.stop();
-		registerView = null;
-		welcomeView.start();
-	}
-	
-	public void startWelcome3() {
-
-		Stage welcomeStage = new Stage();
-		WelcomeModel model = new WelcomeModel();
-		welcomeView = new WelcomeView(welcomeStage, model);
-		new WelcomeController(model, welcomeView);
-		rankingView.stop();
-		rankingView = null;
+		
+		if (toClose != null) {
+			toClose.stop();
+			toClose = null;	
+		}
 		welcomeView.start();
 	}
 	

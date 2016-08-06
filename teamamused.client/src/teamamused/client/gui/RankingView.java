@@ -12,8 +12,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import teamamused.common.LogHelper;
@@ -52,7 +50,6 @@ public class RankingView extends AbstractView<RankingModel> {
 		// Tabelle erstellen
 		TableView<Ranking> table = new TableView<Ranking>();
 		table.setPrefWidth(750);
-		table.setPrefHeight(400);
 		table.setId("tableRanking");
 
 		// Spaltentitel festlegen
@@ -104,7 +101,7 @@ public class RankingView extends AbstractView<RankingModel> {
 	    StackPane stackBack = new StackPane();
 	    stackBack.setPadding(new Insets(0, 0, 0, 0));
 	    stackBack.setAlignment(Pos.TOP_RIGHT);
-	    stackBack.getChildren().addAll(iview);
+	    stackBack.getChildren().addAll(btnBack);
 		
 	    StackPane stackLabelRank = new StackPane();
 	    stackLabelRank.setPadding(new Insets(0, 0, 0, 0));
@@ -121,7 +118,7 @@ public class RankingView extends AbstractView<RankingModel> {
 	    top.setRight(stackBack);
 	    
 		BorderPane root = new BorderPane();
-		root.setPadding(new Insets(30, 50, 0, 50));
+		root.setPadding(new Insets(30, 50, 50, 50));
 		root.setTop(top);
 		root.setLeft(stackTable);
 

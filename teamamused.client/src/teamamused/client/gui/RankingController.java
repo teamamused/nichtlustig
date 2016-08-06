@@ -15,7 +15,7 @@ public class RankingController extends AbstractController<RankingModel, RankingV
 		Client.getInstance().registerGui(this);
 		
 		view.btnBack.setOnAction((ActionEvent e) -> {
-			Main.getInstance().startWelcome3();
+			Main.getInstance().startWelcome(this.view);
 		});
 		
 	}

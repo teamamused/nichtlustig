@@ -51,7 +51,7 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 	@Override
 	public void onRegisterSuccessful(IPlayer player) {
 		Platform.runLater(() -> {
-		Main.getInstance().startWelcome2();
+		Main.getInstance().startWelcome(this.view);
 		});
 		ServiceLocator.getInstance().getLogger().info("Der Benutzer wurde erfolgreich registriert");
 	}

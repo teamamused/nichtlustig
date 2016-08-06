@@ -2,6 +2,7 @@ package teamamused.common.gui;
 
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
+import teamamused.common.interfaces.IUserView;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -13,7 +14,7 @@ import javafx.stage.Stage;
  * 
  * @author Brad Richards
  */
-public abstract class AbstractView<M extends AbstractModel> {
+public abstract class AbstractView<M extends AbstractModel> implements IUserView {
     protected Stage stage;
     protected Scene scene;
     protected M model;

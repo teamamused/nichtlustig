@@ -66,7 +66,7 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 		// muess
 		// es immer mit dem Platform.runLater ufgruefe werde
 		Platform.runLater(() -> {
-			Main.getInstance().startWelcome();
+			Main.getInstance().startWelcome(this.view);
 		});
 	}
 
