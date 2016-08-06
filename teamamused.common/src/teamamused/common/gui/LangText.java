@@ -37,6 +37,7 @@ public enum LangText {
 	RegisterPassword ("register.password"),
 	RegisterLabelPassword2 ("register.labelRegPassword2"),
 	RegisterPassword2 ("register.password2"),
+	RegisterBtnRegister ("register.btnRegister"),
 	
 	// Welcome View
 	WelcomeTitel ("welcome.titel"),

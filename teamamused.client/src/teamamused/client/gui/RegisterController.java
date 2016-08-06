@@ -34,7 +34,8 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 		view.cbLang.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Locale>() {
 			@Override
 			public void changed(ObservableValue<? extends Locale> observable, Locale oldValue, Locale newValue) {
-				ServiceLocator.getInstance().setTranslator(new Translator(newValue.getLanguage()));
+				Client.getInstance().setLocale(newValue);
+				view.updateTexts();
 			}
 		});
 
