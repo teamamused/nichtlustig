@@ -1,5 +1,7 @@
 package teamamused.client.gui.cardPopup;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,6 +14,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.common.ServiceLocator;
@@ -31,6 +34,7 @@ import teamamused.common.interfaces.ITargetCard;
  */
 public class CardPopupView extends AbstractView<GameBoardModel> {
 
+	private final int IMAGE_HEIGHT = 120;
 	protected GridPane root;
 	protected VBox titlePane;
 	protected HBox cardTxtPane, specialCardTxtPane, deathCardTxtPane, buttonPane;
@@ -85,15 +89,30 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 
 		if (this.model.getPlayer() != null) {
 			for (ITargetCard card : model.getPlayer().getTargetCards()) {
-				if (card.getIsValuated()) {
-					playerTargetCardView = getImageView(card.getBackgroundImage());
-				} else {
-					playerTargetCardView = getImageView(card.getForegroundImage());
-				}
-				cardFlowPane.getChildren().add(playerTargetCardView);
+				Button btnTargetCard = new Button();
+				btnTargetCard.setGraphic(card.toCanvas(IMAGE_HEIGHT - 5));
+				btnTargetCard.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						Popup popup = new Popup();
+						popup.hideOnEscapeProperty().set(true);
+						Button btnSchliessen = new Button("schliessen");
+						btnSchliessen.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								popup.hide();
+							}
+						});
+						VBox box = new VBox(5);
+						box.getChildren().addAll(card.toCanvas(IMAGE_HEIGHT * 2), btnSchliessen);
+						popup.getContent().addAll(box);
+						popup.show(stage);
+					}
+				});
+				cardFlowPane.getChildren().add(btnTargetCard);
 			}
+			noCardsRival = new Label("Der Spieler hat keine Zielkarten");
 			if (cardFlowPane.getChildren().size() == 0) {
-				noCardsRival = new Label("Der Spieler hat keine Zielkarten");
 				cardFlowPane.getChildren().add(noCardsRival);
 			}
 		}
@@ -111,13 +130,13 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		specialCardFlowPane.setHgap(10);
 		specialCardFlowPane.setVgap(10);
 
+		noSpecialCardsRival = new Label("Der Spieler hat keine Spezialkarten");
 		if (this.model.getPlayer() != null) {
 			for (ISpecialCard card : model.getPlayer().getSpecialCards()) {
 				playerSpecialCardView = getImageView(card.getForegroundImage());
 				specialCardFlowPane.getChildren().add(playerSpecialCardView);
 			}
 			if (specialCardFlowPane.getChildren().size() == 0) {
-				noSpecialCardsRival = new Label("Der Spieler hat keine Spezialkarten");
 				specialCardFlowPane.getChildren().add(noSpecialCardsRival);
 			}
 		}
@@ -136,12 +155,12 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		deathCardFlowPane.setVgap(10);
 
 		if (this.model.getPlayer() != null) {
+			noDeathCardsRival = new Label("Der Spieler hat keine Todeskarten");
 			for (IDeadCard card : model.getPlayer().getDeadCards()) {
 				playerDeathCardView = getImageView(card.getForegroundImage());
 				deathCardFlowPane.getChildren().add(playerDeathCardView);
 			}
 			if (deathCardFlowPane.getChildren().size() == 0) {
-				noDeathCardsRival = new Label("Der Spieler hat keine Todeskarten");
 				deathCardFlowPane.getChildren().add(noDeathCardsRival);
 			}
 		}
@@ -227,7 +246,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 
 		// Texte holen
 		stage.setTitle(tl.getString(LangText.CardPopupTitle));
-		this.labelTitle.setText(tl.getString(LangText.CardPopupCardsOf));
+		this.labelTitle.setText(String.format(tl.getString(LangText.CardPopupCardsOf), model.getPlayer().getPlayerName()));
 		this.labelText.setText(tl.getString(LangText.CardPopupValued));
 		this.cardsRival.setText(tl.getString(LangText.CardPopupTarget));
 		this.noCardsRival.setText(tl.getString(LangText.CardPopupNoTarget));

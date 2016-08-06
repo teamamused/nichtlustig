@@ -10,8 +10,8 @@ import javafx.scene.paint.Color;
  *
  */
 public enum CubeColor {
-	Red(Color.RED, Color.BLACK), White(Color.WHITE, Color.BLACK), Black(Color.BLACK, Color.WHITE), Pink(Color.MAGENTA,
-			Color.BLACK);
+	Red(Color.RED, Color.WHITE), White(Color.WHITE, Color.BLACK), Black(Color.BLACK, Color.WHITE), Pink(Color.MAGENTA,
+			Color.WHITE);
 
 	private Color backColor;
 	private Color foreColor;

@@ -243,7 +243,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		pane.setPadding(new Insets(5, 5, 5, 5));
 		pane.setHgap(5);
 		pane.setVgap(5);
-		pane.setGridLinesVisible(true);
+		pane.setGridLinesVisible(false);
 		return pane;
 	}
 

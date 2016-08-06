@@ -48,6 +48,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 
 		// Registriert das GUI
 		Client.getInstance().registerGui(this);
+		Client.getInstance().joinGame();
 
 		// Auf dem Button wird ein MouseEvent registiert, welches den
 		// Browser öffnet und das entsprechende HTML-Dokument (Spielregeln)
@@ -91,9 +92,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				view.txtChatInput.clear();
 			}
 		});
-		// Spiel beitreten
-		Client.getInstance().joinGame();
-		Client.getInstance().startGame();
 	}
 
 	/**
@@ -218,8 +216,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onNumberOfRemeiningDicingChanged(int remDices) {
 		model.remainingDices = remDices;
-		view.updateTextOnLabelRollDices();
-		allowedToDice();
+		Platform.runLater(() -> {
+			view.updateTextOnLabelRollDices();
+			allowedToDice();
+		});
 	}
 
 	/**
@@ -232,7 +232,9 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onPlayerIsActivedChanged(boolean isActive) {
 		model.playerIsActive = isActive;
-		allowedToDice();
+		Platform.runLater(() -> {
+			allowedToDice();
+		});
 	}
 
 	/**
