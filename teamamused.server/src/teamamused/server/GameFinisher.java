@@ -1,7 +1,6 @@
 package teamamused.server;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import teamamused.common.db.RankingRepository;
 import teamamused.common.interfaces.IDataBaseContext;
 import teamamused.common.interfaces.IDeadCard;
 import teamamused.common.interfaces.IPlayer;
-import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
 
 /**
@@ -197,15 +195,7 @@ public class GameFinisher {
 		Ranking[] inGameRanking = RankingRepository.getInGameRanking(gameID, this.ranking);
 		showRankingToPlayer(inGameRanking);
 	}
-	
-	/**
-	 * Liest das Ranking aus.
-	 * @return Ranking Hashtabelle <IPlayer, Integer>
-	 */
-	private Hashtable<IPlayer, Integer> getRanking(){
-		return ranking;
-	}
-	
+
 	/**
 	 * Zeigt den Spielern das Ranking an.
 	 * @param inGameRanking RankingRepository übergeben

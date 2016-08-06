@@ -44,6 +44,7 @@ public class GameBoard implements ICardHolder, Serializable {
 	ICube[] cubes;
 	private List<IPlayer> players;
 
+	private boolean isGameStartet = false;
 
 	/**
 	 * Initialiserung der Karten und Würfel
@@ -100,6 +101,7 @@ public class GameBoard implements ICardHolder, Serializable {
 			tg.setIsValuated(card.isValuated);
 			this.htTargetCards.put(card.gamecard, tg);
 		}
+		this.isGameStartet = tgb.isGameStarted;
 		// Würfel initialisieren
 		this.cubes = CubeFactory.getCubes(htSpecialCards, tgb.cubeValues, tgb.cubeFixed);
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett - Würfel erstellt");
@@ -219,6 +221,14 @@ public class GameBoard implements ICardHolder, Serializable {
 		return players;
 	}
 	
+	public boolean getGameStartet() {
+		return isGameStartet;
+	}
+
+	public void setGameStartet(boolean isGameStartet) {
+		this.isGameStartet = isGameStartet;
+	}
+
 	public String toString() {
 		return "Spielbrett";
 	}

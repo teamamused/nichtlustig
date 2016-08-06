@@ -60,6 +60,7 @@ public enum LangText {
 	GameBoardSelectedDices ("gameBoard.labelSelectedDices"),
 	GameBoardBtnWuerfeln ("gameBoard.btnWuerfeln"),
 	GameBoardRollDices ("gameBoard.labelRollDices"),
+	GameBoardStart ("gameBoard.btnStart"),
 	
 	// CardPopup View
 	CardPopupTitle ("cardPopup.title"),

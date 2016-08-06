@@ -72,6 +72,8 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 		// Definition der option-Pane inkl. Instanziierung und Zuweisung der
 		// Controlls
 		optionPane = new FlowPane();
+		optionPane.setVgap(10);
+		optionPane.setHgap(10);
 		for (int i : model.cardsToChooseOptions.keySet()) {
 			// Lädt pro Option die Karten
 			optionPane.getChildren().add(drawCards(i));
