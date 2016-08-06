@@ -132,7 +132,9 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		
 		updateTexts();
+		
 		return scene;
 	}
 	

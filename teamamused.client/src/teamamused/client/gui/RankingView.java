@@ -1,6 +1,9 @@
 package teamamused.client.gui;
 
 import java.io.FileNotFoundException;
+
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,7 +12,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
@@ -29,7 +34,6 @@ import teamamused.common.gui.Translator;
 public class RankingView extends AbstractView<RankingModel> {
 
 	protected Button btnBack;
-	protected Button btnExit;
 	
 	private Label labelRanking;
 
@@ -47,7 +51,8 @@ public class RankingView extends AbstractView<RankingModel> {
 
 		// Tabelle erstellen
 		TableView<Ranking> table = new TableView<Ranking>();
-		table.maxWidthProperty().bind(stage.widthProperty().multiply(0.9));
+		table.setPrefWidth(750);
+		table.setPrefHeight(400);
 		table.setId("tableRanking");
 
 		// Spaltentitel festlegen
@@ -83,7 +88,7 @@ public class RankingView extends AbstractView<RankingModel> {
 
 		ImageView iview = null;
 		try {
-			iview = new ImageView(ResourceLoader.getImage("Exit.png"));
+			iview = new ImageView(ResourceLoader.getImage("Back.png"));
 			iview.setFitWidth(30);
 			iview.setFitWidth(30);
 			iview.setPreserveRatio(true);
@@ -91,35 +96,34 @@ public class RankingView extends AbstractView<RankingModel> {
 			LogHelper.LogException(e1);
 		}
 
-		ImageView iview2 = null;
-		try {
-			iview2 = new ImageView(ResourceLoader.getImage("Back.png"));
-			iview2.setFitWidth(30);
-			iview2.setFitWidth(30);
-			iview2.setPreserveRatio(true);
-		} catch (FileNotFoundException e1) {
-			LogHelper.LogException(e1);
-		}
-
-		// Exit-Button mit Bild erstellen
-		btnExit = new Button();
-		btnExit.setGraphic(iview);
-		btnExit.setId("btnTransparent");
-
 		// Back-Button mit Bild erstellen
 		btnBack = new Button();
-		btnBack.setGraphic(iview2);
+		btnBack.setGraphic(iview);
 		btnBack.setId("btnTransparent");
-
+		
+	    StackPane stackBack = new StackPane();
+	    stackBack.setPadding(new Insets(0, 0, 0, 0));
+	    stackBack.setAlignment(Pos.TOP_RIGHT);
+	    stackBack.getChildren().addAll(iview);
+		
+	    StackPane stackLabelRank = new StackPane();
+	    stackLabelRank.setPadding(new Insets(0, 0, 0, 0));
+	    stackLabelRank.setAlignment(Pos.TOP_LEFT);
+	    stackLabelRank.getChildren().addAll(labelRanking);
+	    
+	    StackPane stackTable = new StackPane();
+	    stackTable.setPadding(new Insets(10, 0, 0, 0));
+	    stackTable.setAlignment(Pos.TOP_LEFT);
+	    stackTable.getChildren().addAll(table);
+	    
+	    BorderPane top = new BorderPane();
+	    top.setLeft(stackLabelRank);		
+	    top.setRight(stackBack);
+	    
 		BorderPane root = new BorderPane();
-		BorderPane top = new BorderPane();
-		HBox buttons = new HBox(5);
-
-		buttons.getChildren().addAll(btnBack, btnExit);
-		top.setCenter(labelRanking);
-		top.setRight(buttons);
+		root.setPadding(new Insets(30, 50, 0, 50));
 		root.setTop(top);
-		root.setCenter(table);
+		root.setLeft(stackTable);
 
 		// Das Layout Pane einer Scene hinzufügen
 		Scene scene = new Scene(root, 900, 600);
@@ -130,6 +134,8 @@ public class RankingView extends AbstractView<RankingModel> {
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
+		updateTexts();
+		
 		return scene;
 	}
 	

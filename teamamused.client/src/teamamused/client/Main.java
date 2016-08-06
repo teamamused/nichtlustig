@@ -156,17 +156,6 @@ public class Main extends Application {
 		byeView.start();
 	}
 	
-	public void startBye2() {
-
-		Stage ByeStage = new Stage();
-		ByeModel model = new ByeModel();
-		byeView = new ByeView(ByeStage, model);
-		new ByeController(model, byeView);
-		rankingView.stop();
-		rankingView = null;
-		byeView.start();
-	}
-	
 	public void startBye3() {
 
 		Stage ByeStage = new Stage();
