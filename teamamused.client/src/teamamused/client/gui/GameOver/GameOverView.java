@@ -31,7 +31,7 @@ public class GameOverView extends AbstractView<GameOverModel> {
 	protected HBox titlePane, txtPane, contentPane, rankingPane;
 	protected VBox buttonPane;
 	protected Label labelTxt, labelWinner;
-	protected Button btnNewStart, btnClose, btnTrophy;
+	protected Button btnRanking, btnClose, btnTrophy;
 	protected ImageView logo, giftImage, trophyIcon;
 	protected ScrollPane scrollPane;
 
@@ -79,11 +79,11 @@ public class GameOverView extends AbstractView<GameOverModel> {
 		// Definition der Button-Pane inkl. Instanziierung und Zuweisung der
 		// Controlls
 		buttonPane = new VBox();
-		btnNewStart = GameOverView.initializeButton("Spiel erneut spielen");
+		btnRanking = GameOverView.initializeButton("Spiel-Ranking");
 		btnClose = GameOverView.initializeButton("Spiel beenden");
 		buttonPane.setSpacing(10);
 		buttonPane.setAlignment(Pos.BOTTOM_RIGHT);
-		buttonPane.getChildren().addAll(btnNewStart, btnClose);
+		buttonPane.getChildren().addAll(btnRanking, btnClose);
 
 		// Definition der Content-Pane inkl. Instanziierung und Zuweisung der
 		// Controlls
@@ -162,7 +162,7 @@ public class GameOverView extends AbstractView<GameOverModel> {
 		stage.setTitle(tl.getString(LangText.GameOverTitle));
 		this.labelTxt.setText(tl.getString(LangText.GameOverTxt));
 		this.labelWinner.setText(String.format(tl.getString(LangText.GameOverWinner), model.winner.getUsername()));
-		this.btnNewStart.setText(tl.getString(LangText.GameOverBtnStart));
+		this.btnRanking.setText(tl.getString(LangText.GameOverBtnRanking));
 		this.btnClose.setText(tl.getString(LangText.GameOverBtnClose));
 	}
 

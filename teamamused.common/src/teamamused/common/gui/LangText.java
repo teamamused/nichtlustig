@@ -83,7 +83,7 @@ public enum LangText {
 	GameOverTitle ("gameOver.title"),
 	GameOverTxt ("gameOver.labelTxt"),
 	GameOverWinner ("gameOver.labelWinner"),
-	GameOverBtnStart("gameOver.btnNewStart"),
+	GameOverBtnRanking("gameOver.btnRanking"),
 	GameOverBtnClose ("gameOver.btnClose"),
 	
 	// MovingPopup View
