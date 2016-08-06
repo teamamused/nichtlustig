@@ -210,8 +210,11 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		this.labelCopyright.setText(tl.getString(LangText.RegisterCopyright));
 		this.labelRegisterHere.setText(tl.getString(LangText.RegisterHere));
 		this.labelRegUser.setText(tl.getString(LangText.RegisterUser));
-		this.labelRegPassword.setText(tl.getString(LangText.RegisterPassword));
-		this.labelRegPassword2.setText(tl.getString(LangText.RegisterPassword2));
+		this.textRegUser.setPromptText(tl.getString(LangText.RegisterTextRegUser));
+		this.labelRegPassword.setText(tl.getString(LangText.RegisterLabelPassword));
+		this.password.setPromptText(tl.getString(LangText.RegisterPassword));
+		this.labelRegPassword2.setText(tl.getString(LangText.RegisterLabelPassword2));
+		this.password2.setPromptText(tl.getString(LangText.RegisterPassword2));
 	}
 
 }

@@ -19,9 +19,12 @@ public enum LangText {
 	LogInServer ("login.labelServer"),
 	LogInPort ("login.labelPort"),
 	LogInUser ("login.labelUser"),
-	LogInPassword ("login.labelPassword"),
+	LogInTextUser ("login.TextUser"),
+	LogInLabelPassword ("login.labelPassword"),
+	LogInPassword ("login.Password"),
 	LogInNeu ("login.labelNeu"),
 	LogInButtonServer ("login.btnConnectServer"),
+	LogInLinkReg ("login.linkReg"),
 	
 	// Register View
 	RegisterTitel ("register.titel"),
@@ -29,8 +32,11 @@ public enum LangText {
 	RegisterCopyright ("register.labelCopyright"),
 	RegisterHere ("register.labelRegisterHere"),
 	RegisterUser ("register.labelRegUser"),
-	RegisterPassword ("register.labelRegPassword"),
-	RegisterPassword2 ("register.labelRegPassword2"),
+	RegisterTextRegUser ("register.textRegUser"),
+	RegisterLabelPassword ("register.labelRegPassword"),
+	RegisterPassword ("register.password"),
+	RegisterLabelPassword2 ("register.labelRegPassword2"),
+	RegisterPassword2 ("register.password2"),
 	
 	// Welcome View
 	WelcomeTitel ("welcome.titel"),
