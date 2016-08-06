@@ -92,6 +92,17 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				view.txtChatInput.clear();
 			}
 		});
+		
+		// Startet das Spiel
+		view.btnStart.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Client.getInstance().startGame();
+				view.btnStart.setDisable(true);
+				
+			}
+			
+		});
 	}
 
 	/**
