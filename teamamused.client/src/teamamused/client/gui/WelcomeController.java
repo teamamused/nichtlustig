@@ -17,10 +17,6 @@ public class WelcomeController extends AbstractController<WelcomeModel, WelcomeV
 		// Beim Client registrieren (s. Observer Pattern)
 		Client.getInstance().registerGui(this);
 
-		// view.btnTrophy.setOnAction((ActionEvent e) -> {
-		// Main.getInstance().startRanking();
-		// });
-
 		view.btnTrophy.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

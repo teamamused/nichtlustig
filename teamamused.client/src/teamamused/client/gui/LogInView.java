@@ -192,6 +192,8 @@ public class LogInView extends AbstractView<LogInModel> {
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
+		updateTexts();
+		
 		return scene;
 	}
 
