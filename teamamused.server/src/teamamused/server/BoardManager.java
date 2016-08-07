@@ -355,18 +355,18 @@ public class BoardManager {
 	}
 
 	private void checkDead() {
-		// Tod relevante Spezialkarten prüfen
 		IPlayer activePlayer = Game.getInstance().getActivePlayer();
 		ISpecialCard playerIsForcedToDead = null;
 		ISpecialCard playerIsBewaredOfDead = null;
 		ArrayList<IDeadCard> allDeadCards = new ArrayList<IDeadCard>();
 		ArrayList<IDeadCard> deadCardsOfPlayer = new ArrayList<IDeadCard>();
-		boolean hasDeadCardsAlready = false;
 		
+		//bereits vorhandene Todeskarten vom Spieler auslesen
 		for (IDeadCard card : activePlayer.getDeadCards()){
 			deadCardsOfPlayer.add(card);
 		}
 		
+		//Prüft Spezialkarten in Zusammenhang mit den Todeskarten
 		for (ISpecialCard card : activePlayer.getSpecialCards()) {
 			//Wenn Killervirus Spezialkarte bei Spieler
 			if (card.getIsForcedOfDead()) {
@@ -385,35 +385,30 @@ public class BoardManager {
 					+ activePlayer.getPlayerName() + "auf das Spielbrett verschoben.");
 			BoardManager.getInstance().switchSpecialcardOwner(playerIsForcedToDead, null);
 		}
-				
+		
+		//Wenn der Spieler keine Zielkarten erwürfelt hat oder Spieler Killervirus Spezialkarte hat
 		if (this.targetCardsToDeploy.isEmpty() || playerIsForcedToDead != null) {
 			for (IDeadCard deadCard : deadCards.keySet()) {
 				allDeadCards.add(deadCard);
-				if (deadCard.getCardCalue() == CubeManager.getInstance().getCurrentPinkCube().FaceValue) {
-					if(!deadCardsOfPlayer.isEmpty()){
-						for(IDeadCard deadCardsOfActivePlayer : deadCardsOfPlayer){
-							allDeadCards.remove(deadCard);
-							hasDeadCardsAlready = true;
-						}
-					}else{
+				
+				if(deadCardsOfPlayer.contains(deadCard)){
+					allDeadCards.remove(deadCard);
+				}else{
+					if(deadCard.getCardCalue() == CubeManager.getInstance().getCurrentPinkCube().FaceValue){
+						//Gibt dem Spieler die Todeskarte analog des pinken Würfels
 						deadCardsToDeploy.add(deadCard);
-					}					
+					}
 				}
 			}
 			
-			if(hasDeadCardsAlready){
-				for(IDeadCard deadCard : allDeadCards){
-					if(hasDeadCardsAlready){
-						deadCardsToDeploy.add(deadCard);
-						hasDeadCardsAlready = false;
-					}
-				}
+			//Gibt dem Spieler eine Todeskarte, welche nicht dem pinken Würfel entspricht
+			if(deadCardsToDeploy.isEmpty()){
+				deadCardsToDeploy.add(allDeadCards.get(0));
 			}
 		}
 		
 		if(!deadCardsToDeploy.isEmpty()){
-			// Falls der Spieler die Spezialkarte Clown hat diese
-			// entfernen und keinen Tod zuteilen
+			// Falls der Spieler die Spezialkarte Clown hat diese entfernen und keinen Tod zuteilen
 			if (playerIsBewaredOfDead != null) {
 				ClientNotificator.notifyGameMove("Der Spieler " + activePlayer.getPlayerName()
 						+ " entging dem Tod indem er ihm eine Torte ins Gesicht warf!"
