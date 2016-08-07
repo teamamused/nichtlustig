@@ -19,9 +19,13 @@ public class Valuation {
 	 * @param board Board von BoardManager übergeben
 	 */
 	public void valuate(BoardManager board){
+		//Würfelwert von pinkem Würfel auslesen
 		valuationValue = CubeManager.getInstance().getCurrentPinkCube().FaceValue;
+		//nicht gewertete Karten von Spielern auslesen
 		board.getNotValuatedCardsFromPlayer();
+		//Spielerkarten auswerten für Wertung
 		board.valuatePlayerCards(valuationValue);
+		//Spielerkarten effektiv werten
 		board.valuePlayerCards();
 	}
 
