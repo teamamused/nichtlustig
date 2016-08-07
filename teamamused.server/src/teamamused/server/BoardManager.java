@@ -33,15 +33,23 @@ public class BoardManager {
 	private static BoardManager instance;
 	private GameBoard board;
 	private Logger log;
+	
+	//Variablen, um zu verteilende Zielkarten, Spezialkarten und Todeskarten zu speichern
 	private List<ITargetCard> targetCardsToDeploy = new ArrayList<ITargetCard>();
 	private List<ISpecialCard> specialCardsToDeploy = new ArrayList<ISpecialCard>();
 	private List<IDeadCard> deadCardsToDeploy = new ArrayList<IDeadCard>();
+	
+	//Hashtable, um die Auswahlmöglichkeiten von Zielkarten für den Spieler zu speichern, falls er so
+	//würfelt, dass er mehrere Karten zur Auswahl hat
 	private Hashtable<Integer, List<ITargetCard>> cardsToPropose = new Hashtable<Integer, List<ITargetCard>>();
+	
+	//Speichert nicht gewertete Karten von den Spielern
 	private List<ITargetCard> notValuatedCardsFromPlayers = new ArrayList<ITargetCard>();
+	
+	//Speichert Zielkarten, welche von den Spielern zu werten sind
 	private List<ITargetCard> playerTargetCardsToValuate = new ArrayList<ITargetCard>();
 
-	// Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett
-	// oder bei Spieler
+	// Hash-Tables, um zu speichern, wo welche Karten liegen (auf Spielbrett oder bei Spieler)
 	private Hashtable<IDeadCard, ICardHolder> deadCards = new Hashtable<IDeadCard, ICardHolder>();
 	private Hashtable<ISpecialCard, ICardHolder> specialCards = new Hashtable<ISpecialCard, ICardHolder>();
 	private Hashtable<ITargetCard, ICardHolder> targetCards = new Hashtable<ITargetCard, ICardHolder>();
@@ -52,7 +60,7 @@ public class BoardManager {
 		board.init();
 		/*
 		 * Die Karten werden beim initialisieren des Spiels in der Mitte auf dem
-		 * Spielbrett verteilt (keine Zuteileung an Spieler)
+		 * Spielbrett verteilt (keine Zuteilung an Spieler)
 		 */
 		for (ISpecialCard card : board.getSpecialCards()) {
 			this.specialCards.put(card, board);
@@ -126,8 +134,7 @@ public class BoardManager {
 	 * Prüft, welche Karten der Spieler gewertet werden können nach einem
 	 * abgeschlossenen Spielzug.
 	 * 
-	 * @param pinkCube
-	 *            Wert von pinkem Würfel zur Wertung
+	 * @param pinkCube Wert von pinkem Würfel zur Wertung
 	 */
 	public void valuatePlayerCards(int pinkCube) {
 		if (!notValuatedCardsFromPlayers.isEmpty()) {
@@ -170,12 +177,10 @@ public class BoardManager {
 		this.deadCardsToDeploy.clear();
 		ArrayList<CubeValue> cubeValues = new ArrayList<CubeValue>();
 
-		// Prüfen Spezialkarten prüfen des Spielers prüfen
-		// Dazu Spezialkarten prüfen
+		// Prüfen Spezialkarten prüfen des Spielers prüfen, dazu Spezialkarten prüfen
 		for (ISpecialCard card : Game.getInstance().getActivePlayer().getSpecialCards()) {
 			if (card.getAdditionalPoints() != 0) {
-				// Wenn der Spieler die Spezialkarte Zeitmaschine hat, bekommt
-				// er zusätzlich zwei Würfelaugen
+				// Wenn der Spieler die Spezialkarte Zeitmaschine hat, bekommt er zusätzlich zwei Würfelaugen
 				sumOfCubes += card.getAdditionalPoints();
 			}
 		}
@@ -213,8 +218,7 @@ public class BoardManager {
 	 * Methode aufgerufen, für welche Zielkarten sich der Spieler entschieden
 	 * hat. Die entsprechenden Karten werden ihm anschliessend zugewiesen.
 	 * 
-	 * @param targetCardsToTake
-	 *            Zielkarten, welche der Spieler nehmen möchte
+	 * @param targetCardsToTake Zielkarten, welche der Spieler nehmen möchte
 	 */
 	public void takeProposedCards(List<ITargetCard> targetCardsToTake) {
 		targetCardsToDeploy = new ArrayList<ITargetCard>(targetCardsToTake);
@@ -242,6 +246,7 @@ public class BoardManager {
 				}
 			}
 			
+			//Es werden keine Zielkarten wieder zum gleichen Spieler verteilt
 			if (!currentOwner.equals(newOwner)) {
 				currentOwner.removeTargetCard(targetCard);
 				newOwner.addTargetCard(targetCard);
@@ -263,9 +268,10 @@ public class BoardManager {
 			for (IDeadCard deathCard : deadCardsToDeploy) {
 				ICardHolder currentOwner = deadCards.get(deathCard);
 				
+				//Es werden keine Todeskarten an das Spielbrett verteilt
 				if (newOwner != board) {
 					// Wenn Todeskarte sich bei Mitspieler auf Zielkarte befindet
-					// Verknüpfungen zwischen Todeskarte und Zielkarte Todeskartenbesitzer entfernen
+					// Verknüpfungen zwischen Todeskarte und Zielkarte von aktuellem Todeskartenbesitzer entfernen
 					if(deathCard.getIsOnTargetCard()){
 						deathCard.setIsOnTargetCard(false);
 						
@@ -278,7 +284,6 @@ public class BoardManager {
 							}
 						}
 					}
-				
 				
 					currentOwner.removeDeadCard(deathCard);
 					ITargetCard[] targetCardsOfNewOwner = newOwner.getTargetCards();
@@ -384,6 +389,7 @@ public class BoardManager {
 					+ " wurde vom Killervirus befallen! Die Sonderkarte Killervirus wurde " + "von Spieler "
 					+ activePlayer.getPlayerName() + "auf das Spielbrett verschoben.");
 			BoardManager.getInstance().switchSpecialcardOwner(playerIsForcedToDead, null);
+			ClientNotificator.notifyUpdateGameBoard(board);
 		}
 		
 		//Wenn der Spieler keine Zielkarten erwürfelt hat oder Spieler Killervirus Spezialkarte hat
@@ -416,10 +422,9 @@ public class BoardManager {
 						+ " auf das Spieltbrett verschoben.");
 				deadCardsToDeploy.clear();
 				BoardManager.getInstance().switchSpecialcardOwner(playerIsBewaredOfDead, null);
+				ClientNotificator.notifyUpdateGameBoard(board);
 			}
 		}
-		
-		ClientNotificator.notifyUpdateGameBoard(board);
 	}
 
 	private void checkDinoCards(int sumOfCubes) {
