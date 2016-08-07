@@ -71,12 +71,12 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		scrollPane = new ScrollPane();
 		scrollPane.setContent(root);
 
-		Scene scene = new Scene(root, 1450, 1000);
+		Scene scene = new Scene(root, 1450, 900);
 
 		// Instanziierung und Zuweisung der Controlls zur Haupt-Pane
 		labelSpielfeld = new Label(String.format("Spielfeld von Spieler %s", model.player.getPlayerName()));
 		labelSpielfeld.setId("labelSpielfeld");
-		labelSpielfeld.setAlignment(Pos.CENTER_RIGHT);
+		labelSpielfeld.setAlignment(Pos.CENTER);
 		url = "http://www.kosmos.de/_files_media/mediathek/downloads/anleitungen/1351/nicht_lustig.pdf";
 		try {
 			linkImage = ResourceLoader.getImage("IconFragezeichen.png");
@@ -102,7 +102,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		titlePane = new HBox();
 		titlePane.getChildren().addAll(labelSpielfeld, btnLink);
 		titlePane.setSpacing(560);
-		titlePane.setPadding(new Insets(10, 10, 10, 10));
+		titlePane.setPadding(new Insets(5, 5, 5, 5));
 
 		root.add(titlePane, 1, 0);
 		root.add(btnExit, 2, 0);
@@ -229,7 +229,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 */
 	private ImageView getImageView(Image image) {
 		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(110);
+		imageView.setFitHeight(100);
 		imageView.setPreserveRatio(true);
 		return imageView;
 	}
