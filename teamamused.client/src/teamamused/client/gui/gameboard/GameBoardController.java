@@ -133,16 +133,17 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	@Override
 	public void onGameBoardChanged(GameBoard newGameBoard) {
 		if (model.gameBoard != null) {
-			model.specialCardsNeedsUpdate = newGameBoard.getSpecialCards().length != model.gameBoard
+			model.specialCardsNeedsUpdate |= newGameBoard.getSpecialCards().length != model.gameBoard
 					.getSpecialCards().length;
-			model.targetCardsNeedsUpdate = newGameBoard.getTargetCards().length != model.gameBoard
+			model.targetCardsNeedsUpdate |= newGameBoard.getTargetCards().length != model.gameBoard
 					.getTargetCards().length;
-			model.deadCardsNeedsUpdate = newGameBoard.getDeadCards().length != model.gameBoard.getDeadCards().length;
+			model.deadCardsNeedsUpdate |= newGameBoard.getDeadCards().length != model.gameBoard.getDeadCards().length;
 		} else {
 			model.specialCardsNeedsUpdate = true;
 			model.targetCardsNeedsUpdate = true;
 			model.deadCardsNeedsUpdate = true;
 		}
+		
 		model.gameBoard = newGameBoard;
 		Platform.runLater(() -> {
 			view.btnStart.setDisable(model.gameBoard.getGameStartet());

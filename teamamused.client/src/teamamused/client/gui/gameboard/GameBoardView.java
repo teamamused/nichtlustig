@@ -276,6 +276,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		// Zielkarten werden gezeichnet
 		int zeileTarget = 0;
 		if (model.targetCardsNeedsUpdate) {
+			model.targetCardsNeedsUpdate = false;
 			if (this.targetCardsPane.getChildren() != null) {
 				this.targetCardsPane.getChildren().clear();
 			}
@@ -300,6 +301,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		int zeileDead = 1;
 		int iteratorDead = 1;
 		if (model.deadCardsNeedsUpdate) {
+			model.deadCardsNeedsUpdate = false;
 			if (this.deadCardsPane.getChildren() != null) {
 				this.deadCardsPane.getChildren().clear();
 			}
@@ -317,6 +319,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		int zeileSpecial = 1;
 		int iteratorSpecial = 1;
 		if (model.specialCardsNeedsUpdate) {
+			model.specialCardsNeedsUpdate = false;
 			if (this.specialCardsPane.getChildren() != null) {
 				this.specialCardsPane.getChildren().clear();
 			}
