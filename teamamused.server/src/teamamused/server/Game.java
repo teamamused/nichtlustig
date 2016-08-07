@@ -118,9 +118,7 @@ public class Game implements Serializable {
 	}
 	
 	/**
-	 * TODO: Dani an Maja: Mal so eingeführt um Server fertig zu stellen, Maja
-	 * bitte sagen ob ok und anpassen / ergänzen Diverse Unklarheiten / Fragen
-	 * im Code an Maja
+	 * Beendet die aktuelle Runde
 	 */
 	public void finishRound() {
 		this.log.info("Beende aktuelle Spielrunde");
@@ -162,8 +160,7 @@ public class Game implements Serializable {
 	}
 
 	/**
-	 * TODO: Dani an Maja: Mal so eingeführt um Server fertig zu stellen, Maja
-	 * bitte sagen ob ok und anpassen / ergänzen
+	 * Startet die nächste Runde
 	 * 
 	 */
 	public void startNextRound() {
@@ -203,7 +200,6 @@ public class Game implements Serializable {
 				additionalDicings += dicingCard.getAdditionalDicing();
 				// Karte zurück aufs Gameboard legen
 				BoardManager.getInstance().switchSpecialcardOwner(dicingCard, null);
-				ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
 			}
 			CubeManager.getInstance().initForNextRound(additionalDicings);
 			ClientNotificator.notifyPlayerChanged(this.activePlayer);
@@ -213,6 +209,7 @@ public class Game implements Serializable {
 				this.startNextRound();
 				return;
 			}
+			ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
 		}
 	}
 
