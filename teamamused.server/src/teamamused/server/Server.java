@@ -76,7 +76,6 @@ public class Server {
 		try {
 			Game.getInstance().startGame();
 			ClientNotificator.notifyGameMove("Der Spieler " + rpc.getClient() + " hat das Spiel gestartet");
-			ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
 			state = new TransportableState(true, "Das Spiel wurde erfolgreich gestartet.");
 		} catch (Exception ex) {
 			// Fehlerfall: Logen und dem Client melden
@@ -93,11 +92,13 @@ public class Server {
 			int triesLeft = CubeManager.getInstance().rollDices();
 			// Clients informieren
 			ClientNotificator.notifyGameMove("Der Spieler " + rpc.getClient() + " ist am würfeln.");
-			ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
 			answer = new TransportableAnswer(rpc, true, triesLeft);
-			// wenn nicht mehr gewürfelt werden kann, Runde beenden
+			// wenn nicht mehr gewürfelt werden kann, Runde beenden (update Gameboard geschieht dan im Finish Round
 			if (triesLeft == 0) {
 				Game.getInstance().finishRound();
+			} else {
+				// update gameboard für geänderte Würfel
+				ClientNotificator.notifyUpdateGameBoard(BoardManager.getInstance().getGameBoard());
 			}
 		} catch (Exception ex) {
 			// Fehlerfall: Logen und dem Client melden
