@@ -288,7 +288,10 @@ public class ServerConnection extends Thread {
 			break;
 		case RollDices:
 			if (answer.isOK() && answer.getReturnValue() instanceof Integer) {
-				this.notifyGui.numberOfRemeiningDicingChanged((int) answer.getReturnValue());
+				// Wenn kein versuch mehr verbleibend, handelt das finish Round den rest
+				if ((int) answer.getReturnValue() > 0) {
+					this.notifyGui.numberOfRemeiningDicingChanged((int) answer.getReturnValue());
+				}
 			}
 			break;
 		default:
