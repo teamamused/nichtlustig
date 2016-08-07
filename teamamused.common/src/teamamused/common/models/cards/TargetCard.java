@@ -155,8 +155,13 @@ class TargetCard extends AbstractCard implements ITargetCard {
 		// Wenn Spielkarte gestorben ist kommt der Tod darüber (whoohooo)
 		if (this.isCoveredByDead) {
 			try {
-				Image tod = ResourceLoader.getImage("Tod.png");
-				g.drawImage(tod, 0, 0, size, size);
+				// Version mit bösem shartierten Tod über ganze Karte
+				/*Image tod = ResourceLoader.getImage("Tod.png");
+				g.drawImage(tod, 0, 0, size, size);*/
+				// Version mit liebem Tod unten links
+				int todsize = size /2;
+				Image tod = ResourceLoader.getImage("Tod2.png");
+				g.drawImage(tod, 0, todsize, todsize, todsize);
 			} catch (Exception ex) {
 				ServiceLocator.getInstance().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
 			}
