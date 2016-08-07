@@ -46,7 +46,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 	protected GridPane root, cardPane, dicePane, targetCardsPane, specialCardsPane, deadCardsPane;
 	protected VBox navigation, playerPane, movingPane;
-	protected HBox titlePane, containerPane;
+	protected HBox titlePane, containerPane, linkPane;
 	protected ImageView logo, linkIcon, exitIcon;
 	protected Image linkImage, exitImage;
 	protected Hyperlink linkAnleitung;
@@ -73,10 +73,17 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		Scene scene = new Scene(root, 1450, 900);
 
-		// Instanziierung und Zuweisung der Controlls zur Haupt-Pane
+		// Instanziierung und Zuweisung des Controlls zur Title-Pane
 		labelSpielfeld = new Label(String.format("Spielfeld von Spieler %s", model.player.getPlayerName()));
 		labelSpielfeld.setId("labelSpielfeld");
 		labelSpielfeld.setAlignment(Pos.CENTER);
+		
+		titlePane = new HBox();
+		titlePane.getChildren().addAll(labelSpielfeld);
+		titlePane.setAlignment(Pos.CENTER_LEFT);
+		titlePane.setPadding(new Insets(5, 5, 5, 5));
+		
+		// Instanziierung und Zuweisung der Controlls zur Link-Pane
 		url = "http://www.kosmos.de/_files_media/mediathek/downloads/anleitungen/1351/nicht_lustig.pdf";
 		try {
 			linkImage = ResourceLoader.getImage("IconFragezeichen.png");
@@ -99,19 +106,13 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		btnExit = new Button("", exitIcon);
 		btnExit.setId("btnTransparent");
 
-		titlePane = new HBox();
-		titlePane.getChildren().addAll(labelSpielfeld, btnLink);
-		titlePane.setSpacing(560);
-		titlePane.setPadding(new Insets(5, 5, 5, 5));
-
-		root.add(titlePane, 1, 0);
-		root.add(btnExit, 2, 0);
-
-		// Definition der Pane für die linke Navigationsspalte
+		linkPane = new HBox();
+		linkPane.getChildren().addAll(btnLink, btnExit);
+		
+		// Instanziierung und Zuweisung der Controlls zur linken Navigations-Pane
 		navigation = new VBox(5);
 		navigation.setPadding(new Insets(20, 20, 20, 20));
 
-		// Instanziierung und Zuordnung der Controlls zur navigation-Pane
 		try {
 			logo = new ImageView(ResourceLoader.getImage("Logo_1.png"));
 		} catch (FileNotFoundException e) {
@@ -122,6 +123,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 
 		playerPane = new VBox(5);
 		btnArray = new ArrayList<Button>();
+		// Erstellt dynamisch die Anzahl Buttons gemäss der Anzahl Spieler
 		buildPlayer();
 
 		btnStart = GameBoardView.initializeButton("Spiel starten");
@@ -178,16 +180,18 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		movingPane.getChildren().add(txtGameMove);
 		txtGameMove.setPrefSize(400, 200);
 		
-		// Die Container-Pane dient als Behälter für ihre Sub-Panes
+		// Die Container-Pane dient als Behälter für ihre jeweiligen Sub-Panes
 		containerPane = new HBox();
 		containerPane.setPadding(new Insets(20, 20, 20, 20));
 		containerPane.setSpacing(10);
 		containerPane.getChildren().addAll(movingPane, dicePane);
 		
 		// Zuordnung der Sub-Panes zur Haupt-Pane "root"
+		root.add(titlePane, 1, 0);
+		root.add(linkPane, 2, 0);
 		root.add(navigation, 0, 0, 1, 10);
 		root.add(cardPane, 1, 1);
-		root.add(containerPane, 1, 3);
+		root.add(containerPane, 1, 3, 1, 9);
 
 		// Auf der ObserverList wird ein ListChangeListener registriert, welcher
 		// immer, wenn etwas der Liste hinzugefügt wird, dieses auf dem Screen
