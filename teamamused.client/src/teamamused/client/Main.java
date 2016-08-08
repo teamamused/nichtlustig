@@ -111,6 +111,31 @@ public class Main extends Application {
 		}
 		rankingView.start();
 	}
+
+	public void startGameBoard(IUserView toClose) {
+
+		Stage gameBoardStage = new Stage();
+		GameBoardModel model = new GameBoardModel();
+		gameBoardView = new GameBoardView(gameBoardStage, model);
+		new GameBoardController(model, gameBoardView);
+
+		if (toClose != null) {
+			toClose.stop();
+			toClose = null;
+		}
+		gameBoardView.start();
+	}
+
+	public void startGameOver(Ranking[] ranking) {
+
+		Stage gameOverStage = new Stage();
+		GameOverModel gameOverModel = new GameOverModel(ranking);
+		gameOverView = new GameOverView(gameOverStage, gameOverModel);
+		new GameOverController(gameOverModel, gameOverView);
+		gameBoardView.stop();
+		gameBoardView = null;
+		gameOverView.start();
+	}
 	
 	public void startBye(IUserView toClose) {
 
@@ -124,39 +149,6 @@ public class Main extends Application {
 			toClose = null;
 		}
 		byeView.start();
-	}
-
-	public void startGameBoard() {
-
-		Stage gameBoardStage = new Stage();
-		GameBoardModel model = new GameBoardModel();
-		gameBoardView = new GameBoardView(gameBoardStage, model);
-		new GameBoardController(model, gameBoardView);
-		welcomeView.stop();
-		welcomeView = null;
-		gameBoardView.start();
-	}
-
-	public void startGameBoard2() {
-
-		Stage gameBoardStage = new Stage();
-		GameBoardModel model = new GameBoardModel();
-		gameBoardView = new GameBoardView(gameBoardStage, model);
-		new GameBoardController(model, gameBoardView);
-		gameOverView.stop();
-		gameOverView = null;
-		gameBoardView.start();
-	}
-
-	public void startGameOver(Ranking[] ranking) {
-
-		Stage gameOverStage = new Stage();
-		GameOverModel gameOverModel = new GameOverModel(ranking);
-		gameOverView = new GameOverView(gameOverStage, gameOverModel);
-		new GameOverController(gameOverModel, gameOverView);
-		gameBoardView.stop();
-		gameBoardView = null;
-		gameOverView.start();
 	}
 
 	public static Main getInstance() {

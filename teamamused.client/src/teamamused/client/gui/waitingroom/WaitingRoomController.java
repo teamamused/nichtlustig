@@ -12,7 +12,7 @@ public class WaitingRoomController extends AbstractController<WaitingRoomModel, 
 		
 		view.btnPlayGame.setOnAction((ActionEvent e) -> {
 			Client.getInstance().startGame();
-			Main.getInstance().startGameBoard();
+			Main.getInstance().startGameBoard(this.view);
 		});
 		
 	
