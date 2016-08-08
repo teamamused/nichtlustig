@@ -229,6 +229,7 @@ public class BoardManager {
 	 */
 	public void deployCards() {
 		ICardHolder newOwner = Game.getInstance().getActivePlayer();
+		ITargetCard targetCardToPutDeadOn = null;
 
 		// Verteilen der Zielkarten
 		for (ITargetCard targetCard : targetCardsToDeploy) {
@@ -260,9 +261,6 @@ public class BoardManager {
 		for (ISpecialCard specialCard : specialCardsToDeploy) {
 			this.switchSpecialcardOwner(specialCard, newOwner);
 		}
-
-		// Verteilen der Todeskarten
-		boolean matchDeadCardOnTarget = false;
 		
 		if (deadCardsToDeploy != null) {
 			for (IDeadCard deathCard : deadCardsToDeploy) {
@@ -286,8 +284,13 @@ public class BoardManager {
 					}
 				
 					currentOwner.removeDeadCard(deathCard);
-					ITargetCard[] targetCardsOfNewOwner = newOwner.getTargetCards();
 					
+					//Zielkarten von Spieler auslesen, welche die Todeskarte erhalten soll
+					ArrayList<ITargetCard> targetCardsOfNewOwner = new ArrayList<ITargetCard>();
+					for(ITargetCard targetCard : newOwner.getTargetCards()){
+						targetCardsOfNewOwner.add(targetCard);
+					}
+
 					//Hashtable für Todeskarten aktualisieren, neuen Spieler zuweisen
 					this.deadCards.remove(deathCard, currentOwner);
 					this.deadCards.put(deathCard, newOwner);
@@ -298,25 +301,30 @@ public class BoardManager {
 					// Prüft, ob die Todeskarte auf eine andere Karte umgedreht werden muss
 					
 					// Wenn Zielkarten bei aktivem Spieler vorhanden
-					if(targetCardsOfNewOwner.length > 0)
+					if(!targetCardsOfNewOwner.isEmpty())
 					{
 						for (ITargetCard targetCard : targetCardsOfNewOwner) {
-							//Wenn keine Zielkarte gefunden, wo die Todeskarte darauf gelegt werden soll
-							if(!matchDeadCardOnTarget){
-								if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino() && !targetCard.getIsCoveredByDead()) {
-									// Todeskarte wird umgedreht auf gewertete Karte gelegt
-									newOwner.addDeadCard(deathCard, targetCard);
-									targetCard.setIsCoveredByDead(true);
-									deathCard.setIsOnTargetCard(true);
-									ClientNotificator.notifyGameMove("Todeskarte " + deathCard + " wurde auf Zielkarte " +
-											targetCard + " gelegt.");
-									matchDeadCardOnTarget = true;
-								} 
+							if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino() && !targetCard.getIsCoveredByDead()) {
+								//Todeskarte primär auf gewertete Lemming-Karte legen, ansonsten auf andere gewertete Zielkarte
+								//Nicht auf gewertete Dino-Karte legen
+								if(targetCard.getGameCard().isLemming() && !targetCardToPutDeadOn.getGameCard().isLemming()){
+									targetCardToPutDeadOn = targetCard;
+								}else if(!targetCard.getGameCard().isLemming() && targetCardToPutDeadOn == null){
+									targetCardToPutDeadOn = targetCard;
+								}
 							}
 						}
+						
+						// Todeskarte wird umgedreht auf gewertete Karte gelegt
+						newOwner.addDeadCard(deathCard, targetCardToPutDeadOn);
+						targetCardToPutDeadOn.setIsCoveredByDead(true);
+						deathCard.setIsOnTargetCard(true);
+						ClientNotificator.notifyGameMove("Todeskarte " + deathCard + " wurde auf Zielkarte " +
+								targetCardToPutDeadOn + " gelegt.");
+						
 					}
 					// Wenn keine Zielkarten bei aktivem Spieler vorhanden
-					if (!matchDeadCardOnTarget)	{
+					else{
 						//Todeskarte wird bei aktivem Spieler neben Zielkarten hingelegt
 						newOwner.addDeadCard(deathCard, null);
 						ClientNotificator.notifyGameMove("Todeskarte " + deathCard + " wurde neben Zielkarten" +
