@@ -26,7 +26,7 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 		Client.getInstance().registerGui(this);
 		
 		view.btnBack.setOnAction((ActionEvent e) -> {
-			Main.getInstance().startLogIn2();
+			Main.getInstance().startLogIn(this.view);
 		});
 
 		// Sobald sich die Auswahl der ChoiceBox für die Sprache ändert, wird

@@ -29,7 +29,7 @@ public class WelcomeController extends AbstractController<WelcomeModel, WelcomeV
 		});
 
 		view.btnExit.setOnAction((ActionEvent e) -> {
-			Main.getInstance().startBye();
+			Main.getInstance().startBye(this.view);
 		});
 
 	}
@@ -38,7 +38,7 @@ public class WelcomeController extends AbstractController<WelcomeModel, WelcomeV
 	public void onRankingRecieved(Ranking[] rankings) {
 		
 		Platform.runLater(() -> {
-			Main.getInstance().startRanking(rankings);
+			Main.getInstance().startRanking(rankings, this.view);
 		});
 	}
 	

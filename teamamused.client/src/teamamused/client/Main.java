@@ -28,7 +28,6 @@ import teamamused.client.gui.splashscreen.Splash_Model;
 import teamamused.client.gui.splashscreen.Splash_View;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
-import teamamused.common.gui.AbstractView;
 import teamamused.common.gui.Translator;
 import teamamused.common.interfaces.IUserView;
 
@@ -56,33 +55,24 @@ public class Main extends Application {
 		new Splash_Controller(this, splashModel, splashView);
 		splashView.start();
 
-
 		// Display the splash screen and begin the initialization
 		splashModel.initialize();
 	}
 
-	public void startLogIn() {
+	public void startLogIn(IUserView toClose) {
 
 		Stage logInStage = new Stage();
 		LogInModel model = new LogInModel();
 		logInView = new LogInView(logInStage, model);
 		new LogInController(model, logInView);
-		splashView.stop();
-		splashView = null;
-		logInView.start();
-	}
-	
-	public void startLogIn2() {
 
-		Stage logInStage = new Stage();
-		LogInModel model = new LogInModel();
-		logInView = new LogInView(logInStage, model);
-		new LogInController(model, logInView);
-		registerView.stop();
-		registerView = null;
+		if (toClose != null) {
+			toClose.stop();
+			toClose = null;
+		}
 		logInView.start();
 	}
-	
+
 	public void startRegister() {
 
 		Stage RegisterStage = new Stage();
@@ -93,98 +83,73 @@ public class Main extends Application {
 		logInView = null;
 		registerView.start();
 	}
-	
+
 	public void startWelcome(IUserView toClose) {
-		
+
 		Stage welcomeStage = new Stage();
 		WelcomeModel model = new WelcomeModel();
 		welcomeView = new WelcomeView(welcomeStage, model);
 		new WelcomeController(model, welcomeView);
-		
+
 		if (toClose != null) {
 			toClose.stop();
-			toClose = null;	
+			toClose = null;
 		}
 		welcomeView.start();
 	}
-	
-	public void startRanking(Ranking[] ranking) {
 
-		Stage RankingStage = new Stage();
+	public void startRanking(Ranking[] ranking, IUserView toClose) {
+
+		Stage rankingStage = new Stage();
 		RankingModel model = new RankingModel(ranking);
-		rankingView = new RankingView(RankingStage, model);
+		rankingView = new RankingView(rankingStage, model);
 		new RankingController(model, rankingView);
-		welcomeView.stop();
-		welcomeView = null;
+
+		if (toClose != null) {
+			toClose.stop();
+			toClose = null;
+		}
 		rankingView.start();
 	}
 	
-	public void startRanking2(Ranking[] ranking) {
+	public void startBye(IUserView toClose) {
 
-		Stage RankingStage = new Stage();
-		RankingModel model = new RankingModel(ranking);
-		rankingView = new RankingView(RankingStage, model);
-		new RankingController(model, rankingView);
-		rankingView.start();
-	}
-	
-	public void startBye() {
-
-		Stage ByeStage = new Stage();
+		Stage byeStage = new Stage();
 		ByeModel model = new ByeModel();
-		byeView = new ByeView(ByeStage, model);
+		byeView = new ByeView(byeStage, model);
 		new ByeController(model, byeView);
-		welcomeView.stop();
-		welcomeView = null;
+
+		if (toClose != null) {
+			toClose.stop();
+			toClose = null;
+		}
 		byeView.start();
 	}
-	
-	public void startBye3() {
 
-		Stage ByeStage = new Stage();
-		ByeModel model = new ByeModel();
-		byeView = new ByeView(ByeStage, model);
-		new ByeController(model, byeView);
-		gameBoardView.stop();
-		gameBoardView = null;
-		byeView.start();
-	}
-	
-	public void startBye4() {
-
-		Stage ByeStage = new Stage();
-		ByeModel model = new ByeModel();
-		byeView = new ByeView(ByeStage, model);
-		new ByeController(model, byeView);
-		gameOverView.stop();
-		gameOverView = null;
-		byeView.start();
-	}
-	
 	public void startGameBoard() {
-		
+
 		Stage gameBoardStage = new Stage();
 		GameBoardModel model = new GameBoardModel();
 		gameBoardView = new GameBoardView(gameBoardStage, model);
-		new GameBoardController (model, gameBoardView);
+		new GameBoardController(model, gameBoardView);
 		welcomeView.stop();
 		welcomeView = null;
 		gameBoardView.start();
 	}
-	
+
 	public void startGameBoard2() {
-		
+
 		Stage gameBoardStage = new Stage();
 		GameBoardModel model = new GameBoardModel();
 		gameBoardView = new GameBoardView(gameBoardStage, model);
-		new GameBoardController (model, gameBoardView);
+		new GameBoardController(model, gameBoardView);
 		gameOverView.stop();
 		gameOverView = null;
 		gameBoardView.start();
 	}
 
 	public void startGameOver(Ranking[] ranking) {
-		
+
 		Stage gameOverStage = new Stage();
 		GameOverModel gameOverModel = new GameOverModel(ranking);
 		gameOverView = new GameOverView(gameOverStage, gameOverModel);
@@ -197,7 +162,7 @@ public class Main extends Application {
 	public static Main getInstance() {
 		return instance;
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}

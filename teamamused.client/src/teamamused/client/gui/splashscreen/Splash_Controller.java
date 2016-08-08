@@ -2,6 +2,7 @@ package teamamused.client.gui.splashscreen;
 
 import teamamused.client.Main;
 import teamamused.common.gui.AbstractController;
+import teamamused.common.interfaces.IUserView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -32,7 +33,7 @@ public class Splash_Controller extends AbstractController<Splash_Model, Splash_V
         model.initializer.stateProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue == Worker.State.SUCCEEDED)
-                        main.startLogIn();
+                        main.startLogIn(this.view);
                 });
     }
 }

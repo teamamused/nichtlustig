@@ -61,7 +61,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		view.btnExit.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Main.getInstance().startBye3();
+				Main.getInstance().startBye(view);
 			}
 		});
 
