@@ -1,14 +1,10 @@
 package teamamused.client.gui.splashscreen;
 
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import teamamused.common.ServiceLocator;
 import teamamused.common.Settings;
 import javafx.concurrent.Task;
 import teamamused.common.gui.AbstractModel;
+import teamamused.common.gui.Translator;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -35,11 +31,13 @@ public class Splash_Model extends AbstractModel {
             serviceLocator = ServiceLocator.getInstance();
             this.updateProgress(2,  6);
 
+            // Settings File auslesen
             serviceLocator.setSettings(new Settings());
             this.updateProgress(4,  6);
 
+            // Default Translator initialisieren
             String language = serviceLocator.getSettings().getSetting(Settings.Setting.Language);
-            // serviceLocator.setTranslator(new Translator(language));
+    		ServiceLocator.getInstance().setTranslator(new Translator(language));
             this.updateProgress(5,  6);
             
             // ... more resources would go here...
