@@ -14,7 +14,6 @@ import teamamused.client.libs.Client;
 import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractController;
-import teamamused.common.gui.Translator;
 import teamamused.common.interfaces.IPlayer;
 
 public class RegisterController extends AbstractController<RegisterModel, RegisterView> implements IClientListener {

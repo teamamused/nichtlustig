@@ -2,9 +2,6 @@ package teamamused.client.gui.splashscreen;
 
 import teamamused.client.Main;
 import teamamused.common.gui.AbstractController;
-import teamamused.common.interfaces.IUserView;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 
 /**
