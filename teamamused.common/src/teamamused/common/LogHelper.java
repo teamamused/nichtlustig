@@ -32,7 +32,7 @@ public class LogHelper {
 		// - "%t" the system temporary directory
 		// - "%u" a unique number to resolve conflicts
 		// - "%g" the generation number to distinguish rotated logs
-		// limit: Maximale Dateigr�sse in Bytes
+		// limit: Maximale Dateigrösse in Bytes
 		// count: Wieviele Logfiles behaltet werden (wenn 9 Logfiles voll sind
 		// wird das erste wieder überschrieben)
 		try {

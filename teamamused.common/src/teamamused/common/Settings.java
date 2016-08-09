@@ -24,7 +24,6 @@ public class Settings {
 	 */
 	public static enum Setting {
 		Language("Language"), 
-		LogFileName("LogFileName"), 
 		DBFileName("DbFileName"), 
 		ImagePath("ImagePath");
 
