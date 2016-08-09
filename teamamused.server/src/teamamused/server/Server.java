@@ -117,7 +117,7 @@ public class Server {
 				&& rpc.getArguments()[0] instanceof Boolean) {
 			try {
 				// Clients informieren
-				ClientNotificator.notifyGameMove("Der Spieler " + rpc.getClient() + " hat würfel fixiert.");
+				//ClientNotificator.notifyGameMove("Der Spieler " + rpc.getClient() + " hat würfel fixiert.");
 				// Würfel fixieren
 				boolean[] cubesFixed = new boolean[7];
 				for (int i = 0; i< 7; i++) {
