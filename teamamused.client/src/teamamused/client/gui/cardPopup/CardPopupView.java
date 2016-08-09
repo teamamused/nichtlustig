@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import teamamused.client.gui.gameboard.GameBoardModel;
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
 import teamamused.common.gui.LangText;
@@ -232,7 +233,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		try {
 			scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LogHelper.LogException(e);
 		}
 
 		updateTexts();

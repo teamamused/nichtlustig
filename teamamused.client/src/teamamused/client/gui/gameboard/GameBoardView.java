@@ -211,7 +211,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		try {
 			scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LogHelper.LogException(e);
 		}
 
 		updateTexts();
