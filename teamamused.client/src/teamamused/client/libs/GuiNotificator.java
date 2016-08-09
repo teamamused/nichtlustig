@@ -80,8 +80,10 @@ public class GuiNotificator {
 	 */
 	public void playerHasToCooseCards(Hashtable<Integer, List<ITargetCard>> options) {
 		this.log.info("Client: leite chooseCards an Gui's weiter");
-		for (IClientListener gui : this.guis) {
-			gui.onPlayerHasToCooseCards(options);
+		IClientListener[] guiArray = new IClientListener[this.guis.size()];
+		this.guis.toArray(guiArray);
+		for (int i = 0; i<this.guis.size(); i++) {
+			guiArray[i].onPlayerHasToCooseCards(options);
 		}
 	}
 
