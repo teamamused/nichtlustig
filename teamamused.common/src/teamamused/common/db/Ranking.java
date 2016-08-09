@@ -27,6 +27,7 @@ public class Ranking implements Serializable, Comparable<Ranking> {
 	
 	
 	/**
+	 * Gibt die Spiel Id zurück
 	 * @return the gameId
 	 */
 	public int getGameId() {
@@ -34,6 +35,7 @@ public class Ranking implements Serializable, Comparable<Ranking> {
 	}
 
 	/**
+	 * setzt die Spiel Id
 	 * @param gameId the gameId to set
 	 */
 	public void setGameId(int gameId) {
@@ -47,7 +49,7 @@ public class Ranking implements Serializable, Comparable<Ranking> {
 	}
 
 	/**
-	 * @param gameId the gameId to set
+	 * @param username the username to set
 	 */
 	public void setUsername(String username) {
 		this.username = username;
@@ -121,6 +123,7 @@ public class Ranking implements Serializable, Comparable<Ranking> {
 	
 	/**
 	 * Vergleichsmethode Anhand des TotalRankings und wenn diese 0 sind anhand des inGameRankings
+	 * @param rank2 vergleichsobjekt
 	 */
 	public int compareTo(Ranking rank2) {
 		// wenn Total Ranks noch 0 sind ist es ein in Game Ranking
@@ -138,6 +141,7 @@ public class Ranking implements Serializable, Comparable<Ranking> {
 		
 	}	
 	
+	@Override
 	public String toString() {
 		return this.totalRank + " - " + this.username + " Total Punkte: " + this.points;  
 	}

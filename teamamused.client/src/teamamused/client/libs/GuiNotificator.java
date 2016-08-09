@@ -75,7 +75,7 @@ public class GuiNotificator {
 	/**
 	 * Wird vom Server aufgerufen wenn mehrere Zielkarten zur Auswahl stehen.
 	 * 
-	 * @param allowedCards
+	 * @param options
 	 *            Karten die zur Auswahl stehen
 	 */
 	public void playerHasToCooseCards(Hashtable<Integer, List<ITargetCard>> options) {
@@ -116,8 +116,8 @@ public class GuiNotificator {
 	/**
 	 * Wird vom Server aufgerufen wenn er den Client über einen Spielzug informieren möchte
 	 * 
-	 * @param rankings
-	 *            Platzierungen des Spieles
+	 * @param gameMove
+	 *            Spielzug welcher zu den Guis geleitet wrden soll
 	 */
 	public void gameMoveDone(String gameMove) {
 		this.log.info("Client: leite Spielzug an Gui's weiter");
@@ -196,8 +196,7 @@ public class GuiNotificator {
 	}
 
 	/**
-	 * Wird vom Server aufgerufen wenn der Player sich nicht registrieren konnte 
-	 * @param errorMsg Fehlerbeschrieb
+	 * Wird vom Server aufgerufen wenn die Verbindung beendet werden musste
 	 */
 	public void serverClosedConnection() {
 		this.log.info("Client: leite Server hat die Verbindung geschlossen an Gui's weiter");
@@ -207,8 +206,8 @@ public class GuiNotificator {
 	}
 	
 	/**
-	 * Wird vom Server aufgerufen wenn der Player sich nicht registrieren konnte 
-	 * @param errorMsg Fehlerbeschrieb
+	 * Wird vom Server aufgerufen wenn die Bestenliste angefordert wurde 
+	 * @param rankings Platzierungen der Spieler
 	 */
 	public void rankingRecieved(Ranking[] rankings) {
 		this.log.info("Client: leite Bestenliste an Gui's weiter");
@@ -218,8 +217,8 @@ public class GuiNotificator {
 	}
 	
 	/**
-	 * Wird vom Server aufgerufen wenn der Player sich nicht registrieren konnte 
-	 * @param errorMsg Fehlerbeschrieb
+	 * Wird vom Server aufgerufen um dem Spieler die verbleibenden Würfelversuche mitzuteilen 
+	 * @param remDicings Verbleibende Versuche
 	 */
 	public void numberOfRemeiningDicingChanged(int remDicings) {
 		this.log.info("Client: leite anzahl verbleibende Würfelversuche an Gui's weiter");

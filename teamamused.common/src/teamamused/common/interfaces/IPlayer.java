@@ -48,6 +48,7 @@ public interface IPlayer extends ICardHolder {
 	
 	/**
 	 * Setzt die Sprach und Regionseinstellung für den Spieler
+	 * @param local neue Regionseinstellungen des Spielers
 	 */
 	void setLocal(Locale local);
 }

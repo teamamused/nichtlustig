@@ -72,7 +72,8 @@ public class GameBoard implements ICardHolder, Serializable {
 	}
 	
 	/**
-	 * Initialiserung der Karten und Würfel
+	 * Initialiserung der Karten und Würfel ab Bean Objekt
+	 * @param tgb Bean Objekt mit den Daten
 	 */
 	public void initFromTransportObject(BeanGameBoard tgb) {
 		ServiceLocator.getInstance().getLogger().info("Initialisiere Spielbrett");

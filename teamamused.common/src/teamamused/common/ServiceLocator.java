@@ -144,7 +144,7 @@ public class ServiceLocator {
 	/**
 	 * Setzt den Translator
 	 * 
-	 * @param translator
+	 * @param translator Neues Translator Objekt
 	 */
 	public void setTranslator(Translator translator) {
 		this.translator = translator;

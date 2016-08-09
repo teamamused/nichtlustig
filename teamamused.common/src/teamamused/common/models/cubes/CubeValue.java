@@ -55,8 +55,8 @@ public class CubeValue implements Serializable {
 	 *            Color
 	 * @param faceValue
 	 *            FaceValue
-	 * @param specialCardNumber
-	 * 			Nummer der zugewiesenen Spezialkarte
+	 * @param specialCard
+	 * 			GameCard der zugewiesenen Spezialkarte
 	 */
 	public CubeValue(CubeColor color, int faceValue, GameCard specialCard) {
 		this(color,  faceValue);
@@ -74,6 +74,7 @@ public class CubeValue implements Serializable {
 
 	/**
 	 * Spezialkarte (gesetzt bei FaceValue 0)
+	 * @return Spezialkarte
 	 */
 	public ISpecialCard getSpecialCard() {
 		if (this.specialCard != null) {
@@ -85,8 +86,7 @@ public class CubeValue implements Serializable {
 	/**
 	 * Vergleichs Methode, prüft die Farbe und den Anzeigewert der CubeValues
 	 * 
-	 * @param otherCubeValue
-	 *            zu vergleichender CubeValue
+	 * @param obj  zu vergleichender CubeValue
 	 * @return sind die CubeValues identisch Ja/Nein
 	 */
 	@Override

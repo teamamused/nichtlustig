@@ -88,7 +88,7 @@ public class Client {
 
 	/**
 	 * setter für Player Sprach und Regions einstellungen
-	 * @param local 
+	 * @param local Neu gewählte Spracheinstellungen
 	 */
 	public void setLocale(Locale local) {
 		ServiceLocator.getInstance().setTranslator(new Translator(local.getLanguage()));
@@ -110,7 +110,7 @@ public class Client {
 	/**
 	 * getter für Player
 	 * 
-	 * @return aktuelles Spieler Objekt
+	 * @param activePlayer aktiver Spieler
 	 */
 	public void setActivePlayer(IPlayer activePlayer) {
 		this.activePlayer = activePlayer;

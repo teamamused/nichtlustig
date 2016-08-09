@@ -64,8 +64,8 @@ public class Player implements IPlayer, Serializable {
 	/**
 	 * Instanziert einen neuen Spieler
 	 * 
-	 * @param username
-	 *            Benutzername
+	 * @param transportablePlayer
+	 *            Player Bean Objekt
 	 */
 	public Player(BeanPlayer transportablePlayer) {
 		this(transportablePlayer.playername, transportablePlayer.playerNumber);
@@ -94,7 +94,7 @@ public class Player implements IPlayer, Serializable {
 	/**
 	 * Implementierung von:
 	 * 
-	 * @see teamamused.common.interfaces.ICardHolder#getSpecialCards(int number)
+	 * @see teamamused.common.interfaces.IPlayer#initForGame(int number)
 	 */
 	@Override
 	public void initForGame(int number) {
@@ -269,7 +269,6 @@ public class Player implements IPlayer, Serializable {
 
 	/**
 	 * Implementierung von:
-	 * 
 	 * @see teamamused.common.interfaces.IPlayer#setLocal(Locale local)
 	 */
 	@Override

@@ -12,6 +12,7 @@ public class LogHelper {
 	/**
 	 * Standard Logger erstellen, wie behandelt in der Vorlesung Software
 	 * Enginiering 2
+	 * @return Standard Logger Objekt
 	 */
 	public static Logger getDefaultLogger() {
 		Logger mainLogger = Logger.getLogger("");
@@ -58,6 +59,7 @@ public class LogHelper {
 	
 	/**
 	 * Logt alle wichtigen Eigenschaften des Spielbrettes als info
+	 * @param kennung Prefix für die Erkennung des Boardes im Log
 	 * @param board Spielbread
 	 */
 	public static void LogGameBoard(String kennung, BeanGameBoard board) {
@@ -67,6 +69,5 @@ public class LogHelper {
 		log.info("Anzahl Spezialkarten " + board.specialCards.size());
 		log.info("Anzahl Todeskarten " + board.deadCards.size());
 		log.info("Anzahl Würfel " + board.cubeValues.length);
-		
 	}
 }

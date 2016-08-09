@@ -46,6 +46,8 @@ public class ServerConnection extends Thread {
 	/**
 	 * Konstruktor mit den Initialparametern
 	 * 
+	 * @param connector
+	 *            Konnektor welcher den Thread erzeugt
 	 * @param socket
 	 *            socket zum Server
 	 * @param username

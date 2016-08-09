@@ -60,7 +60,7 @@ public class TransportableProcedureCall extends TransportObject {
 
 		/**
 		 * Spieler möchte die Bestenliste betrachten.
-		 * Parameter: <keine>
+		 * Parameter: Keine
 		 */
 		GetTopRanking,
 		
