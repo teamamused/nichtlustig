@@ -35,8 +35,8 @@ import teamamused.common.interfaces.ITargetCard;
  */
 public class CardPopupView extends AbstractView<GameBoardModel> {
 
-	private final int IMAGE_HEIGHT = 80;
-	private final int POPUP_SIZE = 240;
+	private final int IMAGE_HEIGHT = 90;
+	private final int POPUP_SIZE = 350;
 	protected GridPane root;
 	protected VBox titlePane;
 	protected HBox cardTxtPane, specialCardTxtPane, deathCardTxtPane, buttonPane;
