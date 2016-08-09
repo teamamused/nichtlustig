@@ -89,7 +89,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				view.txtChatInput.clear();
 			}
 		});
-		
+
 		// Startet das Spiel
 		view.btnStart.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -97,7 +97,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				Client.getInstance().startGame();
 				view.btnStart.setDisable(true);
 			}
-			
+
 		});
 	}
 
@@ -143,15 +143,13 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			model.targetCardsNeedsUpdate = true;
 			model.deadCardsNeedsUpdate = true;
 		}
-		
+
 		model.gameBoard = newGameBoard;
 		Platform.runLater(() -> {
 			view.btnStart.setDisable(model.gameBoard.getGameStartet());
 			view.buildCards();
 			view.buildDices();
-			if (allowedToMoveDown) {
-				setEventOnDices();
-			}
+			setEventOnDices();
 			view.buildPlayer();
 			setEventsOnPlayerButton();
 		});
@@ -170,8 +168,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				diceControl.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
-						DiceControl diceControl = (DiceControl) event.getSource();
-						moveDownSelectedDice(diceControl);
+						if (allowedToMoveDown) {
+							DiceControl diceControl = (DiceControl) event.getSource();
+							moveDownSelectedDice(diceControl);
+						}
 					}
 				});
 			}
@@ -253,10 +253,8 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	private void allowedToDice() {
 		if (model.playerIsActive && model.remainingDices > 0) {
 			view.btnWuerfeln.setDisable(false);
-			allowedToMoveDown = true;
 		} else if (model.playerIsActive && model.remainingDices <= 0) {
 			view.btnWuerfeln.setDisable(true);
-			allowedToMoveDown = true;
 		} else {
 			view.btnWuerfeln.setDisable(true);
 			allowedToMoveDown = false;
@@ -264,10 +262,11 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	}
 
 	/**
-	 * Der Server hat das Spiel für beendet erklärt.
-	 * Dem Spieler wird angezeigt, dass das Spiel vorbei ist und der Sieger eingeblendet
-	 *  
-	 * @param rankings Platzierungen der Spielrunde
+	 * Der Server hat das Spiel für beendet erklärt. Dem Spieler wird angezeigt,
+	 * dass das Spiel vorbei ist und der Sieger eingeblendet
+	 * 
+	 * @param rankings
+	 *            Platzierungen der Spielrunde
 	 */
 	@Override
 	public void onGameFinished(Ranking[] rankings) {
@@ -276,7 +275,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		});
 
 	}
-	
+
 	/**
 	 * Gibt auf dem TextArea die Spielzüge aus.
 	 */
