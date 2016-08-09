@@ -1,4 +1,4 @@
-package teamamused.server;
+package teamamused.server.lib;
 
 import java.util.Hashtable;
 import java.util.List;

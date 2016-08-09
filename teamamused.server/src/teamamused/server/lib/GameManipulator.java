@@ -1,4 +1,4 @@
-package teamamused.server;
+package teamamused.server.lib;
 
 import java.util.ArrayList;
 import java.util.List;

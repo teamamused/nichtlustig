@@ -21,8 +21,8 @@ import teamamused.common.LogHelper;
 import teamamused.common.ResourceLoader;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractView;
-import teamamused.server.TextAreaHandler;
 import teamamused.server.connect.ClientAwaiter;
+import teamamused.server.lib.TextAreaHandler;
 
 /**
  * Die Klasse ServerView stellt nach dem MVC-Pattern die grafische Oberfläche

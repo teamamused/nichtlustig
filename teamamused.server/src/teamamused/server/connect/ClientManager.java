@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportObject;
-import teamamused.server.Game;
+import teamamused.server.lib.Game;
 
 /**
  * 

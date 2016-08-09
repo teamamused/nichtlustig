@@ -1,4 +1,4 @@
-package teamamused.server;
+package teamamused.server.lib;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

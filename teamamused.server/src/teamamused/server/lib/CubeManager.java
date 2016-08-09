@@ -1,4 +1,4 @@
-package teamamused.server;
+package teamamused.server.lib;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.interfaces.ICube;

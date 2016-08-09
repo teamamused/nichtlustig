@@ -6,8 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractController;
-import teamamused.server.GameManipulator;
 import teamamused.server.Server;
+import teamamused.server.lib.GameManipulator;
 
 public class ServerController extends AbstractController<ServerModel, ServerView> {
 	

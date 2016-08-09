@@ -21,7 +21,7 @@ import teamamused.common.interfaces.ICube;
 import teamamused.common.interfaces.IGameCard;
 import teamamused.common.interfaces.IPlayer;
 import teamamused.common.interfaces.ITargetCard;
-import teamamused.server.TextAreaHandler;
+import teamamused.server.lib.TextAreaHandler;
 import teamamused.client.libs.Client;
 
 public class GameBoardView extends AbstractView<GameBoardModel> {

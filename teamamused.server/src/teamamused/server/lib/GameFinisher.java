@@ -1,4 +1,4 @@
-package teamamused.server;
+package teamamused.server.lib;
 
 import java.time.LocalDateTime;
 import java.util.Hashtable;
