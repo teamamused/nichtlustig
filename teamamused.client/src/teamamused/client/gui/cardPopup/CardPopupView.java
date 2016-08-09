@@ -51,7 +51,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 	}
 
 	protected Scene createGUI() {
-		stage.setTitle("Nicht Lustig: Karten der Gegner");
+		stage.setTitle("Nicht Lustig: Spielerkarten");
 
 		// Definition der Haupt-Pane
 		root = new GridPane();
