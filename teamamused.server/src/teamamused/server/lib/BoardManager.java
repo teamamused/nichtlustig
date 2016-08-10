@@ -314,7 +314,8 @@ public class BoardManager {
 								}
 							}
 						}
-						
+					}
+					if (targetCardToPutDeadOn != null) {
 						// Todeskarte wird umgedreht auf gewertete Karte gelegt
 						newOwner.addDeadCard(deathCard, targetCardToPutDeadOn);
 						targetCardToPutDeadOn.setIsCoveredByDead(true);
