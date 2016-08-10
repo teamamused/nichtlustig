@@ -307,7 +307,7 @@ public class BoardManager {
 							if (targetCard.getIsValuated() && !targetCard.getGameCard().isDino() && !targetCard.getIsCoveredByDead()) {
 								//Todeskarte primär auf gewertete Lemming-Karte legen, ansonsten auf andere gewertete Zielkarte
 								//Nicht auf gewertete Dino-Karte legen
-								if(targetCard.getGameCard().isLemming() && !targetCardToPutDeadOn.getGameCard().isLemming()){
+								if(targetCard.getGameCard().isLemming() && (targetCardToPutDeadOn == null || !targetCardToPutDeadOn.getGameCard().isLemming())){
 									targetCardToPutDeadOn = targetCard;
 								}else if(!targetCard.getGameCard().isLemming() && targetCardToPutDeadOn == null){
 									targetCardToPutDeadOn = targetCard;
