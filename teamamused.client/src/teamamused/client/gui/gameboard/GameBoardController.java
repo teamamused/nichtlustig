@@ -7,6 +7,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import teamamused.client.Main;
@@ -99,6 +101,22 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 
 		});
+		
+		// Text Nachricht schicken wenn Enter betätigt wurde
+		view.txtChatInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)) {
+					try {
+						Client.getInstance().sendChatMessage(
+								new TransportableChatMessage(model.player.getPlayerName(), view.txtChatInput.getText()));
+					} catch (Exception e) {
+						LogHelper.LogException(e);
+					}
+					view.txtChatInput.clear();
+				}
+			}
+		});
 	}
 
 	/**
@@ -146,7 +164,9 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 
 		model.gameBoard = newGameBoard;
 		Platform.runLater(() -> {
-			view.btnStart.setDisable(model.gameBoard.getGameStartet());
+			if (model.gameBoard.getGameStartet() && view.navigation.getChildren().contains(view.btnStart)) {
+				view.navigation.getChildren().remove(view.btnStart);
+			}
 			view.buildCards();
 			view.buildDices();
 			setEventOnDices();
