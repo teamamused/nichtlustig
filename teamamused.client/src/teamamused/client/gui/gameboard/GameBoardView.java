@@ -154,7 +154,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		txtGameMove.getStyleClass().add("gameBoardContent");
 		ScrollPane scrollMoving = new ScrollPane();
 		scrollMoving.setContent(txtGameMove);
-		navigation.getChildren().addAll(btnStart, logo, playerPane, txtChatScreen, txtChatInput, btnSenden, txtGameMove);
+		navigation.getChildren().addAll(btnStart, logo, playerPane, txtGameMove, txtChatScreen, txtChatInput, btnSenden);
 
 		// Definition der Pane für die Spielkarten
 		targetCardsPane = GameBoardView.initializeGridPane();
@@ -360,6 +360,7 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 					btnPlayer.setId("btnActivePlayer");
 				}
 				this.btnArray.add(btnPlayer);
+				btnPlayer.setPrefWidth(txtChatInput.getWidth()/2-3);
 				this.playerPane.getChildren().add(btnPlayer);
 			}
 		}
