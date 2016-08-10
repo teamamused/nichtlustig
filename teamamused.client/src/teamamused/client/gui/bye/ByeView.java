@@ -37,7 +37,7 @@ public class ByeView extends AbstractView<ByeModel> {
 		// Label erstellen
 		this.labelTschuess = new Label("Tschüss und auf Wiedersehen");
 		
-		labelTschuess.setId("labelTschuess");
+		labelTschuess.setId("labelTitle");
 		
 		ImageView iview = null;
 		try {

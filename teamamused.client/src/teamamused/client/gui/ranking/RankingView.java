@@ -45,7 +45,7 @@ public class RankingView extends AbstractView<RankingModel> {
 
 		// Label erstellen
 		this.labelRanking = new Label("Unsere Besten");
-		labelRanking.setId("labelRanking");
+		labelRanking.setId("labelTitle");
 
 		// Tabelle erstellen
 		TableView<Ranking> table = new TableView<Ranking>();

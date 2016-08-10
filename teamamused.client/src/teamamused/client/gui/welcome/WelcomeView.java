@@ -48,7 +48,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		this.labelPlay = new Label("Was möchtest du spielen?");
 		this.labelFun = new Label("Wir wünschen dir viel Spass!");
 		
-		labelWelcome.setId("labelWelcome");
+		labelWelcome.setId("labelTitle");
 		
 		// Single-Player-Button erstellen und auf disable stellen
 		btnSingle = new Button();
