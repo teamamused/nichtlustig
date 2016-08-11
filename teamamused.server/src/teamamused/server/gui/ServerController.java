@@ -9,39 +9,38 @@ import teamamused.common.gui.AbstractController;
 import teamamused.server.Server;
 import teamamused.server.lib.GameManipulator;
 
+/**
+ * Diese Controller-Klasse nimmt die Benutzerinteraktionen des Server-GUI's
+ * entgegen.
+ * 
+ * @author Michelle
+ *
+ */
 public class ServerController extends AbstractController<ServerModel, ServerView> {
-	
-	private static final Logger LOG = ServiceLocator.getInstance().getLogger();
-    
-    public ServerController(ServerModel model, ServerView view) {
-    	super(model, view);
 
-    	view.restartButton.setOnAction(new EventHandler<ActionEvent>(){
+	private static final Logger LOG = ServiceLocator.getInstance().getLogger();
+
+	public ServerController(ServerModel model, ServerView view) {
+		super(model, view);
+
+		// Wird auf den Restart-Button geklickt, wird die Methode für den
+		// Neustart des Servers aufgerufen.
+		view.restartButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				view.loggingTxtArea.clear();
 				LOG.info("Server wird neu gestartet");
 				Server.resetServer();
 			}
-    	});
-    	
-    	view.deployCardsButton.setOnAction(new EventHandler<ActionEvent>(){
+		});
+
+		// Wird auf den Vorantreiben-Button geklickt, wird das Spiel durch den
+		// Aufruf der entsprechenden Methode vorangetrieben.
+		view.deployCardsButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				GameManipulator.deployCardsRandomly();
 			}
-    	});
-    	
-    	
-//    	// TODO: Für was ist das?
-//        // register ourselves to handle window-closing event
-//        view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
-//            @Override
-//            public void handle(WindowEvent event) {
-//                view.stop();     // closes the GUI
-//                Platform.exit(); // ends any JavaFX activities
-//                System.exit(0);  // end all activities (our server task) - not good code
-//            }
-//        });
-    }
+		});
+	}
 }
