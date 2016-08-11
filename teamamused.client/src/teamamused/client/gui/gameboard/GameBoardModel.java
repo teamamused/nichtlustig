@@ -13,6 +13,7 @@ import teamamused.common.models.GameBoard;
 import teamamused.common.models.Player;
 
 /**
+ * Diese Klasse ist für die Datenhaltung zum GameBoard zuständig.
  * 
  * @author Michelle
  *

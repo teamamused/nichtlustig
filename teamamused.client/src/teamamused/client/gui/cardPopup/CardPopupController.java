@@ -5,6 +5,13 @@ import javafx.scene.input.MouseEvent;
 import teamamused.client.gui.gameboard.GameBoardModel;
 import teamamused.common.gui.AbstractController;
 
+/**
+ * Diese Controller-Klasse nimmt die Benutzerinteraktionen des CardPopups
+ * entgegen.
+ * 
+ * @author Michelle
+ *
+ */
 public class CardPopupController extends AbstractController<GameBoardModel, CardPopupView> {
 
 	public CardPopupController(GameBoardModel model, CardPopupView view) {

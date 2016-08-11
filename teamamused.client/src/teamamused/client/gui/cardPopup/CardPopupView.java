@@ -27,8 +27,8 @@ import teamamused.common.interfaces.ISpecialCard;
 import teamamused.common.interfaces.ITargetCard;
 
 /**
- * Diese Klasse stellt die grafische Oberfläche für die Anzeige der Gegnerkarten
- * dar.
+ * Diese Klasse stellt die grafische Oberfläche für die Anzeige der
+ * Spielerkarten dar.
  * 
  * @author Michelle
  *
@@ -83,17 +83,21 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		cardsRival.setId("labelUnderline");
 		cardTxtPane.getChildren().add(cardsRival);
 		noCardsRival = new Label("Der Spieler hat keine Zielkarten");
-		
+
 		// Definition der Pane für die Zielkarten inkl. Instanziierung und
 		// Zuweisung der Controlls
 		cardFlowPane = new FlowPane();
 		cardFlowPane.setHgap(10);
 		cardFlowPane.setVgap(10);
-		
+
+		// Durch die Zielkarten des Spielers wird iteriert, damit diese einem
+		// neu instanziierten Button gesetzt werden können.
 		if (this.model.getPlayer() != null) {
 			for (ITargetCard card : model.getPlayer().getTargetCards()) {
 				Button btnTargetCard = new Button();
 				btnTargetCard.setGraphic(card.toCanvas(IMAGE_HEIGHT - 5));
+				// Wird auf einen Bild-Button geklickt, erscheint das
+				// dazugehörige Bild vergrössert.
 				btnTargetCard.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
@@ -134,10 +138,14 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		specialCardFlowPane.setHgap(10);
 		specialCardFlowPane.setVgap(10);
 
+		// Durch die Spezialkarten des Spielers wird iteriert, damit diese einem
+		// neu instanziierten Button gesetzt werden können.
 		if (this.model.getPlayer() != null) {
 			for (ISpecialCard card : model.getPlayer().getSpecialCards()) {
 				Button btnSpecialCard = new Button();
 				btnSpecialCard.setGraphic(getImageView(card.getForegroundImage()));
+				// Wird auf einen Bild-Button geklickt, erscheint das
+				// dazugehörige Bild vergrössert.
 				btnSpecialCard.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
@@ -180,10 +188,14 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		deathCardFlowPane.setHgap(10);
 		deathCardFlowPane.setVgap(10);
 
+		// Durch die Todeskarten des Spielers wird iteriert, damit diese einem
+		// neu instanziierten Button gesetzt werden können.
 		if (this.model.getPlayer() != null) {
 			for (IDeadCard card : model.getPlayer().getDeadCards()) {
 				Button btnDeathCard = new Button();
 				btnDeathCard.setGraphic(getImageView(card.getForegroundImage()));
+				// Wird auf einen Bild-Button geklickt, erscheint das
+				// dazugehörige Bild vergrössert.
 				btnDeathCard.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
@@ -206,7 +218,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 				});
 				deathCardFlowPane.getChildren().add(btnDeathCard);
 			}
-			
+
 			if (deathCardFlowPane.getChildren().size() == 0) {
 				deathCardFlowPane.getChildren().add(noDeathCardsRival);
 			}
@@ -274,18 +286,9 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		return imageView;
 	}
 
-	public Scene getScene() {
-		return scene;
-	}
-
-	public void start() {
-		stage.show();
-	}
-
-	public void stop() {
-		stage.hide();
-	}
-
+	/**
+	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
+	 */
 	protected void updateTexts() {
 
 		// Translator holen
@@ -293,7 +296,8 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 
 		// Texte holen
 		stage.setTitle(tl.getString(LangText.CardPopupTitle));
-		this.labelTitle.setText(String.format(tl.getString(LangText.CardPopupCardsOf), model.getPlayer().getPlayerName()));
+		this.labelTitle
+				.setText(String.format(tl.getString(LangText.CardPopupCardsOf), model.getPlayer().getPlayerName()));
 		this.labelText.setText(tl.getString(LangText.CardPopupValued));
 		this.cardsRival.setText(tl.getString(LangText.CardPopupTarget));
 		this.noCardsRival.setText(tl.getString(LangText.CardPopupNoTarget));
