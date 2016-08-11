@@ -18,7 +18,7 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 	public LogInController(LogInModel model, LogInView view) {
 		super(model, view);
 
-		// Beim Client registrieren (s. Observer Pattern)
+		// Beim Client registrieren
 		Client.getInstance().registerGui(this);
 
 		// Sobald Login-Button angeklickt wird...
