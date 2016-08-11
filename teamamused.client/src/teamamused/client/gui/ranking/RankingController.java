@@ -16,7 +16,11 @@ public class RankingController extends AbstractController<RankingModel, RankingV
 		
 		// Wenn Zurück-Button durch Benutzer angeklickt wird, wird er zurück auf die Welcomeseite gebracht
 		view.btnBack.setOnAction((ActionEvent e) -> {
-			Main.getInstance().startWelcome(this.view);
+			if (model.isGameFinished) {
+				view.stop();
+			} else {
+				Main.getInstance().startWelcome(this.view);
+			}
 		});
 		
 	}

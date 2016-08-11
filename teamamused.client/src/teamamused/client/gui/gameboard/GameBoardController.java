@@ -286,7 +286,6 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				alertDialog.setTitle("Du bist am Zug");
 				alertDialog.setHeaderText(null);
 				alertDialog.setContentText("Du bist an der Reihe mit Würfeln!");
-				alertDialog.showAndWait();
 				// Um das Dialogfenster mit CSS zu stylen
 				DialogPane dialogPane = alertDialog.getDialogPane();
 				try {
@@ -294,6 +293,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				} catch (Exception e) {
 					LogHelper.LogException(e);
 				}
+				alertDialog.showAndWait();
 			}
 		});
 	}

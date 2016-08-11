@@ -285,7 +285,7 @@ public class ServerConnection extends Thread {
 			break;
 		case GetTopRanking:
 			if (answer.isOK() && answer.getReturnValue() instanceof Ranking[]) {
-				this.notifyGui.rankingRecieved((Ranking[]) answer.getReturnValue());
+				this.notifyGui.rankingRecieved((Ranking[])answer.getReturnValue());
 			}
 			break;
 		case RollDices:

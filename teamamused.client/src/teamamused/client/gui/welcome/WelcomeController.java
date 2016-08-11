@@ -40,7 +40,7 @@ public class WelcomeController extends AbstractController<WelcomeModel, WelcomeV
 	public void onRankingRecieved(Ranking[] rankings) {
 		
 		Platform.runLater(() -> {
-			Main.getInstance().startRanking(rankings, this.view);
+			Main.getInstance().startRanking(rankings, false, this.view);
 		});
 	}
 	

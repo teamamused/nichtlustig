@@ -62,7 +62,7 @@ public class RankingView extends AbstractView<RankingModel> {
 
 		// Spaltentitel festlegen
 		TableColumn<Ranking, Integer> rankInGame = new TableColumn<Ranking, Integer>("im Spiel");
-		rankInGame.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("TotalRank"));
+		rankInGame.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("GameRank"));
 		rankInGame.prefWidthProperty().bind(table.widthProperty().divide(6));
 		rankInGame.getStyleClass().add("tblViewRightCol");
 

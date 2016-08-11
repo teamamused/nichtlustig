@@ -38,7 +38,7 @@ public class GameOverController extends AbstractController<GameOverModel, GameOv
 		view.btnRanking.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Main.getInstance().startRanking(model.ranking, null);
+				Main.getInstance().startRanking(model.ranking, true, null);
 			}
 		});
 
@@ -59,7 +59,7 @@ public class GameOverController extends AbstractController<GameOverModel, GameOv
 	public void onRankingRecieved(Ranking[] rankings) {
 
 		Platform.runLater(() -> {
-			Main.getInstance().startRanking(model.ranking, null);
+			Main.getInstance().startRanking(rankings, true, null);
 		});
 	}
 

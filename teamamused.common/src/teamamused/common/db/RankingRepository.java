@@ -32,6 +32,7 @@ public class RankingRepository {
 
 		// Ranking Objekte erstellen noch ohne Platzierung
 		for (Entry<IPlayer, Integer> pp : playerPoints.entrySet()) {
+			//System.out.println("Ranking 1 : " + pp.getKey().getPlayerName() + " - " + pp.getValue());
 			Ranking r = new Ranking();
 			r.setUsername(pp.getKey().getPlayerName());
 			r.setGameId(gameId);
@@ -48,6 +49,7 @@ public class RankingRepository {
 				prevPoints = inGameranking[i].getPoints();
 				rank++;
 			}
+			//System.out.println("Ranking 2 : " + inGameranking[i].getUsername() + " - " + inGameranking[i].getPoints() + " - " + rank);
 			inGameranking[i].setGameRank(rank);
 		}
 		
@@ -83,6 +85,7 @@ public class RankingRepository {
 				rankNr++;
 			}
 			rank.setTotalRank(rankNr);
+			//System.out.println("Ranking 3 : " + rank.getUsername() + " - " + rank.getPoints() + " - " + rankNr + " ig: " + rank.getGameRank());
 		}
 	}
 }

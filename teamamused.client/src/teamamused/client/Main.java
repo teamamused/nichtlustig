@@ -1,5 +1,6 @@
 package teamamused.client;
 
+import java.util.Hashtable;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import teamamused.client.gui.register.RegisterController;
@@ -26,6 +27,8 @@ import teamamused.client.gui.splashscreen.Splash_View;
 import teamamused.client.gui.welcome.WelcomeController;
 import teamamused.client.gui.welcome.WelcomeModel;
 import teamamused.client.gui.welcome.WelcomeView;
+import teamamused.client.libs.Client;
+import teamamused.client.libs.IClientListener;
 import teamamused.common.ServiceLocator;
 import teamamused.common.db.Ranking;
 import teamamused.common.gui.Translator;
@@ -42,10 +45,14 @@ public class Main extends Application {
 	private GameBoardView gameBoardView;
 	private GameOverView gameOverView;
 	private static Main instance = null;
+	// Hier merkt sich die Mainklasse alle Clientlistener welche sich beim
+	// schliessen des entsprechenden Gui's beim server abmelden sollen.
+	private Hashtable<IUserView, IClientListener> toderegister;
 
 	@Override
 	public void start(Stage primaryStage) {
 		Main.instance = this;
+		this.toderegister = new Hashtable<IUserView, IClientListener>();
 		// Setzt dem ServiceLocator die JavaFX-HostServices
 		ServiceLocator.getInstance().setHostServices(getHostServices());
 		ServiceLocator.getInstance().setTranslator(new Translator(null));
@@ -63,12 +70,11 @@ public class Main extends Application {
 		Stage logInStage = new Stage();
 		LogInModel model = new LogInModel();
 		logInView = new LogInView(logInStage, model);
-		new LogInController(model, logInView);
+		
+		LogInController cont = new LogInController(model, logInView);
+		this.toderegister.put(logInView, cont);
 
-		if (toClose != null) {
-			toClose.stop();
-			toClose = null;
-		}
+		this.closeAndDeregisterView(toClose);
 		logInView.start();
 	}
 
@@ -77,37 +83,37 @@ public class Main extends Application {
 		Stage RegisterStage = new Stage();
 		RegisterModel model = new RegisterModel();
 		registerView = new RegisterView(RegisterStage, model);
-		new RegisterController(model, registerView);
-		logInView.stop();
-		logInView = null;
+
+		RegisterController cont = new RegisterController(model, registerView);
+		this.toderegister.put(registerView, cont);
+		
+		this.closeAndDeregisterView(logInView);
 		registerView.start();
 	}
 
 	public void startWelcome(IUserView toClose) {
-
+		
 		Stage welcomeStage = new Stage();
 		WelcomeModel model = new WelcomeModel();
 		welcomeView = new WelcomeView(welcomeStage, model);
-		new WelcomeController(model, welcomeView);
+		
+		WelcomeController cont = new WelcomeController(model, welcomeView);
+		this.toderegister.put(welcomeView, cont);
 
-		if (toClose != null) {
-			toClose.stop();
-			toClose = null;
-		}
+		this.closeAndDeregisterView(toClose);
 		welcomeView.start();
 	}
 
-	public void startRanking(Ranking[] ranking, IUserView toClose) {
+	public void startRanking(Ranking[] ranking, boolean isGamefinished, IUserView toClose) {
 
 		Stage rankingStage = new Stage();
-		RankingModel model = new RankingModel(ranking);
+		RankingModel model = new RankingModel(ranking, isGamefinished);
 		rankingView = new RankingView(rankingStage, model);
-		new RankingController(model, rankingView);
+		
+		RankingController cont = new RankingController(model, rankingView);
+		this.toderegister.put(rankingView, cont);
 
-		if (toClose != null) {
-			toClose.stop();
-			toClose = null;
-		}
+		this.closeAndDeregisterView(toClose);
 		rankingView.start();
 	}
 
@@ -116,12 +122,11 @@ public class Main extends Application {
 		Stage gameBoardStage = new Stage();
 		GameBoardModel model = new GameBoardModel();
 		gameBoardView = new GameBoardView(gameBoardStage, model);
-		new GameBoardController(model, gameBoardView);
 
-		if (toClose != null) {
-			toClose.stop();
-			toClose = null;
-		}
+		GameBoardController cont = new GameBoardController(model, gameBoardView);
+		this.toderegister.put(gameBoardView, cont);
+
+		this.closeAndDeregisterView(toClose);
 		gameBoardView.start();
 	}
 
@@ -130,23 +135,24 @@ public class Main extends Application {
 		Stage gameOverStage = new Stage();
 		GameOverModel gameOverModel = new GameOverModel(ranking);
 		gameOverView = new GameOverView(gameOverStage, gameOverModel);
-		new GameOverController(gameOverModel, gameOverView);
-		gameBoardView.stop();
-		gameBoardView = null;
+
+		GameOverController cont = new GameOverController(gameOverModel, gameOverView);
+		this.toderegister.put(gameOverView, cont);
+
+		this.closeAndDeregisterView(gameBoardView);
 		gameOverView.start();
 	}
-	
+
 	public void startBye(IUserView toClose) {
 
 		Stage byeStage = new Stage();
 		ByeModel model = new ByeModel();
 		byeView = new ByeView(byeStage, model);
-		new ByeController(model, byeView);
+		
+		ByeController cont = new ByeController(model, byeView);
+		this.toderegister.put(byeView, cont);
 
-		if (toClose != null) {
-			toClose.stop();
-			toClose = null;
-		}
+		this.closeAndDeregisterView(toClose);
 		byeView.start();
 	}
 
@@ -156,5 +162,25 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	/**
+	 * Prüft ob sich die View noch beim Client abmelden muss (falls sie
+	 * IClientlistener ist) und schliesst sie anschliessend
+	 * 
+	 * @param toClose
+	 *            zuschliessende View
+	 */
+	private void closeAndDeregisterView(IUserView toClose) {
+		if (toClose != null) {
+			// Prüfen ob sich die View noch beim Client deregistrieren muss
+			if (this.toderegister.containsKey(toClose)) {
+				Client.getInstance().deregisterGui(this.toderegister.get(toClose));
+				this.toderegister.remove(toClose);
+			}
+			// View schliessen
+			toClose.stop();
+			toClose = null;
+		}
 	}
 }

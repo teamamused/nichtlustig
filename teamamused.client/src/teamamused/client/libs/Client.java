@@ -143,6 +143,7 @@ public class Client {
 	 *            Controller klasse
 	 */
 	public void deregisterGui(IClientListener gui) {
+		this.log.info("Client deregistriert Gui " + gui.getClass().toString());
 		this.guis.remove(gui);
 	}
 
