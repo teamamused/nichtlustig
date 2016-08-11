@@ -43,11 +43,18 @@ public class RankingRepository {
 		// Ranking Objekte sortieren und Rang zuteilen 
 		int rank = 0;
 		int prevPoints = 0;
+		int rankoffset = 0;
 		Ranking[] inGameranking = ranks.stream().sorted().toArray(x -> new Ranking[x]);
 		for (int i = 0; i < inGameranking.length; i++) {
 			if (inGameranking[i].getPoints() != prevPoints) {
 				prevPoints = inGameranking[i].getPoints();
 				rank++;
+				// Falls es zwei erste gibt, soll danach der 3te kommen
+				rank += rankoffset;
+				rankoffset = 0;
+				
+			} else {
+				rankoffset++;
 			}
 			//System.out.println("Ranking 2 : " + inGameranking[i].getUsername() + " - " + inGameranking[i].getPoints() + " - " + rank);
 			inGameranking[i].setGameRank(rank);
@@ -78,11 +85,17 @@ public class RankingRepository {
 		// Ranking Objekte sortieren und Rang zuteilen 
 		int rankNr = 0;
 		int prevPoints = 0;
+		int rankoffset = 0;
 		// Einträge durchlaufen und Rang zuteilen
 		for (Ranking rank : allRanks) {
 			if (rank.getPoints() != prevPoints) {
 				prevPoints = rank.getPoints();
 				rankNr++;
+				// Falls es zwei erste gibt, soll danach der 3te kommen
+				rankNr += rankoffset;
+				rankoffset = 0;
+			} else {
+				rankoffset++;
 			}
 			rank.setTotalRank(rankNr);
 			//System.out.println("Ranking 3 : " + rank.getUsername() + " - " + rank.getPoints() + " - " + rankNr + " ig: " + rank.getGameRank());

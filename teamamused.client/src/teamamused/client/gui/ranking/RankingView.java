@@ -69,7 +69,7 @@ public class RankingView extends AbstractView<RankingModel> {
 		// Spaltentitel festlegen
 		TableColumn<Ranking, String> name = new TableColumn<Ranking, String>("Name");
 		name.setCellValueFactory(new PropertyValueFactory<Ranking, String>("Username"));
-		name.prefWidthProperty().bind(table.widthProperty().divide(2.1));
+		name.prefWidthProperty().bind(table.widthProperty().divide(2.2));
 
 		// Spaltentitel festlegen
 		TableColumn<Ranking, Integer> points = new TableColumn<Ranking, Integer>("Punkte");
