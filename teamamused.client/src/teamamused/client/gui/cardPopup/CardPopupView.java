@@ -302,7 +302,6 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		this.deathCardsRival.setText(tl.getString(LangText.CardPopupDeath));
 		this.noDeathCardsRival.setText(tl.getString(LangText.CardPopupNoDeath));
 		this.btnClose.setText(tl.getString(LangText.CardPopupBtnClose));
-		this.btnSchliessen.setText(tl.getString(LangText.CardPopupBtnSchliessen));
 	}
 
 }
