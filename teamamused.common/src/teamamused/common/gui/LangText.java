@@ -57,7 +57,6 @@ public enum LangText {
 	GameBoardTitle ("gameBoard.title"),
 	GameBoardSpielfeld ("gameBoard.labelSpielfeld"),
 	GameBoardBtnSenden ("gameBoard.btnSenden"),
-	GameBoardChatTooltip ("gameBoard.chatInputTool"),
 	GameBoardSelectedDices ("gameBoard.labelSelectedDices"),
 	GameBoardBtnWuerfeln ("gameBoard.btnWuerfeln"),
 	GameBoardRollDices ("gameBoard.labelRollDices"),

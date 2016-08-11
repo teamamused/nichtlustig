@@ -414,7 +414,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 		stage.setTitle(tl.getString(LangText.GameBoardTitle));
 		this.labelSpielfeld.setText(String.format(tl.getString(LangText.GameBoardSpielfeld), model.player.getPlayerName()));
 		this.btnSenden.setText(tl.getString(LangText.GameBoardBtnSenden));
-//		this.chatInputTool.setText(tl.getString(LangText.GameBoardChatTooltip));
 		this.labelSelectedDices.setText(tl.getString(LangText.GameBoardSelectedDices));
 		this.btnWuerfeln.setText(tl.getString(LangText.GameBoardBtnWuerfeln));
 		this.btnStart.setText(tl.getString(LangText.GameBoardStart));
