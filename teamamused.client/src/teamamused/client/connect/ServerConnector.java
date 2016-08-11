@@ -73,5 +73,11 @@ public class ServerConnector {
 	public void setConnected(boolean isConnected) {
 		this.isConnected = isConnected;
 	}
+	/**
+	 * @return verbindung noch erwünscht / verbunden
+	 */
+	public boolean getConnected() {
+		return this.isConnected;
+	}
 
 }

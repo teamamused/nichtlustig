@@ -99,13 +99,15 @@ public class ClientManager {
 			}
 		}
 		// Falls der Spieler aktiv war eine neue Runde starten
-		if (Game.getInstance().getActivePlayer().getPlayerName().equals(client.getUsername())) {
-			Game.getInstance().startNextRound();
+		if (Game.getInstance().getActivePlayer() != null) {
+			if (Game.getInstance().getActivePlayer().getPlayerName().equals(client.getUsername())) {
+				Game.getInstance().startNextRound();
+			}
 		}
-		// Textmeldung schicken
-		ClientNotificator.notifyGameMove("Spieler " + client.getUsername() + " hat das Spiel verlassen");
 		// aus der Liste der zu informierenden entfernen
 		this.clients.remove(client);
+		// Textmeldung schicken
+		ClientNotificator.notifyGameMove("Spieler " + client.getUsername() + " hat das Spiel verlassen");
 	}
 	
 	/**

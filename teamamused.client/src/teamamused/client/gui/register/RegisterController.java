@@ -8,10 +8,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Alert.AlertType;
 import teamamused.client.Main;
 import teamamused.client.libs.Client;
 import teamamused.client.libs.IClientListener;
+import teamamused.common.LogHelper;
 import teamamused.common.ServiceLocator;
 import teamamused.common.gui.AbstractController;
 import teamamused.common.interfaces.IPlayer;
@@ -47,10 +49,7 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 				if (view.password == view.password2) {
 					Client.getInstance().registerPlayer(view.textRegUser.getText(), view.password.getText());
 				} else {
-					Platform.runLater(() -> {
-						Alert alert = new Alert(AlertType.ERROR, "Die beiden Passwörter sind nicht identisch");
-						alert.show();
-					});
+					showAlertMessage("Die beiden Passwörter sind nicht identisch");
 				}
 			}
 		});
@@ -71,9 +70,20 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 	@Override
 	public void onRegisterFailed(String msg) {
 		Platform.runLater(() -> {
-			Alert alert = new Alert(AlertType.ERROR, "Registrierung fehlgeschlagen" + msg);
-			alert.show();
+			showAlertMessage("Registrierung fehlgeschlagen\n" + msg);
 		});
+	}
+	
+	private void showAlertMessage(String msg) {
+			Alert alertDialog = new Alert(AlertType.ERROR, msg);
+			DialogPane dialogPane = alertDialog.getDialogPane();
+			try {
+				dialogPane.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
+			} catch (Exception e) {
+				LogHelper.LogException(e);
+			}
+			alertDialog.showAndWait();
+		
 	}
 
 }

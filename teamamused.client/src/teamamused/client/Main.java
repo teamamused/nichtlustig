@@ -1,8 +1,11 @@
 package teamamused.client;
 
 import java.util.Hashtable;
+
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import teamamused.client.gui.register.RegisterController;
 import teamamused.client.gui.register.RegisterModel;
 import teamamused.client.gui.register.RegisterView;
@@ -72,7 +75,7 @@ public class Main extends Application {
 		logInView = new LogInView(logInStage, model);
 		
 		LogInController cont = new LogInController(model, logInView);
-		this.toderegister.put(logInView, cont);
+		this.registerViewAndController(logInView, cont);
 
 		this.closeAndDeregisterView(toClose);
 		logInView.start();
@@ -85,7 +88,7 @@ public class Main extends Application {
 		registerView = new RegisterView(RegisterStage, model);
 
 		RegisterController cont = new RegisterController(model, registerView);
-		this.toderegister.put(registerView, cont);
+		this.registerViewAndController(registerView, cont);
 		
 		this.closeAndDeregisterView(logInView);
 		registerView.start();
@@ -98,7 +101,7 @@ public class Main extends Application {
 		welcomeView = new WelcomeView(welcomeStage, model);
 		
 		WelcomeController cont = new WelcomeController(model, welcomeView);
-		this.toderegister.put(welcomeView, cont);
+		this.registerViewAndController(welcomeView, cont);
 
 		this.closeAndDeregisterView(toClose);
 		welcomeView.start();
@@ -111,7 +114,7 @@ public class Main extends Application {
 		rankingView = new RankingView(rankingStage, model);
 		
 		RankingController cont = new RankingController(model, rankingView);
-		this.toderegister.put(rankingView, cont);
+		this.registerViewAndController(rankingView, cont);
 
 		this.closeAndDeregisterView(toClose);
 		rankingView.start();
@@ -124,7 +127,7 @@ public class Main extends Application {
 		gameBoardView = new GameBoardView(gameBoardStage, model);
 
 		GameBoardController cont = new GameBoardController(model, gameBoardView);
-		this.toderegister.put(gameBoardView, cont);
+		this.registerViewAndController(gameBoardView, cont);
 
 		this.closeAndDeregisterView(toClose);
 		gameBoardView.start();
@@ -137,7 +140,7 @@ public class Main extends Application {
 		gameOverView = new GameOverView(gameOverStage, gameOverModel);
 
 		GameOverController cont = new GameOverController(gameOverModel, gameOverView);
-		this.toderegister.put(gameOverView, cont);
+		this.registerViewAndController(gameOverView, cont);
 
 		this.closeAndDeregisterView(gameBoardView);
 		gameOverView.start();
@@ -150,7 +153,7 @@ public class Main extends Application {
 		byeView = new ByeView(byeStage, model);
 		
 		ByeController cont = new ByeController(model, byeView);
-		this.toderegister.put(byeView, cont);
+		this.registerViewAndController(byeView, cont);
 
 		this.closeAndDeregisterView(toClose);
 		byeView.start();
@@ -182,5 +185,17 @@ public class Main extends Application {
 			toClose.stop();
 			toClose = null;
 		}
+	}
+	
+	private void registerViewAndController(IUserView view, IClientListener cont) {
+		this.toderegister.put(view, cont);
+		// Maske auf schliessen oben geschlossen -> abmelden
+		view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+	          public void handle(WindowEvent we) {
+	        	  closeAndDeregisterView(view);
+	        	  Client.getInstance().sayGoodbye();
+	          }
+	      });      
+	
 	}
 }

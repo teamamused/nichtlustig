@@ -101,8 +101,13 @@ public class ServerConnection extends Thread {
 					LogHelper.LogException(eof);
 					this.log.info("End of Stream Exception, socket info: " + this.socket + " - "
 							+ this.socket.isInputShutdown());
+					//-- war nicht gut, machte endlos eof exeptions..
 					// Neue Verbindung aufbauen
-					this.connector.connect();
+					//if (connector.getConnected()) {
+					//	this.connector.connect();
+					//}
+					// neuer Versuch wir reseten den inputstream, da das socket sagt es sei noch ok
+					this.in.reset();
 				}
 			}
 

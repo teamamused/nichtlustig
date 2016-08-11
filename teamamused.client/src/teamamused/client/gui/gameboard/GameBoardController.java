@@ -14,7 +14,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import teamamused.client.Main;
 import teamamused.client.gui.cardPopup.CardPopupController;
 import teamamused.client.gui.cardPopup.CardPopupView;
@@ -124,14 +123,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				view.btnStart.setDisable(true);
 			}
 
-		});
-		
-		// Maske wird geschlossen
-		view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
-	          public void handle(WindowEvent we) {
-	        	  Client.getInstance().sayGoodbye();
-	          }
-	      });        
+		});  
 
 	}
 

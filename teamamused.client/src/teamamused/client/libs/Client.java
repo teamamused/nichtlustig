@@ -226,6 +226,7 @@ public class Client {
 	 * Cliente möchte sich höfflichst vom Server abmelden.
 	 */
 	public void sayGoodbye() {
+		this.log.info("Trenne verbindung zum Server");
 		if (this.connector != null) {
 			this.connector.close();
 		}
