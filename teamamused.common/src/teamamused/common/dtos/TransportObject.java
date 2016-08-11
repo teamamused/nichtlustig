@@ -81,7 +81,7 @@ public class TransportObject implements Serializable{
     	this.timestamp = System.currentTimeMillis();
     	
         try { // Ignore IO errors
-        	out.writeObject(this);
+			out.writeObject(this);
             out.flush();
          } catch (Exception e) {
         	LogHelper.LogException(e);

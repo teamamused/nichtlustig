@@ -55,6 +55,7 @@ public class BeanHelper {
 		BeanPlayer tp = new BeanPlayer();
 		tp.playername = player.getPlayerName();
 		tp.playerNumber = player.getPlayerNumber();
+		tp.connected = player.getConnected();
 
 		// Karten
 		tp.specialCards = getCardListFromSpecialCardArray(player.getSpecialCards());

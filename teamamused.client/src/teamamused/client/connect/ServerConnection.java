@@ -61,6 +61,7 @@ public class ServerConnection extends Thread {
 		try {
 			this.out = new ObjectOutputStream(socket.getOutputStream());
 			this.out.writeObject(username);
+			this.out.flush();
 
 			this.in = new ObjectInputStream(socket.getInputStream());
 
@@ -100,12 +101,8 @@ public class ServerConnection extends Thread {
 					LogHelper.LogException(eof);
 					this.log.info("End of Stream Exception, socket info: " + this.socket + " - "
 							+ this.socket.isInputShutdown());
-					if (this.socket != null && !this.socket.isInputShutdown()) {
-						this.in = new ObjectInputStream(socket.getInputStream());
-					} else {
-						this.log.info("Schliesse Verbindung");
-						this.holdConnection = false;
-					}
+					// Neue Verbindung aufbauen
+					this.connector.connect();
 				}
 			}
 

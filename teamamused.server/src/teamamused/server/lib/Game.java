@@ -277,12 +277,18 @@ public class Game implements Serializable {
 		if (this.activePlayer == null) {
 			this.defineStartPlayer();
 		} else {
-			// Wenn bereits ein Spieler aktiv ist, den nächsten aktivieren
-			if (this.activePlayer.getPlayerNumber() < players.size()) {
-				this.activePlayer = players.get(this.activePlayer.getPlayerNumber());
-			} else {
-				this.activePlayer = players.get(0);
-			}
+			// weiter moven bis auf dem nächsten verbundenen aber maximal 5x
+			int versuch = 0;
+			do {
+				// Wenn bereits ein Spieler aktiv ist, den nächsten aktivieren
+				if (this.activePlayer.getPlayerNumber() < players.size()) {
+					this.activePlayer = players.get(this.activePlayer.getPlayerNumber());
+				} else {
+					this.activePlayer = players.get(0);
+				}
+				versuch++;
+			} while (!this.activePlayer.getConnected() && versuch <= 5);
 		}
+		
 	}
 }

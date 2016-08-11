@@ -65,7 +65,23 @@ public class ClientAwaiter extends Thread {
 				if (this.isWaitingForClients) {
 					log.info("Neuer Client verbunden");
 					ClientConnection client = new ClientConnection(clientSocket, currClientId++);
-					ClientManager.getInstance().addClient(client);
+					
+					
+					// ------------------------------------------------------------
+					// Versuch mit reconect logik, noch nicht das gelbe vom ei...
+					// ------------------------------------------------------------
+					ClientConnection oldCon = null;
+					for (ClientConnection con : ClientManager.getInstance().getClients()) {
+						if (con.getUsername().equals(client.getUsername())) {
+							oldCon = con;
+						}
+					}
+					if (oldCon != null) {
+						log.info("Switche Client verbindung");
+						ClientManager.getInstance().switchClientConnection(client, oldCon);
+					} else {
+						ClientManager.getInstance().addClient(client);
+					}
 					client.start();
 				}
 			}

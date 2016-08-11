@@ -51,4 +51,16 @@ public interface IPlayer extends ICardHolder {
 	 * @param local neue Regionseinstellungen des Spielers
 	 */
 	void setLocal(Locale local);
+	
+	/**
+	 * Gibt zurück ob der Spieler noch mit dem Server verbunden ist.
+	 * @return
+	 */
+	boolean getConnected();
+
+	/**
+	 * Setzt den Spieler auf Verbunden oder nicht verbunden
+	 * @param Boolean ob Verbunden
+	 */
+	void setConnected(boolean connected);
 }

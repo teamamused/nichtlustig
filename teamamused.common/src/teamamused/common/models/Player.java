@@ -31,6 +31,7 @@ public class Player implements IPlayer, Serializable {
 	private transient Hashtable<GameCard, ITargetCard> htDeadOnTargetCards;
 
 	private String playername;
+	private boolean isConnected = true;
 	private Locale local;
 	private int playerNumber = 0;
 
@@ -73,6 +74,7 @@ public class Player implements IPlayer, Serializable {
 		htSpecialCards = new Hashtable<GameCard, ISpecialCard>();
 		htTargetCards = new Hashtable<GameCard, ITargetCard>();
 		htDeadCards = new Hashtable<GameCard, IDeadCard>();
+		this.isConnected = transportablePlayer.connected;
 		
 		Hashtable<GameCard, IDeadCard> allDeadCards = CardFactory.getDeadCards();
 		for (GameCard card : transportablePlayer.deadCards) {
@@ -266,7 +268,7 @@ public class Player implements IPlayer, Serializable {
 	public Locale getLocal() {
 		return local;
 	}
-
+	
 	/**
 	 * Implementierung von:
 	 * @see teamamused.common.interfaces.IPlayer#setLocal(Locale local)
@@ -275,6 +277,25 @@ public class Player implements IPlayer, Serializable {
 	public void setLocal(Locale local) {
 		this.local = local;
 	}
+
+	/**
+	 * Implementierung von:
+	 * @see teamamused.common.interfaces.IPlayer#getsConnected()
+	 */
+	@Override
+	public boolean getConnected() {
+		return this.isConnected;
+	}
+
+	/**
+	 * Implementierung von:
+	 * @see teamamused.common.interfaces.IPlayer#setConnected(boolean connected)
+	 */
+	@Override
+	public void setConnected(boolean connected) {
+		this.isConnected = connected;
+	}
+	
 	@Override
 	public String toString() {
 		return this.playername;
@@ -287,4 +308,5 @@ public class Player implements IPlayer, Serializable {
 	public boolean equals(Object obj) {
 		return this.toString().equals(obj.toString());
 	}
+	
 }

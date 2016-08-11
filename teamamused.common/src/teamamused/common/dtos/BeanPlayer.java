@@ -18,6 +18,7 @@ public class BeanPlayer implements Serializable {
 
 	public String playername;
 	public int playerNumber = 0;
+	public boolean connected = false;
 	
 	public ArrayList<GameCard> specialCards = new ArrayList<GameCard>();
 	public ArrayList<BeanTargetCard> targetCards = new ArrayList<BeanTargetCard>();

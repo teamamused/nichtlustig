@@ -358,6 +358,9 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 				if (Client.getInstance().getActivePlayer() != null
 						&& player.getPlayerNumber() == Client.getInstance().getActivePlayer().getPlayerNumber()) {
 					btnPlayer.setId("btnActivePlayer");
+				// Wenn der Spieler nicht mehr im spiel ist grau hinterlegen
+				} else if (!player.getConnected()) {
+					btnPlayer.setId("btnDisconnectedPlayer");
 				}
 				this.btnArray.add(btnPlayer);
 				btnPlayer.setPrefWidth(txtChatInput.getWidth()/2-3);

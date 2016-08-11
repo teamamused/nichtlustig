@@ -116,6 +116,10 @@ public class ClientConnection extends Thread {
 				}
 			} catch (Exception e) {
 			}
+			// Falls der Server theoretisch noch auf den Client hört, diesen abmelden
+			if (this.isListeningForClient) {
+				ClientManager.getInstance().removeClient(this);
+			}
 		}
 	}
 
@@ -183,6 +187,10 @@ public class ClientConnection extends Thread {
 
 	public IPlayer getPlayer() {
 		return this.player;
+	}
+	
+	public String getUsername() {
+		return this.username;
 	}
 
 	/**

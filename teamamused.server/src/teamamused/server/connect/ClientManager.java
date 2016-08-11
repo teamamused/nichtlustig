@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import teamamused.common.ServiceLocator;
 import teamamused.common.dtos.TransportObject;
+import teamamused.common.interfaces.IPlayer;
+import teamamused.server.lib.BoardManager;
+import teamamused.server.lib.ClientNotificator;
 import teamamused.server.lib.Game;
 
 /**
@@ -51,7 +54,7 @@ public class ClientManager {
 	
 	/**
 	 * Gibt den aktiven Spieler zurück 
-	 * (muss noch programmiert werden, im Demo immer der erste)
+	 * 
 	 * @return aktuell aktiver Client
 	 */
 	public ClientConnection getCurrentClient() {
@@ -75,10 +78,33 @@ public class ClientManager {
 	}
 	
 	/**
+	 * Gleicher Client baut verbindung neu auf, infos übernehmen vom alten
+	 * @param client neuer Client
+	 */
+	public void switchClientConnection(ClientConnection newCon, ClientConnection oldCon) {
+		newCon.setPlayer(oldCon.getPlayer());
+		this.addClient(newCon);
+		this.clients.remove(oldCon);
+	}
+	
+	/**
 	 * Client wird entfernt
 	 * @param client Client
 	 */
 	public void removeClient(ClientConnection client) {
+		// Spieler auf dem Gameboard als abwesend markieren
+		for (IPlayer player : BoardManager.getInstance().getGameBoard().getPlayers()) {
+			if (player.getPlayerName().equals(client.getUsername())) {
+				player.setConnected(false);
+			}
+		}
+		// Falls der Spieler aktiv war eine neue Runde starten
+		if (Game.getInstance().getActivePlayer().getPlayerName().equals(client.getUsername())) {
+			Game.getInstance().startNextRound();
+		}
+		// Textmeldung schicken
+		ClientNotificator.notifyGameMove("Spieler " + client.getUsername() + " hat das Spiel verlassen");
+		// aus der Liste der zu informierenden entfernen
 		this.clients.remove(client);
 	}
 	
