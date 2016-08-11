@@ -65,6 +65,7 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		this.labelRegPassword = new Label("Passwort");
 		this.labelRegPassword2 = new Label("Passwort bestätigen");
 		
+		// Den Labels ID's zuweisen, um im CSS spezielle Styles zu setzen
 		labelRegister.setId("labelTitle");
 		labelCopyright.setId("labelCopyright");
 
@@ -89,6 +90,7 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		cbLang.setItems(FXCollections.observableArrayList(ServiceLocator.getInstance().getLocales()));
 		cbLang.getSelectionModel().selectFirst();
 
+		// Mittels ResourceLoader das Bild holen, Grösse setzen und der erstellten iview hinzufügen
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("NichtLustig.png"));
@@ -119,17 +121,19 @@ public class RegisterView extends AbstractView<RegisterModel> {
 			LogHelper.LogException(e1);
 		}
 		
-		// Exit-Button mit Bild erstellen
+		// Exit-Button mit Bild erstellen und ID setzen
 		btnBack = new Button();
 		btnBack.setGraphic(iview3);
 		btnBack.setId("btnTransparent");
 		
+		// GridPane erstellen 
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(0, 0, 0, 0));
 
+		// Dem GridPane diverse Elemente übergeben
 		grid.add(labelRegister, 0, 1);
 		grid.add(labelRegisterHere, 0, 3);
 		grid.add(labelRegUser, 0, 4);
@@ -139,17 +143,20 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		grid.add(labelRegPassword2, 0, 8);
 		grid.add(password2, 0, 9);
 		
+		// HBox erstellen und Elemente übergeben
 		HBox hboxLang = new HBox();
 		hboxLang.setPadding(new Insets(0, 0, 0, 0));
 		hboxLang.setAlignment(Pos.TOP_LEFT);
 		hboxLang.setSpacing(15);
 		hboxLang.getChildren().addAll(iview2, cbLang);
 	    
+		// StackPane erstellen und Button hinzufügen
 	    StackPane stackRegister = new StackPane();
 	    stackRegister.setPadding(new Insets(0, 0, 0, 0));
 	    stackRegister.setAlignment(Pos.TOP_RIGHT);
 	    stackRegister.getChildren().addAll(btnRegister);
 		
+	    // VBox erstellen und Elemente hinzufügen
 	    VBox vboxLeft = new VBox();
 	    vboxLeft.setPadding(new Insets(30, 0, 0, 50));
 	    vboxLeft.setAlignment(Pos.TOP_CENTER);
@@ -158,21 +165,25 @@ public class RegisterView extends AbstractView<RegisterModel> {
 	    vboxLeft.getChildren().addAll(hboxLang);
 	    vboxLeft.getChildren().addAll(stackRegister);
 	    
+	    // StackPane erstellen und Button hinzufügen
 	    StackPane stackExit = new StackPane();
 	    stackExit.setPadding(new Insets(0, 50, 0, 0));
 	    stackExit.setAlignment(Pos.TOP_RIGHT);
 	    stackExit.getChildren().addAll(btnBack);
 	    
+	    // StackPane erstellen und Bild hinzufügen
 	    StackPane stackImage = new StackPane();
 	    stackImage.setPadding(new Insets(20, 90, 0, 0));
 	    stackImage.setAlignment(Pos.TOP_CENTER);
 	    stackImage.getChildren().addAll(iview);
 	    
+	    // StackPane erstellen und Label hinzufügen
 	    StackPane stackCopyright = new StackPane();
 	    stackCopyright.setPadding(new Insets(0, 90, 0, 0));
 	    stackCopyright.setAlignment(Pos.TOP_CENTER);
 	    stackCopyright.getChildren().addAll(labelCopyright);
 	    
+	    // VBox erstellen und Elemente hinzufügen
 		VBox vboxRight = new VBox();
 		vboxRight.setPadding(new Insets(30, 0, 0, 0));
 		vboxRight.setAlignment(Pos.TOP_CENTER);
@@ -181,11 +192,12 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		vboxRight.getChildren().addAll(stackImage);
 		vboxRight.getChildren().addAll(stackCopyright);
 		
+		// BorderPane erstellen und Elemente hinzufügen
 		BorderPane border = new BorderPane();
 		border.setLeft(vboxLeft);
 		border.setRight(vboxRight);
 
-		// Das Layout Pane einer Scene hinzufügen
+		// Das BorderPane einer Scene hinzufügen
 		Scene scene = new Scene(border, 900, 600);
 		
 		// Fenstertitel setzen
@@ -194,8 +206,10 @@ public class RegisterView extends AbstractView<RegisterModel> {
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 
+		// Translator-Methode ausführen
 		updateTexts();
 		
+		// Scene widergeben
 		return scene;
 	}
 	

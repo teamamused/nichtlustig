@@ -43,11 +43,11 @@ public class RankingView extends AbstractView<RankingModel> {
 	@Override
 	protected Scene createGUI() {
 
-		// Label erstellen
+		// Label erstellen und ID setzen
 		this.labelRanking = new Label("Unsere Besten");
 		labelRanking.setId("labelTitle");
 
-		// Tabelle erstellen
+		// Tabelle erstellen, Breite und ID setzen
 		TableView<Ranking> table = new TableView<Ranking>();
 		table.setPrefWidth(750);
 		table.setId("tableRanking");
@@ -55,19 +55,23 @@ public class RankingView extends AbstractView<RankingModel> {
 		// Spaltentitel festlegen
 		TableColumn<Ranking, Integer> rank = new TableColumn<Ranking, Integer>("Rang");
 		rank.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("TotalRank"));
-		// Relative breiten angaben für dynamisches Layout
+		
+		// Relative Breiten angeben für dynamisches Layout
 		rank.prefWidthProperty().bind(table.widthProperty().divide(6));
 		rank.getStyleClass().add("tblViewRightCol");
 
+		// Spaltentitel festlegen
 		TableColumn<Ranking, Integer> rankInGame = new TableColumn<Ranking, Integer>("im Spiel");
 		rankInGame.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("TotalRank"));
 		rankInGame.prefWidthProperty().bind(table.widthProperty().divide(6));
 		rankInGame.getStyleClass().add("tblViewRightCol");
 
+		// Spaltentitel festlegen
 		TableColumn<Ranking, String> name = new TableColumn<Ranking, String>("Name");
 		name.setCellValueFactory(new PropertyValueFactory<Ranking, String>("Username"));
 		name.prefWidthProperty().bind(table.widthProperty().divide(2.1));
 
+		// Spaltentitel festlegen
 		TableColumn<Ranking, Integer> points = new TableColumn<Ranking, Integer>("Punkte");
 		points.setCellValueFactory(new PropertyValueFactory<Ranking, Integer>("Points"));
 		points.prefWidthProperty().bind(table.widthProperty().divide(6));
@@ -79,10 +83,12 @@ public class RankingView extends AbstractView<RankingModel> {
 		LocalDate>("Points"));
 		date.setMinWidth(150);*/
 
+		
 		table.getColumns().addAll(rank, rankInGame, name, points);//, date);
 
 		table.setItems(this.model.ranking);
 
+		// Mittels ResourceLoader das Bild holen, Grösse setzen und der erstellten iview hinzufügen
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("Back.png"));
@@ -93,36 +99,41 @@ public class RankingView extends AbstractView<RankingModel> {
 			LogHelper.LogException(e1);
 		}
 
-		// Back-Button mit Bild erstellen
+		// Back-Button mit Bild erstellen und ID setzen
 		btnBack = new Button();
 		btnBack.setGraphic(iview);
 		btnBack.setId("btnTransparent");
 		
+		// StackPane erstellen und Button hinzufügen
 	    StackPane stackBack = new StackPane();
 	    stackBack.setPadding(new Insets(0, 0, 0, 0));
 	    stackBack.setAlignment(Pos.TOP_RIGHT);
 	    stackBack.getChildren().addAll(btnBack);
 		
+	    // StackPane erstellen und Label hinzufügen
 	    StackPane stackLabelRank = new StackPane();
 	    stackLabelRank.setPadding(new Insets(0, 0, 0, 0));
 	    stackLabelRank.setAlignment(Pos.TOP_LEFT);
 	    stackLabelRank.getChildren().addAll(labelRanking);
 	    
+	    // StackPane erstellen und Tabelle hinzufügen
 	    StackPane stackTable = new StackPane();
 	    stackTable.setPadding(new Insets(10, 0, 0, 0));
 	    stackTable.setAlignment(Pos.TOP_LEFT);
 	    stackTable.getChildren().addAll(table);
 	    
+	    // BorderPane erstellen und Elemente hinzufügen
 	    BorderPane top = new BorderPane();
 	    top.setLeft(stackLabelRank);		
 	    top.setRight(stackBack);
 	    
+	    // BorderPane erstellen und Elemente hinzufügen
 		BorderPane root = new BorderPane();
 		root.setPadding(new Insets(30, 50, 50, 50));
 		root.setTop(top);
 		root.setLeft(stackTable);
 
-		// Das Layout Pane einer Scene hinzufügen
+		// Das BorderPane einer Scene hinzufügen
 		Scene scene = new Scene(root, 900, 600);
 
 		// Fenstertitel setzen
@@ -131,8 +142,10 @@ public class RankingView extends AbstractView<RankingModel> {
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 
+		// Translator-Methode ausführen
 		updateTexts();
 		
+		// Scene widergeben
 		return scene;
 	}
 	

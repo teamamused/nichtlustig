@@ -71,10 +71,10 @@ public class LogInView extends AbstractView<LogInModel> {
 		this.labelNeu = new Label("Neu bei uns?");
 		this.labelFailLogIn = new Label();
 
+		// Den Labels ID's zuweisen, um im CSS spezielle Styles zu setzen
 		labelCopyright.setId("labelCopyright");
 		labelConnect.setId("labelConnect");
 		labelFailLogIn.setId("labelFailLogIn");
-
 		
 		// Textfelder erstellen
 		textServer = new TextField();
@@ -106,6 +106,7 @@ public class LogInView extends AbstractView<LogInModel> {
 		cbLang.setItems(FXCollections.observableArrayList(ServiceLocator.getInstance().getLocales()));
 		cbLang.getSelectionModel().selectFirst();
 		
+		// Mittels ResourceLoader das Bild holen, Grösse setzen und der erstellten iview hinzufügen
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("NichtLustig.png"));
@@ -136,11 +137,14 @@ public class LogInView extends AbstractView<LogInModel> {
 			LogHelper.LogException(e1);
 		}
 		
+		// GridPane erstellen 
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER_RIGHT);
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(10, 50, 50, 0));
+		
+		// Dem GridPane diverse Elemente übergeben
 		grid.add(labelUser, 2, 0);
 		grid.add(textUser, 2, 1);
 		grid.add(labelPassword, 2, 2);
@@ -152,11 +156,13 @@ public class LogInView extends AbstractView<LogInModel> {
 		grid.add(iview2, 1, 10);
 		grid.add(cbLang, 2, 10);
 		
+		// StackPane erstellen und Label hinzufügen
 		StackPane stackConnect = new StackPane();
 		stackConnect.setPadding(new Insets(30, 0, 10, 50));
 		stackConnect.setAlignment(Pos.TOP_LEFT);
 		stackConnect.getChildren().addAll(labelConnect);
 		
+		// HBox erstellen und Elemente übergeben
 		HBox hboxConnect = new HBox();
 		hboxConnect.setPadding(new Insets(0, 50, 0, 50));
 		hboxConnect.setAlignment(Pos.TOP_LEFT);
@@ -164,12 +170,14 @@ public class LogInView extends AbstractView<LogInModel> {
 		hboxConnect.getChildren().addAll(labelServer, textServer, labelPort, textPort, btnConnectServer);
 		hboxConnect.setId("hboxConnect");
 	    
+		// HBox erstellen und Element übergeben
 	    HBox hboxLogo = new HBox();
 	    hboxLogo.setPadding(new Insets(30, 50, 0, 0));
 	    hboxLogo.setAlignment(Pos.TOP_RIGHT);
 	    hboxLogo.setSpacing(15);
 	    hboxLogo.getChildren().addAll(iview3);
 	    
+	    // VBox erstellen und Elemente übergeben
 		VBox vbox = new VBox();
 		vbox.setPadding(new Insets(40, 0, 0, 90));
 		vbox.setAlignment(Pos.TOP_CENTER);
@@ -177,20 +185,23 @@ public class LogInView extends AbstractView<LogInModel> {
 		vbox.getChildren().addAll(iview);
 		vbox.getChildren().addAll(labelCopyright);
 
+		// BorderPane erstellen und Elemente übergeben
 		BorderPane borderConnect = new BorderPane();
 		borderConnect.setTop(stackConnect);
 		borderConnect.setLeft(hboxConnect);
 		
+		// BorderPane erstellen und Elemente übergeben
 		BorderPane border = new BorderPane();
 		border.setLeft(borderConnect);
 		border.setRight(hboxLogo);
 	    
+		// BorderPane erstellen und Elemente übergeben
 		BorderPane border2 = new BorderPane();
 		border2.setTop(border);
 		border2.setLeft(vbox);
 		border2.setCenter(grid);
 
-		// Das Layout Pane einer Scene hinzufügen
+		// Das BorderPane einer Scene hinzufügen
 		Scene scene = new Scene(border2, 900, 600);
 		
 		// Fenstertitel setzen
@@ -199,8 +210,10 @@ public class LogInView extends AbstractView<LogInModel> {
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 
+		// Translator-Methode ausführen
 		updateTexts();
 		
+		// Scene widergeben
 		return scene;
 	}
 

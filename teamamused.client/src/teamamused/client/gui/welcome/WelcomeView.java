@@ -59,6 +59,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		btnMulti = new Button();
 		btnMulti.setText("Multi-Player");
 		
+		// Mittels ResourceLoader das Bild holen, Grösse setzen und der erstellten iview hinzufügen
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("Single-Player.jpg"));
@@ -109,12 +110,14 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		btnExit.setGraphic(iview4);
 		btnExit.setId("btnTransparent");
 		
+		// GridPane erstellen
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_LEFT);
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(30, 50, 50, 50));
 
+		// Dem GridPane diverse Elemente übergeben
 		grid.add(labelWelcome, 0, 0, 20, 1);
 		grid.add(labelPlay, 0, 2);
 		grid.add(btnSingle, 0, 4);
@@ -125,7 +128,7 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		grid.add(labelFun, 0, 10);
 		grid.add(btnExit, 24, 0);
 		
-		// Das Layout Pane einer Scene hinzufügen
+		// Das GridPane einer Scene hinzufügen
 		Scene scene = new Scene(grid, 900, 600);
 		
 		// Fenstertitel setzen
@@ -134,8 +137,10 @@ public class WelcomeView extends AbstractView<WelcomeModel> {
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 		
+		// Translator-Methode ausführen
 		updateTexts();
 		
+		// Scene widergeben
 		return scene;
 	}
 	

@@ -37,8 +37,10 @@ public class ByeView extends AbstractView<ByeModel> {
 		// Label erstellen
 		this.labelTschuess = new Label("Tschüss und auf Wiedersehen");
 		
+		// Dem Label eine ID zuweisen, um im CSS spezielle Styles zu setzen
 		labelTschuess.setId("labelTitle");
 		
+		// Mittels ResourceLoader das Bild holen, Grösse setzen und der erstellten iview hinzufügen 
 		ImageView iview = null;
 		try {
 			iview = new ImageView(ResourceLoader.getImage("Tschuess.jpg"));
@@ -49,21 +51,24 @@ public class ByeView extends AbstractView<ByeModel> {
 			LogHelper.LogException(e1);
 		}
 		
+		// StackPane erstellen
 		StackPane stackTschuess = new StackPane();
 		stackTschuess.setPadding(new Insets(0, 0, 0, 0));
 		stackTschuess.setAlignment(Pos.TOP_CENTER);
 		stackTschuess.getChildren().addAll(labelTschuess);
 		
+		// GridPane erstellen 
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.TOP_CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(30, 50, 50, 50));
 
+		// Dem GridPane den Text und das Bild übergeben
 		grid.add(stackTschuess, 0, 0);
 		grid.add(iview, 0, 3);
 
-		// Das Layout Pane einer Scene hinzufügen
+		// Das GridPane einer Scene hinzufügen
 		Scene scene = new Scene(grid, 900, 600);
 
 		// Fenstertitel setzen
@@ -72,8 +77,10 @@ public class ByeView extends AbstractView<ByeModel> {
 		// Stylesheet zuweisen
 		scene.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
 
+		// Translator-Methode ausführen
 		updateTexts();
 		
+		// Scene widergeben
 		return scene;
 	}
 

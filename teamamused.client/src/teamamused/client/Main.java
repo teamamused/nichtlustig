@@ -54,7 +54,6 @@ public class Main extends Application {
 		splashView = new Splash_View(primaryStage, splashModel);
 		new Splash_Controller(this, splashModel, splashView);
 		splashView.start();
-
 		// Display the splash screen and begin the initialization
 		splashModel.initialize();
 	}
