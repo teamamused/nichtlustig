@@ -35,10 +35,10 @@
 	
 #labelFailLogIn{
 	-fx-font-size: 16.0pt;
-	-fx-base: yellow;
+	-fx-text-fill: yellow;
 	-fx-font-weight: bold;
 }
-	
+
 #hboxConnect{
 	-fx-font-size: 12.0pt;
 }
@@ -78,6 +78,11 @@
 	-fx-font-size: 15.0pt;
 	-fx-font-family: "Tempus Sans ITC";
 	-fx-background-color: rgb(232.0, 174.0, 30.0);
+}
+#btnDisconnectedPlayer {
+	-fx-font-size: 15.0pt;
+	-fx-font-family: "Tempus Sans ITC";
+	-fx-background-color: rgb(100.0, 100.0, 100.0);
 }
 
 #splash{
