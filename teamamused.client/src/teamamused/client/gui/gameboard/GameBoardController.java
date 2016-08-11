@@ -82,7 +82,8 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 		});
 
-		// Sendet die eingegebene Nachricht an den Server
+		// Sendet die eingegebene Nachricht an den Server, wenn der Button zum
+		// Senden geklickt wird
 		view.btnSenden.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -96,17 +97,8 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 		});
 
-		// Startet das Spiel
-		view.btnStart.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				Client.getInstance().startGame();
-				view.btnStart.setDisable(true);
-			}
-
-		});
-
-		// Text Nachricht schicken wenn Enter betätigt wurde
+		// Sendet die eingegebene Nachricht an den Server, wenn Enter geklickt
+		// wird
 		view.txtChatInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -121,12 +113,25 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				}
 			}
 		});
+
+		// Startet das Spiel
+		view.btnStart.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Client.getInstance().startGame();
+				view.btnStart.setDisable(true);
+			}
+
+		});
+
 	}
 
 	/**
 	 * Diese Methode verschiebt die Würfel nach unten zu den gesetzten Würfeln.
 	 * 
 	 * @param diceControl
+	 *            Nimmt das DiceControl-Objekt entgegen, welches gesetzt werden
+	 *            soll
 	 */
 	private void moveDownSelectedDice(DiceControl diceControl) {
 		diceControl.getCube().setIsFixed(!diceControl.getCube().getIsFixed());
@@ -147,7 +152,9 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	}
 
 	/**
-	 * Das Spielbrett wurde verändert
+	 * Methode von IClientListener wird hier überschrieben. Sobald der Server
+	 * die Methode aufruft, wird das Spielfeld aktualisiert und die
+	 * entsprechenden Teile neu gezeichnet.
 	 * 
 	 * @param newGameBoard
 	 *            Neues Spielbrett
@@ -168,6 +175,8 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 
 		model.gameBoard = newGameBoard;
 		Platform.runLater(() -> {
+			// Wurde der Start-Button bereits geklickt, verschwindet er vom
+			// Spielfeld
 			if (model.gameBoard.getGameStartet() && view.navigation.getChildren().contains(view.btnStart)) {
 				view.navigation.getChildren().remove(view.btnStart);
 			}
@@ -180,11 +189,10 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	}
 
 	/**
-	 * 
-	 * Zu den DiceControl-Objekten der View wird ein Handler registriert. DUrch
-	 * den Klick auf einen Würfel, wird dieser fixiert und erscheint bei den
-	 * gesetzten Würfeln.
-	 * 
+	 * Zu den DiceControl-Objekten der View wird ein Handler registriert. Durch
+	 * den Klick auf einen Würfel, wird dieser fixiert und erscheint durch
+	 * Aufruf der Methode moveDownSelectedDice bei den gesetzten Würfeln, sofern
+	 * das Heruntersetzen erlaubt ist.
 	 */
 	public void setEventOnDices() {
 		for (DiceControl diceControl : view.diceControlArray) {
@@ -202,6 +210,11 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		}
 	}
 
+	/**
+	 * Zu den Spieler-Würfeln der View wird ein Handler registriert. Durch den
+	 * Klick auf einen dieser Buttons, wird die CardPopupView aufgerufen und die
+	 * Karten des entsprechenden Spielers können eingesehen werden.
+	 */
 	public void setEventsOnPlayerButton() {
 		for (Button btnPlayer : view.btnArray) {
 			if (btnPlayer.getOnMouseClicked() == null) {
@@ -227,7 +240,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 * stehen.
 	 * 
 	 * @param allowedCards
-	 *            Karten welche zur Auswahl stehen
+	 *            Karten, welche zur Auswahl stehen
 	 */
 	@Override
 	public void onPlayerHasToCooseCards(Hashtable<Integer, List<ITargetCard>> cardOptions) {
@@ -241,7 +254,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	}
 
 	/**
-	 * Der Spieler hat Gewürfelt, der Server sagt Ihm wieviel mal er noch darf
+	 * Der Server teilt mit, wie oft noch gewürfelt werden darf.
 	 * 
 	 * @param remDices
 	 *            Verbleibende Würfelversuche
@@ -256,8 +269,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	}
 
 	/**
-	 * Die Methode teilt mit, ob der Spieler an der Reihe ist oder nicht. Wenn
-	 * der Spieler am Zug ist, wird der Button zum Würfeln freigeschalten.
+	 * Die Methode teilt mit, ob der Spieler an der Reihe ist oder nicht.
 	 * 
 	 * @param isActive
 	 *            Spieler aktiv Ja / Nein
@@ -267,7 +279,8 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		model.playerIsActive = isActive;
 		Platform.runLater(() -> {
 			allowedToDice();
-			// Informiert den aktiven Spieler darüber, dass er an der Reihe ist
+			// Informiert den aktiven Spieler via Alert darüber, dass er an der
+			// Reihe ist
 			if (isActive) {
 				alertDialog = new Alert(AlertType.INFORMATION);
 				alertDialog.setTitle("Du bist am Zug");
@@ -287,9 +300,11 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 
 	/**
 	 * Methode erhält vom Server die beiden Events und konsolidiert diese, um
-	 * die disabled Würfel zu steuern.
+	 * das Disabling der Würfel zu steuern.
 	 */
 	private void allowedToDice() {
+		// Der Würfel wird nur freigeschalten, wenn der Spieler aktiv ist und
+		// noch Würfelversuche übrig hat
 		if (model.playerIsActive && model.remainingDices > 0) {
 			view.btnWuerfeln.setDisable(false);
 		} else if (model.playerIsActive && model.remainingDices <= 0) {

@@ -20,7 +20,7 @@ public class DiceControl extends Region {
 	 * gezeichnet.
 	 * 
 	 * @param cube
-	 *            Gibt den gezeichneten Würfel zurück
+	 *            Nimmt als Parameter den entsprechenden ICube entgegen
 	 */
 	public DiceControl(ICube cube) {
 		this.cube = cube;
