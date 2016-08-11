@@ -6,7 +6,9 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -263,6 +265,13 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		model.playerIsActive = isActive;
 		Platform.runLater(() -> {
 			allowedToDice();
+			if (isActive) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Du bist am Zug");
+				alert.setHeaderText(null);
+				alert.setContentText("Du bist an der Reihe mit Würfeln!");
+				alert.showAndWait();
+			}
 		});
 	}
 
