@@ -7,18 +7,19 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import teamamused.client.Main;
+import teamamused.client.gui.cardPopup.CardPopupController;
+import teamamused.client.gui.cardPopup.CardPopupView;
 import teamamused.client.gui.chooseCards.ChooseCardsController;
 import teamamused.client.gui.chooseCards.ChooseCardsModel;
 import teamamused.client.gui.chooseCards.ChooseCardsView;
-import teamamused.client.gui.cardPopup.CardPopupController;
-import teamamused.client.gui.cardPopup.CardPopupView;
 import teamamused.client.libs.Client;
 import teamamused.client.libs.IClientListener;
 import teamamused.common.LogHelper;
@@ -42,6 +43,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	protected GameBoardModel model;
 	protected boolean[] fixedDices;
 	protected boolean allowedToMoveDown = false;
+	protected Alert alertDialog;
 
 	public GameBoardController(GameBoardModel model, GameBoardView view) {
 		super(model, view);
@@ -103,15 +105,15 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 			}
 
 		});
-		
+
 		// Text Nachricht schicken wenn Enter betätigt wurde
 		view.txtChatInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode().equals(KeyCode.ENTER)) {
 					try {
-						Client.getInstance().sendChatMessage(
-								new TransportableChatMessage(model.player.getPlayerName(), view.txtChatInput.getText()));
+						Client.getInstance().sendChatMessage(new TransportableChatMessage(model.player.getPlayerName(),
+								view.txtChatInput.getText()));
 					} catch (Exception e) {
 						LogHelper.LogException(e);
 					}
@@ -265,12 +267,16 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 		model.playerIsActive = isActive;
 		Platform.runLater(() -> {
 			allowedToDice();
+			// Informiert den aktiven Spieler darüber, dass er an der Reihe ist
 			if (isActive) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Du bist am Zug");
-				alert.setHeaderText(null);
-				alert.setContentText("Du bist an der Reihe mit Würfeln!");
-				alert.showAndWait();
+				alertDialog = new Alert(AlertType.INFORMATION);
+				alertDialog.setTitle("Du bist am Zug");
+				alertDialog.setHeaderText(null);
+				alertDialog.setContentText("Du bist an der Reihe mit Würfeln!");
+				alertDialog.showAndWait();
+				// Um das Dialogfenster mit CSS zu stylen
+				DialogPane dialogPane = alertDialog.getDialogPane();
+				dialogPane.getStyleClass().add("alert");
 			}
 		});
 	}

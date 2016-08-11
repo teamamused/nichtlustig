@@ -1,60 +1,60 @@
 .root{
-	-fx-font-size: 15pt;
+	-fx-font-size: 15.0pt;
 	-fx-font-family: "Tempus Sans ITC";
 	-fx-base: white;
-	-fx-background: rgb(187, 14, 35);
+	-fx-background: rgb(187.0, 14.0, 35.0);
 }
 
 .rootPane {
-  -fx-border-insets: 23;
-  -fx-background-insets: 23;
-  -fx-background-radius: 10;
-  -fx-border-radius: 10;
+  -fx-border-insets: 23.0;
+  -fx-background-insets: 23.0;
+  -fx-background-radius: 10.0;
+  -fx-border-radius: 10.0;
   -fx-border-color: red;
   -fx-border-style: solid;
-  -fx-border-width: 1;
-  -fx-effect: dropshadow(three-pass-box, rgba(100, 100, 100, 1), 24, 0.5, 0, 0);
+  -fx-border-width: 1.0;
+  -fx-effect: dropshadow(three-pass-box, rgba(100.0, 100.0, 100.0, 1.0), 24.0, 0.5, 0.0, 0.0);
 }
 .cardPane{
-	-fx-font-size: 16pt;
+	-fx-font-size: 16.0pt;
 	-fx-font-family: "Tempus Sans ITC";
 	-fx-base: white;
-	-fx-background: rgb(187, 14, 35);
+	-fx-background: rgb(187.0, 14.0, 35.0);
 }
 .button:hover{
 	-fx-background: lightyellow;
 }
 
 #labelCopyright{
-	-fx-font-size: 11pt;
+	-fx-font-size: 11.0pt;
 }
 
 #labelConnect{
-	-fx-font-size: 12pt;
+	-fx-font-size: 12.0pt;
 }
 	
 #labelFailLogIn{
-	-fx-font-size: 16pt;
+	-fx-font-size: 16.0pt;
 	-fx-base: yellow;
 	-fx-font-weight: bold;
 }
 	
 #hboxConnect{
-	-fx-font-size: 12pt;
+	-fx-font-size: 12.0pt;
 }
 
 #labelSpielfeld{
-	-fx-font-size: 25pt;
+	-fx-font-size: 25.0pt;
 	-fx-font-weight: bold;
 }
 
 #labelTitle{
-	-fx-font-size: 30pt;
+	-fx-font-size: 30.0pt;
 	-fx-font-weight: bold;
 }
 
 #subtitle{
-	-fx-font-size: 17pt;
+	-fx-font-size: 17.0pt;
 }
 
 #labelUnderline{
@@ -62,7 +62,7 @@
 }
 
 #tableRanking{
-	-fx-font-size: 16pt;
+	-fx-font-size: 16.0pt;
 	-fx-base: red;
 }
 
@@ -71,20 +71,20 @@
 }
 
 .gameBoardContent{
-	-fx-font-size: 12pt;
+	-fx-font-size: 12.0pt;
 }
 
 #btnActivePlayer {
-	-fx-font-size: 15pt;
+	-fx-font-size: 15.0pt;
 	-fx-font-family: "Tempus Sans ITC";
-	-fx-background-color: rgb(232, 174, 30);
+	-fx-background-color: rgb(232.0, 174.0, 30.0);
 }
 
 #splash{
     -fx-background-image: url("/NichtLustig.png");
     -fx-background-color: transparent;
     -fx-background-repeat: stretch;   
-    -fx-background-size: 300 300;
+    -fx-background-size: 300.0 300.0;
     -fx-background-position: center center;
 }
 
@@ -98,4 +98,11 @@
 
 .tblViewRightCol {
 	-fx-alignment: CENTER-RIGHT;
+}
+
+.alert {
+	-fx-font-size: 15.0pt;
+	-fx-font-family: "Tempus Sans ITC";
+	-fx-base: white;
+	-fx-background-color: rgb(187.0, 14.0, 35.0);
 }
