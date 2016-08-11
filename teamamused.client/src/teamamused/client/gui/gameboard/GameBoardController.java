@@ -276,7 +276,11 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 				alertDialog.showAndWait();
 				// Um das Dialogfenster mit CSS zu stylen
 				DialogPane dialogPane = alertDialog.getDialogPane();
-				dialogPane.getStyleClass().add("alert");
+				try {
+					dialogPane.getStylesheets().add(getClass().getResource("..\\application.css").toExternalForm());
+				} catch (Exception e) {
+					LogHelper.LogException(e);
+				}
 			}
 		});
 	}

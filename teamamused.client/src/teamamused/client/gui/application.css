@@ -100,7 +100,13 @@
 	-fx-alignment: CENTER-RIGHT;
 }
 
-.alert {
+.dialog > .dialog-pane {
+	-fx-font-size: 15.0pt;
+	-fx-font-family: "Tempus Sans ITC";
+	-fx-base: white;
+	-fx-background-color: rgb(187.0, 14.0, 35.0);
+}
+.dialog > .dialog-pane > content.label {
 	-fx-font-size: 15.0pt;
 	-fx-font-family: "Tempus Sans ITC";
 	-fx-base: white;
