@@ -43,7 +43,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 	protected FlowPane cardFlowPane, specialCardFlowPane, deathCardFlowPane;
 	protected Label labelTitle, labelText, cardsRival, specialCardsRival, deathCardsRival, noCardsRival,
 			noSpecialCardsRival, noDeathCardsRival;
-	protected Button btnClose;
+	protected Button btnClose, btnSchliessen;
 	protected ImageView playerTargetCardView, playerSpecialCardView, playerDeathCardView;
 	protected ScrollPane scrollPane;
 
@@ -99,7 +99,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 					public void handle(ActionEvent event) {
 						Popup popup = new Popup();
 						popup.hideOnEscapeProperty().set(true);
-						Button btnSchliessen = new Button("schliessen");
+						btnSchliessen = new Button("schliessen");
 						btnSchliessen.setOnAction(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {
@@ -302,6 +302,7 @@ public class CardPopupView extends AbstractView<GameBoardModel> {
 		this.deathCardsRival.setText(tl.getString(LangText.CardPopupDeath));
 		this.noDeathCardsRival.setText(tl.getString(LangText.CardPopupNoDeath));
 		this.btnClose.setText(tl.getString(LangText.CardPopupBtnClose));
+		this.btnSchliessen.setText(tl.getString(LangText.CardPopupBtnSchliessen));
 	}
 
 }

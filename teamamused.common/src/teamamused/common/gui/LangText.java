@@ -74,6 +74,7 @@ public enum LangText {
 	CardPopupDeath ("cardPopup.deathCardsRival"),
 	CardPopupNoDeath ("cardPopup.noDeathCardsRival"),
 	CardPopupBtnClose ("cardPopup.btnClose"),
+	CardPopupBtnSchliessen ("cardPopup.btnSchliessen"),
 	
 	// ChooseCards View
 	ChooseCardsTitle ("chooseCards.titleLabel"),
