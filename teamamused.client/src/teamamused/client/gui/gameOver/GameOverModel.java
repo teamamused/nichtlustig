@@ -8,12 +8,13 @@ public class GameOverModel extends AbstractModel {
 	protected Ranking winner;
     
     /**
-     * Konstruktor, initial Daten von Client holen
+     * Der Konstruktor holt die initialen Daten vom Client
      */
     public GameOverModel(Ranking[] ranking) {
     	super();
     	this.ranking = ranking;
     	
+    	// Der Gewinner befindet sich an Index 0 des Ranking-Arrays
     	winner = ranking[0];
     }
 }

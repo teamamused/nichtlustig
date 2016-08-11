@@ -21,7 +21,7 @@ import teamamused.common.gui.LangText;
 import teamamused.common.gui.Translator;
 
 /**
- * Die Klasse stellt die grafische Oberfläche für die Schlussseite dar.
+ * Die Klasse stellt die grafische Oberfläche für die GameOver-Seite dar.
  * @author Michelle
  *
  */
