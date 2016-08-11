@@ -100,6 +100,7 @@ public class LogInView extends AbstractView<LogInModel> {
 		// Hyperlink für Registrierung erstellen
 		linkReg = new Hyperlink();
 		linkReg.setText("Registrieren");
+		linkReg.setDisable(true);
 
 		// ChoiceBox erstellen und Auswahlmöglichkeiten aus dem ServiceLocator holen
 		cbLang = new ChoiceBox<>();

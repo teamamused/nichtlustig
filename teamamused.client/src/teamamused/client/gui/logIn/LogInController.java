@@ -42,6 +42,7 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 							.info("Verbindung zum Server konnte nicht hergestellt werden.");
 				}
 				view.btnLogin.setDisable(false);
+				view.linkReg.setDisable(false);
 			}
 		});
 
