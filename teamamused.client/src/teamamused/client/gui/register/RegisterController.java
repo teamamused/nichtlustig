@@ -24,12 +24,13 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 		// Beim Client registrieren
 		Client.getInstance().registerGui(this);
 		
+		// Wenn Zurück-Button durch Benutzer angeklickt wird, wird er zurück auf die Loginseite gebracht
 		view.btnBack.setOnAction((ActionEvent e) -> {
 			Main.getInstance().startLogIn(this.view);
 		});
 
 		// Sobald sich die Auswahl der ChoiceBox für die Sprache ändert, wird
-		// der Wert im ServiceLocator gesetzt.
+		// Wert im ServiceLocator gesetzt.
 		view.cbLang.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Locale>() {
 			@Override
 			public void changed(ObservableValue<? extends Locale> observable, Locale oldValue, Locale newValue) {
@@ -38,6 +39,7 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 			}
 		});
 
+		// Wenn Button "Registrieren" durch Benutzer angeklickt wird...
 		view.btnRegister.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -47,6 +49,7 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 
 	}
 	
+	//Methode leitet Benutzer auf die Welcome-Seite weiter, wenn Registrierung erfolgreich
 	@Override
 	public void onRegisterSuccessful(IPlayer player) {
 		Platform.runLater(() -> {
@@ -55,6 +58,7 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 		ServiceLocator.getInstance().getLogger().info("Der Benutzer wurde erfolgreich registriert");
 	}
 	
+	//Methode gibt dem Benutzer eine Fehlermeldung zurück, wenn Registrierung nicht korrekt funktioniert hat
 	@Override
 	public void onRegisterFailed(String msg) {
 		Platform.runLater(() -> {

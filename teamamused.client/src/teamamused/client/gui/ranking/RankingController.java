@@ -14,6 +14,7 @@ public class RankingController extends AbstractController<RankingModel, RankingV
 		// Beim Client registrieren
 		Client.getInstance().registerGui(this);
 		
+		// Wenn Zurück-Button durch Benutzer angeklickt wird, wird er zurück auf die Welcomeseite gebracht
 		view.btnBack.setOnAction((ActionEvent e) -> {
 			Main.getInstance().startWelcome(this.view);
 		});

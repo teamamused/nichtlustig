@@ -21,6 +21,7 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 		// Beim Client registrieren (s. Observer Pattern)
 		Client.getInstance().registerGui(this);
 
+		// Sobald Login-Button angeklickt wird...
 		view.btnLogin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -28,6 +29,7 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 			}
 		});
 
+		// Sobald "Server verbinden" angeklickt wird...
 		view.btnConnectServer.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -44,7 +46,7 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 		});
 
 		// Sobald sich die Auswahl der ChoiceBox für die Sprache ändert, wird
-		// der Wert im ServiceLocator gesetzt.
+		// Wert im ServiceLocator gesetzt.
 		view.cbLang.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Locale>() {
 			@Override
 			public void changed(ObservableValue<? extends Locale> observable, Locale oldValue, Locale newValue) {
@@ -53,23 +55,25 @@ public class LogInController extends AbstractController<LogInModel, LogInView> i
 			}
 		});
 
+		// Wenn Registrierungs-Link durch Benutzer angeklickt wird, wird er auf die Registrierungsseite weitergeleitet
 		view.linkReg.setOnAction((ActionEvent e) -> {
 			Main.getInstance().startRegister();
 		});
 
 	}
 
+	//Methode leitet Benutzer auf die Welcome-Seite weiter, wenn Login korrekt
 	@Override
 	public void onLoginSuccessful(IPlayer player) {
 		ServiceLocator.getInstance().getLogger().info("Login für Spieler " + player.getPlayerName() + " erfolgreich");
-		// wenn öbis vom Server ufgruefe wird, wo im Gui gmacht sell werte,
-		// muess
-		// es immer mit dem Platform.runLater ufgruefe werde
+		// Sobald etwas vom Server aufgerufen wird, was im GUI gemacht werden soll, 
+		// muss es immer mit dem Platform.runLater aufgerufen werden.
 		Platform.runLater(() -> {
 			Main.getInstance().startWelcome(this.view);
 		});
 	}
 
+	//Methode gibt dem Benutzer eine Fehlermeldung zurück, wenn Login nicht korrekt ist
 	@Override
 	public void onLoginFailed(String msg) {
 		ServiceLocator.getInstance().getLogger().info("Login gescheitert: " + msg);

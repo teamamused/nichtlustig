@@ -24,10 +24,12 @@ public class WelcomeController extends AbstractController<WelcomeModel, WelcomeV
 			}
 		});
 
+		// Wenn Multi-Player-Button durch Benutzer angeklickt wird, wird er auf das GameBoard weitergeleitet
 		view.btnMulti.setOnAction((ActionEvent e) -> {
 			Main.getInstance().startGameBoard(this.view);
 		});
 
+		// Wenn der Exit-Button durch Benutzer angeklickt wird, wird er auf die Tschüss-Seite weitergeleitet
 		view.btnExit.setOnAction((ActionEvent e) -> {
 			Main.getInstance().startBye(this.view);
 		});
