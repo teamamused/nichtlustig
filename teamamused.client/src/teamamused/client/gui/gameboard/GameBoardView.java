@@ -372,13 +372,14 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	 */
 	protected void buildDices() {
 		// Entfernt jedes Mal die Nodes von der Pane - ansonsten würden sie
-		// immer darüber gelegt werden wegen add()
+		// immer darüber gelegt werden wegen der Methode add()
 		Iterator<Node> iterator = dicesPane.getChildren().iterator();
 		while (iterator.hasNext()) {
 			if (iterator.next() instanceof DiceControl) {
 				iterator.remove();
 			}
 		}
+		// Fügt die DiceControlls zum Würfeln hinzu
 		diceControlArray = new DiceControl[7];
 		ICube[] cubes = model.getCubes();
 		for (int i = 0; i < cubes.length; i++) {

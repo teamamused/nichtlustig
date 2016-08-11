@@ -19,16 +19,22 @@ import teamamused.common.models.Player;
  *
  */
 public class GameBoardModel extends AbstractModel {
-	IPlayer player;
 	
-    public IPlayer getPlayer() {
-		return player;
-	}
+	// Speichert das GameBoard
+	public GameBoard gameBoard = new GameBoard();
+	
+	 // Speichert, ob die Karten-Gruppen ein Update benötigen
+	boolean specialCardsNeedsUpdate = true, targetCardsNeedsUpdate = true, deadCardsNeedsUpdate =true;
 
-	public void setPlayer(IPlayer player) {
-		this.player = player;
-	}
+	// Speichert, wie oft der Spieler noch würfeln darf
+    int remainingDices = 0;
+    
+    // Speichert, ob der Spieler aktiv ist oder nicht
+    boolean playerIsActive;
 
+	// Speichert über den Controller die vom Server erhaltenen Chat-Nachrichten
+	protected ObservableList<String> chatMessages = FXCollections.observableArrayList();
+	
 	/**
      * Konstruktor, der einen übergebenen Player setzt (für buildPlayer)
      */
@@ -44,19 +50,27 @@ public class GameBoardModel extends AbstractModel {
 		gameBoard.init();
 		this.player = Client.getInstance().getPlayer();
 	}
-    
-	boolean specialCardsNeedsUpdate = true, targetCardsNeedsUpdate = true, deadCardsNeedsUpdate =true;
 	
-	// Gibt an, wie oft der Spieler noch würfeln darf
-    int remainingDices = 0;
-    
-    // Speichert, ob der Spieler aktiv ist oder nicht
-    boolean playerIsActive;
+	// Speichert den dazugehörigen Spieler
+	IPlayer player;
+	
+	/**
+	 * Getter für den dazugehörigen Spieler
+	 * 
+	 * @return player
+	 */
+    public IPlayer getPlayer() {
+		return player;
+	}
 
-	// In der ObserverList werden Nachrichten gespeichert
-	protected ObservableList<String> chatMessages = FXCollections.observableArrayList();
-
-	public GameBoard gameBoard = new GameBoard();
+    /**
+     * Setter für den dazugehörigen Spieler
+     * 
+     * @param player
+     */
+	public void setPlayer(IPlayer player) {
+		this.player = player;
+	}
 
 	/**
 	 * Methode für die aktuellen Werte der Würfel
