@@ -11,25 +11,27 @@ import teamamused.common.interfaces.ICube;
  */
 public class DiceControl extends Region {
 
-	private int index;
 	private ICube cube;
 
 	/**
 	 * Die Methode nimmt ein ICube-Objekt entgegen und wandelt dies in ein
 	 * Canvas um. Weiterhin kann so durch das DiceControll-Objekt auf das
-	 * ICube-Objekt zugegriffen werden und die entsprechende Zeichenfläche wird gezeichnet.
+	 * ICube-Objekt zugegriffen werden und die entsprechende Zeichenfläche wird
+	 * gezeichnet.
 	 * 
 	 * @param cube
+	 *            Gibt den gezeichneten Würfel zurück
 	 */
 	public DiceControl(ICube cube) {
 		this.cube = cube;
 		getChildren().add(cube.getCurrentValue().toCanvas(45, 1));
 	}
 
-	public int getIndex() {
-		return index;
-	}
-
+	/**
+	 * Getter für den ICube-Würfel, welcher sich hinter dem Canvas verbirgt
+	 * 
+	 * @return cube Gibt den ICube-Würfel zurück
+	 */
 	public ICube getCube() {
 		return cube;
 	}
