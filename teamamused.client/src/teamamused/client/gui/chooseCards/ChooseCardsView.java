@@ -92,25 +92,24 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 		}
 
 		updateTexts();
-		
+
 		return scene;
 	}
 
 	/**
-	 * 
-	 * Diese Support-Methode zeichnet die Karten pro Möglichkeit.
-	 * 
+	 * Diese Support-Methode zeichnet die Karten pro vorhandene Möglichkeit
+	 * jeweils in einen Button, welcher zur Auswahl dient.
 	 */
 	protected Button drawCards(int optionNr) {
 		Button btn = new Button();
 		if (this.model.cardsToChooseOptions != null) {
 			btn.setId(optionNr + "");
-			HBox box = new HBox();
+			HBox optionBox = new HBox();
 			for (ITargetCard card : model.cardsToChooseOptions.get(optionNr)) {
-				ImageView iv = new ImageView(card.getForegroundImage());
-				iv.setFitHeight(BUTTON_WIDTH - 5);
-				iv.setFitWidth(BUTTON_WIDTH - 5);
-				box.getChildren().add(iv);
+				ImageView imageView = new ImageView(card.getForegroundImage());
+				imageView.setFitHeight(BUTTON_WIDTH - 5);
+				imageView.setFitWidth(BUTTON_WIDTH - 5);
+				optionBox.getChildren().add(imageView);
 			}
 			btn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
@@ -119,11 +118,11 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 					stop();
 				}
 			});
-			btn.setGraphic(box);
+			btn.setGraphic(optionBox);
 		}
 		return btn;
 	}
-	
+
 	/**
 	 * Aktualisiert die Sprachtexte auf allen GUI-Elementen
 	 */

@@ -4,19 +4,18 @@ import teamamused.client.libs.IClientListener;
 import teamamused.common.gui.AbstractController;
 import teamamused.client.libs.Client;
 
+/**
+ * Diese Controller-Klasse nimmt die Benutzerinteraktionen der ChooseCards
+ * entgegen.
+ * 
+ * @author Michelle
+ *
+ */
 public class ChooseCardsController extends AbstractController<ChooseCardsModel, ChooseCardsView> implements IClientListener {
-	/**
-	 * Konstruktor des GameboardControllers
-	 * 
-	 * @param model
-	 *            Instanz des GameBoardModel
-	 * @param view
-	 *            Instanz der GameBoardView
-	 */
+
 	public ChooseCardsController(ChooseCardsModel model, ChooseCardsView view) {
 		super(model, view);
-		// Dem Client Mitteilen dass man über aktualisierungen informiert werden
-		// will
+		// Das GUI wird für Aktualisierungen registriert.
 		Client.getInstance().registerGui(this);
 	}
 
