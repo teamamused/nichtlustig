@@ -6,7 +6,6 @@ teamamused.client.gui.chooseCards
 teamamused.client.gui.gameOver
 teamamused.client.gui.gameboard
 teamamused.client.gui.logIn
-teamamused.client.gui.movingPopup
 teamamused.client.gui.ranking
 teamamused.client.gui.register
 teamamused.client.gui.splashscreen
