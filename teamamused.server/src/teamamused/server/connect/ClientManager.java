@@ -79,7 +79,8 @@ public class ClientManager {
 	
 	/**
 	 * Gleicher Client baut verbindung neu auf, infos übernehmen vom alten
-	 * @param client neuer Client
+	 * @param newCon neue Client Connection
+	 * @param oldCon vorherige Client Connection
 	 */
 	public void switchClientConnection(ClientConnection newCon, ClientConnection oldCon) {
 		newCon.setPlayer(oldCon.getPlayer());

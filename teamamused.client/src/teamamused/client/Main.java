@@ -37,6 +37,14 @@ import teamamused.common.db.Ranking;
 import teamamused.common.gui.Translator;
 import teamamused.common.interfaces.IUserView;
 
+/**
+ * Die Mainklasse ist der Haupteinstiegs Punkt in die Client Anwendung. Sie
+ * startet den Splashscreen, verwaltet die GUI wechsel und sorgt für ein
+ * korrektes registrieren und deregistrieren der GUIs beim Client.
+ * 
+ * @author Daniel
+ *
+ */
 public class Main extends Application {
 
 	private Splash_View splashView;
@@ -68,12 +76,18 @@ public class Main extends Application {
 		splashModel.initialize();
 	}
 
+	/**
+	 * Startet die Loginmaske und schliesst die übergebene View
+	 * 
+	 * @param toClose
+	 *            zu schliessende View
+	 */
 	public void startLogIn(IUserView toClose) {
 
 		Stage logInStage = new Stage();
 		LogInModel model = new LogInModel();
 		logInView = new LogInView(logInStage, model);
-		
+
 		LogInController cont = new LogInController(model, logInView);
 		this.registerViewAndController(logInView, cont);
 
@@ -81,6 +95,10 @@ public class Main extends Application {
 		logInView.start();
 	}
 
+	/**
+	 * Startet die Registrieren Maske und schliesst die Login View
+	 * 
+	 */
 	public void startRegister() {
 
 		Stage RegisterStage = new Stage();
@@ -89,17 +107,23 @@ public class Main extends Application {
 
 		RegisterController cont = new RegisterController(model, registerView);
 		this.registerViewAndController(registerView, cont);
-		
+
 		this.closeAndDeregisterView(logInView);
 		registerView.start();
 	}
 
+	/**
+	 * Startet die Wilommen Maske und schliesst die übergebene View
+	 * 
+	 * @param toClose
+	 *            zu schliessende View
+	 */
 	public void startWelcome(IUserView toClose) {
-		
+
 		Stage welcomeStage = new Stage();
 		WelcomeModel model = new WelcomeModel();
 		welcomeView = new WelcomeView(welcomeStage, model);
-		
+
 		WelcomeController cont = new WelcomeController(model, welcomeView);
 		this.registerViewAndController(welcomeView, cont);
 
@@ -107,12 +131,23 @@ public class Main extends Application {
 		welcomeView.start();
 	}
 
+	/**
+	 * Startet die Bestenliste mit den übergebenen Daten und schliesst die
+	 * übergebene View
+	 * 
+	 * @param ranking
+	 *            Platzierungen zum anzeigen
+	 * @param isGamefinished
+	 *            sind wir vor oder nach dem Spiel
+	 * @param toClose
+	 *            zu schliessende View
+	 */
 	public void startRanking(Ranking[] ranking, boolean isGamefinished, IUserView toClose) {
 
 		Stage rankingStage = new Stage();
 		RankingModel model = new RankingModel(ranking, isGamefinished);
 		rankingView = new RankingView(rankingStage, model);
-		
+
 		RankingController cont = new RankingController(model, rankingView);
 		this.registerViewAndController(rankingView, cont);
 
@@ -120,6 +155,12 @@ public class Main extends Application {
 		rankingView.start();
 	}
 
+	/**
+	 * Startet die Spielbrettt Maske und schliesst die übergebene View
+	 * 
+	 * @param toClose
+	 *            zu schliessende View
+	 */
 	public void startGameBoard(IUserView toClose) {
 
 		Stage gameBoardStage = new Stage();
@@ -133,6 +174,13 @@ public class Main extends Application {
 		gameBoardView.start();
 	}
 
+	/**
+	 * Startet die Game Over Maske, schliesst die Spielbrett Ansicht und cached
+	 * das Spielergebnis
+	 * 
+	 * @param ranking
+	 *            Rangierung inerhalb des Spieles
+	 */
 	public void startGameOver(Ranking[] ranking) {
 
 		Stage gameOverStage = new Stage();
@@ -146,12 +194,18 @@ public class Main extends Application {
 		gameOverView.start();
 	}
 
+	/**
+	 * Startet die Bye Maske und schliesst die übergebene View
+	 * 
+	 * @param toClose
+	 *            zu schliessende View
+	 */
 	public void startBye(IUserView toClose) {
 
 		Stage byeStage = new Stage();
 		ByeModel model = new ByeModel();
 		byeView = new ByeView(byeStage, model);
-		
+
 		ByeController cont = new ByeController(model, byeView);
 		this.registerViewAndController(byeView, cont);
 
@@ -159,10 +213,22 @@ public class Main extends Application {
 		byeView.start();
 	}
 
+	/**
+	 * Gibt die Instanz der Mainklasse zurück, welche als Singelton gehalten
+	 * wird.
+	 * 
+	 * @return Main Instanz
+	 */
 	public static Main getInstance() {
 		return instance;
 	}
 
+	/**
+	 * Haupt einstiegspunkt in die Client Anwendung
+	 * 
+	 * @param args
+	 *            Aufrufsargumente
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -186,16 +252,24 @@ public class Main extends Application {
 			toClose = null;
 		}
 	}
-	
+
+	/**
+	 * Merkt sich die übergeben View und den Controller für das deregistrieren
+	 * beim schliessen Setzt den CloseEvent, dass sich der Client beim direkten
+	 * schliessen korrekt beim Sever abmeldet.
+	 * 
+	 * @param view Neu anzuzeigende View
+	 * @param cont Controller zur View
+	 */
 	private void registerViewAndController(IUserView view, IClientListener cont) {
 		this.toderegister.put(view, cont);
 		// Maske auf schliessen oben geschlossen -> abmelden
 		view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
-	          public void handle(WindowEvent we) {
-	        	  closeAndDeregisterView(view);
-	        	  Client.getInstance().sayGoodbye();
-	          }
-	      });      
-	
+			public void handle(WindowEvent we) {
+				closeAndDeregisterView(view);
+				Client.getInstance().sayGoodbye();
+			}
+		});
+
 	}
 }

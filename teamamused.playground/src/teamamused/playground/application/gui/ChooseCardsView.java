@@ -62,6 +62,8 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 
 	/**
 	 * Karten pro Option zeichnen
+	 * @param optionNr auswahl Nummer
+	 * @return Button mit den Karten der Option
 	 */
 	protected Button drawCards(int optionNr) {
 		Button btn = new Button();

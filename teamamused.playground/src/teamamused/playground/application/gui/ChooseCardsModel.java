@@ -16,6 +16,7 @@ public class ChooseCardsModel extends AbstractModel {
     
     /**
      * Konstruktor, initial Daten von Client holen
+     * @param cardOptions karten optionen
      */
     public ChooseCardsModel(Hashtable<Integer, List<ITargetCard>> cardOptions) {
     	super();

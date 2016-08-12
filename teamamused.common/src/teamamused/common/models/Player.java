@@ -280,7 +280,7 @@ public class Player implements IPlayer, Serializable {
 
 	/**
 	 * Implementierung von:
-	 * @see teamamused.common.interfaces.IPlayer#getsConnected()
+	 * @see teamamused.common.interfaces.IPlayer#getConnected()
 	 */
 	@Override
 	public boolean getConnected() {

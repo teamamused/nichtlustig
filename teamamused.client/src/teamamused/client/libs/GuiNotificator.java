@@ -13,7 +13,7 @@ import teamamused.common.interfaces.ITargetCard;
 import teamamused.common.models.GameBoard;
 
 /**
- * Klasse welche die GUI's über änderungen informiert
+ * Diese Klasse informiert die registrierten GUI's über Daten Änderungen.
  * 
  * @author Daniel
  *

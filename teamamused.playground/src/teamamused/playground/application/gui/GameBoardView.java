@@ -183,8 +183,6 @@ public class GameBoardView extends AbstractView<GameBoardModel> {
 	/**
 	 * Würfel zeichnen
 	 * 
-	 * @param remainingDraws
-	 *            Wieviel mal noch gewürfelt werden darf
 	 */
 	protected void drawCubes() {
 		int diceSize = 50;

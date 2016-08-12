@@ -28,8 +28,10 @@ import teamamused.common.models.GameBoard;
 
 /**
  * 
- * Dieser Thread läuft im Hintergrund und wartet auf Benachtrichtigungen vom
- * Server.
+ * Die ServerConnection ist ein Thread, welcher im Hintergrund läuft. Er hält
+ * die Verbindung zum Server offen und dient als Kommunikationsknoten.
+ * Benachrichtigungen vom Server leitet er an den Client weiter und der Client
+ * kann via Server Connection Anfragen verschicken.
  * 
  * @author Daniel
  *
@@ -101,12 +103,13 @@ public class ServerConnection extends Thread {
 					LogHelper.LogException(eof);
 					this.log.info("End of Stream Exception, socket info: " + this.socket + " - "
 							+ this.socket.isInputShutdown());
-					//-- war nicht gut, machte endlos eof exeptions..
+					// -- war nicht gut, machte endlos eof exeptions..
 					// Neue Verbindung aufbauen
-					//if (connector.getConnected()) {
-					//	this.connector.connect();
-					//}
-					// neuer Versuch wir reseten den inputstream, da das socket sagt es sei noch ok
+					// if (connector.getConnected()) {
+					// this.connector.connect();
+					// }
+					// neuer Versuch wir reseten den inputstream, da das socket
+					// sagt es sei noch ok
 					this.in.reset();
 				}
 			}
@@ -225,7 +228,7 @@ public class ServerConnection extends Thread {
 					gb.initFromTransportObject((BeanGameBoard) params[0]);
 					this.notifyGui.gameBoardChanged(gb);
 					return new TransportableState(true, "Client updated");
-				} 
+				}
 			}
 			break;
 
@@ -287,12 +290,13 @@ public class ServerConnection extends Thread {
 			break;
 		case GetTopRanking:
 			if (answer.isOK() && answer.getReturnValue() instanceof Ranking[]) {
-				this.notifyGui.rankingRecieved((Ranking[])answer.getReturnValue());
+				this.notifyGui.rankingRecieved((Ranking[]) answer.getReturnValue());
 			}
 			break;
 		case RollDices:
 			if (answer.isOK() && answer.getReturnValue() instanceof Integer) {
-				// Wenn kein versuch mehr verbleibend, handelt das finish Round den rest
+				// Wenn kein versuch mehr verbleibend, handelt das finish Round
+				// den rest
 				if ((int) answer.getReturnValue() > 0) {
 					this.notifyGui.numberOfRemeiningDicingChanged((int) answer.getReturnValue());
 				}

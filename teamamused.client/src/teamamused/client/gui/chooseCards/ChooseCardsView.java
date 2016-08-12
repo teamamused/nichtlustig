@@ -99,6 +99,10 @@ public class ChooseCardsView extends AbstractView<ChooseCardsModel> {
 	/**
 	 * Diese Support-Methode zeichnet die Karten pro vorhandene Möglichkeit
 	 * jeweils in einen Button, welcher zur Auswahl dient.
+	 * 
+	 * @param optionNr Auswahlmöglichkeits Nummer
+	 * @return Button mit den Karten der Option
+	 * 
 	 */
 	protected Button drawCards(int optionNr) {
 		Button btn = new Button();

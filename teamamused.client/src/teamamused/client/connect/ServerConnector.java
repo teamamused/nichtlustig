@@ -7,7 +7,7 @@ import teamamused.common.ServiceLocator;
 
 /**
  * 
- * Diese Klasse stellt die Verbindung zum server her.
+ * Diese Klasse stellt die Verbindung zum Server her.
  * Sie Startet eine ServerConnection und stellt das Socket zur Verfügung.
  * 
  * @author Daniel

@@ -21,6 +21,9 @@ public class ChooseCardsModel extends AbstractModel {
 
 	/**
 	 * Holt die initialen Daten vom Client
+	 * 
+	 * @param cardOptions Auswahlmöglichkeiten welche der Spieler hat
+	 * 
 	 */
 	public ChooseCardsModel(Hashtable<Integer, List<ITargetCard>> cardOptions) {
 		super();

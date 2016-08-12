@@ -79,7 +79,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	/**
 	 * Der Spieler muss zwischen den möglichen Zielkarten auswählen
 	 * 
-	 * @param allowedCards
+	 * @param options
 	 *            Karten welche zur auswahl stehen
 	 */
 	@Override

@@ -9,6 +9,7 @@ public class GameOverModel extends AbstractModel {
     
     /**
      * Der Konstruktor holt die initialen Daten vom Client
+     * @param ranking Platzierungen der Spieler im Spiel
      */
     public GameOverModel(Ranking[] ranking) {
     	super();

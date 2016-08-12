@@ -1,7 +1,12 @@
 package teamamused.common.db;
 
 import java.util.Comparator;
-
+/**
+ * Comparar Klasse zum Ranking nach total Platzierung.
+ * 
+ * @author Daniel
+ *
+ */
 public class RankingTotalRankComperator implements Comparator<Ranking> {
 	@Override 
 	public int compare(Ranking o1, Ranking o2) { 

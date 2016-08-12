@@ -20,6 +20,9 @@ import teamamused.server.gui.ServerView;
  */
 public class Main extends Application {
 	
+	/**
+	 * Start Methode welche vom JavaFX Thread aufgerufen wird für die ganze GUI Magic.
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		// Server Starten
@@ -45,6 +48,11 @@ public class Main extends Application {
         ServiceLocator.getInstance().getLogger().info("Der Server läuft!");
 	}
 	
+	/**
+	 * Haupteinstiegspunkt in die Server Komponente
+	 * 
+	 * @param args Startparameter (nicht benötigt)
+	 */
 	public static void main(String[] args) {
 		try {
 			launch(args);

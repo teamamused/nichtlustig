@@ -37,6 +37,8 @@ public class GameBoardModel extends AbstractModel {
 	
 	/**
      * Konstruktor, der einen übergebenen Player setzt (für buildPlayer)
+     * 
+     * @param player Spieler
      */
     public GameBoardModel(IPlayer player) {
     	super();
@@ -66,7 +68,7 @@ public class GameBoardModel extends AbstractModel {
     /**
      * Setter für den dazugehörigen Spieler
      * 
-     * @param player
+     * @param player Spieler
      */
 	public void setPlayer(IPlayer player) {
 		this.player = player;

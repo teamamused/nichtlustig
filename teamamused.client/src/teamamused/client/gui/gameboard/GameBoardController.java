@@ -240,7 +240,7 @@ public class GameBoardController extends AbstractController<GameBoardModel, Game
 	 * aufgrund der gewürfelten Augenzahlen mehrere Kombinationen zur Auswahl
 	 * stehen.
 	 * 
-	 * @param allowedCards
+	 * @param cardOptions
 	 *            Karten, welche zur Auswahl stehen
 	 */
 	@Override

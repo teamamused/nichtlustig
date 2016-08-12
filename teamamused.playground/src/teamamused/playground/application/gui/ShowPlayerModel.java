@@ -10,6 +10,8 @@ public class ShowPlayerModel extends AbstractModel {
     
     /**
      * Konstruktor, initial Daten von Client holen
+     * 
+     * @param player Spieler
      */
     public ShowPlayerModel(IPlayer player) {
     	super();

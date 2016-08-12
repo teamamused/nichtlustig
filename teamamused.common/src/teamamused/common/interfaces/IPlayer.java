@@ -54,13 +54,13 @@ public interface IPlayer extends ICardHolder {
 	
 	/**
 	 * Gibt zurück ob der Spieler noch mit dem Server verbunden ist.
-	 * @return
+	 * @return boolean ob der Player noch verbunden ist
 	 */
 	boolean getConnected();
 
 	/**
 	 * Setzt den Spieler auf Verbunden oder nicht verbunden
-	 * @param Boolean ob Verbunden
+	 * @param connected Boolean ob Verbunden
 	 */
 	void setConnected(boolean connected);
 }
