@@ -46,7 +46,7 @@ public class RegisterController extends AbstractController<RegisterModel, Regist
 		view.btnRegister.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if (view.password == view.password2) {
+				if (view.password.getText().equals(view.password2.getText())) {
 					Client.getInstance().registerPlayer(view.textRegUser.getText(), view.password.getText());
 				} else {
 					showAlertMessage("Die beiden Passwörter sind nicht identisch");
